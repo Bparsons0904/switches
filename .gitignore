@@ -1,0 +1,8 @@
+/tmp/
+server/tmp/
+components/*_templ.go
+components/*_templ.txt
+
+*.pem
+
+.env

@@ -7,10 +7,13 @@ import (
 	"syscall"
 
 	env "switches/config"
+	"switches/database"
 
 	"github.com/gofiber/fiber/v2"
 	"github.com/gofiber/fiber/v2/middleware/cors"
+	"github.com/gofiber/fiber/v2/middleware/logger"
 	"github.com/gofiber/fiber/v2/middleware/recover"
+	"gorm.io/gorm"
 )
 
 var (
@@ -27,9 +30,6 @@ func init() {
 		log.Fatal("? Could not load environment variables", err)
 	}
 
-	// db := database.ConnectDB(config)
-	// controllers.SetDb(db)
-	// reports.SetDb(db)
 	log.Println("Environment variables loaded successfully", config)
 
 	if config.Tier == "development" {
@@ -53,6 +53,13 @@ func LoadEnvMiddleware(c *fiber.Ctx) error {
 	return c.Next()
 }
 
+func DBMiddleware(db *gorm.DB) fiber.Handler {
+	return func(c *fiber.Ctx) error {
+		c.Locals("db", db)
+		return c.Next()
+	}
+}
+
 func main() {
 	log.Println("Starting server...", config.BaseURL)
 	server.Use(cors.New(cors.Config{
@@ -62,9 +69,13 @@ func main() {
 		AllowCredentials: true,
 	}))
 	server.Use(LoadEnvMiddleware)
-	// if config.Tier == "local" {
-	// 	server.Use(logger.New())
-	// }
+	db := database.ConnectDB(config)
+	server.Use(DBMiddleware(db))
+
+	if config.Tier == "local" {
+		server.Use(logger.New())
+	}
+
 	server.Use(recover.New())
 	server.Use(func(c *fiber.Ctx) error {
 		// Handle Preflight Request
@@ -82,6 +93,7 @@ func main() {
 
 		return c.Next()
 	})
+
 	// routes.SetupRoutes(server, config)
 
 	// Create a channel to listen for a shutdown signal
