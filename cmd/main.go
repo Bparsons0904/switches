@@ -8,6 +8,7 @@ import (
 
 	env "switches/config"
 	"switches/database"
+	"switches/routes"
 
 	"github.com/gofiber/fiber/v2"
 	"github.com/gofiber/fiber/v2/middleware/cors"
@@ -94,7 +95,7 @@ func main() {
 		return c.Next()
 	})
 
-	// routes.SetupRoutes(server, config)
+	routes.SetupRoutes(server, config)
 
 	// Create a channel to listen for a shutdown signal
 	go setupGracefulShutdown(server)
