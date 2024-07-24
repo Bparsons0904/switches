@@ -6,10 +6,10 @@ steps:
   - name: build
     image: docker:dind
     volumes:
-      - name: dockersock
+      - name: dockersock_build
         path: /var/run/docker.sock
     commands:
-      - docker build -t myapp:${DRONE_COMMIT_SHA} .
+      - docker build -t switches_stage:${DRONE_COMMIT_SHA} .
     when:
       event:
         - push
@@ -18,10 +18,10 @@ steps:
   - name: deploy-staging
     image: docker:dind
     volumes:
-      - name: dockersock
+      - name: dockersock_stage
         path: /var/run/docker.sock
     environment:
-      DOCKER_IMAGE: myapp
+      DOCKER_IMAGE: switches_stage
       IMAGE_TAG: ${DRONE_COMMIT_SHA}
       BUILD_ENV: staging
       ENVIRONMENT: staging
@@ -50,10 +50,10 @@ steps:
   - name: deploy-production
     image: docker:dind
     volumes:
-      - name: dockersock
+      - name: dockersock_prod
         path: /var/run/docker.sock
     environment:
-      DOCKER_IMAGE: myapp
+      DOCKER_IMAGE: switches
       IMAGE_TAG: ${DRONE_TAG}
       BUILD_ENV: production
       ENVIRONMENT: production
@@ -84,4 +84,4 @@ steps:
 volumes:
   - name: dockersock
     host:
-      path: /var/run/switches/docker.sock
+      path: /var/run/docker.sock
