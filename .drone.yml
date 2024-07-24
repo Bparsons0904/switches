@@ -30,7 +30,7 @@ steps:
       TIER:
         from_secret: TIER_STAGE
       BASE_URL:
-        from_secret: BASE_URL
+        from_secret: BASE_URL_STAGE
       DB_HOST:
         from_secret: DB_HOST
       DB_USER:
@@ -62,7 +62,7 @@ steps:
       TIER:
         from_secret: TIER_PROD
       BASE_URL:
-        from_secret: BASE_URL
+        from_secret: BASE_URL_PROD
       DB_HOST:
         from_secret: DB_HOST
       DB_USER:
