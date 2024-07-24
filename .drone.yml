@@ -54,7 +54,7 @@ steps:
       - name: dockersock_prod
         path: /var/run/docker.sock
     commands:
-      - docker build -t switches:${DRONE_TAG} .
+      - docker build -t switches:${DRONE_COMMIT_SHA} .
     when:
       event:
         - tag
@@ -68,7 +68,7 @@ steps:
         path: /var/run/docker.sock
     environment:
       DOCKER_IMAGE: switches
-      IMAGE_TAG: ${DRONE_TAG}
+      IMAGE_TAG: ${DRONE_COMMIT_SHA}
       BUILD_ENV: production
       ENVIRONMENT: production
       SERVER_PORT: 3030
