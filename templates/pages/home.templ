@@ -1,0 +1,54 @@
+package pages
+
+import "switches/templates/layouts"
+
+templ HomePage() {
+	@layouts.Root() {
+		@Home()
+	}
+}
+
+templ Home() {
+	<!-- @Navbar("home") -->
+	<div id="container">
+		yo
+	</div>
+	<script>
+		document.addEventListener('DOMContentLoaded', (event) => {
+			let count = 0;
+			const interval = setInterval(() => {
+				if (count >= 200) {
+					clearInterval(interval);
+					return;
+				}
+
+				const yoElement = document.createElement('div');
+				yoElement.textContent = 'yo';
+				yoElement.style.position = 'absolute';
+				yoElement.style.left = Math.random() * window.innerWidth + 'px';
+				yoElement.style.top = Math.random() * window.innerHeight + 'px';
+
+				document.body.appendChild(yoElement);
+
+
+        if (count % 2 === 0) {
+				const fartElement = document.createElement('div');
+        yoElement.textContent = 'yo > fart';
+				yoElement.style.position = 'absolute';
+				yoElement.style.left = Math.random() * window.innerWidth + 'px';
+				yoElement.style.top = Math.random() * window.innerHeight + 'px';
+
+				document.body.appendChild(fartElement);
+        }
+				count++;
+			}, 500);
+		});
+	</script>
+	<style>
+		#container {
+			position: relative;
+			width: 100%;
+			height: 100vh;
+		}
+	</style>
+}
