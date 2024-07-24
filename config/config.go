@@ -2,6 +2,7 @@ package config
 
 import (
 	"log"
+	"os"
 
 	"github.com/spf13/viper"
 )
@@ -17,19 +18,22 @@ type Config struct {
 	DBPort     string
 }
 
-// dsn := fmt.Sprintf("host=%s user=%s password=%s dbname=%s port=%s sslmode=disable", config.DBHost, config.DBUser, config.DBPassword, config.DBName, config.DBPort)
 func LoadConfig() (Config, error) {
-	// Set the file name of the configurations file
-	viper.SetConfigName(".env")
-	viper.SetConfigType("env")
-	viper.AddConfigPath(".")
-
-	// Read configuration
-	if err := viper.ReadInConfig(); err != nil {
-		log.Panicf("Error reading config file, %s", err)
+	env := os.Getenv("TIER")
+	if env == "" {
+		env = "development"
 	}
 
-	// Set environment variables (if they are not set already)
+	if env == "development" {
+		viper.SetConfigName(".env")
+		viper.SetConfigType("env")
+		viper.AddConfigPath(".")
+
+		if err := viper.ReadInConfig(); err != nil {
+			log.Panicf("Error reading config file, %s", err)
+		}
+	}
+
 	viper.AutomaticEnv()
 
 	config := Config{
