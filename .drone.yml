@@ -42,7 +42,10 @@ steps:
       DB_PORT:
         from_secret: DB_PORT_STAGE
     commands:
-      - docker-compose up -d
+      - docker-compose pull
+      - docker-compose up -d --build
+      - docker-compose ps
+      - docker image prune -f
     when:
       branch:
         - main
@@ -74,7 +77,10 @@ steps:
       DB_PORT:
         from_secret: DB_PORT_PROD
     commands:
-      - docker-compose up -d
+      - docker-compose pull
+      - docker-compose up -d --build
+      - docker-compose ps
+      - docker image prune -f
     when:
       event:
         - tag
