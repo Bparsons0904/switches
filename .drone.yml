@@ -6,7 +6,7 @@ steps:
   - name: build-staging
     image: docker:dind
     volumes:
-      - name: dockersock
+      - name: dockersock_build
         path: /var/run/docker.sock
     commands:
       - docker build -t switches_stage:latest .
@@ -51,7 +51,7 @@ steps:
   - name: build-production
     image: docker:dind
     volumes:
-      - name: dockersock
+      - name: dockersock_build
         path: /var/run/docker.sock
     commands:
       - docker build -t switches:${DRONE_COMMIT_SHA} .
@@ -98,9 +98,6 @@ steps:
         - refs/tags/v*
 
 volumes:
-  - name: dockersock_stage
-    host:
-      path: /var/run/docker.sock
-  - name: dockersock_prod
+  - name: dockersock
     host:
       path: /var/run/docker.sock
