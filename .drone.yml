@@ -1,0 +1,87 @@
+kind: pipeline
+type: docker
+name: default
+
+steps:
+  - name: build
+    image: docker:dind
+    volumes:
+      - name: dockersock
+        path: /var/run/docker.sock
+    commands:
+      - docker build -t myapp:${DRONE_COMMIT_SHA} .
+    when:
+      event:
+        - push
+        - tag
+
+  - name: deploy-staging
+    image: docker:dind
+    volumes:
+      - name: dockersock
+        path: /var/run/docker.sock
+    environment:
+      DOCKER_IMAGE: myapp
+      IMAGE_TAG: ${DRONE_COMMIT_SHA}
+      BUILD_ENV: staging
+      ENVIRONMENT: staging
+      SERVER_PORT: 3030
+      EXTERNAL_PORT: 3070
+      TIER:
+        from_secret: TIER_STAGE
+      BASE_URL:
+        from_secret: BASE_URL
+      DB_HOST:
+        from_secret: DB_HOST
+      DB_USER:
+        from_secret: DB_USER
+      DB_PASSWORD:
+        from_secret: DB_PASSWORD_STAGE
+      DB_NAME:
+        from_secret: DB_NAME
+      DB_PORT:
+        from_secret: DB_PORT_STAGE
+    commands:
+      - docker-compose up -d
+    when:
+      branch:
+        - main
+
+  - name: deploy-production
+    image: docker:dind
+    volumes:
+      - name: dockersock
+        path: /var/run/docker.sock
+    environment:
+      DOCKER_IMAGE: myapp
+      IMAGE_TAG: ${DRONE_TAG}
+      BUILD_ENV: production
+      ENVIRONMENT: production
+      SERVER_PORT: 3030
+      EXTERNAL_PORT: 3030
+      TIER:
+        from_secret: TIER_PROD
+      BASE_URL:
+        from_secret: BASE_URL
+      DB_HOST:
+        from_secret: DB_HOST
+      DB_USER:
+        from_secret: DB_USER
+      DB_PASSWORD:
+        from_secret: DB_PASSWORD_PROD
+      DB_NAME:
+        from_secret: DB_NAME
+      DB_PORT:
+        from_secret: DB_PORT_PROD
+    commands:
+      - docker-compose up -d
+    when:
+      event:
+        - tag
+      ref:
+        - refs/tags/v*
+
+volumes:
+  - name: dockersock
+    host:
+      path: /var/run/docker.sock

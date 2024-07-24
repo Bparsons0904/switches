@@ -1,0 +1,20 @@
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        - BUILD_ENV=${BUILD_ENV:-production}
+    image: ${DOCKER_IMAGE:-switches}:${IMAGE_TAG:-latest}
+    ports:
+      - "${EXTERNAL_PORT}:3030"
+    environment:
+      - TIER=${TIER}
+      - BASE_URL=${BASE_URL}
+      - SERVER_PORT=${SERVER_PORT}
+      - DB_HOST=${DB_HOST}
+      - DB_USER=${DB_USER}
+      - DB_PASSWORD=${DB_PASSWORD}
+      - DB_NAME=${DB_NAME}
+      - DB_PORT=${DB_PORT}
+      - ./static:/app/static
