@@ -77,7 +77,7 @@ func SetupRoutes(app *fiber.App, config config.Config) {
 func HealthRoutes(app fiber.Router) {
 	app.Get("/health", getHealth)
 	app.Get("/health/monitor", monitor.New(monitor.Config{
-		Title: "VIA Health Monitor",
+		Title: "Bob's Next Great Thing Health Monitor",
 	}))
 }
 
