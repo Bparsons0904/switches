@@ -1,19 +1,18 @@
 kind: pipeline
 type: docker
-name: default
+name: switches-pipeline
 
 steps:
-  - name: build
+  - name: build-staging
     image: docker:dind
     volumes:
-      - name: dockersock_build
+      - name: dockersock_stage
         path: /var/run/docker.sock
     commands:
-      - docker build -t switches_stage:${DRONE_COMMIT_SHA} .
+      - docker build -t switches_stage:latest .
     when:
-      event:
-        - push
-        - tag
+      branch:
+        - main
 
   - name: deploy-staging
     image: docker:dind
@@ -22,7 +21,7 @@ steps:
         path: /var/run/docker.sock
     environment:
       DOCKER_IMAGE: switches_stage
-      IMAGE_TAG: ${DRONE_COMMIT_SHA}
+      IMAGE_TAG: latest
       BUILD_ENV: staging
       ENVIRONMENT: staging
       SERVER_PORT: 3030
@@ -42,13 +41,25 @@ steps:
       DB_PORT:
         from_secret: DB_PORT_STAGE
     commands:
-      - docker-compose pull
       - docker-compose up -d --build
       - docker-compose ps
       - docker image prune -f
     when:
       branch:
         - main
+
+  - name: build-production
+    image: docker:dind
+    volumes:
+      - name: dockersock_prod
+        path: /var/run/docker.sock
+    commands:
+      - docker build -t switches:${DRONE_TAG} .
+    when:
+      event:
+        - tag
+      ref:
+        - refs/tags/v*
 
   - name: deploy-production
     image: docker:dind
@@ -77,7 +88,6 @@ steps:
       DB_PORT:
         from_secret: DB_PORT_PROD
     commands:
-      - docker-compose pull
       - docker-compose up -d --build
       - docker-compose ps
       - docker image prune -f
@@ -88,6 +98,9 @@ steps:
         - refs/tags/v*
 
 volumes:
-  - name: dockersock
+  - name: dockersock_stage
+    host:
+      path: /var/run/docker.sock
+  - name: dockersock_prod
     host:
       path: /var/run/docker.sock
