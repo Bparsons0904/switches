@@ -1,0 +1,27 @@
+package components
+
+type ImageProps struct {
+	Src      string
+	Alt      string
+	IsSquare bool
+}
+
+templ Image(props ImageProps) {
+	if props.IsSquare {
+		<img
+			src={ "/images/" + props.Src }
+			width="400"
+			height="400"
+			alt={ props.Alt }
+			class="img-rounded img-square"
+		/>
+	} else {
+		<img
+			src={ "/images/" + props.Src }
+			width="600"
+			height="400"
+			alt={ props.Alt }
+			class="img-rounded"
+		/>
+	}
+}

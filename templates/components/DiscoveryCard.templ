@@ -1,0 +1,32 @@
+package components
+
+import "switches/templates/components/icons"
+
+type DiscoveryCardProps struct {
+	Title       string
+	Description string
+	Icon        string
+}
+
+templ DiscoveryCard(props DiscoveryCardProps) {
+	<div class="discovery-card">
+		<!-- @getDiscoveryIcon(props.Icon) -->
+		@icons.MagnifyingGlass()
+		<div>
+			<h3 class="">{ props.Title }</h3>
+			<p class="">{ props.Description }</p>
+		</div>
+	</div>
+}
+
+func getDiscoveryIcon(icon string) templ.Component {
+	switch icon {
+	case "magnifying-glass":
+		return icons.MagnifyingGlass()
+	case "settings":
+		return icons.Settings()
+	default:
+		return icons.Settings()
+		// return nil // or a default icon
+	}
+}

@@ -5,4 +5,10 @@
 
 .img-rounded {
   border-radius: 12px;
+  object-fit: cover;
+  aspect-ratio: 600 / 400;
+}
+
+.img-square {
+  aspect-ratio: 1 / 1;
 }

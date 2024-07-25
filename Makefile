@@ -7,7 +7,7 @@ live/templ:
 # run air to detect any go file changes to re-build and re-run the server.
 live/server:
 	${ENV_VARS} go run github.com/cosmtrek/air@v1.51.0 \
-	--build.cmd "go build -o tmp/bin/main cmd/main.go" --build.bin "tmp/bin/main" --build.delay "100" \
+	--build.cmd "go build -o tmp/bin/main cmd/main.go" --build.bin "tmp/bin/main" --build.delay "500" \
 	--build.exclude_dir "node_modules" \
 	--build.include_ext "go" \
 	--build.include_dir "static\styles" \
@@ -28,12 +28,13 @@ live/sync_assets:
 	go run github.com/cosmtrek/air@v1.51.0 \
 	--build.cmd "templ generate --notify-proxy" \
 	--build.bin "true" \
-	--build.delay "100" \
+	--build.delay "1000" \
 	--build.exclude_dir "" \
-	--build.include_dir "static/styles" \
+	--build.include_dir "static\styles" \
 	--build.include_ext "js,css" 
 
 # start all 5 watch processes in parallel.
 live: 
-	make -j5 live/templ live/server live/sync_assets
+	make -j5 live/templ live/sync_assets
+	# make -j5 live/templ live/server live/sync_assets
 	# make -j5 live/templ live/server live/tailwind live/esbuild live/sync_assets
