@@ -3,6 +3,7 @@ package controllers
 import (
 	"github.com/a-h/templ"
 	"github.com/gofiber/fiber/v2"
+	"github.com/gofiber/fiber/v2/middleware/adaptor"
 	"github.com/spf13/viper"
 )
 
@@ -19,7 +20,9 @@ func Render(fullPage, partialContent templ.Component) fiber.Handler {
 			component = fullPage
 		}
 
-		err := component.Render(c.Context(), c.Response().BodyWriter())
+		componentHandler := templ.Handler(component)
+
+		err := adaptor.HTTPHandler(componentHandler)(c)
 		if err != nil {
 			return c.Status(fiber.StatusInternalServerError).SendString("Internal Server Error")
 		}

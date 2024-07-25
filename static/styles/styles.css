@@ -19,10 +19,36 @@
   --background-light: #f8f8f8;
 }
 
+body {
+  font-family: "Inter", sans-serif;
+  font-optical-sizing: auto;
+  /* font-weight: <weight>; */
+  font-style: normal;
+  font-variation-settings: "slnt" 0;
+}
+
 .text-light {
   color: var(--text-color-light);
 }
 
 .text-dark {
+  color: var(--text-color-dark);
+}
+
+.background-dark {
+  background-color: var(--background-dark);
+}
+
+.background-light {
+  background-color: var(--background-light);
+}
+
+.dark {
+  background-color: var(--background-dark);
+  color: var(--text-color-light);
+}
+
+.light {
+  background-color: var(--background-light);
   color: var(--text-color-dark);
 }

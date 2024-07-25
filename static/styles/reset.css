@@ -45,7 +45,3 @@ a {
 #__next {
   isolation: isolate;
 }
-
-@tailwind base;
-@tailwind components;
-@tailwind utilities;

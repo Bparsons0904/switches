@@ -1,0 +1,42 @@
+
+package pages
+
+import (
+	"switches/templates/components"
+	"switches/templates/layouts"
+)
+
+templ SwitchesPage() {
+	@layouts.Root() {
+		@Switches()
+	}
+}
+
+templ Switches() {
+	<style type="text/css">
+
+#cta {
+  padding: 1rem;
+  .cta-wrapper {
+    margin-top: 2rem;
+    .cta-header {
+      font-size: 1.5rem;
+      h1 {
+
+      line-height: 1.2;
+      margin-bottom: 1rem;
+      }
+
+    }
+  }
+}
+
+
+  </style>
+	<div class="">
+		@components.Navbar("switches")
+		<main id="home">
+			<section id="cta" class="dark">Yo</section>
+		</main>
+	</div>
+}

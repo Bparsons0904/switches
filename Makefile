@@ -1,5 +1,3 @@
-include .env
-export $(shell sed 's/=.*//' .env)
 # run templ generation in watch mode to detect all .templ files and 
 # re-create _templ.txt files on change, then send reload event to browser. 
 # Default url: http://localhost:7331
@@ -32,9 +30,7 @@ live/sync_assets:
 	--build.bin "true" \
 	--build.delay "100" \
 	--build.exclude_dir "" \
-	--build.include_dir "static" \
-	--build.include_dir "static\styles" \
-	--build.include_dir "static\scripts" \
+	--build.include_dir "static/styles" \
 	--build.include_ext "js,css" 
 
 # start all 5 watch processes in parallel.
