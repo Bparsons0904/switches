@@ -12,12 +12,14 @@ live/server:
 	--build.cmd "go build -o tmp/bin/main cmd/main.go" --build.bin "tmp/bin/main" --build.delay "100" \
 	--build.exclude_dir "node_modules" \
 	--build.include_ext "go" \
+	--build.include_dir "static\styles" \
+	--build.include_dir "static\scripts" \
 	--build.stop_on_error "false" \
 	--misc.clean_on_exit true
 
 # run tailwindcss to generate the styles.css bundle in watch mode.
 # live/tailwind:
-# 	npx tailwindcss -i ./input.css -o ./assets/styles.css --minify --watch
+# 	npx tailwindcss -i ./static/styles/input.css -o ./static/styles/styles.css --minify --watch
 
 # run esbuild to generate the index.js bundle in watch mode.
 # live/esbuild:
@@ -31,7 +33,9 @@ live/sync_assets:
 	--build.delay "100" \
 	--build.exclude_dir "" \
 	--build.include_dir "static" \
-	--build.include_ext "js,css"
+	--build.include_dir "static\styles" \
+	--build.include_dir "static\scripts" \
+	--build.include_ext "js,css" 
 
 # start all 5 watch processes in parallel.
 live: 

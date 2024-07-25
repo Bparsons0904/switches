@@ -6,9 +6,10 @@ import (
 	"os/signal"
 	"syscall"
 
-	env "switches/config"
 	"switches/database"
 	"switches/routes"
+
+	env "switches/config"
 
 	"github.com/gofiber/fiber/v2"
 	"github.com/gofiber/fiber/v2/middleware/cors"
@@ -95,6 +96,9 @@ func main() {
 		return c.Next()
 	})
 
+	server.Static("/styles", "./static/styles")
+	server.Static("/scripts", "./static/scripts")
+	server.Static("/images", "./static/assets/images")
 	routes.SetupRoutes(server, config)
 
 	// Create a channel to listen for a shutdown signal

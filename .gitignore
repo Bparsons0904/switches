@@ -3,6 +3,10 @@ server/tmp/
 components/*_templ.go
 components/*_templ.txt
 
+node_modules/
 *.pem
 
 .env
+
+*_templ.go
+*_templ.txt

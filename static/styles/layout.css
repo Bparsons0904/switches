@@ -1,0 +1,31 @@
+#header {
+  background-color: var(--background-dark);
+  width: 100%;
+  padding: 10px 20px;
+  color: var(--text-color-light);
+  .header-wrapper {
+    display: flex;
+    flex-direction: row;
+    height: 100%;
+    align-items: center;
+    gap: 20px;
+    cursor: pointer;
+  }
+  .img-wrapper {
+    width: auto;
+    height: 50px;
+    img {
+      width: auto;
+      height: 50px;
+    }
+  }
+}
+
+.img-wrapper {
+  width: 100%;
+  height: auto;
+  img {
+    width: 100%;
+    height: auto;
+  }
+}

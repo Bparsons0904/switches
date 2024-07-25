@@ -1,0 +1,20 @@
+package components
+
+templ Navbar(route string) {
+	<style type="text/css">
+
+  </style>
+	<header id="header">
+		<a
+			class="header-wrapper"
+			hx-get="/"
+			hx-target="#body"
+			hx-push-url="/"
+		>
+			<div class="img-wrapper">
+				<img src="images/switches_logo_white.webp" alt="switclh as a logo"/>
+			</div>
+			<h1 class="text-light">Waugze Switch Finder</h1>
+		</a>
+	</header>
+}

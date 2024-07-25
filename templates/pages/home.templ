@@ -1,6 +1,10 @@
 package pages
 
-import "switches/templates/layouts"
+import (
+	"switches/templates/components"
+	"switches/templates/components/icons"
+	"switches/templates/layouts"
+)
 
 templ HomePage() {
 	@layouts.Root() {
@@ -9,46 +13,250 @@ templ HomePage() {
 }
 
 templ Home() {
-	<!-- @Navbar("home") -->
-	<div id="container">
-		yo
+	<div class="">
+		@components.Navbar("home")
+		<main class="">
+			<section class="">
+				<div class="">
+					<div class="">
+						<div class="">
+							<h1 class="">
+								Find Your Perfect Mechanical Switch
+							</h1>
+							<p class="">
+								Discover the ideal mechanical switch that fits your personal style and typing preferences.
+							</p>
+							<a href="#" class="">
+								Get Started
+							</a>
+						</div>
+						<img
+							src="/fsf.svg"
+							width="600"
+							height="400"
+							alt="Mechanical Switches"
+							class=""
+							style="aspect-ratio: 600 / 400; object-fit: cover;"
+						/>
+					</div>
+				</div>
+			</section>
+			<section class="">
+				<div class="">
+					<div class="">
+						<div class="">
+							<h2 class="">
+								Personalized Switch Recommendations
+							</h2>
+							<p class="">
+								Our advanced algorithms and AI-powered recommendations help you find the perfect mechanical switch for your typing needs and personal style.
+							</p>
+							<div class="">
+								<div class="">
+									@icons.MagnifyingGlass()
+									<div>
+										<h3 class="">Discover</h3>
+										<p class="">Browse our extensive collection of mechanical switches.</p>
+									</div>
+								</div>
+								<div class="">
+									@icons.Settings()
+									<div>
+										<h3 class="">Personalize</h3>
+										<p class="">
+											Use our filters and AI recommendations to find your perfect match.
+										</p>
+									</div>
+								</div>
+								<div class="">
+									<svg
+										xmlns="http://www.w3.org/2000/svg"
+										width="24"
+										height="24"
+										viewBox="0 0 24 24"
+										fill="none"
+										stroke="currentColor"
+										stroke-width="2"
+										stroke-linecap="round"
+										stroke-linejoin="round"
+										class=""
+									>
+										<circle cx="12" cy="12" r="10"></circle>
+										<path d="m9 12 2 2 4-4"></path>
+									</svg>
+									<div>
+										<h3 class="">Purchase</h3>
+										<p class="">Securely buy your new mechanical switches with confidence.</p>
+									</div>
+								</div>
+								<div class="">
+									<svg
+										xmlns="http://www.w3.org/2000/svg"
+										width="24"
+										height="24"
+										viewBox="0 0 24 24"
+										fill="none"
+										stroke="currentColor"
+										stroke-width="2"
+										stroke-linecap="round"
+										stroke-linejoin="round"
+										class=""
+									>
+										<path d="M14 18V6a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2v11a1 1 0 0 0 1 1h2"></path>
+										<path d="M15 18H9"></path>
+										<path d="M19 18h2a1 1 0 0 0 1-1v-3.65a1 1 0 0 0-.22-.624l-3.48-4.35A1 1 0 0 0 17.52 8H14"></path>
+										<circle cx="17" cy="18" r="2"></circle>
+										<circle cx="7" cy="18" r="2"></circle>
+									</svg>
+									<div>
+										<h3 class="">Deliver</h3>
+										<p class="">Enjoy fast and reliable shipping to your doorstep.</p>
+									</div>
+								</div>
+							</div>
+						</div>
+						<img
+							src="/placeholder.svg"
+							width="600"
+							height="400"
+							alt="Mechanical Switches"
+							class=""
+							style="aspect-ratio: 600 / 400; object-fit: cover;"
+						/>
+					</div>
+				</div>
+			</section>
+			<section class="">
+				<div class="">
+					<div class="">
+						<h2 class="">
+							Featured Mechanical Switches
+						</h2>
+						<p class="">
+							Explore our selection of the most popular and highly-rated mechanical switches.
+						</p>
+						<div class="">
+							<div class="">
+								<img
+									src="/placeholder.svg"
+									width="200"
+									height="200"
+									style="aspect-ratio: 200 / 200; object-fit: cover;"
+									alt="Switch 1"
+									class=""
+								/>
+								<h3 class="">Cherry MX Blue</h3>
+								<p class="">Tactile and clicky, great for typing.</p>
+							</div>
+							<div class="">
+								<img
+									src="/placeholder.svg"
+									width="200"
+									height="200"
+									alt="Switch 2"
+									class=""
+									style="aspect-ratio: 200 / 200; object-fit: cover;"
+								/>
+								<h3 class="">Gateron Brown</h3>
+								<p class="">Tactile and smooth, perfect for gaming.</p>
+							</div>
+							<div class="">
+								<img
+									src="/placeholder.svg"
+									width="200"
+									height="200"
+									style="aspect-ratio: 200 / 200; object-fit: cover;"
+									alt="Switch 3"
+									class=""
+								/>
+								<h3 class="">Kailh Box White</h3>
+								<p class="">Clicky and satisfying, great for typing.</p>
+							</div>
+							<div class="">
+								<img
+									src="/placeholder.svg"
+									width="200"
+									height="200"
+									alt="Switch 4"
+									class=""
+									style="aspect-ratio: 200 / 200; object-fit: cover;"
+								/>
+								<h3 class="">Zealio V2</h3>
+								<p class="">Smooth and tactile, great for both typing and gaming.</p>
+							</div>
+						</div>
+					</div>
+				</div>
+			</section>
+		</main>
+		<footer class="">
+			<div class="">
+				<div class="">
+					<div class="">
+						<h3 class="">Company</h3>
+						<ul class="">
+							<li>
+								<a class="" href="#">
+									About
+								</a>
+							</li>
+							<li>
+								<a href="#" class="">
+									Team
+								</a>
+							</li>
+							<li>
+								<a class="" href="#">
+									Careers
+								</a>
+							</li>
+						</ul>
+					</div>
+					<div class="">
+						<h3 class="">Products</h3>
+						<ul class="">
+							<li>
+								<a class="" href="#">
+									Mechanical Switches
+								</a>
+							</li>
+							<li>
+								<a class="" href="#">
+									Keycaps
+								</a>
+							</li>
+							<li>
+								<a class="" href="#">
+									Keyboards
+								</a>
+							</li>
+						</ul>
+					</div>
+					<div class="">
+						<h3 class="">Resources</h3>
+						<ul class="">
+							<li>
+								<a href="#" class="">
+									Blog
+								</a>
+							</li>
+							<li>
+								<a class="" href="#">
+									Documentation
+								</a>
+							</li>
+							<li>
+								<a class="" href="#">
+									Support
+								</a>
+							</li>
+						</ul>
+					</div>
+					<div class="">
+						<h3 class="">Legal</h3>
+					</div>
+				</div>
+			</div>
+		</footer>
 	</div>
-	<script>
-		document.addEventListener('DOMContentLoaded', (event) => {
-			let count = 0;
-			const interval = setInterval(() => {
-				if (count >= 200) {
-					clearInterval(interval);
-					return;
-				}
-
-				const yoElement = document.createElement('div');
-				yoElement.textContent = 'yo';
-				yoElement.style.position = 'absolute';
-				yoElement.style.left = Math.random() * window.innerWidth + 'px';
-				yoElement.style.top = Math.random() * window.innerHeight + 'px';
-
-				document.body.appendChild(yoElement);
-
-
-        if (count % 2 === 0) {
-				const fartElement = document.createElement('div');
-        yoElement.textContent = 'yo > fart';
-				yoElement.style.position = 'absolute';
-				yoElement.style.left = Math.random() * window.innerWidth + 'px';
-				yoElement.style.top = Math.random() * window.innerHeight + 'px';
-
-				document.body.appendChild(fartElement);
-        }
-				count++;
-			}, 500);
-		});
-	</script>
-	<style>
-		#container {
-			position: relative;
-			width: 100%;
-			height: 100vh;
-		}
-	</style>
 }

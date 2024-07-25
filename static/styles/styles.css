@@ -1,0 +1,28 @@
+:root {
+  /* Primary Colors */
+  --primary-color: #4169e1;
+  --secondary-color: #ffffe0;
+  --accent-color: #dc143c;
+  --highlight-color: #008080;
+
+  /* Text Colors */
+  --text-color-light: #d3d3d3;
+  --text-color-dark: #000080;
+
+  /* Additional Colors */
+  --success-color: #32cd32;
+  --warning-color: #ffa500;
+  --info-color: #87ceeb;
+
+  /* Background Colors */
+  --background-dark: #1b1b1b;
+  --background-light: #f8f8f8;
+}
+
+.text-light {
+  color: var(--text-color-light);
+}
+
+.text-dark {
+  color: var(--text-color-dark);
+}
