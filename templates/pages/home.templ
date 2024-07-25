@@ -13,32 +13,57 @@ templ HomePage() {
 }
 
 templ Home() {
+	<style type="text/css">
+
+#cta {
+  padding: 1rem;
+  .cta-wrapper {
+    margin-top: 2rem;
+    .cta-header {
+      font-size: 1.5rem;
+      h1 {
+
+      line-height: 1.2;
+      margin-bottom: 1rem;
+      }
+
+    }
+  }
+}
+
+
+  </style>
 	<div class="">
 		@components.Navbar("home")
-		<main class="">
-			<section class="">
-				<div class="">
-					<div class="">
-						<div class="">
-							<h1 class="">
-								Find Your Perfect Mechanical Switch
-							</h1>
-							<p class="">
-								Discover the ideal mechanical switch that fits your personal style and typing preferences.
-							</p>
-							<a href="#" class="">
+		<main id="home">
+			<section id="cta" class="dark">
+				<div class="cta-wrapper">
+					<div class="cta-header">
+						<h1>
+							Find Your Perfect Mechanical Switch
+						</h1>
+						<p>
+							Discover the ideal mechanical switch that fits your personal style and typing or gaming preferences.
+						</p>
+						<a
+							htmx-get
+							hx-get="/switches"
+							hx-target="#body"
+							hx-push-url="/switches"
+						>
+							<button type="button" class="button button-light">
 								Get Started
-							</a>
-						</div>
-						<img
-							src="/fsf.svg"
-							width="600"
-							height="400"
-							alt="Mechanical Switches"
-							class=""
-							style="aspect-ratio: 600 / 400; object-fit: cover;"
-						/>
+							</button>
+						</a>
 					</div>
+					<img
+						src="/images/drop_holy_panda_x.jpg"
+						width="600"
+						height="400"
+						alt="Mechanical Switches"
+						class=""
+						style="aspect-ratio: 600 / 400; object-fit: cover;"
+					/>
 				</div>
 			</section>
 			<section class="">
