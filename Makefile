@@ -30,7 +30,7 @@ live/sync_assets:
 	go run github.com/cosmtrek/air@v1.51.0 \
 	--build.cmd "templ generate --notify-proxy" \
 	--build.bin "true" \
-	--build.delay "100" \
+	--build.delay "150" \
 	--build.exclude_dir "" \
 	--build.include_dir "assets" \
 	--build.include_dir "static" \
