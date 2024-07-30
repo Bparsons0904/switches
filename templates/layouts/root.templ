@@ -1,28 +1,30 @@
 package layouts
 
+import (
+	"fmt"
+	"github.com/spf13/viper"
+)
+
 templ Root() {
 	<!DOCTYPE html>
 	<html>
 		<meta charset="UTF-8"/>
 		<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-		<!-- <link rel="preconnect" href="https://fonts.googleapis.com"/> -->
-		<!-- <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/> -->
-		<!-- <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@400;500;600;700&display=swap" rel="stylesheet"/> -->
 		<link rel="preconnect" href="https://fonts.googleapis.com"/>
 		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
 		<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet"/>
 		<title>Waugze Switch Finder</title>
-		<link rel="stylesheet" href="/styles/reset.css"/>
-		<link rel="stylesheet" href="/styles/styles.css"/>
-		<link rel="stylesheet" href="/styles/layout.css"/>
-		<link rel="stylesheet" href="/styles/common.css"/>
-		<link rel="stylesheet" href="/styles/pages.css"/>
+		<link rel="stylesheet" href={ fmt.Sprintf("/assets/reset_%d.min.css", viper.GetInt64("appendNumber")) }/>
+		<link rel="stylesheet" href={ fmt.Sprintf("/assets/styles_%d.min.css", viper.GetInt64("appendNumber")) }/>
+		<link rel="stylesheet" href={ fmt.Sprintf("/assets/layout_%d.min.css", viper.GetInt64("appendNumber")) }/>
+		<link rel="stylesheet" href={ fmt.Sprintf("/assets/common_%d.min.css", viper.GetInt64("appendNumber")) }/>
+		<link rel="stylesheet" href={ fmt.Sprintf("/assets/pages_%d.min.css", viper.GetInt64("appendNumber")) }/>
 		<head>
 			<title>Waugze</title>
 		</head>
 		<body id="body">
 			{ children... }
 		</body>
-		<script src="/scripts/htmx.min.js"></script>
+		<script src={ fmt.Sprintf("/assets/htmx_%d.min.js", viper.GetInt64("appendNumber")) }></script>
 	</html>
 }

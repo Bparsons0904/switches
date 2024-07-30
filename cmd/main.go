@@ -15,12 +15,17 @@ import (
 	"github.com/gofiber/fiber/v2/middleware/cors"
 	"github.com/gofiber/fiber/v2/middleware/logger"
 	"github.com/gofiber/fiber/v2/middleware/recover"
+	"github.com/tdewolff/minify/v2"
+	"github.com/tdewolff/minify/v2/css"
+
+	"github.com/tdewolff/minify/v2/js"
 	"gorm.io/gorm"
 )
 
 var (
 	server *fiber.App
 	config env.Config
+	m      *minify.M
 )
 
 func init() {
@@ -46,7 +51,9 @@ func init() {
 			ReadBufferSize:        16384,
 		})
 	}
-
+	m = minify.New()
+	m.AddFunc("text/css", css.Minify)
+	m.AddFunc("text/js", js.Minify)
 	// go scheduler.InitScheduler(db)
 }
 
@@ -96,9 +103,7 @@ func main() {
 		return c.Next()
 	})
 
-	server.Static("/styles", "./static/styles")
-	server.Static("/scripts", "./static/scripts")
-	server.Static("/images", "./static/assets/images")
+	setStatic(config.AppendNumber, server)
 	routes.SetupRoutes(server, config)
 
 	// Create a channel to listen for a shutdown signal

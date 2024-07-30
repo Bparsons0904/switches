@@ -11,7 +11,6 @@ import (
 	"switches/database"
 
 	"github.com/gofiber/fiber/v2"
-	"github.com/gofiber/fiber/v2/middleware/compress"
 	"github.com/gofiber/fiber/v2/middleware/monitor"
 )
 
@@ -47,9 +46,9 @@ func SetupRoutes(app *fiber.App, config config.Config) {
 	// 	})
 	// })
 
-	app.Use(compress.New(compress.Config{
-		Level: compress.LevelDefault,
-	}))
+	// app.Use(compress.New(compress.Config{
+	// 	Level: compress.LevelDefault,
+	// }))
 	app.Get("/switches", controllers.GetSwitches)
 	app.Get("/", controllers.GetHome)
 
