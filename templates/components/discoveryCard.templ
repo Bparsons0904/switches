@@ -1,3 +1,4 @@
+
 package components
 
 import "switches/templates/components/icons"
@@ -10,8 +11,8 @@ type DiscoveryCardProps struct {
 
 templ DiscoveryCard(props DiscoveryCardProps) {
 	<div class="discovery-card">
-		<!-- @getDiscoveryIcon(props.Icon) -->
-		@icons.MagnifyingGlass()
+		@getDiscoveryIcon(props.Icon)
+		<!-- @icons.MagnifyingGlass() -->
 		<div>
 			<h3 class="">{ props.Title }</h3>
 			<p class="">{ props.Description }</p>
