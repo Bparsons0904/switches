@@ -2,9 +2,11 @@
 FROM golang:latest AS base
 WORKDIR /app
 
+# Cache dependencies by copying go.mod and go.sum separately
 COPY go.mod go.sum ./
 RUN go mod download
 
+# Copy the entire application source code
 COPY . .
 
 # Stage for Templ generation
@@ -29,13 +31,14 @@ COPY --from=build-stage /app/static /app/static
 # Install necessary packages
 RUN apk update && apk add --no-cache bind-tools busybox-extras openssl
 
-# Create necessary directories with correct permissions
-RUN mkdir -p /app/assets && \
-    chown -R nonroot:nonroot /app/assets && \
-    chmod -R 777 /app/assets
-
 # Create a non-root user and switch to that user
 RUN addgroup -S nonroot && adduser -S nonroot -G nonroot
+
+# Set permissions for directories and switch to the non-root user
+RUN mkdir -p /app/assets && \
+    chown -R nonroot:nonroot /app && \
+    chmod -R 755 /app
+
 USER nonroot
 
 # Expose the application port
