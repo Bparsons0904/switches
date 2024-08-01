@@ -65,69 +65,55 @@ templ Home() {
 					</div>
 				</div>
 			</section>
-			<section></section>
-			<section class="">
-				<div class="">
-					<div class="">
-						<h2 class="">
-							Featured Mechanical Switches
-						</h2>
-						<p class="">
-							Explore our selection of the most popular and highly-rated mechanical switches.
-						</p>
-						<div class="">
-							<div class="">
-								<img
-									src="/placeholder.svg"
-									width="200"
-									height="200"
-									style="aspect-ratio: 200 / 200; object-fit: cover;"
-									alt="Switch 1"
-									class=""
-								/>
-								<h3 class="">Cherry MX Blue</h3>
-								<p class="">Tactile and clicky, great for typing.</p>
-							</div>
-							<div class="">
-								<img
-									src="/placeholder.svg"
-									width="200"
-									height="200"
-									alt="Switch 2"
-									class=""
-									style="aspect-ratio: 200 / 200; object-fit: cover;"
-								/>
-								<h3 class="">Gateron Brown</h3>
-								<p class="">Tactile and smooth, perfect for gaming.</p>
-							</div>
-							<div class="">
-								<img
-									src="/placeholder.svg"
-									width="200"
-									height="200"
-									style="aspect-ratio: 200 / 200; object-fit: cover;"
-									alt="Switch 3"
-									class=""
-								/>
-								<h3 class="">Kailh Box White</h3>
-								<p class="">Clicky and satisfying, great for typing.</p>
-							</div>
-							<div class="">
-								<img
-									src="/placeholder.svg"
-									width="200"
-									height="200"
-									alt="Switch 4"
-									class=""
-									style="aspect-ratio: 200 / 200; object-fit: cover;"
-								/>
-								<h3 class="">Zealio V2</h3>
-								<p class="">Smooth and tactile, great for both typing and gaming.</p>
-							</div>
-						</div>
-					</div>
+			<section id="featured">
+				<div class="featured-header">
+					<h2>Featured Mechanical Switches</h2>
+					<p>Explore our selection of the most popular and highly-rated mechanical switches.</p>
+				</div>
+				<div class="featured-switches">
+					@DisplayFeaturedSwitches(getFeaturedSwitches())
 				</div>
 			</section>
 		</main>
+	</div>
+}
+
+func getFeaturedSwitches() []components.SwitchCardProps {
+	// TODO: Get from the DB!
+	switches := []components.SwitchCardProps{
+		{
+			Title:       "Anubus",
+			Description: "Thocky Tactile",
+			ImageSrc:    "anubus.jpeg",
+			ImageAlt:    "Image of an Anubus switch",
+		},
+		{
+			Title:       "Cherry MX Blue",
+			Description: "OG Clicky",
+			ImageSrc:    "blue_switches.webp",
+			ImageAlt:    "Image of an Cherry Blue switches",
+		},
+		{
+			Title:       "Sunny Side Up",
+			Description: "Medium Linear",
+			ImageSrc:    "sunny_side_up.webp",
+			ImageAlt:    "Image of Cannon Keys Sunnu Side Up switches",
+		},
+		{
+			Title:       "Drop Holy Pandy X",
+			Description: "Medium Sharp Tactile",
+			ImageSrc:    "drop_holy_panda_x.jpg",
+			ImageAlt:    "Image of Cannon Keys Sunnu Side Up switches",
+		},
+	}
+
+	return switches
+}
+
+templ DisplayFeaturedSwitches(switches []components.SwitchCardProps) {
+	<div>
+		for _, item := range switches {
+			@components.SwitchCard(item)
+		}
 	</div>
 }
