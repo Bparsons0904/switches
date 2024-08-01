@@ -24,12 +24,7 @@ templ Home() {
 						<p>
 							Discover the ideal mechanical switch that fits your personal style and typing or gaming preferences.
 						</p>
-						<a
-							htmx-get
-							hx-get="/switches"
-							hx-target="#body"
-							hx-push-url="/switches"
-						>
+						<a htmx-get hx-get="/switches" hx-target="#body" hx-push-url="/switches">
 							<button type="button" class="button button-light">
 								Get Started
 							</button>
@@ -42,27 +37,15 @@ templ Home() {
 					})
 				</div>
 			</section>
-			<style type="text/css">
-
-#home-recommendations {
-  padding: 1rem;
-  .header {
-    h2 {
-      margin-bottom: 1rem;
-      line-height: 1.3;
-      font-weight: 800;
-    }
-  }
-}
-  </style>
 			<section id="home-recommendations">
 				<div class="header">
 					<h2>Personalized Switch Recommendations</h2>
 					<p>
-						Our advanced algorithms and AI-powered recommendations help you find the perfect mechanical switch for your typing needs and personal style.
+						Our advanced algorithms and AI-powered recommendations help you find the perfect mechanical switch for your
+						typing needs and personal style.
 					</p>
 				</div>
-				<div class="discovery">
+				<div id="discovery">
 					@components.DiscoveryCard(components.DiscoveryCardProps{
 						Icon:        "magnifying-glass",
 						Title:       "Discover",
@@ -73,29 +56,16 @@ templ Home() {
 						Title:       "Personalize",
 						Description: "Use our filters and AI recommendations to find your perfect match.",
 					})
+					<div class="discovery-image">
+						@components.Image(components.ImageProps{
+							Src:      "kaihl.webp",
+							Alt:      "Kaihl box style switches",
+							IsSquare: false,
+						})
+					</div>
 				</div>
-				<div class="discovery">
-					@components.Image(components.ImageProps{
-						Src:      "kaihl.webp",
-						Alt:      "Kaihl box style switches",
-						IsSquare: false,
-					})
-				</div>
-				<!-- <div class="discovery"> -->
-				<!-- 	@components.DiscoveryCard(components.DiscoveryCardProps{ -->
-				<!-- 		Icon:        "settings", -->
-				<!-- 		Title:       "Personalize", -->
-				<!-- 		Description: "Use our filters and AI recommendations to find your perfect match.", -->
-				<!-- 	}) -->
-				<!-- </div> -->
-				<!-- <div class="discovery"> -->
-				<!-- 	@components.DiscoveryCard(components.DiscoveryCardProps{ -->
-				<!-- 		Icon:        "settings", -->
-				<!-- 		Title:       "Personalize", -->
-				<!-- 		Description: "Use our filters and AI recommendations to find your perfect match.", -->
-				<!-- 	}) -->
-				<!-- </div> -->
 			</section>
+			<section></section>
 			<section class="">
 				<div class="">
 					<div class="">
