@@ -2,7 +2,6 @@ package pages
 
 import (
 	"switches/templates/components"
-	"switches/templates/components/icons"
 	"switches/templates/layouts"
 )
 
@@ -77,59 +76,20 @@ templ Home() {
 						Description: "Use our filters and AI recommendations to find your perfect match.",
 					})
 				</div>
-			</section>
-			<section>
-				<div>
-					<div>
-						<div>
-							<h2>
-								Personalized Switch Recommendations
-							</h2>
-							<p>
-								Our advanced algorithms and AI-powered recommendations help you find the perfect mechanical switch for your typing needs and personal style.
-							</p>
-							<div>
-								<div>
-									@icons.MagnifyingGlass()
-									<div>
-										<h3>Discover</h3>
-										<p>Browse our extensive collection of mechanical switches.</p>
-									</div>
-								</div>
-								<div>
-									@icons.Settings()
-									<div>
-										<h3>Personalize</h3>
-										<p>
-											Use our filters and AI recommendations to find your perfect match.
-										</p>
-									</div>
-								</div>
-								<div>
-									@icons.Settings()
-									<div>
-										<h3>Purchase</h3>
-										<p>Securely buy your new mechanical switches with confidence.</p>
-									</div>
-								</div>
-								<div>
-									@icons.Settings()
-									<div>
-										<h3>Deliver</h3>
-										<p>Enjoy fast and reliable shipping to your doorstep.</p>
-									</div>
-								</div>
-							</div>
-						</div>
-						<img
-							src="/placeholder.svg"
-							width="600"
-							height="400"
-							alt="Mechanical Switches"
-							style="aspect-ratio: 600 / 400; object-fit: cover;"
-						/>
-					</div>
-				</div>
+				<!-- <div class="discovery"> -->
+				<!-- 	@components.DiscoveryCard(components.DiscoveryCardProps{ -->
+				<!-- 		Icon:        "settings", -->
+				<!-- 		Title:       "Personalize", -->
+				<!-- 		Description: "Use our filters and AI recommendations to find your perfect match.", -->
+				<!-- 	}) -->
+				<!-- </div> -->
+				<!-- <div class="discovery"> -->
+				<!-- 	@components.DiscoveryCard(components.DiscoveryCardProps{ -->
+				<!-- 		Icon:        "settings", -->
+				<!-- 		Title:       "Personalize", -->
+				<!-- 		Description: "Use our filters and AI recommendations to find your perfect match.", -->
+				<!-- 	}) -->
+				<!-- </div> -->
 			</section>
 			<section class="">
 				<div class="">
@@ -196,13 +156,3 @@ templ Home() {
 		</main>
 	</div>
 }
-
-// templ DiscoverCard(props components.DiscoveryCardProps) {
-//   <div class="discovery-card">
-//     @icons.MagnifyingGlass()
-//     <div class="discovery-card-content">
-//       <h3>@props.Title</h3>
-//       <p>@props.Description</p>
-//     </div>
-//   </div>
-// }

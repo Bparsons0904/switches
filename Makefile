@@ -39,6 +39,7 @@ live/sync_assets:
 
 # start all 5 watch processes in parallel.
 live: 
-	make -j3 live/templ live/server live/sync_assets
+	make -j2 live/templ live/server 
+	# make -j3 live/templ live/server live/sync_assets
 	# make -j5 live/templ live/server live/sync_assets
 	# make -j5 live/templ live/server live/tailwind live/esbuild live/sync_assets

@@ -22,7 +22,7 @@ FROM alpine:latest AS deploy-stage
 WORKDIR /app
 COPY --from=build-stage /app/main /app/main
 # COPY --from=build-stage /app/.env /app/.env
-# COPY --from=build-stage /app/static /app/static
+COPY --from=build-stage /app/static /app/static
 RUN apk update && apk add --no-cache bind-tools busybox-extras openssl
 RUN addgroup -S nonroot && adduser -S nonroot -G nonroot
 
