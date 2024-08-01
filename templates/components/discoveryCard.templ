@@ -11,12 +11,11 @@ type DiscoveryCardProps struct {
 
 templ DiscoveryCard(props DiscoveryCardProps) {
 	<div class="discovery-card">
-		@getDiscoveryIcon(props.Icon)
-		<!-- @icons.MagnifyingGlass() -->
-		<div>
+		<div class="discovery-header">
+			@getDiscoveryIcon(props.Icon)
 			<h3 class="">{ props.Title }</h3>
-			<p class="">{ props.Description }</p>
 		</div>
+		<p class="">{ props.Description }</p>
 	</div>
 }
 
@@ -28,6 +27,5 @@ func getDiscoveryIcon(icon string) templ.Component {
 		return icons.Settings()
 	default:
 		return icons.Settings()
-		// return nil // or a default icon
 	}
 }

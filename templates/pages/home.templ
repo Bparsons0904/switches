@@ -68,12 +68,17 @@ templ Home() {
 						Title:       "Discover",
 						Description: "Browse our extensive collection of mechanical switches.",
 					})
-				</div>
-				<div class="discovery">
 					@components.DiscoveryCard(components.DiscoveryCardProps{
 						Icon:        "settings",
 						Title:       "Personalize",
 						Description: "Use our filters and AI recommendations to find your perfect match.",
+					})
+				</div>
+				<div class="discovery">
+					@components.Image(components.ImageProps{
+						Src:      "kaihl.webp",
+						Alt:      "Kaihl box style switches",
+						IsSquare: false,
 					})
 				</div>
 				<!-- <div class="discovery"> -->

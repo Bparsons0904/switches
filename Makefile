@@ -30,16 +30,17 @@ live/sync_assets:
 	go run github.com/cosmtrek/air@v1.51.0 \
 	--build.cmd "templ generate --notify-proxy" \
 	--build.bin "true" \
-	--build.delay "150" \
+	--build.delay "250" \
 	--build.exclude_dir "" \
-	--build.include_dir "assets" \
-	--build.include_dir "static" \
-	--build.include_dir "static/styles" \
 	--build.include_ext "js,css,png,jpg,jpeg,gif,svg"
+	# --build.include_dir "assets" \
+	# --build.include_dir "static" \
+	# --build.include_dir "static/styles" \
+
 
 # start all 5 watch processes in parallel.
 live: 
-	make -j2 live/templ live/server 
-	# make -j3 live/templ live/server live/sync_assets
+	# make -j2 live/templ live/server 
+	make -j3 live/templ live/server live/sync_assets
 	# make -j5 live/templ live/server live/sync_assets
 	# make -j5 live/templ live/server live/tailwind live/esbuild live/sync_assets

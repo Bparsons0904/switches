@@ -1,7 +1,7 @@
 /tmp/
 server/tmp/
-components/*_templ.go
-components/*_templ.txt
+# components/*_templ.go
+# components/*_templ.txt
 
 node_modules/
 *.pem
