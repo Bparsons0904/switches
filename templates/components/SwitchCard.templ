@@ -9,12 +9,16 @@ type SwitchCardProps struct {
 
 templ SwitchCard(props SwitchCardProps) {
 	<div class="switch-card">
-		@Image(ImageProps{
-			Src:      props.ImageSrc,
-			Alt:      props.ImageSrc,
-			IsSquare: true,
-		})
-		<h2>{ props.Title }</h2>
-		<p>{ props.Description }</p>
+		<div class="switch-image">
+			@Image(ImageProps{
+				Src:      props.ImageSrc,
+				Alt:      props.ImageSrc,
+				IsSquare: true,
+			})
+		</div>
+		<div class="switch-details">
+			<h2>{ props.Title }</h2>
+			<p>{ props.Description }</p>
+		</div>
 	</div>
 }

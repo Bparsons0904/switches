@@ -7,6 +7,7 @@
 
   /* Text Colors */
   --text-color-light: #d3d3d3;
+  --text-color-light-muted: #6e6e77;
   --text-color-dark: #000080;
 
   /* Additional Colors */
@@ -17,6 +18,7 @@
   /* Background Colors */
   --background-dark: #1b1b1b;
   --background-light: #f8f8f8;
+  --background-light-muted: #6e6e77;
 }
 
 body {

@@ -20,11 +20,39 @@
 #featured {
   display: flex;
   flex-direction: column;
-  padding: 1rem;
+  padding: 1.5rem;
+  background-color: lightgrey;
+  gap: 1rem;
   .featured-header {
     display: flex;
     flex-direction: column;
     gap: 1rem;
+  }
+}
+
+.switch-cards {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.switch-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 2rem;
+  gap: 1rem;
+  background-color: var(--background-light);
+  border-radius: 15px;
+  .switch-image {
+    height: 225px;
+    width: 225px;
+  }
+  .switch-details {
+    text-align: center;
+    p {
+      color: var(--text-color-light-muted);
+    }
   }
 }
 

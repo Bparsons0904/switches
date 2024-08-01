@@ -111,7 +111,7 @@ func getFeaturedSwitches() []components.SwitchCardProps {
 }
 
 templ DisplayFeaturedSwitches(switches []components.SwitchCardProps) {
-	<div>
+	<div class="switch-cards">
 		for _, item := range switches {
 			@components.SwitchCard(item)
 		}
