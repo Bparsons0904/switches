@@ -23,6 +23,10 @@ WORKDIR /app
 COPY --from=build-stage /app/main /app/main
 # COPY --from=build-stage /app/.env /app/.env
 COPY --from=build-stage /app/static /app/static
+
+RUN mkdir -p /app/assets && \
+    chmod -R 755 /app/assets
+
 RUN apk update && apk add --no-cache bind-tools busybox-extras openssl
 RUN addgroup -S nonroot && adduser -S nonroot -G nonroot
 
