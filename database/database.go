@@ -17,7 +17,14 @@ var DB *gorm.DB
 
 func ConnectDB(config config.Config) *gorm.DB {
 	var err error
-	dsn := fmt.Sprintf("host=%s user=%s password=%s dbname=%s port=%s sslmode=disable", config.DBHost, config.DBUser, config.DBPassword, config.DBName, config.DBPort)
+	dsn := fmt.Sprintf(
+		"host=%s user=%s password=%s dbname=%s port=%s sslmode=disable",
+		config.DBHost,
+		config.DBUser,
+		config.DBPassword,
+		config.DBName,
+		config.DBPort,
+	)
 
 	var logLevel logger.LogLevel
 	if viper.Get("DB_LOGGING") == "true" {
@@ -26,7 +33,10 @@ func ConnectDB(config config.Config) *gorm.DB {
 		logLevel = logger.Warn
 	}
 
-	db, err := gorm.Open(postgres.Open(dsn), &gorm.Config{Logger: logger.Default.LogMode(logLevel), PrepareStmt: true})
+	db, err := gorm.Open(
+		postgres.Open(dsn),
+		&gorm.Config{Logger: logger.Default.LogMode(logLevel), PrepareStmt: true},
+	)
 	if err != nil {
 		log.Fatal("Failed to connect to the Database")
 	}

@@ -3,9 +3,8 @@ module switches
 go 1.22.1
 
 require (
-	github.com/Bparsons0904/deadigations v1.1.0
+	github.com/Bparsons0904/deadigations v1.2.1
 	github.com/a-h/templ v0.2.747
-	github.com/go-gormigrate/gormigrate/v2 v2.1.2
 	github.com/gofiber/fiber/v2 v2.52.5
 	github.com/google/uuid v1.6.0
 	github.com/spf13/viper v1.19.0
@@ -17,6 +16,7 @@ require (
 require (
 	github.com/andybalholm/brotli v1.1.0 // indirect
 	github.com/fsnotify/fsnotify v1.7.0 // indirect
+	github.com/go-gormigrate/gormigrate/v2 v2.1.2 // indirect
 	github.com/hashicorp/hcl v1.0.0 // indirect
 	github.com/jackc/pgpassfile v1.0.0 // indirect
 	github.com/jackc/pgservicefile v0.0.0-20240606120523-5a60cdf6a761 // indirect
