@@ -32,7 +32,7 @@ steps:
       DB_PORT:
         from_secret: DB_PORT_STAGE
     commands:
-      - go run ./migrator/migrator.go --up
+      - go run ./migrator/migrator.go -up
     when:
       branch:
         - main
