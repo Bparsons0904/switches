@@ -3,7 +3,6 @@ type: docker
 name: switches-pipeline
 
 steps:
-  # Build Stage
   - name: build-staging
     image: docker:dind
     volumes:
@@ -15,12 +14,8 @@ steps:
       branch:
         - main
 
-  # Migration Stage
   - name: migrate-staging
     image: switches_stage:latest
-    volumes:
-      - name: dockersock_stage
-        path: /var/run/docker.sock
     environment:
       DB_HOST:
         from_secret: DB_HOST
@@ -33,14 +28,13 @@ steps:
       DB_PORT:
         from_secret: DB_PORT_STAGE
     commands:
-      - ./migrator --up
+      - /app/migrator --up
     when:
       branch:
         - main
     depends_on:
       - build-staging
 
-  # Deploy Stage
   - name: deploy-staging
     image: docker:dind
     volumes:
@@ -77,7 +71,6 @@ steps:
     depends_on:
       - migrate-staging
 
-  # Build Production
   - name: build-production
     image: docker:dind
     volumes:
@@ -91,7 +84,6 @@ steps:
       ref:
         - refs/tags/v*
 
-  # Migration Production
   - name: migrate-production
     image: switches:${DRONE_COMMIT_SHA}
     environment:
@@ -106,7 +98,7 @@ steps:
       DB_PORT:
         from_secret: DB_PORT_PROD
     commands:
-      - ./migrator --up
+      - /app/migrator --up
     when:
       event:
         - tag
@@ -115,7 +107,6 @@ steps:
     depends_on:
       - build-production
 
-  # Deploy Production
   - name: deploy-production
     image: docker:dind
     volumes:
