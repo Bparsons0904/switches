@@ -19,6 +19,8 @@ steps:
   - name: migrate-staging
     image: golang:latest
     environment:
+      TIER:
+        from_secret: TIER_STAGE
       DB_HOST:
         from_secret: DB_HOST
       DB_USER:
