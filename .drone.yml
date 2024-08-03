@@ -3,19 +3,11 @@ type: docker
 name: switches-pipeline
 
 steps:
-  - name: build-staging
-    image: docker:dind
+  - name: build-and-migrate-staging
+    image: golang:latest
     volumes:
       - name: dockersock_build
         path: /var/run/docker.sock
-    commands:
-      - docker build -t switches_stage:latest .
-    when:
-      branch:
-        - main
-
-  - name: migrate-staging
-    image: switches_stage:latest
     environment:
       DB_HOST:
         from_secret: DB_HOST
@@ -28,12 +20,12 @@ steps:
       DB_PORT:
         from_secret: DB_PORT_STAGE
     commands:
-      - /app/migrator --up
+      - docker build -t switches_stage:latest .
+      - go run ./migrator/migrator.go --up
+      - docker save switches_stage:latest > image.tar
     when:
       branch:
         - main
-    depends_on:
-      - build-staging
 
   - name: deploy-staging
     image: docker:dind
@@ -62,6 +54,7 @@ steps:
       DB_PORT:
         from_secret: DB_PORT_STAGE
     commands:
+      - docker load < image.tar
       - docker-compose up -d --build
       - docker-compose ps
       - docker image prune -f
@@ -69,7 +62,7 @@ steps:
       branch:
         - main
     depends_on:
-      - migrate-staging
+      - build-and-migrate-staging
 
   - name: build-production
     image: docker:dind
