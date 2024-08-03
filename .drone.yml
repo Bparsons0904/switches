@@ -76,6 +76,7 @@ steps:
     depends_on:
       - migrate-staging
 
+  # Build Production
   - name: build-production
     image: docker:dind
     volumes:
@@ -89,9 +90,12 @@ steps:
       ref:
         - refs/tags/v*
 
+  # Migrate Production
   - name: migrate-production
-    image: switches:${DRONE_COMMIT_SHA}
+    image: golang:latest
     environment:
+      TIER:
+        from_secret: TIER_PROD
       DB_HOST:
         from_secret: DB_HOST
       DB_USER:
@@ -103,7 +107,7 @@ steps:
       DB_PORT:
         from_secret: DB_PORT_PROD
     commands:
-      - /app/migrator --up
+      - go run ./migrator/migrator.go -up
     when:
       event:
         - tag
@@ -112,6 +116,7 @@ steps:
     depends_on:
       - build-production
 
+  # Deploy Production
   - name: deploy-production
     image: docker:dind
     volumes:
