@@ -14,6 +14,27 @@ steps:
       branch:
         - main
 
+  - name: migrate-staging
+    image: switches_stage:latest
+    environment:
+      DB_HOST:
+        from_secret: DB_HOST
+      DB_USER:
+        from_secret: DB_USER
+      DB_PASSWORD:
+        from_secret: DB_PASSWORD_STAGE
+      DB_NAME:
+        from_secret: DB_NAME
+      DB_PORT:
+        from_secret: DB_PORT_STAGE
+    commands:
+      - ./migrator --up
+    when:
+      branch:
+        - main
+    depends_on:
+      - build-staging
+
   - name: deploy-staging
     image: docker:dind
     volumes:
