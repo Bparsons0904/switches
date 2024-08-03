@@ -18,6 +18,9 @@ steps:
   # Migration Stage
   - name: migrate-staging
     image: switches_stage:latest
+    volumes:
+      - name: dockersock_stage
+        path: /var/run/docker.sock
     environment:
       DB_HOST:
         from_secret: DB_HOST
