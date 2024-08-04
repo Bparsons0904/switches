@@ -1,27 +1,28 @@
-# Base image for building the Go application
-FROM golang:latest AS base
+FROM golang:1.22 AS base
+
+# Create a stage for downloading dependencies
+FROM base AS deps
 WORKDIR /app
-
-# Cache dependencies by copying go.mod and go.sum separately
 COPY go.mod go.sum ./
-RUN go mod download
-
-# Copy the entire application source code
-COPY . .
+RUN --mount=type=cache,target=/go/pkg/mod \
+  go mod download
 
 # Stage for Templ generation
 FROM ghcr.io/a-h/templ:latest AS generate-stage
 WORKDIR /app
-COPY --from=base /app /app
+COPY --from=deps /app /app
+COPY . .
 USER root
 RUN ["templ", "generate"]
 
 # Build the Go application and migrator
-FROM golang:latest AS build-stage
+FROM base AS build-stage
 WORKDIR /app
 COPY --from=generate-stage /app /app
-RUN CGO_ENABLED=0 GOOS=linux go build -buildvcs=false -o /app/main ./cmd/main.go
-RUN CGO_ENABLED=0 GOOS=linux go build -buildvcs=false -o /app/migrator ./migrator/migrator.go
+RUN --mount=type=cache,target=/go/pkg/mod \
+  --mount=type=cache,target=/root/.cache/go-build \
+  CGO_ENABLED=0 GOOS=linux go build -buildvcs=false -o /app/main ./cmd/main.go && \
+  CGO_ENABLED=0 GOOS=linux go build -buildvcs=false -o /app/migrator ./migrator/migrator.go
 
 # Final deployment stage
 FROM alpine:latest AS deploy-stage
@@ -38,8 +39,8 @@ RUN addgroup -S nonroot && adduser -S nonroot -G nonroot
 
 # Set permissions for directories and switch to the non-root user
 RUN mkdir -p /app/assets && \
-    chown -R nonroot:nonroot /app && \
-    chmod -R 755 /app
+  chown -R nonroot:nonroot /app && \
+  chmod -R 755 /app
 USER nonroot
 
 # Expose the application port
