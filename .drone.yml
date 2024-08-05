@@ -1,7 +1,6 @@
 kind: pipeline
 type: docker
 name: switches-pipeline
-
 steps:
   # Build Stage
   - name: build-staging
@@ -9,12 +8,14 @@ steps:
     volumes:
       - name: dockersock_build
         path: /var/run/docker.sock
+      - name: docker_cache
+        path: /var/lib/docker
     commands:
-      - docker build -t switches_stage:latest .
+      - docker pull switches_stage:latest || true
+      - docker build --cache-from switches_stage:latest -t switches_stage:latest .
     when:
       branch:
         - main
-
   # Migrate Stage
   - name: migrate-staging
     image: golang:latest
@@ -38,7 +39,6 @@ steps:
         - main
     depends_on:
       - build-staging
-
   # Deploy Stage
   - name: deploy-staging
     image: docker:dind
@@ -75,21 +75,22 @@ steps:
         - main
     depends_on:
       - migrate-staging
-
   # Build Production
   - name: build-production
     image: docker:dind
     volumes:
       - name: dockersock_build
         path: /var/run/docker.sock
+      - name: docker_cache
+        path: /var/lib/docker
     commands:
-      - docker build -t switches:${DRONE_COMMIT_SHA} .
+      - docker pull switches:latest || echo "No previous image to use for cache"
+      - docker build --cache-from switches:latest -t switches:${DRONE_COMMIT_SHA} .
     when:
       event:
         - tag
       ref:
         - refs/tags/v*
-
   # Migrate Production
   - name: migrate-production
     image: golang:latest
@@ -115,7 +116,6 @@ steps:
         - refs/tags/v*
     depends_on:
       - build-production
-
   # Deploy Production
   - name: deploy-production
     image: docker:dind
@@ -154,8 +154,16 @@ steps:
         - refs/tags/v*
     depends_on:
       - migrate-production
-
 volumes:
-  - name: dockersock
+  - name: dockersock_build
     host:
       path: /var/run/docker.sock
+  - name: dockersock_stage
+    host:
+      path: /var/run/docker.sock
+  - name: dockersock_prod
+    host:
+      path: /var/run/docker.sock
+  - name: docker_cache
+    host:
+      path: /tmp/docker-cache
