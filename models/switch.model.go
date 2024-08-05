@@ -11,9 +11,9 @@ type Switch struct {
 	Name             string     `gorm:"type:varchar(50);not null;index:idx_name;uniqueIndex:idx_name_manufacturer_brand" json:"name"`
 	ShortDescription string     `gorm:"type:varchar(255);not null"                                                       json:"shortDescription"`
 	LongDescription  string     `gorm:"type:text;not null"                                                               json:"longDescription"`
-	ManufacturerID   *uuid.UUID `gorm:"type:uuid;index;uniqueIndex:idx_name_manufacturer_brand"                          json:"manufacturerId,omitempty"`
+	ManufacturerID   *int       `gorm:"type:int;index;uniqueIndex:idx_name_manufacturer_brand"                           json:"manufacturerId,omitempty"`
 	Manufacturer     *Producer  `gorm:"foreignKey:ManufacturerID"                                                        json:"manufacturer,omitempty"`
-	BrandID          *uuid.UUID `gorm:"type:uuid;index;uniqueIndex:idx_name_manufacturer_brand"                          json:"brandId,omitempty"`
+	BrandID          *int       `gorm:"type:int;index;uniqueIndex:idx_name_manufacturer_brand"                           json:"brandId,omitempty"`
 	Brand            *Producer  `gorm:"foreignKey:BrandID"                                                               json:"brand,omitempty"`
 	SwitchTypeID     int        `gorm:"type:int;not null;index;"                                                         json:"switchTypeId"`
 	SwitchType       *Type      `gorm:"foreignKey:SwitchTypeID"                                                          json:"switchType,omitempty"`
