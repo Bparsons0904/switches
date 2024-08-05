@@ -4,14 +4,12 @@ name: switches-pipeline
 steps:
   # Build Stage
   - name: build-staging
-    image: docker:latest
-    privileged: true
+    image: docker:dind
     volumes:
-      - name: docker_cache
-        path: /var/lib/docker
+      - name: dockersock
+        path: /var/run/docker.sock
     commands:
-      - docker pull switches_stage:latest || true
-      - docker build --cache-from switches_stage:latest -t switches_stage:latest .
+      - docker build -t switches_stage:latest .
     when:
       branch:
         - main
@@ -40,8 +38,10 @@ steps:
       - build-staging
   # Deploy Stage
   - name: deploy-staging
-    image: docker:latest
-    privileged: true
+    image: docker:dind
+    volumes:
+      - name: dockersock
+        path: /var/run/docker.sock
     environment:
       DOCKER_IMAGE: switches_stage
       IMAGE_TAG: latest
@@ -74,14 +74,12 @@ steps:
       - migrate-staging
   # Build Production
   - name: build-production
-    image: docker:latest
-    privileged: true
+    image: docker:dind
     volumes:
-      - name: docker_cache
-        path: /var/lib/docker
+      - name: dockersock
+        path: /var/run/docker.sock
     commands:
-      - docker pull switches:latest || echo "No previous image to use for cache"
-      - docker build --cache-from switches:latest -t switches:${DRONE_COMMIT_SHA} .
+      - docker build -t switches:${DRONE_COMMIT_SHA} .
     when:
       event:
         - tag
@@ -114,8 +112,10 @@ steps:
       - build-production
   # Deploy Production
   - name: deploy-production
-    image: docker:latest
-    privileged: true
+    image: docker:dind
+    volumes:
+      - name: dockersock
+        path: /var/run/docker.sock
     environment:
       DOCKER_IMAGE: switches
       IMAGE_TAG: ${DRONE_COMMIT_SHA}
@@ -149,6 +149,6 @@ steps:
     depends_on:
       - migrate-production
 volumes:
-  - name: docker_cache
+  - name: dockersock
     host:
-      path: /tmp/docker-cache
+      path: /var/run/docker.sock
