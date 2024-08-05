@@ -6,7 +6,7 @@ steps:
   - name: build-staging
     image: docker:dind
     volumes:
-      - name: dockersock_build
+      - name: dockersock
         path: /var/run/docker.sock
       - name: docker_cache
         path: /var/lib/docker
@@ -43,7 +43,7 @@ steps:
   - name: deploy-staging
     image: docker:dind
     volumes:
-      - name: dockersock_stage
+      - name: dockersock
         path: /var/run/docker.sock
     environment:
       DOCKER_IMAGE: switches_stage
@@ -79,7 +79,7 @@ steps:
   - name: build-production
     image: docker:dind
     volumes:
-      - name: dockersock_build
+      - name: dockersock
         path: /var/run/docker.sock
       - name: docker_cache
         path: /var/lib/docker
@@ -120,7 +120,7 @@ steps:
   - name: deploy-production
     image: docker:dind
     volumes:
-      - name: dockersock_prod
+      - name: dockersock
         path: /var/run/docker.sock
     environment:
       DOCKER_IMAGE: switches
@@ -155,13 +155,7 @@ steps:
     depends_on:
       - migrate-production
 volumes:
-  - name: dockersock_build
-    host:
-      path: /var/run/docker.sock
-  - name: dockersock_stage
-    host:
-      path: /var/run/docker.sock
-  - name: dockersock_prod
+  - name: dockersock
     host:
       path: /var/run/docker.sock
   - name: docker_cache
