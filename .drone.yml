@@ -4,12 +4,14 @@ name: switches-pipeline
 steps:
   # Build Stage
   - name: build-staging
-    image: docker:dind
+    image: docker:latest
+    privileged: true
     volumes:
-      - name: dockersock
-        path: /var/run/docker.sock
+      - name: docker_cache
+        path: /var/lib/docker
     commands:
-      - docker build -t switches_stage:latest .
+      - docker pull switches_stage:latest || true
+      - docker build --cache-from switches_stage:latest -t switches_stage:latest .
     when:
       branch:
         - main
@@ -38,10 +40,8 @@ steps:
       - build-staging
   # Deploy Stage
   - name: deploy-staging
-    image: docker:dind
-    volumes:
-      - name: dockersock
-        path: /var/run/docker.sock
+    image: docker:latest
+    privileged: true
     environment:
       DOCKER_IMAGE: switches_stage
       IMAGE_TAG: latest
@@ -72,14 +72,27 @@ steps:
         - main
     depends_on:
       - migrate-staging
+  # Update Staging Deployment
+  - name: update-staging-deployment
+    image: plugins/deployment
+    settings:
+      environment: staging
+      status: success
+    when:
+      branch:
+        - main
+    depends_on:
+      - deploy-staging
   # Build Production
   - name: build-production
-    image: docker:dind
+    image: docker:latest
+    privileged: true
     volumes:
-      - name: dockersock
-        path: /var/run/docker.sock
+      - name: docker_cache
+        path: /var/lib/docker
     commands:
-      - docker build -t switches:${DRONE_COMMIT_SHA} .
+      - docker pull switches:latest || echo "No previous image to use for cache"
+      - docker build --cache-from switches:latest -t switches:${DRONE_COMMIT_SHA} .
     when:
       event:
         - tag
@@ -112,10 +125,8 @@ steps:
       - build-production
   # Deploy Production
   - name: deploy-production
-    image: docker:dind
-    volumes:
-      - name: dockersock
-        path: /var/run/docker.sock
+    image: docker:latest
+    privileged: true
     environment:
       DOCKER_IMAGE: switches
       IMAGE_TAG: ${DRONE_COMMIT_SHA}
@@ -148,7 +159,20 @@ steps:
         - refs/tags/v*
     depends_on:
       - migrate-production
+  # Update Production Deployment
+  - name: update-production-deployment
+    image: plugins/deployment
+    settings:
+      environment: production
+      status: success
+    when:
+      event:
+        - tag
+      ref:
+        - refs/tags/v*
+    depends_on:
+      - deploy-production
 volumes:
-  - name: dockersock
+  - name: docker_cache
     host:
-      path: /var/run/docker.sock
+      path: /tmp/docker-cache
