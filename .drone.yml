@@ -4,10 +4,9 @@ name: switches-pipeline
 steps:
   # Build Stage
   - name: build-staging
-    image: docker:dind
+    image: docker:latest
+    privileged: true
     volumes:
-      - name: dockersock
-        path: /var/run/docker.sock
       - name: docker_cache
         path: /var/lib/docker
     commands:
@@ -41,10 +40,8 @@ steps:
       - build-staging
   # Deploy Stage
   - name: deploy-staging
-    image: docker:dind
-    volumes:
-      - name: dockersock
-        path: /var/run/docker.sock
+    image: docker:latest
+    privileged: true
     environment:
       DOCKER_IMAGE: switches_stage
       IMAGE_TAG: latest
@@ -77,10 +74,9 @@ steps:
       - migrate-staging
   # Build Production
   - name: build-production
-    image: docker:dind
+    image: docker:latest
+    privileged: true
     volumes:
-      - name: dockersock
-        path: /var/run/docker.sock
       - name: docker_cache
         path: /var/lib/docker
     commands:
@@ -118,10 +114,8 @@ steps:
       - build-production
   # Deploy Production
   - name: deploy-production
-    image: docker:dind
-    volumes:
-      - name: dockersock
-        path: /var/run/docker.sock
+    image: docker:latest
+    privileged: true
     environment:
       DOCKER_IMAGE: switches
       IMAGE_TAG: ${DRONE_COMMIT_SHA}
@@ -155,9 +149,6 @@ steps:
     depends_on:
       - migrate-production
 volumes:
-  - name: dockersock
-    host:
-      path: /var/run/docker.sock
   - name: docker_cache
     host:
       path: /tmp/docker-cache
