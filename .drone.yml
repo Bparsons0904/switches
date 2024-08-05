@@ -72,17 +72,6 @@ steps:
         - main
     depends_on:
       - migrate-staging
-  # Update Staging Deployment
-  - name: update-staging-deployment
-    image: plugins/deployment
-    settings:
-      environment: staging
-      status: success
-    when:
-      branch:
-        - main
-    depends_on:
-      - deploy-staging
   # Build Production
   - name: build-production
     image: docker:latest
@@ -159,19 +148,6 @@ steps:
         - refs/tags/v*
     depends_on:
       - migrate-production
-  # Update Production Deployment
-  - name: update-production-deployment
-    image: plugins/deployment
-    settings:
-      environment: production
-      status: success
-    when:
-      event:
-        - tag
-      ref:
-        - refs/tags/v*
-    depends_on:
-      - deploy-production
 volumes:
   - name: docker_cache
     host:
