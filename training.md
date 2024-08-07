@@ -382,7 +382,8 @@ Producers Data
   { "id": "23", "name": "Tecsee", "alias": "tecsee" },
   { "id": "24", "name": "Everglide", "alias": "everglide" },
   { "id": "25", "name": "SP-Star", "alias": "sp_star" },
-  { "id": "26", "name": "Gazzew", "alias": "gazzew" }
-  { "id": "27", "name": "Keydous", "alias": "keydous" }
+  { "id": "26", "name": "Gazzew", "alias": "gazzew" },
+  { "id": "27", "name": "Keydous", "alias": "keydous" },
+  { "id": "28", "name": "Cannon Keys", "alias": "cannonkeys" }
 ]
 ```
