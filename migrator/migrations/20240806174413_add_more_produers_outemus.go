@@ -746,15 +746,14 @@ func init() {
 				ID int `gorm:"type:int;primaryKey;autoIncrement" json:"id"`
 			}
 
-			if err := tx.Model(&Producer{}).Where("alias IN (?)", []string{"cherry", "gateron"}).Pluck("id", &producersIDs).Error; err != nil {
+			if err := tx.Model(&Producer{}).Where("alias IN (?)", []string{"outemus", "zealps"}).Pluck("id", &producersIDs).Error; err != nil {
 				return err
 			}
 
-			if err := tx.Exec("DELETE FROM switches WHERE manufacturer_id IN (?)", producersIDs).Error; err != nil {
+			if err := tx.Exec("DELETE FROM switches WHERE brand_id IN (?)", producersIDs).Error; err != nil {
 				return err
 			}
 			return nil // Replace with actual code
 		},
 	})
 }
-

@@ -1533,7 +1533,7 @@ func init() {
 				return err
 			}
 
-			if err := tx.Exec("DELETE FROM switches WHERE manufacturer_id IN (?)", producersIDs).Error; err != nil {
+			if err := tx.Exec("DELETE FROM switches WHERE brand_id IN (?)", producersIDs).Error; err != nil {
 				return err
 			}
 

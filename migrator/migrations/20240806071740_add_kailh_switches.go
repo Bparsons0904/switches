@@ -1070,8 +1070,19 @@ func init() {
 			return nil // Replace with actual code
 		},
 		Rollback: func(tx *gorm.DB) error {
+			var producersIDs []int
+			type Producer struct {
+				ID int `gorm:"type:int;primaryKey;autoIncrement" json:"id"`
+			}
+
+			if err := tx.Model(&Producer{}).Where("alias IN (?)", []string{"kailh"}).Pluck("id", &producersIDs).Error; err != nil {
+				return err
+			}
+
+			if err := tx.Exec("DELETE FROM switches WHERE brand_id IN (?)", producersIDs).Error; err != nil {
+				return err
+			}
 			return nil // Replace with actual code
 		},
 	})
 }
-
