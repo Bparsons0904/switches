@@ -168,7 +168,83 @@ Types Data
   },
   { "id": "12", "name": "Soft", "code": "soft", "category": "spring_type" },
   { "id": "13", "name": "Heavy", "code": "heavy", "category": "spring_type" },
-  { "id": "14", "name": "Custom", "code": "custom", "category": "spring_type" },
+  { "id": "14", "name   {
+        Name:             "Chosfox White Fox",
+        ShortDescription: "Tactile switch with a smooth bump and quiet operation.",
+        LongDescription:  "Chosfox White Fox switches offer a smooth tactile bump and quiet operation, featuring a 58g actuation force. Ideal for users who enjoy a soft tactile feel with minimal noise.",
+        ManufacturerID:   ptr(22), // JWK
+        BrandID:          ptr(18), // Chosfox
+        SwitchTypeID:     2,       // Tactile
+        ReleaseDate:      parseDate("2023-01-15"),
+        Available:        true,
+        PricePoint:       2, // Average
+    },
+    {
+        Name:             "Chosfox Arctic Fox",
+        ShortDescription: "Linear switch with a cool feel and light actuation force.",
+        LongDescription:  "Chosfox Arctic Fox switches provide a cool linear feel with a light 48g actuation force. Perfect for users who prefer a gentle and smooth keystroke.",
+        ManufacturerID:   ptr(22), // JWK
+        BrandID:          ptr(18), // Chosfox
+        SwitchTypeID:     1,       // Linear
+        ReleaseDate:      parseDate("2023-02-10"),
+        Available:        true,
+        PricePoint:       2, // Average
+    },
+    {
+        Name:             "Chosfox Voyager V2",
+        ShortDescription: "Linear switch designed for smooth and consistent travel.",
+        LongDescription:  "Chosfox Voyager V2 switches offer a smooth and consistent linear travel with a 65g actuation force, providing a balanced and fluid typing experience.",
+        ManufacturerID:   ptr(22), // JWK
+        BrandID:          ptr(18), // Chosfox
+        SwitchTypeID:     1,       // Linear
+        ReleaseDate:      parseDate("2023-04-20"),
+        Available:        true,
+        PricePoint:       2, // Average
+    },
+    {
+        Name:             "Chosfox Hanami Dango",
+        ShortDescription: "Linear switch with soft feel and pastel aesthetics.",
+        LongDescription:  "Chosfox Hanami Dango switches offer a soft linear feel with pastel aesthetics, featuring a 50g actuation force. Perfect for users who appreciate a gentle touch and pleasing visuals.",
+        ManufacturerID:   ptr(22), // JWK
+        BrandID:          ptr(18), // Chosfox
+        SwitchTypeID:     1,       // Linear
+        ReleaseDate:      parseDate("2023-05-15"),
+        Available:        true,
+        PricePoint:       3, // Expensive
+    },
+    {
+        Name:             "Chosfox Summer Lime Silent",
+        ShortDescription: "Silent linear switch with a soft and quiet typing experience.",
+        LongDescription:  "Chosfox Summer Lime Silent switches provide a silent linear experience with a soft and quiet 40g actuation force, ideal for users who need a noiseless typing environment.",
+        ManufacturerID:   ptr(22), // JWK
+        BrandID:          ptr(18), // Chosfox
+        SwitchTypeID:     4,       // Silent Linear
+        ReleaseDate:      parseDate("2023-07-01"),
+        Available:        true,
+        PricePoint:       3, // Expensive
+    },
+    {
+        Name:             "Chosfox Poison Gas",
+        ShortDescription: "Tactile switch with strong feedback and vibrant color scheme.",
+        LongDescription:  "Chosfox Poison Gas switches offer a strong tactile feedback with a vibrant color scheme, featuring a 67g actuation force. Ideal for users who enjoy pronounced tactile sensations.",
+        ManufacturerID:   ptr(22), // JWK
+        BrandID:          ptr(18), // Chosfox
+        SwitchTypeID:     2,       // Tactile
+        ReleaseDate:      parseDate("2023-08-10"),
+        Available:        true,
+        PricePoint:       2, // Average
+    },
+    {
+        Name:             "Chosfox DD Jingle Linear",
+        ShortDescription: "Linear switch with a unique auditory profile and smooth action.",
+        LongDescription:  "Chosfox DD Jingle Linear switches provide a unique auditory profile with smooth linear action, featuring a 55g actuation force. Perfect for users who enjoy distinct sounds and smooth keystrokes.",
+        ManufacturerID:   ptr(22), // JWK
+        BrandID:          ptr(18), // Chosfox
+        SwitchTypeID:     1,       // Linear
+        ReleaseDate:      parseDate("2023-09-05"),
+        Available:        true,
+        PricePoint:       3, // Expensive
+    },": "Custom", "code": "custom", "category": "spring_type" },
   {
     "id": "15",
     "name": "Dual-Stage",
@@ -373,17 +449,22 @@ Producers Data
   { "id": "14", "name": "Razer", "alias": "razer" },
   { "id": "15", "name": "Logitech", "alias": "logitech" },
   { "id": "16", "name": "SteelSeries", "alias": "steelseries" },
-  { "id": "17", "name": "Varmilo", "alias": "varmilo" },
-  { "id": "18", "name": "Ducky", "alias": "ducky" },
+  { "id": "17", "name": "Kinetic Labs", "alias": "kentic_labs" },
+  { "id": "18", "name": "Chosfox", "alias": "chosfox" },
   { "id": "19", "name": "Roccat", "alias": "roccat" },
   { "id": "20", "name": "Cooler Master", "alias": "cooler_master" },
-  { "id": "21", "name": "AKKO X Varmilo", "alias": "akko_varmilo" },
+  { "id": "21", "name": "Wuque Studio", "alias": "wuque_studio" },
   { "id": "22", "name": "JWK", "alias": "jwk" },
   { "id": "23", "name": "Tecsee", "alias": "tecsee" },
   { "id": "24", "name": "Everglide", "alias": "everglide" },
   { "id": "25", "name": "SP-Star", "alias": "sp_star" },
   { "id": "26", "name": "Gazzew", "alias": "gazzew" },
   { "id": "27", "name": "Keydous", "alias": "keydous" },
-  { "id": "28", "name": "Cannon Keys", "alias": "cannonkeys" }
+  { "id": "28", "name": "Cannon Keys", "alias": "cannon_keys" }
+  { "id": "29", "name": "KBDFans", "alias": "kbd_fans" },
+  { "id": "30", "name": "HMX", "alias": "hmx" },
+  { "id": "31", "name": "Tbcats Studio", "alias": "tbcats" },
+  { "id": "32", "name": "C³ EQUALZ X TKC", "alias": "c3xtkc" },
+
 ]
 ```
