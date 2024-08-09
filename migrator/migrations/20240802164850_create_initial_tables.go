@@ -14,6 +14,20 @@ func init() {
 		Description: "Create the initial tables",
 		Migrate: func(tx *gorm.DB) error {
 			err := tx.Transaction(func(tx *gorm.DB) error {
+				type ImageLink struct {
+					ID          uuid.UUID      `gorm:"type:uuid;default:uuid_generate_v7();primaryKey" json:"id"`
+					LinkAddress string         `gorm:"type:varchar(255);not null"                      json:"linkAddress"`
+					AltText     string         `gorm:"type:varchar(255);default:''"                    json:"altText,omitempty"`
+					OwnerID     uuid.UUID      `gorm:"type:uuid;indes:idx_type_id"                     json:"objectId"`
+					OwnerType   string         `gorm:"type:varchar(50);index:idx_type_id"              json:"objectType"`
+					CreatedAt   time.Time      `gorm:"autoCreateTime"                                  json:"createdAt"`
+					UpdatedAt   time.Time      `gorm:"autoUpdateTime"                                  json:"updatedAt"`
+					DeletedAt   gorm.DeletedAt `gorm:""                                                json:"deletedAt"`
+				}
+				if err := tx.Migrator().CreateTable(&ImageLink{}); err != nil {
+					return err
+				}
+
 				type Type struct {
 					ID        int       `gorm:"primaryKey;autoIncrement"              json:"id"`
 					Name      string    `gorm:"type:varchar(50);not null"             json:"name"`
@@ -27,47 +41,48 @@ func init() {
 				}
 
 				type Details struct {
-					SwitchID              uuid.UUID `gorm:"type:uuid;not null;primaryKey"    json:"switchId"`
-					Version               *int      `gorm:"type:int;default:0"               json:"version,omitempty"`
-					SpringTypeID          *int      `gorm:"type:int"                         json:"springTypeId,omitempty"`
-					SpringForce           *float32  `gorm:"type:real"                        json:"springForce,omitempty"`
-					SpringMaterialTypeID  *int      `gorm:"type:int"                         json:"springMaterialTypeId,omitempty"`
-					SpringMaterialType    *Type     `gorm:"foreignKey:SpringMaterialTypeID"  json:"springMaterialType,omitempty"`
-					TopHousingMaterialID  *int      `gorm:"type:int"                         json:"topHousingMaterialId,omitempty"`
-					TopHousingMaterial    *Type     `gorm:"foreignKey:TopHousingMaterialID"  json:"topHousingMaterial,omitempty"`
-					BaseHousingMaterialID *int      `gorm:"type:int"                         json:"baseHousingMaterialId,omitempty"`
-					BaseHousingMaterial   *Type     `gorm:"foreignKey:BaseHousingMaterialID" json:"baseHousingMaterial,omitempty"`
-					StemMaterialID        *int      `gorm:"type:int"                         json:"stemMaterialId,omitempty"`
-					StemMaterial          *Type     `gorm:"foreignKey:StemMaterialID"        json:"stemMaterial,omitempty"`
-					HasShineThrough       *bool     `gorm:"type:boolean"                     json:"hasShineThrough,omitempty"`
-					PreTravel             *float32  `gorm:"type:real"                        json:"preTravel,omitempty"`
-					TotalTravel           *float32  `gorm:"type:real"                        json:"totalTravel,omitempty"`
-					InitialForce          *float32  `gorm:"type:real"                        json:"initialForce,omitempty"`
-					ActuationPoint        *float32  `gorm:"type:real"                        json:"actuationPoint,omitempty"`
-					ResetPoint            *float32  `gorm:"type:real"                        json:"resetPoint,omitempty"`
-					BottomOutForcePoint   *float32  `gorm:"type:real"                        json:"bottomOutForcePoint,omitempty"`
-					BottomOutForce        *float32  `gorm:"type:real"                        json:"bottomOutForce,omitempty"`
-					SoundLevelID          *int      `gorm:"type:int"                         json:"soundLevelId,omitempty"`
-					SoundLevel            *Type     `gorm:"foreignKey:SoundLevelID"          json:"soundLevel,omitempty"`
-					SoundTypeID           *int      `gorm:"type:int"                         json:"soundTypeId,omitempty"`
-					SoundType             *Type     `gorm:"foreignKey:SoundTypeID"           json:"soundType,omitempty"`
-					TactilityTypeID       *int      `gorm:"type:int"                         json:"tactilityTypeId,omitempty"`
-					TactilityType         *Type     `gorm:"foreignKey:TactilityTypeID"       json:"tactilityType,omitempty"`
-					BumpPosition          *float32  `gorm:"type:real"                        json:"bumpPosition,omitempty"`
-					BumpForce             *float32  `gorm:"type:real"                        json:"bumpForce,omitempty"`
-					TactilityFeedbackID   *int      `gorm:"type:int"                         json:"tactilityFeedbackId,omitempty"`
-					TactilityFeedback     *Type     `gorm:"foreignKey:TactilityFeedbackID"   json:"tactilityFeedback,omitempty"`
-					FactoryLubed          bool      `gorm:"type:boolean;default:false"       json:"factoryLubed"`
-					StemColorID           *int      `gorm:"type:int"                         json:"stemColorId,omitempty"`
-					StemColor             *Type     `gorm:"foreignKey:StemColorID"           json:"stemColor,omitempty"`
-					TopHousingColorID     *int      `gorm:"type:int"                         json:"topHousingColorId,omitempty"`
-					TopHousingColor       *Type     `gorm:"foreignKey:TopHousingColorID"     json:"topHousingColor,omitempty"`
-					BottomHousingColorID  *int      `gorm:"type:int"                         json:"bottomHousingColorId,omitempty"`
-					BottomHousingColor    *Type     `gorm:"foreignKey:BottomHousingColorID"  json:"bottomHousingColor,omitempty"`
-					PinConfigurationID    *int      `gorm:"type:int"                         json:"pinConfigurationId,omitempty"`
-					PinConfiguration      *Type     `gorm:"foreignKey:PinConfigurationID"    json:"pinConfiguration,omitempty"`
-					CreatedAt             time.Time `gorm:"type:timestamp;autoCreateTime"    json:"createdAt"`
-					UpdatedAt             time.Time `gorm:"type:timestamp;autoUpdateTime"    json:"updatedAt"`
+					ID                    uuid.UUID `gorm:"type:uuid;default:uuid_generate_v7();primaryKey" json:"id"`
+					SwitchID              uuid.UUID `gorm:"type:uuid;not null;index"                        json:"switchId"`
+					Version               *int      `gorm:"type:int"                                        json:"version,omitempty"`
+					SpringTypeID          *int      `gorm:"type:int"                                        json:"springTypeId,omitempty"`
+					SpringForce           *float32  `gorm:"type:real"                                       json:"springForce,omitempty"`
+					SpringMaterialTypeID  *int      `gorm:"type:int"                                        json:"springMaterialTypeId,omitempty"`
+					SpringMaterialType    *Type     `gorm:"foreignKey:SpringMaterialTypeID"                 json:"springMaterialType,omitempty"`
+					TopHousingMaterialID  *int      `gorm:"type:int"                                        json:"topHousingMaterialId,omitempty"`
+					TopHousingMaterial    *Type     `gorm:"foreignKey:TopHousingMaterialID"                 json:"topHousingMaterial,omitempty"`
+					BaseHousingMaterialID *int      `gorm:"type:int"                                        json:"baseHousingMaterialId,omitempty"`
+					BaseHousingMaterial   *Type     `gorm:"foreignKey:BaseHousingMaterialID"                json:"baseHousingMaterial,omitempty"`
+					StemMaterialID        *int      `gorm:"type:int"                                        json:"stemMaterialId,omitempty"`
+					StemMaterial          *Type     `gorm:"foreignKey:StemMaterialID"                       json:"stemMaterial,omitempty"`
+					HasShineThrough       *bool     `gorm:"type:boolean"                                    json:"hasShineThrough,omitempty"`
+					PreTravel             *float32  `gorm:"type:real"                                       json:"preTravel,omitempty"`
+					TotalTravel           *float32  `gorm:"type:real"                                       json:"totalTravel,omitempty"`
+					InitialForce          *float32  `gorm:"type:real"                                       json:"initialForce,omitempty"`
+					ActuationPoint        *float32  `gorm:"type:real"                                       json:"actuationPoint,omitempty"`
+					ResetPoint            *float32  `gorm:"type:real"                                       json:"resetPoint,omitempty"`
+					BottomOutForcePoint   *float32  `gorm:"type:real"                                       json:"bottomOutForcePoint,omitempty"`
+					BottomOutForce        *float32  `gorm:"type:real"                                       json:"bottomOutForce,omitempty"`
+					SoundLevelID          *int      `gorm:"type:int"                                        json:"soundLevelId,omitempty"`
+					SoundLevel            *Type     `gorm:"foreignKey:SoundLevelID"                         json:"soundLevel,omitempty"`
+					SoundTypeID           *int      `gorm:"type:int"                                        json:"soundTypeId,omitempty"`
+					SoundType             *Type     `gorm:"foreignKey:SoundTypeID"                          json:"soundType,omitempty"`
+					TactilityTypeID       *int      `gorm:"type:int"                                        json:"tactilityTypeId,omitempty"`
+					TactilityType         *Type     `gorm:"foreignKey:TactilityTypeID"                      json:"tactilityType,omitempty"`
+					BumpPosition          *float32  `gorm:"type:real"                                       json:"bumpPosition,omitempty"`
+					BumpForce             *float32  `gorm:"type:real"                                       json:"bumpForce,omitempty"`
+					TactilityFeedbackID   *int      `gorm:"type:int"                                        json:"tactilityFeedbackId,omitempty"`
+					TactilityFeedback     *Type     `gorm:"foreignKey:TactilityFeedbackID"                  json:"tactilityFeedback,omitempty"`
+					FactoryLubed          bool      `gorm:"type:boolean;default:false"                      json:"factoryLubed"`
+					StemColorID           *int      `gorm:"type:int"                                        json:"stemColorId,omitempty"`
+					StemColor             *Type     `gorm:"foreignKey:StemColorID"                          json:"stemColor,omitempty"`
+					TopHousingColorID     *int      `gorm:"type:int"                                        json:"topHousingColorId,omitempty"`
+					TopHousingColor       *Type     `gorm:"foreignKey:TopHousingColorID"                    json:"topHousingColor,omitempty"`
+					BottomHousingColorID  *int      `gorm:"type:int"                                        json:"bottomHousingColorId,omitempty"`
+					BottomHousingColor    *Type     `gorm:"foreignKey:BottomHousingColorID"                 json:"bottomHousingColor,omitempty"`
+					PinConfigurationID    *int      `gorm:"type:int"                                        json:"pinConfigurationId,omitempty"`
+					PinConfiguration      *Type     `gorm:"foreignKey:PinConfigurationID"                   json:"pinConfiguration,omitempty"`
+					CreatedAt             time.Time `gorm:"type:timestamp;autoCreateTime"                   json:"createdAt"`
+					UpdatedAt             time.Time `gorm:"type:timestamp;autoUpdateTime"                   json:"updatedAt"`
 				}
 				if err := tx.Migrator().CreateTable(&Details{}); err != nil {
 					return err
@@ -99,6 +114,7 @@ func init() {
 					ReleaseDate      *time.Time `gorm:"type:date"                                                                        json:"releaseDate,omitempty"`
 					Available        bool       `gorm:"type:boolean;default:true"                                                        json:"available"`
 					PricePoint       int        `gorm:"type:int;not null"                                                                json:"pricePoint"`
+					SiteURL          string     `gorm:"type:varchar(255)"                                                                json:"siteURL,omitempty"`
 					CreatedAt        time.Time  `gorm:"autoCreateTime"                                                                   json:"createdAt"`
 					UpdatedAt        time.Time  `gorm:"autoUpdateTime"                                                                   json:"updatedAt"`
 				}
@@ -293,14 +309,14 @@ func init() {
 						SiteURL: "https://steelseries.com/",
 					},
 					{
-						Name:    "Varmilo",
-						Alias:   "varmilo",
-						SiteURL: "https://en.varmilo.com/",
+						Name:    "Kinetic Labs",
+						Alias:   "kintic_labs",
+						SiteURL: "https://kineticlabs.com/",
 					},
 					{
-						Name:    "Ducky",
-						Alias:   "ducky",
-						SiteURL: "https://www.duckychannel.com.tw/",
+						Name:    "Chosfox",
+						Alias:   "chosfox",
+						SiteURL: "https://chosfox.com/",
 					},
 					{
 						Name:    "Roccat",
@@ -313,9 +329,9 @@ func init() {
 						SiteURL: "https://www.coolermaster.com/",
 					},
 					{
-						Name:    "AKKO X Varmilo",
-						Alias:   "akko_varmilo",
-						SiteURL: "https://en.akkogear.com/collections/varmilo/",
+						Name:    "Wuque Studio",
+						Alias:   "wuque_studio",
+						SiteURL: "https://shop.wuquestudio.com/",
 					},
 					{
 						Name:    "JWK",
@@ -342,11 +358,42 @@ func init() {
 						Alias:   "gazzew",
 						SiteURL: "",
 					},
+					{
+						Name:    "Keydous",
+						Alias:   "keydous",
+						SiteURL: "https://www.keydous.com/",
+					},
+					{
+						Name:    "Cannon Keys",
+						Alias:   "cannon_keys",
+						SiteURL: "https://cannonkeys.com/",
+					},
+					{
+						Name:    "KBDFans",
+						Alias:   "kbd_fans",
+						SiteURL: "https://kbdfans.com/",
+					},
+					{
+						Name:    "HMX",
+						Alias:   "hmx",
+						SiteURL: "",
+					},
+					{
+						Name:    "Tbcats Studio",
+						Alias:   "tbcats",
+						SiteURL: "",
+					},
+					{
+						Name:    "C³ EQUALZ X TKC",
+						Alias:   "c3xtkc",
+						SiteURL: "https://c3equalz.com/",
+					},
 				}
 
 				if err := tx.Create(&producers).Error; err != nil {
 					return err
 				}
+
 				return nil
 			})
 			return err

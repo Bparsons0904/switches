@@ -1,6 +1,7 @@
 package migrations
 
 import (
+	"log"
 	"time"
 
 	"github.com/Bparsons0904/deadigations"
@@ -13,6 +14,17 @@ func init() {
 		ID:          "20240805194103",
 		Description: "Add description of changes",
 		Migrate: func(tx *gorm.DB) error {
+			type ImageLink struct {
+				ID          uuid.UUID      `gorm:"type:uuid;default:uuid_generate_v7();primaryKey" json:"id"`
+				LinkAddress string         `gorm:"type:varchar(255);not null"                      json:"linkAddress"`
+				AltText     string         `gorm:"type:varchar(255);default:''"                    json:"altText,omitempty"`
+				OwnerID     uuid.UUID      `gorm:"type:uuid;indes:idx_type_id"                     json:"objectId"`
+				OwnerType   string         `gorm:"type:varchar(50);index:idx_type_id"              json:"objectType"`
+				CreatedAt   time.Time      `gorm:"autoCreateTime"                                  json:"createdAt"`
+				UpdatedAt   time.Time      `gorm:"autoUpdateTime"                                  json:"updatedAt"`
+				DeletedAt   gorm.DeletedAt `gorm:""                                                json:"deletedAt"`
+			}
+
 			type Type struct {
 				ID        int       `gorm:"primaryKey;autoIncrement"              json:"id"`
 				Name      string    `gorm:"type:varchar(50);not null"             json:"name"`
@@ -32,222 +44,332 @@ func init() {
 			}
 
 			type Switch struct {
-				ID               uuid.UUID  `gorm:"type:uuid;default:uuid_generate_v7();primaryKey"                                  json:"id"`
-				Name             string     `gorm:"type:varchar(50);not null;index:idx_name;uniqueIndex:idx_name_manufacturer_brand" json:"name"`
-				ShortDescription string     `gorm:"type:varchar(255);not null"                                                       json:"shortDescription"`
-				LongDescription  string     `gorm:"type:text;not null"                                                               json:"longDescription"`
-				ManufacturerID   *int       `gorm:"type:int;index;uniqueIndex:idx_name_manufacturer_brand"                           json:"manufacturerId,omitempty"`
-				Manufacturer     *Producer  `gorm:"foreignKey:ManufacturerID"                                                        json:"manufacturer,omitempty"`
-				BrandID          *int       `gorm:"type:int;index;uniqueIndex:idx_name_manufacturer_brand"                           json:"brandId,omitempty"`
-				Brand            *Producer  `gorm:"foreignKey:BrandID"                                                               json:"brand,omitempty"`
-				SwitchTypeID     int        `gorm:"type:int;not null;index;"                                                         json:"switchTypeId"`
-				SwitchType       *Type      `gorm:"foreignKey:SwitchTypeID"                                                          json:"switchType,omitempty"`
-				ReleaseDate      *time.Time `gorm:"type:date"                                                                        json:"releaseDate,omitempty"`
-				Available        bool       `gorm:"type:boolean;default:true"                                                        json:"available"`
-				PricePoint       int        `gorm:"type:int;not null"                                                                json:"pricePoint"`
-				CreatedAt        time.Time  `gorm:"autoCreateTime"                                                                   json:"createdAt"`
-				UpdatedAt        time.Time  `gorm:"autoUpdateTime"                                                                   json:"updatedAt"`
-			}
-
-			keydous := Producer{
-				Name:    "Keydous",
-				Alias:   "keydous",
-				SiteURL: "",
-			}
-
-			if err := tx.Create(&keydous).Error; err != nil {
-				return err
+				ID               uuid.UUID    `gorm:"type:uuid;default:uuid_generate_v7();primaryKey"                                          json:"id"`
+				Name             string       `gorm:"type:varchar(50);not null;index:idx_name;uniqueIndex:idx_name_manufacturer_brand"         json:"name"`
+				ShortDescription string       `gorm:"type:varchar(255);not null"                                                               json:"shortDescription"`
+				LongDescription  string       `gorm:"type:text;not null"                                                                       json:"longDescription"`
+				ManufacturerID   *int         `gorm:"type:int;index;uniqueIndex:idx_name_manufacturer_brand"                                   json:"manufacturerId,omitempty"`
+				Manufacturer     *Producer    `gorm:"foreignKey:ManufacturerID"                                                                json:"manufacturer,omitempty"`
+				BrandID          *int         `gorm:"type:int;index;uniqueIndex:idx_name_manufacturer_brand"                                   json:"brandId,omitempty"`
+				Brand            *Producer    `gorm:"foreignKey:BrandID"                                                                       json:"brand,omitempty"`
+				SwitchTypeID     int          `gorm:"type:int;not null;index;"                                                                 json:"switchTypeId"`
+				SwitchType       *Type        `gorm:"foreignKey:SwitchTypeID"                                                                  json:"switchType,omitempty"`
+				ReleaseDate      *time.Time   `gorm:"type:date"                                                                                json:"releaseDate,omitempty"`
+				Available        bool         `gorm:"type:boolean;default:true"                                                                json:"available"`
+				PricePoint       int          `gorm:"type:int;not null"                                                                        json:"pricePoint"`
+				SiteURL          string       `gorm:"type:varchar(255)"                                                                        json:"siteURL,omitempty"`
+				CreatedAt        time.Time    `gorm:"autoCreateTime"                                                                           json:"createdAt"`
+				UpdatedAt        time.Time    `gorm:"autoUpdateTime"                                                                           json:"updatedAt"`
+				ImageLinks       []*ImageLink `gorm:"foreignKey:OwnerID;polymorphicValue:Switch;constraint:OnUpdate:CASCADE,OnDelete:CASCADE;" json:"imageLinks,omitempty"`
 			}
 
 			cherry := []Switch{
 				{
+					Name:             "Cherry MX Silent Red",
+					ShortDescription: "Silent linear switch with a light actuation force.",
+					LongDescription:  "Cherry MX Silent Red switches are designed to offer the smooth, linear feel of MX Red switches while significantly reducing noise during actuation. These switches incorporate built-in dampeners that minimize the sound of both the key press and release, making them an excellent choice for quiet environments like offices or shared spaces. With an actuation force of 45 grams, they maintain a light, responsive feel, ideal for fast typing or gaming without the auditory distraction.",
+					ManufacturerID:   ptr(1), // Cherry
+					BrandID:          ptr(1), // Cherry
+					SwitchTypeID:     4,      // Silent Linear
+					ReleaseDate:      parseDate("2015-01-01"),
+					Available:        true,
+					PricePoint:       3,
+					SiteURL:          "https://www.cherry-world.com/mx-silent-red.html",
+					ImageLinks: []*ImageLink{
+						{
+							LinkAddress: "https://i.imgur.com/8rVjv2b.jpg",
+							AltText:     "Cherry MX Silent Red switch",
+						},
+					},
+				},
+
+				{
 					Name:             "Cherry MX Red",
 					ShortDescription: "Linear switch with a light actuation force.",
-					LongDescription:  "Cherry MX Red switches are known for their smooth and consistent feel with no tactile bump, making them ideal for gaming and fast typing.",
+					LongDescription:  "Cherry MX Red switches are renowned for their smooth, linear actuation and light operating force, making them a preferred choice for gamers and typists who enjoy a fast, uninterrupted keystroke. These switches require only 45 grams of force to actuate, ensuring a quick response without any tactile bump or audible click, allowing for a fluid typing experience. They are especially favored in gaming for their consistent key presses and rapid input, reducing finger fatigue during extended use.",
 					ManufacturerID:   ptr(1), // Cherry
 					BrandID:          ptr(1), // Cherry
 					SwitchTypeID:     1,      // Linear
 					ReleaseDate:      parseDate("1984-01-01"),
 					Available:        true,
 					PricePoint:       2,
+					SiteURL:          "https://www.cherry-world.com/mx-red.html",
 				},
 				{
 					Name:             "Cherry MX Blue",
 					ShortDescription: "Clicky switch with a tactile bump.",
-					LongDescription:  "Cherry MX Blue switches provide a clicky and tactile feedback, making them popular among typists who enjoy an audible click.",
+					LongDescription:  "Cherry MX Blue switches are iconic for their audible click and tactile feedback, offering a distinct typing experience that is both responsive and satisfying. With an actuation force of 50 grams, these switches provide a noticeable bump before actuation, coupled with a sharp click sound that appeals to typists who appreciate clear auditory and physical feedback. While they are less common in gaming due to their pronounced click, MX Blues are a top choice for those who value precision and clarity in their keystrokes.",
 					ManufacturerID:   ptr(1), // Cherry
 					BrandID:          ptr(1), // Cherry
 					SwitchTypeID:     3,      // Clicky
 					ReleaseDate:      parseDate("1987-01-01"),
 					Available:        true,
 					PricePoint:       2,
+					SiteURL:          "https://www.cherry-world.com/mx-blue.html",
 				},
 				{
 					Name:             "Cherry MX Brown",
 					ShortDescription: "Tactile switch with a moderate actuation force.",
-					LongDescription:  "Cherry MX Brown switches are versatile, offering a tactile bump without an audible click, suitable for both typing and gaming.",
+					LongDescription:  "Cherry MX Brown switches strike a balance between typing and gaming with their tactile bump and moderate actuation force of 55 grams. These switches are quieter than their Blue counterparts, lacking the audible click but still providing tactile feedback that is gentle yet noticeable. This makes them versatile and well-suited for both work and play, appealing to users who want a middle ground between the stark tactility of MX Blue switches and the smoothness of MX Red switches.",
 					ManufacturerID:   ptr(1), // Cherry
 					BrandID:          ptr(1), // Cherry
 					SwitchTypeID:     2,      // Tactile
 					ReleaseDate:      parseDate("1994-01-01"),
 					Available:        true,
 					PricePoint:       2,
+					SiteURL:          "https://www.cherry-world.com/mx-brown.html",
 				},
 				{
 					Name:             "Cherry MX Black",
 					ShortDescription: "Linear switch with a heavier actuation force.",
-					LongDescription:  "Cherry MX Black switches are known for their smooth linear feel with a higher actuation force, favored by users who prefer a stiffer switch.",
+					LongDescription:  "Cherry MX Black switches offer a smooth linear actuation similar to MX Red switches but with a heavier actuation force of 60 grams. This increased resistance makes them ideal for users who prefer a more deliberate keystroke, reducing the chance of accidental presses. MX Black switches are often favored by those who type heavily or for gaming environments where controlled inputs are critical. The absence of tactile bumps or clicks also ensures a quieter, more focused typing experience.",
 					ManufacturerID:   ptr(1), // Cherry
 					BrandID:          ptr(1), // Cherry
 					SwitchTypeID:     1,      // Linear
 					ReleaseDate:      parseDate("1984-01-01"),
 					Available:        true,
 					PricePoint:       2,
+					SiteURL:          "https://www.cherry-world.com/mx-black.html",
 				},
 				{
 					Name:             "Cherry MX Green",
 					ShortDescription: "Clicky switch with a heavy actuation force.",
-					LongDescription:  "Cherry MX Green switches are similar to MX Blue but with a higher actuation force, providing a clicky and tactile experience with more resistance.",
+					LongDescription:  "Cherry MX Green switches are a variant of the MX Blue, designed for those who enjoy a clicky experience but prefer a heavier actuation force. Requiring 80 grams to actuate, these switches provide a pronounced tactile bump and a louder click, making them ideal for users who want a more deliberate, assertive keystroke. MX Green switches are less common in standard keyboards but are highly prized by enthusiasts who enjoy a stiffer, more resistant typing experience.",
 					ManufacturerID:   ptr(1), // Cherry
 					BrandID:          ptr(1), // Cherry
 					SwitchTypeID:     3,      // Clicky
 					ReleaseDate:      parseDate("2011-01-01"),
 					Available:        true,
 					PricePoint:       3,
-				},
-				{
-					Name:             "Cherry MX Silent Red",
-					ShortDescription: "Silent linear switch with a light actuation force.",
-					LongDescription:  "Cherry MX Silent Red switches offer a smooth linear feel with dampened noise, ideal for quiet environments and gaming.",
-					ManufacturerID:   ptr(1), // Cherry
-					BrandID:          ptr(1), // Cherry
-					SwitchTypeID:     4,      // Silent Linear
-					ReleaseDate:      parseDate("2015-01-01"),
-					Available:        true,
-					PricePoint:       3,
+					SiteURL:          "https://www.cherry-world.com/mx-green.html",
 				},
 				{
 					Name:             "Cherry MX Silent Black",
 					ShortDescription: "Silent linear switch with a heavier actuation force.",
-					LongDescription:  "Cherry MX Silent Black switches provide a quiet, smooth linear feel with more resistance, suitable for those who prefer a heavier switch.",
+					LongDescription:  "Cherry MX Silent Black switches are engineered to provide the quiet operation of Silent Reds with a higher actuation force of 60 grams. This switch is ideal for users who prefer a more deliberate keystroke, combining the smooth, linear action with noise-reducing technology. Silent Black switches are well-suited for environments that require both quiet and a firm keypress, balancing performance with sound reduction.",
 					ManufacturerID:   ptr(1), // Cherry
 					BrandID:          ptr(1), // Cherry
 					SwitchTypeID:     4,      // Silent Linear
 					ReleaseDate:      parseDate("2015-01-01"),
 					Available:        true,
 					PricePoint:       3,
+					SiteURL:          "https://www.cherry-world.com/mx-silent-black.html",
 				},
 				{
 					Name:             "Cherry MX Clear",
 					ShortDescription: "Tactile switch with a high actuation force.",
-					LongDescription:  "Cherry MX Clear switches provide a tactile bump with a higher actuation force, ideal for those who prefer a noticeable resistance.",
+					LongDescription:  "Cherry MX Clear switches are designed for those who prefer a heavier tactile bump in their typing experience. With an actuation force of 65 grams, these switches provide a noticeable resistance, making each keystroke deliberate and satisfying. MX Clear switches are often chosen by users who want a tactile switch that offers more feedback than MX Browns but without the clicky noise associated with MX Blue switches.",
 					ManufacturerID:   ptr(1), // Cherry
 					BrandID:          ptr(1), // Cherry
 					SwitchTypeID:     2,      // Tactile
 					ReleaseDate:      parseDate("1994-01-01"),
 					Available:        true,
 					PricePoint:       3,
+					SiteURL:          "https://www.cherry-world.com/mx-clear.html",
 				},
 				{
 					Name:             "Cherry MX Grey",
 					ShortDescription: "Tactile switch with a heavy actuation force.",
-					LongDescription:  "Cherry MX Grey switches are similar to MX Clear but with an even higher actuation force, providing a pronounced tactile bump.",
+					LongDescription:  "Cherry MX Grey switches are an evolution of the MX Clear, featuring an even higher actuation force of 80 grams. This provides a pronounced tactile bump and substantial resistance, making them suitable for users who prefer a firm and assertive keystroke. These switches are less common in mass-market keyboards and are often found in specialized or enthusiast builds that prioritize a heavier, more tactile typing experience.",
 					ManufacturerID:   ptr(1), // Cherry
 					BrandID:          ptr(1), // Cherry
 					SwitchTypeID:     2,      // Tactile
 					ReleaseDate:      parseDate("1994-01-01"),
 					Available:        true,
 					PricePoint:       3,
+					SiteURL:          "https://www.cherry-world.com/mx-grey.html",
 				},
-				// New Cherry Switches
 				{
 					Name:             "Cherry MX Speed Silver",
 					ShortDescription: "Linear switch with a shorter travel distance for faster actuation.",
-					LongDescription:  "Cherry MX Speed Silver switches are designed for rapid keystrokes, offering a linear feel with a reduced travel distance and actuation point for quick responsiveness.",
+					LongDescription:  "Cherry MX Speed Silver switches are optimized for rapid keystrokes with a shorter actuation distance and total travel. These linear switches require just 1.2mm to actuate and only 45 grams of force, making them perfect for competitive gaming where speed is crucial. The reduced travel distance allows for faster key presses, helping to shave milliseconds off each action in fast-paced environments. They are a go-to choice for gamers seeking performance and responsiveness.",
 					ManufacturerID:   ptr(1), // Cherry
 					BrandID:          ptr(1), // Cherry
 					SwitchTypeID:     1,      // Linear
 					ReleaseDate:      parseDate("2016-01-01"),
 					Available:        true,
 					PricePoint:       3,
-				},
-				{
-					Name:             "Cherry MX Low Profile Red",
-					ShortDescription: "Slimmer version of the Red switch for low-profile keyboards.",
-					LongDescription:  "Cherry MX Low Profile Red switches maintain the linear feel of the original Red switches but in a slimmer form factor, making them suitable for low-profile keyboards.",
-					ManufacturerID:   ptr(1), // Cherry
-					BrandID:          ptr(1), // Cherry
-					SwitchTypeID:     1,      // Linear
-					ReleaseDate:      parseDate("2018-01-01"),
-					Available:        true,
-					PricePoint:       3,
-				},
-				{
-					Name:             "Cherry MX Low Profile Speed",
-					ShortDescription: "Low-profile version of the Speed Silver switch.",
-					LongDescription:  "Cherry MX Low Profile Speed switches combine the rapid actuation of the Speed Silver with a low-profile design, offering both quick responsiveness and a sleek form factor.",
-					ManufacturerID:   ptr(1), // Cherry
-					BrandID:          ptr(1), // Cherry
-					SwitchTypeID:     1,      // Linear
-					ReleaseDate:      parseDate("2018-01-01"),
-					Available:        true,
-					PricePoint:       3,
+					SiteURL:          "https://www.cherry-world.com/mx-speed-silver.html",
 				},
 				{
 					Name:             "Cherry MX Nature White",
 					ShortDescription: "Linear switch with a medium actuation force, between Red and Black.",
-					LongDescription:  "Cherry MX Nature White switches offer a linear feel with an actuation force that sits between the lighter Red and the heavier Black switches, providing a balanced typing experience.",
+					LongDescription:  "Cherry MX Nature White switches are designed to offer a balanced typing experience, with an actuation force that sits comfortably between the lighter MX Red and the heavier MX Black switches. With a smooth, linear action and a medium force of 55 grams, these switches provide a well-rounded keystroke that is ideal for users who want a linear switch that isn’t too light or too heavy. They are often chosen by those who prefer a slightly more resistant keystroke without sacrificing speed or smoothness.",
 					ManufacturerID:   ptr(1), // Cherry
 					BrandID:          ptr(1), // Cherry
 					SwitchTypeID:     1,      // Linear
 					ReleaseDate:      parseDate("2016-01-01"),
 					Available:        true,
 					PricePoint:       2,
+					SiteURL:          "https://www.cherry-world.com/mx-nature-white.html",
 				},
 				{
 					Name:             "Cherry MX Violet",
 					ShortDescription: "Tactile switch with a light actuation force, similar to Brown but lighter.",
-					LongDescription:  "Cherry MX Violet switches provide a light tactile bump, similar to the MX Brown switches, but with a reduced actuation force for a gentler typing experience.",
+					LongDescription:  "Cherry MX Violet switches offer a tactile bump similar to MX Browns but with a lighter actuation force, providing a gentle yet satisfying typing experience. Requiring only 45 grams of force to actuate, these switches are ideal for users who appreciate tactile feedback but prefer a softer, less resistant keypress. They are well-suited for both typing and gaming, offering a balance of feedback and ease of use.",
 					ManufacturerID:   ptr(1), // Cherry
 					BrandID:          ptr(1), // Cherry
 					SwitchTypeID:     2,      // Tactile
 					ReleaseDate:      parseDate("2020-01-01"),
 					Available:        true,
 					PricePoint:       2,
+					SiteURL:          "",
 				},
-				// Discontinued Cherry Switches
 				{
 					Name:             "Cherry MX White",
 					ShortDescription: "A softer clicky switch, sometimes called 'Milk'.",
-					LongDescription:  "Cherry MX White switches, also known as 'Milk' switches, offer a softer click compared to the MX Blue, providing a quieter yet still clicky experience.",
+					LongDescription:  "Cherry MX White switches, often referred to as 'Milk' switches due to their smoother click, are a quieter alternative to the more common MX Blue switches. They retain the clicky feedback but with a softer, less pronounced sound, making them a great choice for users who enjoy a clicky switch but want something less intrusive in terms of noise. These switches are less common and have become a favorite among those who want a unique auditory and tactile experience.",
 					ManufacturerID:   ptr(1), // Cherry
 					BrandID:          ptr(1), // Cherry
 					SwitchTypeID:     3,      // Clicky
 					ReleaseDate:      parseDate("2011-01-01"),
 					Available:        false,
 					PricePoint:       2,
+					SiteURL:          "",
 				},
 				{
 					Name:             "Cherry MX Tactile Grey",
 					ShortDescription: "A variant of the Grey switch with a slightly different force curve.",
-					LongDescription:  "Cherry MX Tactile Grey switches provide a unique tactile feel with a different force curve compared to the standard Grey switches, offering an alternative tactile experience.",
+					LongDescription:  "Cherry MX Tactile Grey switches are a specialized variant of the standard MX Grey switches, offering a unique force curve that provides a slightly different tactile experience. These switches are designed for users who appreciate a heavy, pronounced tactile bump and prefer a switch with a firm and deliberate keystroke. They are often used in niche keyboard builds where a distinct tactile feel is desired.",
 					ManufacturerID:   ptr(1), // Cherry
 					BrandID:          ptr(1), // Cherry
 					SwitchTypeID:     2,      // Tactile
 					ReleaseDate:      parseDate("1994-01-01"),
 					Available:        false,
 					PricePoint:       3,
+					SiteURL:          "",
 				},
 				{
 					Name:             "Cherry MX Super Black",
 					ShortDescription: "An extremely heavy linear switch.",
-					LongDescription:  "Cherry MX Super Black switches are designed for users who prefer an extremely heavy linear feel, providing a significant resistance to prevent accidental key presses.",
+					LongDescription:  "Cherry MX Super Black switches are designed for users who demand an extremely heavy actuation force. With a force requirement of 150 grams, these linear switches are among the stiffest in the Cherry MX lineup, offering unparalleled resistance to accidental key presses. Super Black switches are typically used in specialized keyboards or applications where a very deliberate keypress is necessary, providing a unique typing experience that is both demanding and rewarding.",
 					ManufacturerID:   ptr(1), // Cherry
 					BrandID:          ptr(1), // Cherry
 					SwitchTypeID:     1,      // Linear
 					ReleaseDate:      parseDate("1984-01-01"),
 					Available:        false,
 					PricePoint:       3,
+					SiteURL:          "",
+				},
+				{
+					Name:             "Cherry MX2A Speed Silver RGB Linear",
+					ShortDescription: "Linear switch with fast actuation and RGB support.",
+					LongDescription:  "The Cherry MX2A Speed Silver RGB Linear switch is optimized for rapid actuation, making it ideal for gaming. With a short 1.2mm actuation distance and an actuation force of 45 grams, this switch allows for quick, responsive keystrokes. It also features RGB compatibility, enabling customizable lighting effects to enhance the aesthetic appeal of your keyboard. These switches are perfect for gamers who want both performance and style in their setup.",
+					ManufacturerID:   ptr(1), // Cherry
+					BrandID:          ptr(1), // Cherry
+					SwitchTypeID:     1,      // Linear
+					ReleaseDate:      parseDate("2024-03-01"),
+					Available:        true,
+					PricePoint:       3, // Expensive
+					SiteURL:          "",
+				},
+				{
+					Name:             "Cherry MX2A Brown Tactile",
+					ShortDescription: "Tactile switch with a gentle bump for feedback.",
+					LongDescription:  "The Cherry MX2A Brown Tactile switch provides a subtle tactile bump, making it suitable for users who prefer feedback without the accompanying click sound. With an actuation force of 55 grams, this switch offers a comfortable balance between typing and gaming, providing just enough feedback to avoid bottoming out while maintaining a smooth and controlled keypress.",
+					ManufacturerID:   ptr(1), // Cherry
+					BrandID:          ptr(1), // Cherry
+					SwitchTypeID:     2,      // Tactile
+					ReleaseDate:      parseDate("2024-03-01"),
+					Available:        true,
+					PricePoint:       2, // Average
+					SiteURL:          "",
+				},
+				{
+					Name:             "Cherry MX2A Blue Clicky",
+					ShortDescription: "Clicky switch with an audible click for tactile feedback.",
+					LongDescription:  "The Cherry MX2A Blue Clicky switch delivers the satisfying click sound and tactile feedback that typists love. With an actuation force of 50 grams, this switch provides a crisp click and a noticeable bump, ensuring each keystroke is both audible and precise. Ideal for those who enjoy the classic typing experience, the MX2A Blue is perfect for heavy typists or those who simply love the sound of their keyboard.",
+					ManufacturerID:   ptr(1), // Cherry
+					BrandID:          ptr(1), // Cherry
+					SwitchTypeID:     3,      // Clicky
+					ReleaseDate:      parseDate("2024-03-01"),
+					Available:        true,
+					PricePoint:       2, // Average
+					SiteURL:          "",
+				},
+				{
+					Name:             "Cherry MX2A Blue Clicky RGB",
+					ShortDescription: "Clicky switch with RGB lighting and tactile feedback.",
+					LongDescription:  "The Cherry MX2A Blue Clicky RGB switch combines the crisp click and tactile bump of a traditional clicky switch with RGB lighting capabilities. With an actuation force of 50 grams, this switch is ideal for those who want both a satisfying typing experience and a vibrant, customizable keyboard backlight. It's a great choice for typists who enjoy both the sound and visual appeal of a well-lit keyboard.",
+					ManufacturerID:   ptr(1), // Cherry
+					BrandID:          ptr(1), // Cherry
+					SwitchTypeID:     3,      // Clicky
+					ReleaseDate:      parseDate("2024-03-01"),
+					Available:        true,
+					PricePoint:       2, // Average
+					SiteURL:          "",
+				},
+				{
+					Name:             "Cherry MX2A Black Linear",
+					ShortDescription: "Linear switch with a heavy actuation force.",
+					LongDescription:  "The Cherry MX2A Black Linear switch offers a smooth keystroke with a heavier actuation force of 60 grams. This makes it ideal for users who prefer a firm, controlled typing experience. The switch is well-suited for both heavy typists and gamers who require a more deliberate keypress. With its linear feel and no tactile bump, the MX2A Black ensures a consistent and smooth actuation with every keystroke.",
+					ManufacturerID:   ptr(1), // Cherry
+					BrandID:          ptr(1), // Cherry
+					SwitchTypeID:     1,      // Linear
+					ReleaseDate:      parseDate("2024-03-01"),
+					Available:        true,
+					PricePoint:       2, // Average
+					SiteURL:          "",
+				},
+				{
+					Name:             "Cherry MX2A Silent Red",
+					ShortDescription: "Silent linear switch with RGB support and a smooth feel.",
+					LongDescription:  "The Cherry MX2A Silent Red Linear switch features a quiet and smooth keystroke, making it perfect for quiet environments such as offices or shared spaces. With an actuation force of 45 grams, this switch ensures a light touch while minimizing noise through built-in dampeners. The RGB lighting adds a customizable visual element, making it an excellent choice for those who want both a serene typing experience and a vibrant keyboard.",
+					ManufacturerID:   ptr(1), // Cherry
+					BrandID:          ptr(1), // Cherry
+					SwitchTypeID:     4,      // Silent Linear
+					ReleaseDate:      parseDate("2024-03-01"),
+					Available:        true,
+					PricePoint:       3, // Expensive
+					SiteURL:          "https://www.cherry-world.com/mx2a-silent-red",
+				},
+				{
+					Name:             "Cherry MX2A Black RGB Linear",
+					ShortDescription: "Linear switch with RGB lighting and a heavy feel.",
+					LongDescription:  "The Cherry MX2A Black RGB Linear switch offers a heavier actuation force of 60 grams, providing a robust and controlled typing experience. The switch also features RGB lighting, allowing for vibrant, customizable backlighting to match your keyboard setup. This combination makes it ideal for users who prefer a solid, linear keystroke with the added benefit of visual flair.",
+					ManufacturerID:   ptr(1), // Cherry
+					BrandID:          ptr(1), // Cherry
+					SwitchTypeID:     1,      // Linear
+					ReleaseDate:      parseDate("2024-03-01"),
+					Available:        true,
+					PricePoint:       2, // Average
+					SiteURL:          "",
+				},
+				{
+					Name:             "Cherry MX2A Speed Silver Linear",
+					ShortDescription: "Fast linear switch for quick actuation.",
+					LongDescription:  "The Cherry MX2A Speed Silver Linear switch is designed for rapid keystrokes, making it ideal for gaming and other high-speed typing scenarios. With a short 1.2mm actuation distance and 45 grams of force, this switch enables quick responses, helping to improve performance in fast-paced environments. The MX2A Speed Silver is a top choice for competitive gamers seeking the fastest actuation possible.",
+					ManufacturerID:   ptr(1), // Cherry
+					BrandID:          ptr(1), // Cherry
+					SwitchTypeID:     1,      // Linear
+					ReleaseDate:      parseDate("2024-03-01"),
+					Available:        true,
+					PricePoint:       3, // Expensive
+					SiteURL:          "",
+				},
+				{
+					Name:             "Cherry MX2A Red RGB Linear",
+					ShortDescription: "Linear switch with RGB support and a smooth keystroke.",
+					LongDescription:  "The Cherry MX2A Red RGB Linear switch combines a smooth keystroke with RGB lighting, providing both visual appeal and a satisfying typing experience. With an actuation force of 45 grams, this switch is light and responsive, making it suitable for both gaming and typing. The added RGB support enhances the keyboard's aesthetics, making it a great choice for users who value both performance and style.",
+					ManufacturerID:   ptr(1), // Cherry
+					BrandID:          ptr(1), // Cherry
+					SwitchTypeID:     1,      // Linear
+					ReleaseDate:      parseDate("2024-03-01"),
+					Available:        true,
+					PricePoint:       2, // Average
+					SiteURL:          "",
+				},
+				{
+					Name:             "Cherry MX2A Red Linear",
+					ShortDescription: "Smooth linear switch for a balanced typing feel.",
+					LongDescription:  "The Cherry MX2A Red Linear switch offers a balanced and smooth typing experience, suitable for both gaming and typing due to its medium actuation force of 45 grams. This switch is designed for users who prefer a light, responsive keystroke with no tactile bump or audible click, allowing for fluid and uninterrupted keypresses.",
+					ManufacturerID:   ptr(1), // Cherry
+					BrandID:          ptr(1), // Cherry
+					SwitchTypeID:     1,      // Linear
+					ReleaseDate:      parseDate("2024-03-01"),
+					Available:        true,
+					PricePoint:       2, // Average
+					SiteURL:          "",
 				},
 			}
 
@@ -580,18 +702,6 @@ func init() {
 					Available:        true,
 					PricePoint:       2, // Average
 				},
-				{
-					Name:             "Gateron Keydous NJ80 Tactile",
-					ShortDescription: "Custom tactile switch designed for Keydous NJ80.",
-					LongDescription:  "Gateron Keydous NJ80 Tactile switches offer a unique tactile experience, designed in collaboration with Keydous for their NJ80 keyboard.",
-					ManufacturerID:   ptr(2),          // Gateron
-					BrandID:          ptr(keydous.ID), // Keydous
-					SwitchTypeID:     2,               // Tactile
-					ReleaseDate:      parseDate("2020-01-01"),
-					Available:        true,
-					PricePoint:       2, // Average
-				},
-				// Discontinued Gateron Tactile Switches
 				{
 					Name:             "Gateron Yellow Tactile",
 					ShortDescription: "Discontinued tactile switch with a unique yellow color.",
@@ -1524,23 +1634,10 @@ func init() {
 			return nil // Replace with actual code
 		},
 		Rollback: func(tx *gorm.DB) error {
-			var producersIDs []int
-			type Producer struct {
-				ID int `gorm:"type:int;primaryKey;autoIncrement" json:"id"`
-			}
-
-			if err := tx.Model(&Producer{}).Where("alias IN (?)", []string{"cherry", "gateron"}).Pluck("id", &producersIDs).Error; err != nil {
+			if err := tx.Exec("DELETE FROM switches WHERE id NOT null").Error; err != nil {
+				log.Printf("Failed to delete from Switch table: %v", err)
 				return err
 			}
-
-			if err := tx.Exec("DELETE FROM switches WHERE brand_id IN (?)", producersIDs).Error; err != nil {
-				return err
-			}
-
-			if err := tx.Exec("DELETE FROM producers WHERE alias = ?", "keydous").Error; err != nil {
-				return err
-			}
-
 			return nil // Replace with actual code
 		},
 	})
