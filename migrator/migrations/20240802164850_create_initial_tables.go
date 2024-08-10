@@ -412,6 +412,9 @@ func init() {
 				if err := tx.Migrator().DropTable("types"); err != nil {
 					return err
 				}
+				if err := tx.Migrator().DropTable("image_links"); err != nil {
+					return err
+				}
 
 				return nil
 			})

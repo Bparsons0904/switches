@@ -65,6 +65,44 @@ func init() {
 
 			cherry := []Switch{
 				{
+					Name:             "Cherry MX2A Silent Red",
+					ShortDescription: "Silent linear switch with RGB support and a smooth feel.",
+					LongDescription:  "The Cherry MX2A Silent Red Linear switch features a quiet and smooth keystroke, making it perfect for quiet environments such as offices or shared spaces. With an actuation force of 45 grams, this switch ensures a light touch while minimizing noise through built-in dampeners. The RGB lighting adds a customizable visual element, making it an excellent choice for those who want both a serene typing experience and a vibrant keyboard.",
+					ManufacturerID:   ptr(1), // Cherry
+					BrandID:          ptr(1), // Cherry
+					SwitchTypeID:     4,      // Silent Linear
+					ReleaseDate:      parseDate("2024-03-01"),
+					Available:        true,
+					PricePoint:       3, // Expensive
+					SiteURL:          "https://www.cherry-world.com/mx2a-silent-red",
+					ImageLinks: []*ImageLink{
+						{
+							LinkAddress: "https://www.cherry-world.com/media/catalog/product/cache/661c0bae3bb54b88fbb1b415a9d390cb/m/x/mx3a-l1na_l1nn_image.jpg",
+							AltText:     "Cherry MX2A Silent Red switch",
+						},
+						{
+							LinkAddress: "https://www.cherry-world.com/media/catalog/product/cache/661c0bae3bb54b88fbb1b415a9d390cb/m/x/mx3a-l1nn_image.jpg",
+							AltText:     "Cherry MX2A Silent Red switch",
+						},
+						{
+							LinkAddress: "https://www.cherry-world.com/media/catalog/product/cache/661c0bae3bb54b88fbb1b415a9d390cb/m/x/mx3a-l1na_image.jpg",
+							AltText:     "Cherry MX2A Silent Red switch",
+						},
+					},
+				},
+				{
+					Name:             "Cherry MX Silent Black",
+					ShortDescription: "Silent linear switch with a heavier actuation force.",
+					LongDescription:  "Cherry MX Silent Black switches are engineered to provide the quiet operation of Silent Reds with a higher actuation force of 60 grams. This switch is ideal for users who prefer a more deliberate keystroke, combining the smooth, linear action with noise-reducing technology. Silent Black switches are well-suited for environments that require both quiet and a firm keypress, balancing performance with sound reduction.",
+					ManufacturerID:   ptr(1), // Cherry
+					BrandID:          ptr(1), // Cherry
+					SwitchTypeID:     4,      // Silent Linear
+					ReleaseDate:      parseDate("2015-01-01"),
+					Available:        false,
+					PricePoint:       3,
+					SiteURL:          "https://www.cherry-world.com/mx-silent-black.html",
+				},
+				{
 					Name:             "Cherry MX Silent Red",
 					ShortDescription: "Silent linear switch with a light actuation force.",
 					LongDescription:  "Cherry MX Silent Red switches are designed to offer the smooth, linear feel of MX Red switches while significantly reducing noise during actuation. These switches incorporate built-in dampeners that minimize the sound of both the key press and release, making them an excellent choice for quiet environments like offices or shared spaces. With an actuation force of 45 grams, they maintain a light, responsive feel, ideal for fast typing or gaming without the auditory distraction.",
@@ -72,17 +110,56 @@ func init() {
 					BrandID:          ptr(1), // Cherry
 					SwitchTypeID:     4,      // Silent Linear
 					ReleaseDate:      parseDate("2015-01-01"),
-					Available:        true,
+					Available:        false,
 					PricePoint:       3,
-					SiteURL:          "https://www.cherry-world.com/mx-silent-red.html",
+					SiteURL:          "",
+				},
+
+				{
+					Name:             "Cherry MX2A Silent Black",
+					ShortDescription: "Silent linear switch with a heavy actuation force.",
+					LongDescription:  "The Cherry MX2A Silent Black switch offers a quiet, smooth linear typing experience with a heavier actuation force of 60 grams. Designed to minimize noise, this switch features built-in dampeners that significantly reduce the sound of both key press and release, making it ideal for quiet environments such as offices or shared spaces. The MX2A Silent Black is perfect for users who prefer a firmer keystroke while maintaining a low-noise profile, ensuring both performance and discretion in their typing setup.",
+					ManufacturerID:   ptr(1), // Cherry
+					BrandID:          ptr(1), // Cherry
+					SwitchTypeID:     4,      // Silent Linear
+					ReleaseDate:      parseDate("2024-03-01"),
+					Available:        true,
+					PricePoint:       3, // Expensive
+					SiteURL:          "https://www.cherry-world.com/mx-silent-black",
 					ImageLinks: []*ImageLink{
 						{
-							LinkAddress: "https://i.imgur.com/8rVjv2b.jpg",
-							AltText:     "Cherry MX Silent Red switch",
+							LinkAddress: "https://www.cherry-world.com/media/catalog/product/cache/661c0bae3bb54b88fbb1b415a9d390cb/m/x/mx3a-11na_11nn_image.jpg",
+							AltText:     "Cherry MX2A Silent Black switch",
+						},
+						{
+							LinkAddress: "https://www.cherry-world.com/media/catalog/product/cache/661c0bae3bb54b88fbb1b415a9d390cb/m/x/mx-silent-black.jpg",
+							AltText:     "Cherry MX2A Silent Black switch opened",
 						},
 					},
 				},
-
+				{
+					Name:             "Cherry MX2A Brown Tactile",
+					ShortDescription: "Tactile switch with a gentle bump for feedback.",
+					LongDescription:  "The Cherry MX2A Brown Tactile switch provides a subtle tactile bump, making it suitable for users who prefer feedback without the accompanying click sound. With an actuation force of 55 grams, this switch offers a comfortable balance between typing and gaming, providing just enough feedback to avoid bottoming out while maintaining a smooth and controlled keypress.",
+					ManufacturerID:   ptr(1), // Cherry
+					BrandID:          ptr(1), // Cherry
+					SwitchTypeID:     2,      // Tactile
+					ReleaseDate:      parseDate("2024-03-01"),
+					Available:        true,
+					PricePoint:       2, // Average
+					SiteURL:          "https://www.cherry-world.com/mx2a-brown",
+					ImageLinks: []*ImageLink{
+						{
+							LinkAddress: "https://www.cherry-world.com/media/catalog/product/cache/9380e5bfba4d8931eee53843958a2c83/m/x/mx1a-g1na_g1nn_image.jpg",
+							AltText:     "Cherry MX2A Brown switch",
+						},
+						{
+							LinkAddress: "https://www.cherry-world.com/media/catalog/product/cache/661c0bae3bb54b88fbb1b415a9d390cb/m/x/mx1a-g1nn_explo.jpg",
+							AltText:     "Cherry MX2A Brown switch",
+						},
+					},
+				},
+				// Worked
 				{
 					Name:             "Cherry MX Red",
 					ShortDescription: "Linear switch with a light actuation force.",
@@ -94,6 +171,112 @@ func init() {
 					Available:        true,
 					PricePoint:       2,
 					SiteURL:          "https://www.cherry-world.com/mx-red.html",
+					ImageLinks: []*ImageLink{
+						{
+							LinkAddress: "",
+							AltText:     "Cherry MX2A  switch",
+						},
+						{
+							LinkAddress: "",
+							AltText:     "Cherry MX2A  switch",
+						},
+					},
+				},
+				{
+					Name:             "Cherry MX2A Speed Silver RGB Linear",
+					ShortDescription: "Linear switch with fast actuation and RGB support.",
+					LongDescription:  "The Cherry MX2A Speed Silver RGB Linear switch is optimized for rapid actuation, making it ideal for gaming. With a short 1.2mm actuation distance and an actuation force of 45 grams, this switch allows for quick, responsive keystrokes. It also features RGB compatibility, enabling customizable lighting effects to enhance the aesthetic appeal of your keyboard. These switches are perfect for gamers who want both performance and style in their setup.",
+					ManufacturerID:   ptr(1), // Cherry
+					BrandID:          ptr(1), // Cherry
+					SwitchTypeID:     1,      // Linear
+					ReleaseDate:      parseDate("2024-03-01"),
+					Available:        true,
+					PricePoint:       3, // Expensive
+					SiteURL:          "",
+				},
+				{
+					Name:             "Cherry MX2A Blue Clicky",
+					ShortDescription: "Clicky switch with an audible click for tactile feedback.",
+					LongDescription:  "The Cherry MX2A Blue Clicky switch delivers the satisfying click sound and tactile feedback that typists love. With an actuation force of 50 grams, this switch provides a crisp click and a noticeable bump, ensuring each keystroke is both audible and precise. Ideal for those who enjoy the classic typing experience, the MX2A Blue is perfect for heavy typists or those who simply love the sound of their keyboard.",
+					ManufacturerID:   ptr(1), // Cherry
+					BrandID:          ptr(1), // Cherry
+					SwitchTypeID:     3,      // Clicky
+					ReleaseDate:      parseDate("2024-03-01"),
+					Available:        true,
+					PricePoint:       2, // Average
+					SiteURL:          "",
+				},
+				{
+					Name:             "Cherry MX2A Blue Clicky RGB",
+					ShortDescription: "Clicky switch with RGB lighting and tactile feedback.",
+					LongDescription:  "The Cherry MX2A Blue Clicky RGB switch combines the crisp click and tactile bump of a traditional clicky switch with RGB lighting capabilities. With an actuation force of 50 grams, this switch is ideal for those who want both a satisfying typing experience and a vibrant, customizable keyboard backlight. It's a great choice for typists who enjoy both the sound and visual appeal of a well-lit keyboard.",
+					ManufacturerID:   ptr(1), // Cherry
+					BrandID:          ptr(1), // Cherry
+					SwitchTypeID:     3,      // Clicky
+					ReleaseDate:      parseDate("2024-03-01"),
+					Available:        true,
+					PricePoint:       2, // Average
+					SiteURL:          "",
+				},
+				{
+					Name:             "Cherry MX2A Black Linear",
+					ShortDescription: "Linear switch with a heavy actuation force.",
+					LongDescription:  "The Cherry MX2A Black Linear switch offers a smooth keystroke with a heavier actuation force of 60 grams. This makes it ideal for users who prefer a firm, controlled typing experience. The switch is well-suited for both heavy typists and gamers who require a more deliberate keypress. With its linear feel and no tactile bump, the MX2A Black ensures a consistent and smooth actuation with every keystroke.",
+					ManufacturerID:   ptr(1), // Cherry
+					BrandID:          ptr(1), // Cherry
+					SwitchTypeID:     1,      // Linear
+					ReleaseDate:      parseDate("2024-03-01"),
+					Available:        true,
+					PricePoint:       2, // Average
+					SiteURL:          "",
+				},
+				{
+					Name:             "Cherry MX2A Black RGB Linear",
+					ShortDescription: "Linear switch with RGB lighting and a heavy feel.",
+					LongDescription:  "The Cherry MX2A Black RGB Linear switch offers a heavier actuation force of 60 grams, providing a robust and controlled typing experience. The switch also features RGB lighting, allowing for vibrant, customizable backlighting to match your keyboard setup. This combination makes it ideal for users who prefer a solid, linear keystroke with the added benefit of visual flair.",
+					ManufacturerID:   ptr(1), // Cherry
+					BrandID:          ptr(1), // Cherry
+					SwitchTypeID:     1,      // Linear
+					ReleaseDate:      parseDate("2024-03-01"),
+					Available:        true,
+					PricePoint:       2, // Average
+					SiteURL:          "",
+				},
+				{
+					Name:             "Cherry MX2A Speed Silver Linear",
+					ShortDescription: "Fast linear switch for quick actuation.",
+					LongDescription:  "The Cherry MX2A Speed Silver Linear switch is designed for rapid keystrokes, making it ideal for gaming and other high-speed typing scenarios. With a short 1.2mm actuation distance and 45 grams of force, this switch enables quick responses, helping to improve performance in fast-paced environments. The MX2A Speed Silver is a top choice for competitive gamers seeking the fastest actuation possible.",
+					ManufacturerID:   ptr(1), // Cherry
+					BrandID:          ptr(1), // Cherry
+					SwitchTypeID:     1,      // Linear
+					ReleaseDate:      parseDate("2024-03-01"),
+					Available:        true,
+					PricePoint:       3, // Expensive
+					SiteURL:          "",
+				},
+				{
+					Name:             "Cherry MX2A Red RGB Linear",
+					ShortDescription: "Linear switch with RGB support and a smooth keystroke.",
+					LongDescription:  "The Cherry MX2A Red RGB Linear switch combines a smooth keystroke with RGB lighting, providing both visual appeal and a satisfying typing experience. With an actuation force of 45 grams, this switch is light and responsive, making it suitable for both gaming and typing. The added RGB support enhances the keyboard's aesthetics, making it a great choice for users who value both performance and style.",
+					ManufacturerID:   ptr(1), // Cherry
+					BrandID:          ptr(1), // Cherry
+					SwitchTypeID:     1,      // Linear
+					ReleaseDate:      parseDate("2024-03-01"),
+					Available:        true,
+					PricePoint:       2, // Average
+					SiteURL:          "",
+				},
+				{
+					Name:             "Cherry MX2A Red Linear",
+					ShortDescription: "Smooth linear switch for a balanced typing feel.",
+					LongDescription:  "The Cherry MX2A Red Linear switch offers a balanced and smooth typing experience, suitable for both gaming and typing due to its medium actuation force of 45 grams. This switch is designed for users who prefer a light, responsive keystroke with no tactile bump or audible click, allowing for fluid and uninterrupted keypresses.",
+					ManufacturerID:   ptr(1), // Cherry
+					BrandID:          ptr(1), // Cherry
+					SwitchTypeID:     1,      // Linear
+					ReleaseDate:      parseDate("2024-03-01"),
+					Available:        true,
+					PricePoint:       2, // Average
+					SiteURL:          "",
 				},
 				{
 					Name:             "Cherry MX Blue",
@@ -142,18 +325,6 @@ func init() {
 					Available:        true,
 					PricePoint:       3,
 					SiteURL:          "https://www.cherry-world.com/mx-green.html",
-				},
-				{
-					Name:             "Cherry MX Silent Black",
-					ShortDescription: "Silent linear switch with a heavier actuation force.",
-					LongDescription:  "Cherry MX Silent Black switches are engineered to provide the quiet operation of Silent Reds with a higher actuation force of 60 grams. This switch is ideal for users who prefer a more deliberate keystroke, combining the smooth, linear action with noise-reducing technology. Silent Black switches are well-suited for environments that require both quiet and a firm keypress, balancing performance with sound reduction.",
-					ManufacturerID:   ptr(1), // Cherry
-					BrandID:          ptr(1), // Cherry
-					SwitchTypeID:     4,      // Silent Linear
-					ReleaseDate:      parseDate("2015-01-01"),
-					Available:        true,
-					PricePoint:       3,
-					SiteURL:          "https://www.cherry-world.com/mx-silent-black.html",
 				},
 				{
 					Name:             "Cherry MX Clear",
@@ -249,126 +420,6 @@ func init() {
 					ReleaseDate:      parseDate("1984-01-01"),
 					Available:        false,
 					PricePoint:       3,
-					SiteURL:          "",
-				},
-				{
-					Name:             "Cherry MX2A Speed Silver RGB Linear",
-					ShortDescription: "Linear switch with fast actuation and RGB support.",
-					LongDescription:  "The Cherry MX2A Speed Silver RGB Linear switch is optimized for rapid actuation, making it ideal for gaming. With a short 1.2mm actuation distance and an actuation force of 45 grams, this switch allows for quick, responsive keystrokes. It also features RGB compatibility, enabling customizable lighting effects to enhance the aesthetic appeal of your keyboard. These switches are perfect for gamers who want both performance and style in their setup.",
-					ManufacturerID:   ptr(1), // Cherry
-					BrandID:          ptr(1), // Cherry
-					SwitchTypeID:     1,      // Linear
-					ReleaseDate:      parseDate("2024-03-01"),
-					Available:        true,
-					PricePoint:       3, // Expensive
-					SiteURL:          "",
-				},
-				{
-					Name:             "Cherry MX2A Brown Tactile",
-					ShortDescription: "Tactile switch with a gentle bump for feedback.",
-					LongDescription:  "The Cherry MX2A Brown Tactile switch provides a subtle tactile bump, making it suitable for users who prefer feedback without the accompanying click sound. With an actuation force of 55 grams, this switch offers a comfortable balance between typing and gaming, providing just enough feedback to avoid bottoming out while maintaining a smooth and controlled keypress.",
-					ManufacturerID:   ptr(1), // Cherry
-					BrandID:          ptr(1), // Cherry
-					SwitchTypeID:     2,      // Tactile
-					ReleaseDate:      parseDate("2024-03-01"),
-					Available:        true,
-					PricePoint:       2, // Average
-					SiteURL:          "",
-				},
-				{
-					Name:             "Cherry MX2A Blue Clicky",
-					ShortDescription: "Clicky switch with an audible click for tactile feedback.",
-					LongDescription:  "The Cherry MX2A Blue Clicky switch delivers the satisfying click sound and tactile feedback that typists love. With an actuation force of 50 grams, this switch provides a crisp click and a noticeable bump, ensuring each keystroke is both audible and precise. Ideal for those who enjoy the classic typing experience, the MX2A Blue is perfect for heavy typists or those who simply love the sound of their keyboard.",
-					ManufacturerID:   ptr(1), // Cherry
-					BrandID:          ptr(1), // Cherry
-					SwitchTypeID:     3,      // Clicky
-					ReleaseDate:      parseDate("2024-03-01"),
-					Available:        true,
-					PricePoint:       2, // Average
-					SiteURL:          "",
-				},
-				{
-					Name:             "Cherry MX2A Blue Clicky RGB",
-					ShortDescription: "Clicky switch with RGB lighting and tactile feedback.",
-					LongDescription:  "The Cherry MX2A Blue Clicky RGB switch combines the crisp click and tactile bump of a traditional clicky switch with RGB lighting capabilities. With an actuation force of 50 grams, this switch is ideal for those who want both a satisfying typing experience and a vibrant, customizable keyboard backlight. It's a great choice for typists who enjoy both the sound and visual appeal of a well-lit keyboard.",
-					ManufacturerID:   ptr(1), // Cherry
-					BrandID:          ptr(1), // Cherry
-					SwitchTypeID:     3,      // Clicky
-					ReleaseDate:      parseDate("2024-03-01"),
-					Available:        true,
-					PricePoint:       2, // Average
-					SiteURL:          "",
-				},
-				{
-					Name:             "Cherry MX2A Black Linear",
-					ShortDescription: "Linear switch with a heavy actuation force.",
-					LongDescription:  "The Cherry MX2A Black Linear switch offers a smooth keystroke with a heavier actuation force of 60 grams. This makes it ideal for users who prefer a firm, controlled typing experience. The switch is well-suited for both heavy typists and gamers who require a more deliberate keypress. With its linear feel and no tactile bump, the MX2A Black ensures a consistent and smooth actuation with every keystroke.",
-					ManufacturerID:   ptr(1), // Cherry
-					BrandID:          ptr(1), // Cherry
-					SwitchTypeID:     1,      // Linear
-					ReleaseDate:      parseDate("2024-03-01"),
-					Available:        true,
-					PricePoint:       2, // Average
-					SiteURL:          "",
-				},
-				{
-					Name:             "Cherry MX2A Silent Red",
-					ShortDescription: "Silent linear switch with RGB support and a smooth feel.",
-					LongDescription:  "The Cherry MX2A Silent Red Linear switch features a quiet and smooth keystroke, making it perfect for quiet environments such as offices or shared spaces. With an actuation force of 45 grams, this switch ensures a light touch while minimizing noise through built-in dampeners. The RGB lighting adds a customizable visual element, making it an excellent choice for those who want both a serene typing experience and a vibrant keyboard.",
-					ManufacturerID:   ptr(1), // Cherry
-					BrandID:          ptr(1), // Cherry
-					SwitchTypeID:     4,      // Silent Linear
-					ReleaseDate:      parseDate("2024-03-01"),
-					Available:        true,
-					PricePoint:       3, // Expensive
-					SiteURL:          "https://www.cherry-world.com/mx2a-silent-red",
-				},
-				{
-					Name:             "Cherry MX2A Black RGB Linear",
-					ShortDescription: "Linear switch with RGB lighting and a heavy feel.",
-					LongDescription:  "The Cherry MX2A Black RGB Linear switch offers a heavier actuation force of 60 grams, providing a robust and controlled typing experience. The switch also features RGB lighting, allowing for vibrant, customizable backlighting to match your keyboard setup. This combination makes it ideal for users who prefer a solid, linear keystroke with the added benefit of visual flair.",
-					ManufacturerID:   ptr(1), // Cherry
-					BrandID:          ptr(1), // Cherry
-					SwitchTypeID:     1,      // Linear
-					ReleaseDate:      parseDate("2024-03-01"),
-					Available:        true,
-					PricePoint:       2, // Average
-					SiteURL:          "",
-				},
-				{
-					Name:             "Cherry MX2A Speed Silver Linear",
-					ShortDescription: "Fast linear switch for quick actuation.",
-					LongDescription:  "The Cherry MX2A Speed Silver Linear switch is designed for rapid keystrokes, making it ideal for gaming and other high-speed typing scenarios. With a short 1.2mm actuation distance and 45 grams of force, this switch enables quick responses, helping to improve performance in fast-paced environments. The MX2A Speed Silver is a top choice for competitive gamers seeking the fastest actuation possible.",
-					ManufacturerID:   ptr(1), // Cherry
-					BrandID:          ptr(1), // Cherry
-					SwitchTypeID:     1,      // Linear
-					ReleaseDate:      parseDate("2024-03-01"),
-					Available:        true,
-					PricePoint:       3, // Expensive
-					SiteURL:          "",
-				},
-				{
-					Name:             "Cherry MX2A Red RGB Linear",
-					ShortDescription: "Linear switch with RGB support and a smooth keystroke.",
-					LongDescription:  "The Cherry MX2A Red RGB Linear switch combines a smooth keystroke with RGB lighting, providing both visual appeal and a satisfying typing experience. With an actuation force of 45 grams, this switch is light and responsive, making it suitable for both gaming and typing. The added RGB support enhances the keyboard's aesthetics, making it a great choice for users who value both performance and style.",
-					ManufacturerID:   ptr(1), // Cherry
-					BrandID:          ptr(1), // Cherry
-					SwitchTypeID:     1,      // Linear
-					ReleaseDate:      parseDate("2024-03-01"),
-					Available:        true,
-					PricePoint:       2, // Average
-					SiteURL:          "",
-				},
-				{
-					Name:             "Cherry MX2A Red Linear",
-					ShortDescription: "Smooth linear switch for a balanced typing feel.",
-					LongDescription:  "The Cherry MX2A Red Linear switch offers a balanced and smooth typing experience, suitable for both gaming and typing due to its medium actuation force of 45 grams. This switch is designed for users who prefer a light, responsive keystroke with no tactile bump or audible click, allowing for fluid and uninterrupted keypresses.",
-					ManufacturerID:   ptr(1), // Cherry
-					BrandID:          ptr(1), // Cherry
-					SwitchTypeID:     1,      // Linear
-					ReleaseDate:      parseDate("2024-03-01"),
-					Available:        true,
-					PricePoint:       2, // Average
 					SiteURL:          "",
 				},
 			}
