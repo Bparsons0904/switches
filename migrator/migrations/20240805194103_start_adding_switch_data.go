@@ -159,88 +159,35 @@ func init() {
 						},
 					},
 				},
-				// Worked
 				{
-					Name:             "Cherry MX Red",
-					ShortDescription: "Linear switch with a light actuation force.",
-					LongDescription:  "Cherry MX Red switches are renowned for their smooth, linear actuation and light operating force, making them a preferred choice for gamers and typists who enjoy a fast, uninterrupted keystroke. These switches require only 45 grams of force to actuate, ensuring a quick response without any tactile bump or audible click, allowing for a fluid typing experience. They are especially favored in gaming for their consistent key presses and rapid input, reducing finger fatigue during extended use.",
+					Name:             "Cherry MX2A Red Linear",
+					ShortDescription: "Smooth linear switch for a balanced typing feel.",
+					LongDescription:  "The Cherry MX2A Red Linear switch offers a balanced and smooth typing experience, suitable for both gaming and typing due to its medium actuation force of 45 grams. This switch is designed for users who prefer a light, responsive keystroke with no tactile bump or audible click, allowing for fluid and uninterrupted keypresses.",
 					ManufacturerID:   ptr(1), // Cherry
 					BrandID:          ptr(1), // Cherry
 					SwitchTypeID:     1,      // Linear
-					ReleaseDate:      parseDate("1984-01-01"),
+					ReleaseDate:      parseDate("2024-03-01"),
 					Available:        true,
-					PricePoint:       2,
-					SiteURL:          "https://www.cherry-world.com/mx-red.html",
+					PricePoint:       2, // Average
+					SiteURL:          "https://www.cherry-world.com/mx2a-red",
 					ImageLinks: []*ImageLink{
 						{
-							LinkAddress: "",
-							AltText:     "Cherry MX2A  switch",
+							LinkAddress: "https://www.cherry-world.com/media/catalog/product/cache/661c0bae3bb54b88fbb1b415a9d390cb/m/x/mx1a-l1nn_image.jpg",
+							AltText:     "Cherry MX2A Red switch",
 						},
 						{
-							LinkAddress: "",
-							AltText:     "Cherry MX2A  switch",
+							LinkAddress: "https://www.cherry-world.com/media/catalog/product/cache/661c0bae3bb54b88fbb1b415a9d390cb/m/x/mx1a-l1nn_explo.jpg",
+							AltText:     "Cherry MX2A Red opened switch",
+						},
+						{
+							LinkAddress: "https://www.cherry-world.com/media/catalog/product/cache/661c0bae3bb54b88fbb1b415a9d390cb/m/x/mx1a-l1na_image.jpg",
+							AltText:     "Cherry MX2A Red switch",
+						},
+						{
+							LinkAddress: "https://www.cherry-world.com/media/catalog/product/cache/661c0bae3bb54b88fbb1b415a9d390cb/m/x/mx1a-l1nn_explo.jpg",
+							AltText:     "Cherry MX2A Red opened switch",
 						},
 					},
-				},
-				{
-					Name:             "Cherry MX2A Speed Silver RGB Linear",
-					ShortDescription: "Linear switch with fast actuation and RGB support.",
-					LongDescription:  "The Cherry MX2A Speed Silver RGB Linear switch is optimized for rapid actuation, making it ideal for gaming. With a short 1.2mm actuation distance and an actuation force of 45 grams, this switch allows for quick, responsive keystrokes. It also features RGB compatibility, enabling customizable lighting effects to enhance the aesthetic appeal of your keyboard. These switches are perfect for gamers who want both performance and style in their setup.",
-					ManufacturerID:   ptr(1), // Cherry
-					BrandID:          ptr(1), // Cherry
-					SwitchTypeID:     1,      // Linear
-					ReleaseDate:      parseDate("2024-03-01"),
-					Available:        true,
-					PricePoint:       3, // Expensive
-					SiteURL:          "",
-				},
-				{
-					Name:             "Cherry MX2A Blue Clicky",
-					ShortDescription: "Clicky switch with an audible click for tactile feedback.",
-					LongDescription:  "The Cherry MX2A Blue Clicky switch delivers the satisfying click sound and tactile feedback that typists love. With an actuation force of 50 grams, this switch provides a crisp click and a noticeable bump, ensuring each keystroke is both audible and precise. Ideal for those who enjoy the classic typing experience, the MX2A Blue is perfect for heavy typists or those who simply love the sound of their keyboard.",
-					ManufacturerID:   ptr(1), // Cherry
-					BrandID:          ptr(1), // Cherry
-					SwitchTypeID:     3,      // Clicky
-					ReleaseDate:      parseDate("2024-03-01"),
-					Available:        true,
-					PricePoint:       2, // Average
-					SiteURL:          "",
-				},
-				{
-					Name:             "Cherry MX2A Blue Clicky RGB",
-					ShortDescription: "Clicky switch with RGB lighting and tactile feedback.",
-					LongDescription:  "The Cherry MX2A Blue Clicky RGB switch combines the crisp click and tactile bump of a traditional clicky switch with RGB lighting capabilities. With an actuation force of 50 grams, this switch is ideal for those who want both a satisfying typing experience and a vibrant, customizable keyboard backlight. It's a great choice for typists who enjoy both the sound and visual appeal of a well-lit keyboard.",
-					ManufacturerID:   ptr(1), // Cherry
-					BrandID:          ptr(1), // Cherry
-					SwitchTypeID:     3,      // Clicky
-					ReleaseDate:      parseDate("2024-03-01"),
-					Available:        true,
-					PricePoint:       2, // Average
-					SiteURL:          "",
-				},
-				{
-					Name:             "Cherry MX2A Black Linear",
-					ShortDescription: "Linear switch with a heavy actuation force.",
-					LongDescription:  "The Cherry MX2A Black Linear switch offers a smooth keystroke with a heavier actuation force of 60 grams. This makes it ideal for users who prefer a firm, controlled typing experience. The switch is well-suited for both heavy typists and gamers who require a more deliberate keypress. With its linear feel and no tactile bump, the MX2A Black ensures a consistent and smooth actuation with every keystroke.",
-					ManufacturerID:   ptr(1), // Cherry
-					BrandID:          ptr(1), // Cherry
-					SwitchTypeID:     1,      // Linear
-					ReleaseDate:      parseDate("2024-03-01"),
-					Available:        true,
-					PricePoint:       2, // Average
-					SiteURL:          "",
-				},
-				{
-					Name:             "Cherry MX2A Black RGB Linear",
-					ShortDescription: "Linear switch with RGB lighting and a heavy feel.",
-					LongDescription:  "The Cherry MX2A Black RGB Linear switch offers a heavier actuation force of 60 grams, providing a robust and controlled typing experience. The switch also features RGB lighting, allowing for vibrant, customizable backlighting to match your keyboard setup. This combination makes it ideal for users who prefer a solid, linear keystroke with the added benefit of visual flair.",
-					ManufacturerID:   ptr(1), // Cherry
-					BrandID:          ptr(1), // Cherry
-					SwitchTypeID:     1,      // Linear
-					ReleaseDate:      parseDate("2024-03-01"),
-					Available:        true,
-					PricePoint:       2, // Average
-					SiteURL:          "",
 				},
 				{
 					Name:             "Cherry MX2A Speed Silver Linear",
@@ -252,31 +199,170 @@ func init() {
 					ReleaseDate:      parseDate("2024-03-01"),
 					Available:        true,
 					PricePoint:       3, // Expensive
-					SiteURL:          "",
+					SiteURL:          "https://www.cherry-world.com/mx2a-speed-silver",
+					ImageLinks: []*ImageLink{
+						{
+							LinkAddress: "https://www.cherry-world.com/media/catalog/product/cache/661c0bae3bb54b88fbb1b415a9d390cb/m/x/mx1a-51nn_image.jpg",
+							AltText:     "Cherry MX2A Speed Silver switch",
+						},
+						{
+							LinkAddress: "https://www.cherry-world.com/media/catalog/product/cache/661c0bae3bb54b88fbb1b415a9d390cb/m/x/mx1a-51nn_sideview4.jpg",
+							AltText:     "Cherry MX2A Speed Silver switch",
+						},
+						{
+							LinkAddress: "https://www.cherry-world.com/media/catalog/product/cache/661c0bae3bb54b88fbb1b415a9d390cb/m/x/mx1a-51na_image.jpg",
+							AltText:     "Cherry MX2A Speed Silver switch",
+						},
+						{
+							LinkAddress: "https://www.cherry-world.com/media/catalog/product/cache/661c0bae3bb54b88fbb1b415a9d390cb/m/x/mx1a-51na_sideview4.jpg",
+							AltText:     "Cherry MX2A Speed Silver switch",
+						},
+					},
 				},
 				{
-					Name:             "Cherry MX2A Red RGB Linear",
-					ShortDescription: "Linear switch with RGB support and a smooth keystroke.",
-					LongDescription:  "The Cherry MX2A Red RGB Linear switch combines a smooth keystroke with RGB lighting, providing both visual appeal and a satisfying typing experience. With an actuation force of 45 grams, this switch is light and responsive, making it suitable for both gaming and typing. The added RGB support enhances the keyboard's aesthetics, making it a great choice for users who value both performance and style.",
+					Name:             "Cherry MX2A Black Linear",
+					ShortDescription: "Linear switch with a heavy actuation force.",
+					LongDescription:  "The Cherry MX2A Black Linear switch offers a smooth keystroke with a heavier actuation force of 60 grams. This makes it ideal for users who prefer a firm, controlled typing experience. The switch is well-suited for both heavy typists and gamers who require a more deliberate keypress. With its linear feel and no tactile bump, the MX2A Black ensures a consistent and smooth actuation with every keystroke.",
 					ManufacturerID:   ptr(1), // Cherry
 					BrandID:          ptr(1), // Cherry
 					SwitchTypeID:     1,      // Linear
 					ReleaseDate:      parseDate("2024-03-01"),
 					Available:        true,
 					PricePoint:       2, // Average
-					SiteURL:          "",
+					SiteURL:          "https://www.cherry-world.com/mx2a-black",
+					ImageLinks: []*ImageLink{
+						{
+							LinkAddress: "https://www.cherry-world.com/media/catalog/product/cache/661c0bae3bb54b88fbb1b415a9d390cb/m/x/mx1a-11nn_image.jpg",
+							AltText:     "Cherry MX2A Black switch",
+						},
+						{
+							LinkAddress: "https://www.cherry-world.com/media/catalog/product/cache/661c0bae3bb54b88fbb1b415a9d390cb/m/x/mx1a-11nn_explo.jpg",
+							AltText:     "Cherry MX2A Black opened switch",
+						},
+
+						{
+							LinkAddress: "https://www.cherry-world.com/media/catalog/product/cache/661c0bae3bb54b88fbb1b415a9d390cb/m/x/mx1a-11na_image.jpg",
+							AltText:     "Cherry MX2A Black switch",
+						},
+						{
+							LinkAddress: "https://www.cherry-world.com/media/catalog/product/cache/661c0bae3bb54b88fbb1b415a9d390cb/m/x/mx1a-11na_explo.jpg",
+							AltText:     "Cherry MX2A Black opened switch",
+						},
+					},
 				},
 				{
-					Name:             "Cherry MX2A Red Linear",
-					ShortDescription: "Smooth linear switch for a balanced typing feel.",
-					LongDescription:  "The Cherry MX2A Red Linear switch offers a balanced and smooth typing experience, suitable for both gaming and typing due to its medium actuation force of 45 grams. This switch is designed for users who prefer a light, responsive keystroke with no tactile bump or audible click, allowing for fluid and uninterrupted keypresses.",
+					Name:             "Cherry MX2A Clear",
+					ShortDescription: "Tactile switch with a high actuation force.",
+					LongDescription:  "The Cherry MX2A Clear switch is designed for users who prefer a strong tactile feedback without the click sound. With an actuation force of 65 grams, this switch offers a pronounced tactile bump that is ideal for heavy typists who enjoy a firm and responsive keystroke. The MX2A Clear is particularly suited for those who need a tactile switch that provides clear feedback for every keypress, making it a great choice for both typing and precise input tasks.",
+					ManufacturerID:   ptr(1), // Cherry
+					BrandID:          ptr(1), // Cherry
+					SwitchTypeID:     2,      // Tactile
+					ReleaseDate:      parseDate("2024-03-01"),
+					Available:        true,
+					PricePoint:       3,                                       // Expensive
+					SiteURL:          "https://www.cherry-world.com/mx-clear", // If an official URL is available, you can update it here
+					ImageLinks: []*ImageLink{
+						{
+							LinkAddress: "https://www.cherry-world.com/media/catalog/product/cache/661c0bae3bb54b88fbb1b415a9d390cb/m/x/mx1a-c1na_c1nn_image.jpg",
+							AltText:     "Cherry MX2A Clear switch",
+						},
+						{
+							LinkAddress: "https://www.cherry-world.com/media/catalog/product/cache/661c0bae3bb54b88fbb1b415a9d390cb/m/x/mx1a-c1nn_image.jpg",
+							AltText:     "Cherry MX2A Clear switch",
+						},
+					},
+				},
+				{
+					Name:             "Cherry MX2A Grey",
+					ShortDescription: "Tactile switch with an even higher actuation force.",
+					LongDescription:  "The Cherry MX2A Grey switch is designed for users who prefer a very strong tactile feedback with an actuation force of 80 grams. This switch offers a firm tactile bump, providing clear and pronounced feedback with every keystroke. The MX2A Grey is perfect for users who require a high level of resistance in their switches, making it ideal for precise and deliberate key presses in both typing and heavy-duty applications.",
+					ManufacturerID:   ptr(1), // Cherry
+					BrandID:          ptr(1), // Cherry
+					SwitchTypeID:     2,      // Tactile
+					ReleaseDate:      parseDate("2024-03-01"),
+					Available:        true,
+					PricePoint:       3, // Expensive
+					SiteURL:          "https://www.cherry-world.com/mx-grey-tactile",
+					ImageLinks: []*ImageLink{
+						{
+							LinkAddress: "https://www.cherry-world.com/media/catalog/product/cache/661c0bae3bb54b88fbb1b415a9d390cb/m/x/mx1a-d1na_d1nn_image.jpg",
+							AltText:     "Cherry MX2A Grey switch",
+						},
+						{
+							LinkAddress: "https://www.cherry-world.com/media/catalog/product/cache/661c0bae3bb54b88fbb1b415a9d390cb/m/x/mx1a-d1nn_sideview4.jpg",
+							AltText:     "Cherry MX2A Grey switch",
+						},
+						{
+							LinkAddress: "https://www.cherry-world.com/media/catalog/product/cache/661c0bae3bb54b88fbb1b415a9d390cb/m/x/mx1a-d1na_top",
+							AltText:     "Cherry MX2A Grey switch",
+						},
+					},
+				},
+				{
+					Name:             "Cherry MX Purple",
+					ShortDescription: "Linear switch with a light actuation force and unique purple stem.",
+					LongDescription:  "The Cherry MX Purple switch is a linear switch designed for users who prefer a smooth and consistent keystroke with a light actuation force of 45 grams. This switch features a unique purple stem, which adds a distinct aesthetic to any keyboard. The MX Purple is ideal for both gaming and typing, offering a balance between speed and precision while providing a visually appealing design. It is a popular choice for users looking to combine performance with style.",
 					ManufacturerID:   ptr(1), // Cherry
 					BrandID:          ptr(1), // Cherry
 					SwitchTypeID:     1,      // Linear
 					ReleaseDate:      parseDate("2024-03-01"),
 					Available:        true,
+					PricePoint:       3, // Expensive
+					SiteURL:          "https://www.cherry-world.com/mx-purple",
+					ImageLinks: []*ImageLink{
+						{
+							LinkAddress: "https://www.cherry-world.com/media/catalog/product/cache/661c0bae3bb54b88fbb1b415a9d390cb/m/x/mx2a-v1nw_imageview.jpg",
+							AltText:     "Cherry MX Purple switch",
+						},
+						{
+							LinkAddress: "https://www.cherry-world.com/media/catalog/product/cache/661c0bae3bb54b88fbb1b415a9d390cb/m/x/mx2a-v1nw_explo.jpg",
+							AltText:     "Cherry MX Purple switch",
+						},
+					},
+				},
+				{
+					Name:             "Cherry MX Clear-Top",
+					ShortDescription: "Tactile switch with a transparent housing for enhanced RGB lighting.",
+					LongDescription:  "The Cherry MX Clear-Top switch is a tactile switch that combines the renowned tactile feedback of the Cherry MX Clear with a transparent housing, making it perfect for keyboards with RGB lighting. With an actuation force of 65 grams, this switch offers a firm tactile bump that provides a satisfying typing experience. The transparent housing allows for vibrant RGB lighting, enhancing the visual appeal of your keyboard setup while maintaining the high performance and reliability of the MX Clear switch.",
+					ManufacturerID:   ptr(1), // Cherry
+					BrandID:          ptr(1), // Cherry
+					SwitchTypeID:     2,      // Tactile
+					ReleaseDate:      parseDate("2024-03-01"),
+					Available:        true,
+					PricePoint:       3, // Expensive
+					SiteURL:          "https://www.cherry-world.com/mx-black-clear-top",
+					ImageLinks: []*ImageLink{
+						{
+							LinkAddress: "https://www.cherry-world.com/media/catalog/product/cache/661c0bae3bb54b88fbb1b415a9d390cb/m/x/mx1a-61nw_image.jpg",
+							AltText:     "Cherry MX Clear-Top switch",
+						},
+						{
+							LinkAddress: "https://www.cherry-world.com/media/catalog/product/cache/661c0bae3bb54b88fbb1b415a9d390cb/m/x/mx1a-61nw_explo.jpg",
+							AltText:     "Cherry MX Clear-Top switch",
+						},
+					},
+				},
+				{
+					Name:             "Cherry MX2A Blue Clicky",
+					ShortDescription: "Clicky switch with an audible click for tactile feedback.",
+					LongDescription:  "The Cherry MX2A Blue Clicky switch delivers the satisfying click sound and tactile feedback that typists love. With an actuation force of 50 grams, this switch provides a crisp click and a noticeable bump, ensuring each keystroke is both audible and precise. Ideal for those who enjoy the classic typing experience, the MX2A Blue is perfect for heavy typists or those who simply love the sound of their keyboard.",
+					ManufacturerID:   ptr(1), // Cherry
+					BrandID:          ptr(1), // Cherry
+					SwitchTypeID:     3,      // Clicky
+					ReleaseDate:      parseDate("2024-03-01"),
+					Available:        true,
 					PricePoint:       2, // Average
-					SiteURL:          "",
+					SiteURL:          "https://www.cherry-world.com/mx2a-blue",
+					ImageLinks: []*ImageLink{
+						{
+							LinkAddress: "https://www.cherry-world.com/media/catalog/product/cache/661c0bae3bb54b88fbb1b415a9d390cb/m/x/mx1a-e1na_e1nn_image.jpg",
+							AltText:     "Cherry MX2A switch",
+						},
+						{
+							LinkAddress: "https://www.cherry-world.com/media/catalog/product/cache/661c0bae3bb54b88fbb1b415a9d390cb/m/x/mx1a-e1nn_explo.jpg",
+							AltText:     "Cherry MX2A switch",
+						},
+					},
 				},
 				{
 					Name:             "Cherry MX Blue",
@@ -286,7 +372,7 @@ func init() {
 					BrandID:          ptr(1), // Cherry
 					SwitchTypeID:     3,      // Clicky
 					ReleaseDate:      parseDate("1987-01-01"),
-					Available:        true,
+					Available:        false,
 					PricePoint:       2,
 					SiteURL:          "https://www.cherry-world.com/mx-blue.html",
 				},
@@ -298,7 +384,7 @@ func init() {
 					BrandID:          ptr(1), // Cherry
 					SwitchTypeID:     2,      // Tactile
 					ReleaseDate:      parseDate("1994-01-01"),
-					Available:        true,
+					Available:        false,
 					PricePoint:       2,
 					SiteURL:          "https://www.cherry-world.com/mx-brown.html",
 				},
@@ -310,7 +396,7 @@ func init() {
 					BrandID:          ptr(1), // Cherry
 					SwitchTypeID:     1,      // Linear
 					ReleaseDate:      parseDate("1984-01-01"),
-					Available:        true,
+					Available:        false,
 					PricePoint:       2,
 					SiteURL:          "https://www.cherry-world.com/mx-black.html",
 				},
@@ -324,7 +410,22 @@ func init() {
 					ReleaseDate:      parseDate("2011-01-01"),
 					Available:        true,
 					PricePoint:       3,
-					SiteURL:          "https://www.cherry-world.com/mx-green.html",
+					SiteURL:          "https://www.cherry-world.com/mx-green",
+					ImageLinks: []*ImageLink{
+						{
+							LinkAddress: "https://www.cherry-world.com/media/catalog/product/cache/661c0bae3bb54b88fbb1b415a9d390cb/m/x/mx1a-f1na_f1nn_image.jpg",
+							AltText:     "Cherry MX Green switch",
+						},
+						{
+							LinkAddress: "https://www.cherry-world.com/media/catalog/product/cache/661c0bae3bb54b88fbb1b415a9d390cb/m/x/mx1a-f1nn_sideview3.jpg",
+							AltText:     "Cherry MX Green switch",
+						},
+
+						{
+							LinkAddress: "https://www.cherry-world.com/media/catalog/product/cache/661c0bae3bb54b88fbb1b415a9d390cb/m/x/mx1a-f1na_image.jpg",
+							AltText:     "Cherry MX Green switch",
+						},
+					},
 				},
 				{
 					Name:             "Cherry MX Clear",
@@ -334,7 +435,7 @@ func init() {
 					BrandID:          ptr(1), // Cherry
 					SwitchTypeID:     2,      // Tactile
 					ReleaseDate:      parseDate("1994-01-01"),
-					Available:        true,
+					Available:        false,
 					PricePoint:       3,
 					SiteURL:          "https://www.cherry-world.com/mx-clear.html",
 				},
@@ -346,7 +447,7 @@ func init() {
 					BrandID:          ptr(1), // Cherry
 					SwitchTypeID:     2,      // Tactile
 					ReleaseDate:      parseDate("1994-01-01"),
-					Available:        true,
+					Available:        false,
 					PricePoint:       3,
 					SiteURL:          "https://www.cherry-world.com/mx-grey.html",
 				},
@@ -358,7 +459,7 @@ func init() {
 					BrandID:          ptr(1), // Cherry
 					SwitchTypeID:     1,      // Linear
 					ReleaseDate:      parseDate("2016-01-01"),
-					Available:        true,
+					Available:        false,
 					PricePoint:       3,
 					SiteURL:          "https://www.cherry-world.com/mx-speed-silver.html",
 				},
@@ -370,7 +471,7 @@ func init() {
 					BrandID:          ptr(1), // Cherry
 					SwitchTypeID:     1,      // Linear
 					ReleaseDate:      parseDate("2016-01-01"),
-					Available:        true,
+					Available:        false,
 					PricePoint:       2,
 					SiteURL:          "https://www.cherry-world.com/mx-nature-white.html",
 				},
@@ -382,7 +483,7 @@ func init() {
 					BrandID:          ptr(1), // Cherry
 					SwitchTypeID:     2,      // Tactile
 					ReleaseDate:      parseDate("2020-01-01"),
-					Available:        true,
+					Available:        false,
 					PricePoint:       2,
 					SiteURL:          "",
 				},
@@ -421,6 +522,18 @@ func init() {
 					Available:        false,
 					PricePoint:       3,
 					SiteURL:          "",
+				},
+				{
+					Name:             "Cherry MX Red",
+					ShortDescription: "Linear switch with a light actuation force.",
+					LongDescription:  "Cherry MX Red switches are renowned for their smooth, linear actuation and light operating force, making them a preferred choice for gamers and typists who enjoy a fast, uninterrupted keystroke. These switches require only 45 grams of force to actuate, ensuring a quick response without any tactile bump or audible click, allowing for a fluid typing experience. They are especially favored in gaming for their consistent key presses and rapid input, reducing finger fatigue during extended use.",
+					ManufacturerID:   ptr(1), // Cherry
+					BrandID:          ptr(1), // Cherry
+					SwitchTypeID:     1,      // Linear
+					ReleaseDate:      parseDate("1984-01-01"),
+					Available:        false,
+					PricePoint:       2,
+					SiteURL:          "https://www.cherry-world.com/mx-red.html",
 				},
 			}
 
