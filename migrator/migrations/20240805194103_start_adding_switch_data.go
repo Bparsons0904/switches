@@ -1474,17 +1474,6 @@ func init() {
 					PricePoint:       2, // Average
 				},
 				{
-					Name:             "Gateron Cap Milky Yellow",
-					ShortDescription: "Linear switch with a milky housing for a smooth and cost-effective option.",
-					LongDescription:  "Gateron Cap Milky Yellow switches are known for their smooth linear feel and cost-effectiveness, featuring a milky housing that provides a distinct look and softer bottom-out feel. With an actuation force of 50 grams, these switches offer a balanced typing experience, making them ideal for both typing and gaming. The milky housing also contributes to a more muted sound profile, appealing to users who prefer a quieter switch.",
-					ManufacturerID:   ptr(2), // Gateron
-					BrandID:          ptr(2), // Gateron
-					SwitchTypeID:     1,      // Linear
-					ReleaseDate:      parseDate("2019-01-01"),
-					Available:        true,
-					PricePoint:       1, // Value
-				},
-				{
 					Name:             "Gateron Cap Red",
 					ShortDescription: "Linear switch with enhanced performance and sound dampening.",
 					LongDescription:  "Gateron Cap Red switches are linear switches designed to offer smooth keystrokes with a light actuation force of 45 grams. These switches come factory-lubricated, ensuring a quiet and responsive typing experience. The Cap Red switches are part of Gateron's premium line, providing users with a reliable and high-performance switch that is perfect for gaming and fast typing.",
@@ -1516,61 +1505,6 @@ func init() {
 					ReleaseDate:      parseDate("2021-01-01"),
 					Available:        true,
 					PricePoint:       3, // Expensive
-				},
-				{
-					Name:             "Gateron G Pro Red",
-					ShortDescription: "Linear switch with factory lubrication for smoother keystrokes.",
-					LongDescription:  "Gateron G Pro Red switches are enhanced linear switches featuring factory lubrication for smoother keystrokes and improved performance.",
-					ManufacturerID:   ptr(2), // Gateron
-					BrandID:          ptr(2), // Gateron
-					SwitchTypeID:     1,      // Linear
-					ReleaseDate:      parseDate("2020-01-01"),
-					Available:        true,
-					PricePoint:       2, // Average
-				},
-				{
-					Name:             "Gateron G Pro Yellow",
-					ShortDescription: "Linear switch with a medium actuation force and improved smoothness.",
-					LongDescription:  "Gateron G Pro Yellow switches offer a medium actuation force with factory lubrication, providing a smooth and responsive typing experience.",
-					ManufacturerID:   ptr(2), // Gateron
-					BrandID:          ptr(2), // Gateron
-					SwitchTypeID:     1,      // Linear
-					ReleaseDate:      parseDate("2020-01-01"),
-					Available:        true,
-					PricePoint:       2, // Average
-				},
-				{
-					Name:             "Gateron G Pro Brown",
-					ShortDescription: "Tactile switch with factory lubrication and a gentle bump.",
-					LongDescription:  "Gateron G Pro Brown switches feature a gentle tactile bump with factory lubrication, offering a smooth and quiet typing experience.",
-					ManufacturerID:   ptr(2), // Gateron
-					BrandID:          ptr(2), // Gateron
-					SwitchTypeID:     2,      // Tactile
-					ReleaseDate:      parseDate("2020-01-01"),
-					Available:        true,
-					PricePoint:       2, // Average
-				},
-				{
-					Name:             "Gateron G Pro Black",
-					ShortDescription: "Linear switch with a heavier actuation force for more resistance.",
-					LongDescription:  "Gateron G Pro Black switches offer a heavier actuation force for users who prefer more resistance in their keystrokes, providing a firm typing experience.",
-					ManufacturerID:   ptr(2), // Gateron
-					BrandID:          ptr(2), // Gateron
-					SwitchTypeID:     1,      // Linear
-					ReleaseDate:      parseDate("2020-01-01"),
-					Available:        true,
-					PricePoint:       2, // Average
-				},
-				{
-					Name:             "Gateron G Pro Green",
-					ShortDescription: "Clicky switch with a strong tactile bump and audible click.",
-					LongDescription:  "Gateron G Pro Green switches provide a strong tactile bump with an audible click, ideal for users who enjoy feedback and sound in their typing.",
-					ManufacturerID:   ptr(2), // Gateron
-					BrandID:          ptr(2), // Gateron
-					SwitchTypeID:     3,      // Clicky
-					ReleaseDate:      parseDate("2020-01-01"),
-					Available:        true,
-					PricePoint:       2, // Average
 				},
 				{
 					Name:             "Gateron Ink Red",
