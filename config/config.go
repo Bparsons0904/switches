@@ -1,8 +1,10 @@
 package config
 
 import (
+	"fmt"
 	"log"
 	"os"
+	"reflect"
 	"time"
 
 	"github.com/spf13/viper"
@@ -60,5 +62,38 @@ func LoadConfig() (Config, error) {
 		AppendNumber:    appendNumber,
 	}
 
+	err := validateConfig(config)
+	if err != nil {
+		return Config{}, err
+	}
+
 	return config, nil
+}
+
+func validateConfig(config Config) error {
+	v := reflect.ValueOf(config)
+
+	for i := 0; i < v.NumField(); i++ {
+		field := v.Field(i)
+		fieldName := v.Type().Field(i).Name
+
+		switch field.Kind() {
+		case reflect.String:
+			if field.String() == "" {
+				return fmt.Errorf("config string field %s is empty", fieldName)
+			}
+		case reflect.Int64:
+			if field.Int() == 0 {
+				return fmt.Errorf("config int64 field %s is not set", fieldName)
+			}
+		case reflect.Bool:
+		case reflect.Float64:
+			if field.Float() == 0.0 {
+				return fmt.Errorf("config bool field %s is not set", fieldName)
+			}
+		default:
+			return fmt.Errorf("not field type %s is not set", fieldName)
+		}
+	}
+	return nil
 }
