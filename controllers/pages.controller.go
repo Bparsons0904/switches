@@ -16,8 +16,3 @@ func GetSwitches(c *fiber.Ctx) error {
 	log.Println("GetSwitches")
 	return Render(pages.SwitchesPage(), pages.Switches())(c)
 }
-
-func GetAuthCallback(c *fiber.Ctx) error {
-	log.Println("Get auth callback")
-	return Render(pages.SwitchesPage(), pages.Switches())(c)
-}
