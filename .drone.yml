@@ -78,7 +78,17 @@ steps:
         - push
     depends_on:
       - migrate-staging
-  # Build Production
+trigger:
+  branch:
+    - main
+  event:
+    - push
+---
+kind: pipeline
+type: docker
+name: production-pipeline
+# Build Production
+steps:
   - name: build-production
     image: docker:latest
     privileged: true
