@@ -1,5 +1,13 @@
 package components
 
+import (
+	"fmt"
+	"github.com/spf13/viper"
+	"log"
+	"net/url"
+	"switches/services"
+)
+
 templ Navbar(route string) {
 	<header id="header">
 		<a
@@ -13,5 +21,30 @@ templ Navbar(route string) {
 			</div>
 			<h1 class="text-light">Waugze</h1>
 		</a>
+		<a href={ templ.SafeURL(getLoginLink()) }>Yo</a>
 	</header>
+}
+
+func getLoginLink() string {
+	log.Println("Generating login link")
+	auth, err := services.GenerateAuthString()
+	if err != nil {
+		log.Println(err)
+		return ""
+	}
+
+	callback := url.QueryEscape(viper.GetString("AUTH_REDIRECT_URL"))
+	authURL := fmt.Sprintf(
+		"https://%s/oauth/v2/authorize?client_id=%s&redirect_uri=%s&response_type=code&scope=%s&state=%s&nonce=%s&code_challenge=%s&code_challenge_method=S256",
+		viper.GetString("AUTH_URL"),
+		viper.GetString("AUTH_CLIENT_ID"),
+		callback,
+		url.QueryEscape("openid profile email"),
+		auth.State,
+		auth.Nonce,
+		auth.CodeChallenge,
+	)
+	log.Println("Generated auth string: ", auth)
+
+	return authURL
 }

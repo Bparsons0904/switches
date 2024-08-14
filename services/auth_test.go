@@ -1,4 +1,4 @@
-package auth
+package services
 
 import (
 	"encoding/base64"
@@ -7,7 +7,7 @@ import (
 )
 
 func TestGenerateAuth(t *testing.T) {
-	auth, err := GenerateAuth()
+	auth, err := GenerateAuthString()
 	if err != nil {
 		t.Fatalf("GenerateAuth returned an error: %v", err)
 	}
@@ -22,7 +22,7 @@ func TestGenerateAuth(t *testing.T) {
 }
 
 func TestGetAuth(t *testing.T) {
-	auth, err := GenerateAuth()
+	auth, err := GenerateAuthString()
 	if err != nil {
 		t.Fatalf("GenerateAuth returned an error: %v", err)
 	}
@@ -44,7 +44,7 @@ func TestGetAuth(t *testing.T) {
 }
 
 func TestCleanUpAuths(t *testing.T) {
-	auth, err := GenerateAuth()
+	auth, err := GenerateAuthString()
 	if err != nil {
 		t.Fatalf("GenerateAuth returned an error: %v", err)
 	}

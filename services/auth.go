@@ -1,4 +1,4 @@
-package auth
+package services
 
 import (
 	"crypto/rand"
@@ -41,7 +41,7 @@ func generateCodeChallenge(verifier string) string {
 	return base64.RawURLEncoding.EncodeToString(h.Sum(nil))
 }
 
-func GenerateAuth() (Auth, error) {
+func GenerateAuthString() (Auth, error) {
 	state, err := generateRandomString(32)
 	if err != nil {
 		log.Println("Error generating state", err)
