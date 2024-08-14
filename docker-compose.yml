@@ -18,3 +18,4 @@ services:
       - DB_NAME=${DB_NAME}
       - DB_PORT=${DB_PORT}
       - ./static:/app/static
+    restart: unless-stopped
