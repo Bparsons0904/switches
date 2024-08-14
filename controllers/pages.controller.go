@@ -2,7 +2,6 @@ package controllers
 
 import (
 	"log"
-
 	"switches/templates/pages"
 
 	"github.com/gofiber/fiber/v2"
@@ -15,5 +14,10 @@ func GetHome(c *fiber.Ctx) error {
 
 func GetSwitches(c *fiber.Ctx) error {
 	log.Println("GetSwitches")
+	return Render(pages.SwitchesPage(), pages.Switches())(c)
+}
+
+func GetAuthCallback(c *fiber.Ctx) error {
+	log.Println("Get auth callback")
 	return Render(pages.SwitchesPage(), pages.Switches())(c)
 }

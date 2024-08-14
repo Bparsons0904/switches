@@ -4,11 +4,10 @@ import (
 	"log"
 	"os"
 	"runtime"
-	"time"
-
 	"switches/config"
 	"switches/controllers"
 	"switches/database"
+	"time"
 
 	"github.com/gofiber/fiber/v2"
 	"github.com/gofiber/fiber/v2/middleware/monitor"
@@ -49,6 +48,7 @@ func SetupRoutes(app *fiber.App, config config.Config) {
 	// app.Use(compress.New(compress.Config{
 	// 	Level: compress.LevelDefault,
 	// }))
+	app.Get("/auth", controllers.GetAuthCallback)
 	app.Get("/switches", controllers.GetSwitches)
 	app.Get("/", controllers.GetHome)
 
