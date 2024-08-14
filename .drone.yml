@@ -12,11 +12,11 @@ steps:
     commands:
       - docker pull switches_stage:latest || true
       - docker build --cache-from switches_stage:latest -t switches_stage:latest .
-      # when:
-      #   branch:
-      #     - main
-      #   event:
-      #     - push
+    when:
+      branch:
+        - main
+      event:
+        - push
   # Migrate Stage
   - name: migrate-staging
     image: golang:latest
@@ -35,11 +35,11 @@ steps:
         from_secret: DB_PORT_STAGE
     commands:
       - go run ./migrator/migrator.go -up
-    # when:
-    #   branch:
-    #     - main
-    #   event:
-    #     - push
+    when:
+      branch:
+        - main
+      event:
+        - push
     depends_on:
       - build-staging
   # Deploy Stage
@@ -71,11 +71,11 @@ steps:
       - docker-compose up -d --build
       - docker-compose ps
       - docker image prune -f
-    # when:
-    #   branch:
-    #     - main
-    #   event:
-    #     - push
+    when:
+      branch:
+        - main
+      event:
+        - push
     depends_on:
       - migrate-staging
 trigger:
