@@ -17,8 +17,6 @@ steps:
         - main
       event:
         - push
-      status:
-        - success
   # Migrate Stage
   - name: migrate-staging
     image: golang:latest
@@ -42,8 +40,6 @@ steps:
         - main
       event:
         - push
-      status:
-        - success
     depends_on:
       - build-staging
   # Deploy Stage
@@ -80,8 +76,6 @@ steps:
         - main
       event:
         - push
-      status:
-        - success
     depends_on:
       - migrate-staging
   # Build Production
@@ -160,6 +154,10 @@ steps:
         - refs/tags/v*
     depends_on:
       - migrate-production
+trigger:
+  event:
+    - push
+    - tag
 volumes:
   - name: docker_cache
     host:
