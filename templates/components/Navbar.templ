@@ -25,7 +25,6 @@ templ Navbar(route string) {
 }
 
 func getLoginLink() string {
-	log.Println("Generating login link")
 	auth, err := services.GenerateAuthString()
 	if err != nil {
 		log.Println("Error generating auth string", err)
@@ -37,10 +36,26 @@ func getLoginLink() string {
 		auth.AuthURL,
 		auth.ClientID,
 		url.QueryEscape(auth.CallbackURL),
-		url.QueryEscape("openid profile email"),
+		url.QueryEscape("openid profile email offline_access"),
 		auth.State,
 		auth.Nonce,
 		auth.CodeChallenge,
 	)
 	return authURL
 }
+
+// func parseIDToken(idToken string) (jwt.MapClaims, error) {
+// 	token, err := jwt.Parse(idToken, func(token *jwt.Token) (interface{}, error) {
+// 		// Normally, you would verify the token's signature here using a public key.
+// 		return []byte("your-signing-key"), nil
+// 	})
+// 	if err != nil {
+// 		return nil, err
+// 	}
+//
+// 	if claims, ok := token.Claims.(jwt.MapClaims); ok && token.Valid {
+// 		return claims, nil
+// 	} else {
+// 		return nil, fmt.Errorf("invalid ID token")
+// 	}
+// }

@@ -19,6 +19,7 @@ type Auth struct {
 	State         string    `json:"state"`
 	Nonce         string    `json:"nonce"`
 	CodeChallenge string    `json:"codeChallenge"`
+	CodeVerifier  string    `json:"codeVerifier"`
 	ExpiresAt     time.Time `json:"expiresAt"`
 }
 
@@ -75,6 +76,7 @@ func GenerateAuthString() (Auth, error) {
 		State:         state,
 		Nonce:         nonce,
 		CodeChallenge: codeChallenge,
+		CodeVerifier:  codeVerifier,
 		ExpiresAt:     expiresAt,
 	}
 

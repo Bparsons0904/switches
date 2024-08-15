@@ -5,7 +5,9 @@ go 1.22.1
 require (
 	github.com/Bparsons0904/deadigations v1.2.1
 	github.com/a-h/templ v0.2.747
+	github.com/dgrijalva/jwt-go v3.2.0+incompatible
 	github.com/gofiber/fiber/v2 v2.52.5
+	github.com/golang-jwt/jwt v3.2.2+incompatible
 	github.com/google/uuid v1.6.0
 	github.com/spf13/viper v1.19.0
 	github.com/tdewolff/minify/v2 v2.20.37
