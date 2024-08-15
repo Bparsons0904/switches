@@ -2,7 +2,6 @@ package components
 
 import (
 	"fmt"
-	"github.com/spf13/viper"
 	"log"
 	"net/url"
 	"switches/services"
@@ -17,7 +16,7 @@ templ Navbar(route string) {
 			hx-push-url="/"
 		>
 			<div class="img-wrapper">
-				<img src="images/switches_logo_white.webp" alt="switclh as a logo"/>
+				<img src="/images/switches_logo_white.webp" alt="switclh as a logo"/>
 			</div>
 			<h1 class="text-light">Waugze</h1>
 		</a>
@@ -29,22 +28,19 @@ func getLoginLink() string {
 	log.Println("Generating login link")
 	auth, err := services.GenerateAuthString()
 	if err != nil {
-		log.Println(err)
+		log.Println("Error generating auth string", err)
 		return ""
 	}
 
-	callback := url.QueryEscape(viper.GetString("AUTH_REDIRECT_URL"))
 	authURL := fmt.Sprintf(
 		"https://%s/oauth/v2/authorize?client_id=%s&redirect_uri=%s&response_type=code&scope=%s&state=%s&nonce=%s&code_challenge=%s&code_challenge_method=S256",
-		viper.GetString("AUTH_URL"),
-		viper.GetString("AUTH_CLIENT_ID"),
-		callback,
+		auth.AuthURL,
+		auth.ClientID,
+		url.QueryEscape(auth.CallbackURL),
 		url.QueryEscape("openid profile email"),
 		auth.State,
 		auth.Nonce,
 		auth.CodeChallenge,
 	)
-	log.Println("Generated auth string: ", auth)
-
 	return authURL
 }

@@ -8,9 +8,14 @@ import (
 	"log"
 	"sync"
 	"time"
+
+	"github.com/spf13/viper"
 )
 
 type Auth struct {
+	ClientID      string    `json:"clientId"`
+	AuthURL       string    `json:"authUrl"`
+	CallbackURL   string    `json:"callbackUrl"`
 	State         string    `json:"state"`
 	Nonce         string    `json:"nonce"`
 	CodeChallenge string    `json:"codeChallenge"`
@@ -63,8 +68,10 @@ func GenerateAuthString() (Auth, error) {
 	codeChallenge := generateCodeChallenge(codeVerifier)
 
 	expiresAt := time.Now().Add(15 * time.Minute)
-
 	auth := Auth{
+		ClientID:      viper.GetString("AUTH_CLIENT_ID"),
+		AuthURL:       viper.GetString("AUTH_URL"),
+		CallbackURL:   viper.GetString("AUTH_REDIRECT_URL"),
 		State:         state,
 		Nonce:         nonce,
 		CodeChallenge: codeChallenge,

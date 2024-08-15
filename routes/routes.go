@@ -48,7 +48,7 @@ func SetupRoutes(app *fiber.App, config config.Config) {
 	// app.Use(compress.New(compress.Config{
 	// 	Level: compress.LevelDefault,
 	// }))
-	app.Get("/auth", controllers.GetAuthCallback)
+	app.Get("/auth/callback", controllers.GetAuthCallback)
 	app.Get("/switches", controllers.GetSwitches)
 	app.Get("/", controllers.GetHome)
 
