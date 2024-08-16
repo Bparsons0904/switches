@@ -4,11 +4,14 @@ import (
 	"crypto/rand"
 	"crypto/sha256"
 	"encoding/base64"
+	"encoding/json"
+	"fmt"
 	"io"
 	"log"
-	"sync"
+	"switches/database"
 	"time"
 
+	"github.com/go-redis/redis/v8"
 	"github.com/spf13/viper"
 )
 
@@ -28,11 +31,6 @@ type AuthResponse struct {
 	State string `json:"state"`
 }
 
-var (
-	activeAuths = make(map[string]Auth)
-	authMutex   sync.RWMutex
-)
-
 func generateRandomString(length int) (string, error) {
 	b := make([]byte, length)
 	if _, err := io.ReadFull(rand.Reader, b); err != nil {
@@ -48,6 +46,7 @@ func generateCodeChallenge(verifier string) string {
 }
 
 func GenerateAuthString() (Auth, error) {
+	KeyDB := database.GetKeyDatabase()
 	state, err := generateRandomString(32)
 	if err != nil {
 		log.Println("Error generating state", err)
@@ -80,42 +79,44 @@ func GenerateAuthString() (Auth, error) {
 		ExpiresAt:     expiresAt,
 	}
 
-	activeAuths[state] = auth
+	authJSON, err := json.Marshal(auth)
+	if err != nil {
+		log.Println("Error marshalling auth:", err)
+		return Auth{}, err
+	}
+
+	if err := KeyDB.Set(KeyDB.Context(), state, authJSON, 15*time.Minute).Err(); err != nil {
+		log.Println("Error saving auth", err)
+		return Auth{}, err
+	}
 
 	return auth, nil
 }
 
-func GetAuth(state string) (Auth, bool) {
-	authMutex.Lock()
-	defer authMutex.Unlock()
+func GetAuth(state string) (Auth, error) {
+	KeyDB := database.GetKeyDatabase()
+	authJSON, err := KeyDB.Get(KeyDB.Context(), state).Result()
+	if err == redis.Nil {
+		log.Println("Auth not found for state:", state)
+		return Auth{}, err
+	} else if err != nil {
+		log.Println("Error retrieving auth from Redis:", err)
+		return Auth{}, err
+	}
 
-	auth, ok := activeAuths[state]
-	if !ok {
-		log.Println("Auth not found for state", state)
-		return Auth{}, false
+	var auth Auth
+	err = json.Unmarshal([]byte(authJSON), &auth)
+	if err != nil {
+		log.Println("Error unmarshalling auth:", err)
+		return Auth{}, err
 	}
 
 	if time.Now().After(auth.ExpiresAt) {
-		log.Println("Auth expired for state", state)
-		delete(activeAuths, state)
-		return Auth{}, false
+		log.Println("Auth expired for state:", state)
+		KeyDB.Del(KeyDB.Context(), state)
+		return Auth{}, fmt.Errorf("Auth expired for state: %s", state)
 	}
 
-	delete(activeAuths, state)
-	return auth, ok
-}
-
-func CleanUpAuths() {
-	authMutex.Lock()
-	defer authMutex.Unlock()
-
-	newActiveAuths := make(map[string]Auth, len(activeAuths))
-	now := time.Now()
-	for state, auth := range activeAuths {
-		if now.Before(auth.ExpiresAt) {
-			newActiveAuths[state] = auth
-		}
-	}
-
-	activeAuths = newActiveAuths
+	KeyDB.Del(KeyDB.Context(), state)
+	return auth, nil
 }

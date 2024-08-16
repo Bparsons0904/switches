@@ -30,17 +30,17 @@ func ConnectDB(config config.Config, server *fiber.App) (*gorm.DB, *redis.Client
 		log.Fatal("Failed to connect to the KeyDB Database")
 	}
 
-	server.Use(DBMiddleware(DB, KeyDB))
+	// server.Use(DBMiddleware(DB, KeyDB))
 	return DB, KeyDB
 }
 
-func DBMiddleware(db *gorm.DB, keydb *redis.Client) fiber.Handler {
-	return func(c *fiber.Ctx) error {
-		c.Locals("db", db)
-		c.Locals("keydb", keydb)
-		return c.Next()
-	}
-}
+// func DBMiddleware(db *gorm.DB, keydb *redis.Client) fiber.Handler {
+// 	return func(c *fiber.Ctx) error {
+// 		c.Locals("db", db)
+// 		// c.Locals("keydb", keydb)
+// 		return c.Next()
+// 	}
+// }
 
 func StartPostgresDB(config config.Config) (*gorm.DB, error) {
 	dsn := fmt.Sprintf(
@@ -81,6 +81,11 @@ func GetDatabase() *gorm.DB {
 }
 
 func StartKeyDB(config config.Config) (*redis.Client, error) {
+	if KeyDB != nil {
+		log.Println("KeyDB already initialized. Reusing existing connection.")
+		return KeyDB, nil
+	}
+
 	keydb := redis.NewClient(&redis.Options{
 		Addr:     config.KeyDBHost,
 		Password: config.KeyDBPassword,

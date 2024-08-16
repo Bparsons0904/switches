@@ -17,8 +17,8 @@ func GetAuthCallback(c *fiber.Ctx) error {
 	code := c.Query("code")
 	state := c.Query("state")
 
-	auth, ok := services.GetAuth(state)
-	if !ok {
+	auth, err := services.GetAuth(state)
+	if err != nil {
 		log.Println("Error getting auth")
 		return c.Status(fiber.StatusInternalServerError).SendString("Error getting auth")
 	}
