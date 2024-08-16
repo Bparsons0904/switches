@@ -112,14 +112,15 @@ func GetKeyDatabase() *redis.Client {
 	return KeyDB
 }
 
-func SetJSONKeyDB[T any](key string, value T) error {
+func SetJSONKeyDB[T any](hash, key string, value T) error {
 	jsonValue, err := json.Marshal(value)
 	if err != nil {
 		log.Println("Error marshalling JSON for key/value store", err)
 		return err
 	}
 
-	if err := KeyDB.Set(KeyDB.Context(), key, jsonValue, 0).Err(); err != nil {
+	query := fmt.Sprintf("%s:%s", hash, key)
+	if err := KeyDB.Set(KeyDB.Context(), query, jsonValue, 0).Err(); err != nil {
 		log.Println("Error setting key/value store for JSON value", err)
 		return err
 	}
@@ -127,14 +128,15 @@ func SetJSONKeyDB[T any](key string, value T) error {
 	return nil
 }
 
-func GetJSONKeyDB[T any](key string) (T, error) {
+func GetJSONKeyDB[T any](hash, key string) (T, error) {
 	var value T
-	if key == "" {
+	if hash == "" || key == "" {
 		log.Println("Key is empty, cannot get JDON value from key/value store,")
 		return value, fmt.Errorf("Key is empty, cannot get JDON value from key/value store")
 	}
 
-	jsonValue, err := KeyDB.Get(KeyDB.Context(), key).Result()
+	query := fmt.Sprintf("%s:%s", hash, key)
+	jsonValue, err := KeyDB.Get(KeyDB.Context(), query).Result()
 	if err != nil {
 		log.Println("Error getting key/value store for JSON value", err)
 		return value, err
