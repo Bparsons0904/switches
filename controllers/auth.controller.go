@@ -10,12 +10,17 @@ import (
 	"switches/database"
 	"switches/models"
 	"switches/services"
+	"time"
 
 	"github.com/gofiber/fiber/v2"
+	"github.com/google/uuid"
 	"gorm.io/gorm"
 )
 
 func GetAuthCallback(c *fiber.Ctx) error {
+	timer := time.Now()
+	totalTime := timer
+
 	log.Println("Get auth callback")
 	code := c.Query("code")
 	state := c.Query("state")
@@ -25,6 +30,8 @@ func GetAuthCallback(c *fiber.Ctx) error {
 		log.Println("Error getting auth")
 		return c.Status(fiber.StatusInternalServerError).SendString("Error getting auth")
 	}
+
+	log.Println("Time to GetAuth", time.Duration(time.Since(timer)).String())
 
 	tokenURL := fmt.Sprintf("https://%s/oauth/v2/token", auth.AuthURL)
 	resp, err := http.PostForm(tokenURL, url.Values{
@@ -41,9 +48,10 @@ func GetAuthCallback(c *fiber.Ctx) error {
 	defer resp.Body.Close()
 
 	var tokenResponse struct {
-		AccessToken  string `json:"access_token"`
 		IDToken      string `json:"id_token"`
+		AccessToken  string `json:"access_token"`
 		RefreshToken string `json:"refresh_token"`
+		ExpiresIn    int    `json:"expires_in"`
 	}
 	if err := json.NewDecoder(resp.Body).Decode(&tokenResponse); err != nil {
 		log.Println("Error decoding token response", err)
@@ -78,8 +86,6 @@ func GetAuthCallback(c *fiber.Ctx) error {
 		GivenName:         claims["given_name"].(string),
 	}
 
-	log.Println("User claims", userClaims)
-
 	DB := database.GetDatabase()
 	var user models.User
 	err = DB.First(&user, "sub = ?", userClaims.Sub).Error
@@ -95,8 +101,53 @@ func GetAuthCallback(c *fiber.Ctx) error {
 	}
 
 	log.Println("User", user)
+	id, err := uuid.NewV7()
+	if err != nil {
+		log.Println("Error generating session id", err)
+		return err
+	}
+	session := Session{
+		SessionID:    id,
+		UserID:       user.ID,
+		Sub:          user.Sub,
+		AccessToken:  tokenResponse.AccessToken,
+		RefreshToken: tokenResponse.RefreshToken,
+		ExpiresIn:    tokenResponse.ExpiresIn,
+	}
+
+	if err := database.SetJSONKeyDB(session.SessionID.String(), session); err != nil {
+		log.Println("Error setting session in keydb", err)
+	}
+
+	retrievedSession, err := database.GetJSONKeyDB[Session](session.SessionID.String())
+	if err != nil {
+		log.Println("Error getting session from keydb", err)
+		return err
+	}
+	log.Println("Retrieved session", retrievedSession)
+
+	expiredIn := time.Now().Add(time.Duration(tokenResponse.ExpiresIn) * time.Second)
+	cookie := &fiber.Cookie{
+		Name:     "sessionID",
+		Value:    session.SessionID.String(),
+		Expires:  expiredIn,
+		HTTPOnly: true,
+		Secure:   true,
+		SameSite: fiber.CookieSameSiteNoneMode,
+	}
+
+	c.Cookie(cookie)
 
 	return c.Redirect("/")
+}
+
+type Session struct {
+	SessionID    uuid.UUID `json:"sessionId"`
+	UserID       uuid.UUID `json:"userId"`
+	Sub          int       `json:"sub"`
+	AccessToken  string    `json:"accessToken"`
+	RefreshToken string    `json:"refreshToken"`
+	ExpiresIn    int       `json:"expiresIn"`
 }
 
 func createUser(user *models.User, claims *Claims) error {
