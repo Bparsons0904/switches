@@ -4,7 +4,6 @@ import (
 	"fmt"
 	"log"
 	"os"
-	"reflect"
 	"time"
 
 	"github.com/spf13/viper"
@@ -48,7 +47,25 @@ func LoadConfig() (Config, error) {
 
 	appendNumber := time.Now().Unix()
 	viper.Set("appendNumber", appendNumber)
-	log.Println("Current time in seconds", appendNumber)
+	requiredEnvs := []string{
+		"TIER",
+		"BASE_URL",
+		"SERVER_PORT",
+		"DB_HOST",
+		"DB_USER",
+		"DB_PASSWORD",
+		"DB_NAME",
+		"DB_PORT",
+		"AUTH_CLIENT_ID",
+		"AUTH_URL",
+		"AUTH_REDIRECT_URL",
+		"KEYDB_HOST",
+		"KEYDB_PASSWORD",
+	}
+
+	if err := validateEnvVars(requiredEnvs); err != nil {
+		return Config{}, err
+	}
 
 	config := Config{
 		Tier:            viper.GetString("TIER"),
@@ -68,37 +85,13 @@ func LoadConfig() (Config, error) {
 		AppendNumber:    appendNumber,
 	}
 
-	err := validateConfig(config)
-	if err != nil {
-		return Config{}, err
-	}
-
 	return config, nil
 }
 
-func validateConfig(config Config) error {
-	v := reflect.ValueOf(config)
-
-	for i := 0; i < v.NumField(); i++ {
-		field := v.Field(i)
-		fieldName := v.Type().Field(i).Name
-
-		switch field.Kind() {
-		case reflect.String:
-			if field.String() == "" {
-				return fmt.Errorf("config string field %s is empty", fieldName)
-			}
-		case reflect.Int64:
-			if field.Int() == 0 {
-				return fmt.Errorf("config int64 field %s is not set", fieldName)
-			}
-		case reflect.Bool:
-		case reflect.Float64:
-			if field.Float() == 0.0 {
-				return fmt.Errorf("config bool field %s is not set", fieldName)
-			}
-		default:
-			return fmt.Errorf("not field type %s is not set", fieldName)
+func validateEnvVars(envVars []string) error {
+	for _, envVar := range envVars {
+		if viper.GetString(envVar) == "" {
+			return fmt.Errorf("required environment variable %s is not set or empty", envVar)
 		}
 	}
 	return nil
