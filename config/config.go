@@ -22,6 +22,9 @@ type Config struct {
 	AuthClientID    string
 	AuthURL         string
 	AuthRedirectURL string
+	KeyDBHost       string
+	KeyDBPassword   string
+	KeyDB           int64
 	AppendNumber    int64
 }
 
@@ -59,6 +62,9 @@ func LoadConfig() (Config, error) {
 		AuthClientID:    viper.GetString("AUTH_CLIENT_ID"),
 		AuthURL:         viper.GetString("AUTH_URL"),
 		AuthRedirectURL: viper.GetString("AUTH_REDIRECT_URL"),
+		KeyDBHost:       viper.GetString("KEYDB_HOST"),
+		KeyDBPassword:   viper.GetString("KEYDB_PASSWORD"),
+		KeyDB:           viper.GetInt64("KEYDB_DB"),
 		AppendNumber:    appendNumber,
 	}
 
