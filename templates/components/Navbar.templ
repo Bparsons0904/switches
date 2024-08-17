@@ -23,16 +23,12 @@ templ Navbar(route string, user models.User) {
 			</div>
 			<h1 class="text-light">Waugze</h1>
 		</a>
-		@getUserStatusButton(user)
+		if user.ID != uuid.Nil {
+			@LogoutButton()
+		} else {
+			@LoginButton()
+		}
 	</header>
-}
-
-func getUserStatusButton(user models.User) templ.Component {
-	if user.ID != uuid.Nil {
-		return LogoutButton()
-	} else {
-		return LoginButton()
-	}
 }
 
 templ LoginButton() {
@@ -64,21 +60,12 @@ templ LogoutButton() {
 }
 
 func getLogoutLink() string {
-	baseLogoutURL := fmt.Sprintf("https://%s/oauth/v1/end_session", viper.GetString("AUTH_URL"))
+	baseLogoutURL := fmt.Sprintf("https://%s/oidc/v1/end_session", viper.GetString("AUTH_URL"))
 
 	params := url.Values{}
 	params.Add("client_id", viper.GetString("AUTH_CLIENT_ID"))
 	params.Add("post_logout_redirect_uri", fmt.Sprintf("%s/auth/logout", viper.GetString("BASE_URL")))
 
-	// If you have access to the user's ID token, include it
-	// params.Add("id_token_hint", userIDToken)
-
-	// Generate and store a state parameter for security
-	state, _ := services.GenerateRandomString(32) // Implement this function to generate a random state
-	params.Add("state", state)
-
 	logoutURL := fmt.Sprintf("%s?%s", baseLogoutURL, params.Encode())
-
-	log.Println("Logout URL", logoutURL)
 	return logoutURL
 }
