@@ -21,6 +21,7 @@ import (
 func UserLogout(c *fiber.Ctx) error {
 	sessionID := c.Cookies("sessionID")
 	c.ClearCookie("sessionID")
+	log.Println("User logout", sessionID)
 	if sessionID != "" {
 		retrievedSession, err := database.GetJSONKeyDB[Session]("session", sessionID)
 		if err != nil {
@@ -29,6 +30,7 @@ func UserLogout(c *fiber.Ctx) error {
 			return c.Redirect("/")
 		}
 
+		log.Println("Deleting session", sessionID)
 		database.KeyDB.Del(database.KeyDB.Context(), "session:"+sessionID)
 		database.KeyDB.Del(database.KeyDB.Context(), "user:"+retrievedSession.UserID.String())
 
@@ -136,6 +138,7 @@ func GetAuthCallback(c *fiber.Ctx) error {
 		AccessToken:  tokenResponse.AccessToken,
 		RefreshToken: tokenResponse.RefreshToken,
 		ExpiresIn:    tokenResponse.ExpiresIn,
+		IDToken:      tokenResponse.IDToken,
 	}
 
 	if err := database.SetJSONKeyDB("session", session.SessionID.String(), session); err != nil {
@@ -167,6 +170,7 @@ type Session struct {
 	AccessToken  string    `json:"accessToken"`
 	RefreshToken string    `json:"refreshToken"`
 	ExpiresIn    int       `json:"expiresIn"`
+	IDToken      string    `json:"idToken"`
 }
 
 func createUser(user *models.User, claims *Claims) error {
