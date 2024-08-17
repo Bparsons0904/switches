@@ -7,16 +7,33 @@ import (
 	"fmt"
 	"math/big"
 	"net/http"
+	"switches/database"
 
 	"github.com/dgrijalva/jwt-go"
 	"github.com/spf13/viper"
 )
 
-var publicKey *rsa.PublicKey
-
 func getPublicKey(kid string) (*rsa.PublicKey, error) {
-	if publicKey != nil {
-		return publicKey, nil
+	redisKey := fmt.Sprintf("publicKey:%s", kid)
+	publicKeyN := database.KeyDB.Get(database.KeyDB.Context(), redisKey+":N").Val()
+	publicKeyE := database.KeyDB.Get(database.KeyDB.Context(), redisKey+":E").Val()
+
+	if publicKeyN != "" && publicKeyE != "" {
+		nBytes, err := base64.RawURLEncoding.DecodeString(publicKeyN)
+		if err != nil {
+			return nil, err
+		}
+		eBytes, err := base64.RawURLEncoding.DecodeString(publicKeyE)
+		if err != nil {
+			return nil, err
+		}
+		e := big.NewInt(0).SetBytes(eBytes).Int64()
+
+		pubKey := &rsa.PublicKey{
+			N: big.NewInt(0).SetBytes(nBytes),
+			E: int(e),
+		}
+		return pubKey, nil
 	}
 
 	keysPath := fmt.Sprintf("https://%s/oauth/v2/keys", viper.GetString("AUTH_URL"))
@@ -57,7 +74,10 @@ func getPublicKey(kid string) (*rsa.PublicKey, error) {
 				N: big.NewInt(0).SetBytes(nBytes),
 				E: int(e),
 			}
-			publicKey = pubKey
+
+			database.KeyDB.Set(database.KeyDB.Context(), redisKey+":N", key.N, 0)
+			database.KeyDB.Set(database.KeyDB.Context(), redisKey+":E", key.E, 0)
+
 			return pubKey, nil
 		}
 	}

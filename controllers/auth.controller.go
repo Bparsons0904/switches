@@ -18,6 +18,24 @@ import (
 	"gorm.io/gorm"
 )
 
+func UserLogout(c *fiber.Ctx) error {
+	sessionID := c.Cookies("sessionID")
+	c.ClearCookie("sessionID")
+	if sessionID != "" {
+		retrievedSession, err := database.GetJSONKeyDB[Session]("session", sessionID)
+		if err != nil {
+			log.Println("Error getting session from keydb", err)
+			c.ClearCookie("sessionID")
+			return c.Redirect("/")
+		}
+
+		database.KeyDB.Del(database.KeyDB.Context(), "session:"+sessionID)
+		database.KeyDB.Del(database.KeyDB.Context(), "user:"+retrievedSession.UserID.String())
+	}
+
+	return c.Redirect("/")
+}
+
 func GetAuthCallback(c *fiber.Ctx) error {
 	timer := utils.StartTimer("Get auth callback")
 
@@ -90,9 +108,8 @@ func GetAuthCallback(c *fiber.Ctx) error {
 
 	timer.LogTime("Get claims")
 
-	DB := database.GetDatabase()
 	var user models.User
-	err = DB.First(&user, "sub = ?", userClaims.Sub).Error
+	err = database.DB.First(&user, "sub = ?", userClaims.Sub).Error
 
 	timer.LogTime("Query user")
 	if err == gorm.ErrRecordNotFound {
@@ -153,8 +170,6 @@ type Session struct {
 }
 
 func createUser(user *models.User, claims *Claims) error {
-	DB := database.GetDatabase()
-
 	user.Sub = claims.Sub
 	user.Email = claims.Email
 	user.EmailVerified = claims.EmailVerified
@@ -163,7 +178,7 @@ func createUser(user *models.User, claims *Claims) error {
 	user.PreferredUsername = claims.PreferredUsername
 	user.GivenName = claims.GivenName
 
-	if err := DB.Create(&user).Error; err != nil {
+	if err := database.DB.Create(&user).Error; err != nil {
 		log.Println("Error creating user", err)
 		return err
 	}

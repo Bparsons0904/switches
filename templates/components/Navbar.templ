@@ -2,12 +2,14 @@ package components
 
 import (
 	"fmt"
+	"github.com/google/uuid"
 	"log"
 	"net/url"
+	"switches/models"
 	"switches/services"
 )
 
-templ Navbar(route string) {
+templ Navbar(route string, user models.User) {
 	<header id="header">
 		<a
 			class="header-wrapper"
@@ -20,8 +22,26 @@ templ Navbar(route string) {
 			</div>
 			<h1 class="text-light">Waugze</h1>
 		</a>
-		<a href={ templ.SafeURL(getLoginLink()) }>Yo</a>
+		@getUserStatusButton(user)
 	</header>
+}
+
+func getUserStatusButton(user models.User) templ.Component {
+	if user.ID != uuid.Nil {
+		return LogoutButton()
+	} else {
+		return LoginButton()
+	}
+}
+
+templ LogoutButton() {
+	<a
+		href="/auth/logout"
+	><button type="button">Logout</button></a>
+}
+
+templ LoginButton() {
+	<a href={ templ.SafeURL(getLoginLink()) }><button type="button">Login</button></a>
 }
 
 func getLoginLink() string {

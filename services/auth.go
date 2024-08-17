@@ -46,7 +46,6 @@ func generateCodeChallenge(verifier string) string {
 }
 
 func GenerateAuthString() (Auth, error) {
-	KeyDB := database.GetKeyDatabase()
 	state, err := generateRandomString(32)
 	if err != nil {
 		log.Println("Error generating state", err)
@@ -85,7 +84,7 @@ func GenerateAuthString() (Auth, error) {
 		return Auth{}, err
 	}
 
-	if err := KeyDB.Set(KeyDB.Context(), state, authJSON, 15*time.Minute).Err(); err != nil {
+	if err := database.KeyDB.Set(database.KeyDB.Context(), state, authJSON, 15*time.Minute).Err(); err != nil {
 		log.Println("Error saving auth", err)
 		return Auth{}, err
 	}
@@ -94,8 +93,9 @@ func GenerateAuthString() (Auth, error) {
 }
 
 func GetAuth(state string) (Auth, error) {
-	KeyDB := database.GetKeyDatabase()
-	authJSON, err := KeyDB.Get(KeyDB.Context(), state).Result()
+	keyDB := database.KeyDB
+
+	authJSON, err := keyDB.Get(keyDB.Context(), state).Result()
 	if err == redis.Nil {
 		log.Println("Auth not found for state:", state)
 		return Auth{}, err
@@ -113,10 +113,10 @@ func GetAuth(state string) (Auth, error) {
 
 	if time.Now().After(auth.ExpiresAt) {
 		log.Println("Auth expired for state:", state)
-		KeyDB.Del(KeyDB.Context(), state)
+		keyDB.Del(keyDB.Context(), state)
 		return Auth{}, fmt.Errorf("Auth expired for state: %s", state)
 	}
 
-	KeyDB.Del(KeyDB.Context(), state)
+	keyDB.Del(keyDB.Context(), state)
 	return auth, nil
 }

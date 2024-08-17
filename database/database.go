@@ -67,18 +67,11 @@ func StartPostgresDB(config config.Config) (*gorm.DB, error) {
 	if err != nil {
 		return nil, err
 	}
-	SetDatabase(db)
+
 	log.Println("Connected Successfully to the PostgreSQL Database")
 
-	return db, nil
-}
-
-func SetDatabase(db *gorm.DB) {
 	DB = db
-}
-
-func GetDatabase() *gorm.DB {
-	return DB
+	return db, nil
 }
 
 func StartKeyDB(config config.Config) (*redis.Client, error) {
@@ -98,18 +91,10 @@ func StartKeyDB(config config.Config) (*redis.Client, error) {
 		return nil, err
 	}
 
-	SetKeyDatabase(keydb)
+	KeyDB = keydb
 	log.Println("Connected Successfully to the KeyDB Database")
 
 	return KeyDB, nil
-}
-
-func SetKeyDatabase(keydb *redis.Client) {
-	KeyDB = keydb
-}
-
-func GetKeyDatabase() *redis.Client {
-	return KeyDB
 }
 
 func SetJSONKeyDB[T any](hash, key string, value T) error {

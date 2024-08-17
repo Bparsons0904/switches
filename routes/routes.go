@@ -1,12 +1,10 @@
 package routes
 
 import (
-	"log"
 	"os"
 	"runtime"
 	"switches/config"
 	"switches/controllers"
-	"switches/database"
 	"time"
 
 	"github.com/gofiber/fiber/v2"
@@ -49,6 +47,7 @@ func SetupRoutes(app *fiber.App, config config.Config) {
 	// 	Level: compress.LevelDefault,
 	// }))
 	app.Get("/auth/callback", controllers.GetAuthCallback)
+	app.Get("/auth/logout", controllers.UserLogout)
 	app.Get("/switches", controllers.GetSwitches)
 	app.Get("/", controllers.GetHome)
 
@@ -85,21 +84,13 @@ func getHealth(c *fiber.Ctx) error {
 	var memStats runtime.MemStats
 	runtime.ReadMemStats(&memStats)
 
-	sqlDB, err := database.GetDatabase().DB()
-	if err != nil {
-		log.Println("Error getting database: ", err)
-	}
-	dbAlive := sqlDB.Ping() == nil
-
 	version := os.Getenv("IMAGE_VERSION_TAG")
-
 	health := Health{
-		Uptime:        time.Since(startTime).String(),
-		AppVersion:    version,
-		MemoryUsage:   memStats.Alloc,
-		NumGoroutine:  runtime.NumGoroutine(),
-		NumCPU:        runtime.NumCPU(),
-		DatabaseAlive: dbAlive,
+		Uptime:       time.Since(startTime).String(),
+		AppVersion:   version,
+		MemoryUsage:  memStats.Alloc,
+		NumGoroutine: runtime.NumGoroutine(),
+		NumCPU:       runtime.NumCPU(),
 	}
 
 	return c.JSON(health)
