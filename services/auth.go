@@ -31,7 +31,7 @@ type AuthResponse struct {
 	State string `json:"state"`
 }
 
-func generateRandomString(length int) (string, error) {
+func GenerateRandomString(length int) (string, error) {
 	b := make([]byte, length)
 	if _, err := io.ReadFull(rand.Reader, b); err != nil {
 		return "", err
@@ -46,19 +46,19 @@ func generateCodeChallenge(verifier string) string {
 }
 
 func GenerateAuthString() (Auth, error) {
-	state, err := generateRandomString(32)
+	state, err := GenerateRandomString(32)
 	if err != nil {
 		log.Println("Error generating state", err)
 		return Auth{}, err
 	}
 
-	nonce, err := generateRandomString(32)
+	nonce, err := GenerateRandomString(32)
 	if err != nil {
 		log.Println("Error generating nonce", err)
 		return Auth{}, err
 	}
 
-	codeVerifier, err := generateRandomString(32)
+	codeVerifier, err := GenerateRandomString(32)
 	if err != nil {
 		log.Println("Error generating code verifier", err)
 		return Auth{}, err

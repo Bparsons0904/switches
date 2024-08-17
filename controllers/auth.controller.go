@@ -31,8 +31,8 @@ func UserLogout(c *fiber.Ctx) error {
 
 		database.KeyDB.Del(database.KeyDB.Context(), "session:"+sessionID)
 		database.KeyDB.Del(database.KeyDB.Context(), "user:"+retrievedSession.UserID.String())
-	}
 
+	}
 	return c.Redirect("/")
 }
 
