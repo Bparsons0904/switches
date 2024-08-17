@@ -80,10 +80,14 @@ func GetAuthCallback(c *fiber.Ctx) error {
 	}
 
 	timer.LogTime("Token decode")
-	claims, err := services.VerifyIDToken(tokenResponse.IDToken)
+	claims, err := services.VerifyIDToken(tokenResponse.IDToken, false)
 	if err != nil {
-		log.Println("Error verifying ID token", err)
-		return err
+		log.Println("Error verifying ID token w/o force", err)
+		claims, err = services.VerifyIDToken(tokenResponse.IDToken, true)
+		if err != nil {
+			log.Println("Error verifying ID token, /w force", err)
+			return err
+		}
 	}
 
 	sub, ok := claims["sub"].(string)

@@ -13,10 +13,13 @@ import (
 	"github.com/spf13/viper"
 )
 
-func getPublicKey(kid string) (*rsa.PublicKey, error) {
+func getPublicKey(kid string, force bool) (*rsa.PublicKey, error) {
 	redisKey := fmt.Sprintf("publicKey:%s", kid)
-	publicKeyN := database.KeyDB.Get(database.KeyDB.Context(), redisKey+":N").Val()
-	publicKeyE := database.KeyDB.Get(database.KeyDB.Context(), redisKey+":E").Val()
+	var publicKeyN, publicKeyE string
+	if !force {
+		publicKeyN = database.KeyDB.Get(database.KeyDB.Context(), redisKey+":N").Val()
+		publicKeyE = database.KeyDB.Get(database.KeyDB.Context(), redisKey+":E").Val()
+	}
 
 	if publicKeyN != "" && publicKeyE != "" {
 		nBytes, err := base64.RawURLEncoding.DecodeString(publicKeyN)
@@ -95,13 +98,13 @@ func getKeyID(tokenString string) (string, error) {
 	return "", fmt.Errorf("no kid found in token header")
 }
 
-func VerifyIDToken(idToken string) (jwt.MapClaims, error) {
+func VerifyIDToken(idToken string, force bool) (jwt.MapClaims, error) {
 	kid, err := getKeyID(idToken)
 	if err != nil {
 		return nil, err
 	}
 
-	publicKey, err := getPublicKey(kid)
+	publicKey, err := getPublicKey(kid, force)
 	if err != nil {
 		return nil, err
 	}
