@@ -5,6 +5,7 @@ import (
 	"runtime"
 	"switches/config"
 	"switches/controllers"
+	"switches/middleware"
 	"time"
 
 	"github.com/gofiber/fiber/v2"
@@ -47,7 +48,7 @@ func SetupRoutes(app *fiber.App, config config.Config) {
 	app.Use(compress.New(compress.Config{
 		Level: compress.LevelDefault,
 	}))
-	app.Get("/", controllers.GetHome)
+	app.Get("/", middleware.AuthenticateUser(config), controllers.GetHome)
 	AdminRoutes(app)
 	AuthRoutes(app)
 	SwitchRoutes(app)
