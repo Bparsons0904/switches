@@ -8,6 +8,7 @@ import (
 	"time"
 
 	"github.com/gofiber/fiber/v2"
+	"github.com/gofiber/fiber/v2/middleware/compress"
 	"github.com/gofiber/fiber/v2/middleware/monitor"
 )
 
@@ -43,13 +44,14 @@ func SetupRoutes(app *fiber.App, config config.Config) {
 	// 	})
 	// })
 
-	// app.Use(compress.New(compress.Config{
-	// 	Level: compress.LevelDefault,
-	// }))
-	app.Get("/auth/callback", controllers.GetAuthCallback)
-	app.Get("/auth/logout", controllers.UserLogout)
-	app.Get("/switches", controllers.GetSwitches)
+	app.Use(compress.New(compress.Config{
+		Level: compress.LevelDefault,
+	}))
 	app.Get("/", controllers.GetHome)
+	AdminRoutes(app)
+	AuthRoutes(app)
+	SwitchRoutes(app)
+	UserRoutes(app)
 
 	api := app.Group("/api")
 	HealthRoutes(api)
