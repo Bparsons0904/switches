@@ -33,6 +33,12 @@ steps:
         from_secret: DB_NAME
       DB_PORT:
         from_secret: DB_PORT_STAGE
+      KEYDB_HOST:
+        from_secret: KEYDB_HOST
+      KEYDB_PASSWORD:
+        from_secret: KEYDB_PASSWORD
+      KEYDB_DB:
+        from_secret: KEYDB_DB_STAGE
     commands:
       - go run ./migrator/migrator.go -up
     when:
@@ -153,6 +159,12 @@ steps:
         from_secret: DB_NAME
       DB_PORT:
         from_secret: DB_PORT_PROD
+      KEYDB_HOST:
+        from_secret: KEYDB_HOST
+      KEYDB_PASSWORD:
+        from_secret: KEYDB_PASSWORD
+      KEYDB_DB:
+        from_secret: KEYDB_DB_PROD
     commands:
       - docker-compose up -d --build
       - docker-compose ps

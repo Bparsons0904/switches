@@ -17,5 +17,8 @@ services:
       - DB_PASSWORD=${DB_PASSWORD}
       - DB_NAME=${DB_NAME}
       - DB_PORT=${DB_PORT}
+      - KEYDB_HOST=${KEYDB_HOST}
+      - KEYDB_PASSWORD=${KEYDB_PASSWORD}
+      - KEYDB_DB=${KEYDB_KB}
       - ./static:/app/static
     restart: unless-stopped
