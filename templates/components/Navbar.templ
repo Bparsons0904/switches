@@ -11,7 +11,7 @@ import (
 )
 
 templ Navbar(route string, user models.User) {
-	<header id="header">
+	<header id="navbar">
 		<a
 			class="header-wrapper"
 			hx-get="/"
@@ -23,16 +23,21 @@ templ Navbar(route string, user models.User) {
 			</div>
 			<h1 class="text-light">Waugze</h1>
 		</a>
-		if user.ID != uuid.Nil {
-			@LogoutButton()
-		} else {
-			@LoginButton()
-		}
+		<div class="menu-items">
+			if user.ID != uuid.Nil {
+				<div class="logged-in">
+					Hello, { user.Name }
+					@LogoutButton()
+				</div>
+			} else {
+				@LoginButton()
+			}
+		</div>
 	</header>
 }
 
 templ LoginButton() {
-	<a href={ templ.SafeURL(getLoginLink()) }><button type="button">Login</button></a>
+	<a href={ templ.SafeURL(getLoginLink()) }><button type="button" class="menu-button">Login</button></a>
 }
 
 func getLoginLink() string {
@@ -56,7 +61,7 @@ func getLoginLink() string {
 }
 
 templ LogoutButton() {
-	<a href={ templ.SafeURL(getLogoutLink()) }><button type="button">Logout</button></a>
+	<a href={ templ.SafeURL(getLogoutLink()) }><button class="btn-inverted" type="button">Logout</button></a>
 }
 
 func getLogoutLink() string {
