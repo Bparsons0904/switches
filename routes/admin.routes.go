@@ -1,9 +1,13 @@
 package routes
 
-import "github.com/gofiber/fiber/v2"
+import (
+	"switches/middleware"
+
+	"github.com/gofiber/fiber/v2"
+)
 
 func AdminRoutes(app *fiber.App) {
-	admin := app.Group("/admin")
+	admin := app.Group("/admin", middleware.IsAdmin())
 
 	admin.Get("/", AdminPlaceHolder)
 }

@@ -195,11 +195,12 @@ func createUser(user *models.User, claims *Claims) error {
 }
 
 type Claims struct {
-	Sub               int    `json:"sub"`
-	Email             string `json:"email"`
-	EmailVerified     bool   `json:"email_verified"`
-	FamilyName        string `json:"family_name"`
-	Name              string `json:"name"`
-	PreferredUsername string `json:"preferred_username"`
-	GivenName         string `json:"given_name"`
+	Sub               int      `json:"sub"`
+	Email             string   `json:"email"`
+	EmailVerified     bool     `json:"email_verified"`
+	FamilyName        string   `json:"family_name"`
+	Name              string   `json:"name"`
+	PreferredUsername string   `json:"preferred_username"`
+	GivenName         string   `json:"given_name"`
+	Roles             []string `json:"roles"`
 }

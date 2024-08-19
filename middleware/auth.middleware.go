@@ -13,6 +13,7 @@ import (
 func AuthenticateUser(config config.Config) fiber.Handler {
 	return func(c *fiber.Ctx) error {
 		sessionID := c.Cookies("sessionID")
+		log.Println("sessionID", sessionID)
 		var user models.User
 		if sessionID != "" {
 			retrievedSession, err := database.GetJSONKeyDB[controllers.Session](
@@ -39,6 +40,19 @@ func AuthenticateUser(config config.Config) fiber.Handler {
 
 		c.Locals("User", user)
 		log.Println("setting user in local: ", user.ID)
+		return c.Next()
+	}
+}
+
+func IsAdmin() fiber.Handler {
+	return func(c *fiber.Ctx) error {
+		log.Println("IsAdmin started")
+		user := c.Locals("User").(models.User)
+		log.Println("IsAdmin", user)
+		if !user.IsAdmin {
+			return c.Status(fiber.StatusUnauthorized).SendString("Unauthorized")
+		}
+
 		return c.Next()
 	}
 }

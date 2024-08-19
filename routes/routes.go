@@ -25,30 +25,14 @@ type Health struct {
 var startTime = time.Now().UTC()
 
 func SetupRoutes(app *fiber.App, config config.Config) {
-	// HealthRoutes(app)
-	// ProxyRoutes(app, config)
-
-	// Websocket routes
-	// service := websockets.NewHigherPathWebSocketService(oidcProvider)
-	// Add service to context
-	// app.Use(func(c *fiber.Ctx) error {
-	// 	c.Locals("service", service)
-	// 	return c.Next()
-	// })
-	// app.Use("/thp", websocket.New(func(c *websocket.Conn) {
-	// 	service.HandleWebSocketConnection(c)
-	// }))
-
-	// app.Get("/version", func(c *fiber.Ctx) error {
-	// 	return c.JSON(fiber.Map{
-	// 		"version": config.Version,
-	// 	})
-	// })
-
 	app.Use(compress.New(compress.Config{
 		Level: compress.LevelDefault,
 	}))
-	app.Get("/", middleware.AuthenticateUser(config), controllers.GetHome)
+	app.Use(
+		middleware.AuthenticateUser(config),
+	)
+
+	app.Get("/", controllers.GetHome)
 	AdminRoutes(app)
 	AuthRoutes(app)
 	SwitchRoutes(app)
@@ -56,21 +40,7 @@ func SetupRoutes(app *fiber.App, config config.Config) {
 
 	api := app.Group("/api")
 	HealthRoutes(api)
-	// AuthRoutes(api, config)
-	// api.Use(middleware.AuthenticateUser(config))
-	// api.Use(compress.New(compress.Config{
-	// 	Level: compress.LevelDefault,
-	// }))
 
-	// AccountRoutes(api)
-	// SubAccountRoutes(api)
-	// UserRoutes(api)
-	// LeadRoutes(api)
-	// NotificationRoutes(api)
-	// ReportsRoutes(api)
-	// DevToolsRoutes(api)
-	// IntegrationRoutes(api)
-	// Return 404 on all internal routes not implemented
 	app.Use(func(c *fiber.Ctx) error {
 		return c.Status(404).JSON(fiber.Map{"status": "error", "message": "Route Not found"})
 	})
