@@ -98,6 +98,11 @@ func StartKeyDB(config config.Config) (*redis.Client, error) {
 	return KeyDB, nil
 }
 
+func SetUUIDJSONKeyDB[T any](hash string, key uuid.UUID, value T) error {
+	err := SetJSONKeyDB(hash, key.String(), value)
+	return err
+}
+
 func SetJSONKeyDB[T any](hash, key string, value T) error {
 	jsonValue, err := json.Marshal(value)
 	if err != nil {

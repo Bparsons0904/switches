@@ -10,7 +10,6 @@ import (
 	"switches/database"
 	"switches/models"
 	"switches/services"
-	"switches/utils"
 	"time"
 
 	"github.com/gofiber/fiber/v2"
@@ -87,8 +86,6 @@ func UserLogout(c *fiber.Ctx) error {
 }
 
 func AuthCallback(c *fiber.Ctx) error {
-	timer := utils.StartTimer("Get auth callback")
-
 	log.Println("Get auth callback")
 	code := c.Query("code")
 	state := c.Query("state")
@@ -98,8 +95,6 @@ func AuthCallback(c *fiber.Ctx) error {
 		log.Println("Error getting auth")
 		return c.Status(fiber.StatusInternalServerError).SendString("Error getting auth")
 	}
-
-	timer.LogTime("Get auth")
 
 	tokenURL := fmt.Sprintf("https://%s/oauth/v2/token", auth.AuthURL)
 	resp, err := http.PostForm(tokenURL, url.Values{
@@ -113,7 +108,6 @@ func AuthCallback(c *fiber.Ctx) error {
 		log.Println("Error getting token", err)
 		return err
 	}
-	timer.LogTime("Token request")
 	defer resp.Body.Close()
 
 	var tokenResponse services.TokenResponse
@@ -122,8 +116,6 @@ func AuthCallback(c *fiber.Ctx) error {
 		return err
 	}
 
-	log.Println("Token response *************************************", tokenResponse.RefreshToken)
-	timer.LogTime("Token decode")
 	claims, err := services.VerifyIDToken(tokenResponse.IDToken, false)
 	if err != nil {
 		log.Println("Error verifying ID token w/o force", err)
@@ -133,8 +125,6 @@ func AuthCallback(c *fiber.Ctx) error {
 			return err
 		}
 	}
-
-	log.Println("Claims", claims)
 
 	sub, ok := claims["sub"].(string)
 	if !ok {
@@ -158,12 +148,9 @@ func AuthCallback(c *fiber.Ctx) error {
 		GivenName:         claims["given_name"].(string),
 	}
 
-	timer.LogTime("Get claims")
-
 	var user models.User
 	err = database.DB.First(&user, "sub = ?", userClaims.Sub).Error
 
-	timer.LogTime("Query user")
 	if err == gorm.ErrRecordNotFound {
 		log.Println("User does not exist, creating user")
 		if err := createUser(&user, userClaims); err != nil {
@@ -175,7 +162,6 @@ func AuthCallback(c *fiber.Ctx) error {
 		return err
 	}
 
-	timer.LogTime("Have user")
 	id, err := uuid.NewV7()
 	if err != nil {
 		log.Println("Error generating session id", err)
@@ -197,9 +183,7 @@ func AuthCallback(c *fiber.Ctx) error {
 	if err := database.SetJSONKeyDB("session", session.SessionID.String(), session); err != nil {
 		log.Println("Error setting session in keydb", err)
 	}
-	timer.LogTime("Set session in keydb")
 
-	timer.LogTime("Retrieved session")
 	expiredIn := time.Now().Add(time.Duration(tokenResponse.ExpiresIn) * time.Second)
 	cookie := &fiber.Cookie{
 		Name:     "sessionID",
@@ -211,8 +195,6 @@ func AuthCallback(c *fiber.Ctx) error {
 	}
 
 	c.Cookie(cookie)
-
-	timer.LogTime("Set session cookie")
 	return c.Redirect("/")
 }
 

@@ -10,7 +10,6 @@ import (
 	"log"
 	"net/http"
 	"net/url"
-	"switches/config"
 	"switches/database"
 	"time"
 
@@ -147,8 +146,9 @@ func SessionFlow(sessionID string) (Session, error) {
 func refreshToken(session Session) {
 	log.Println("Refreshing token for session", session.SessionID)
 
-	clientID := config.EnvConfig.AuthClientID
-	authURL := config.EnvConfig.AuthURL
+	clientID := viper.GetString("AUTH_CLIENT_ID")
+	authURL := viper.GetString("AUTH_URL")
+
 	tokenURL := fmt.Sprintf("https://%s/oauth/v2/token", authURL)
 	resp, err := http.PostForm(tokenURL, url.Values{
 		"grant_type":    {"refresh_token"},
@@ -185,7 +185,8 @@ func refreshToken(session Session) {
 }
 
 func EndUserSession(session Session) {
-	err := database.DeleteUUIDKeyDB("session", session.SessionID)
+	session.IsLoggedIn = false
+	err := database.SetUUIDJSONKeyDB("session", session.SessionID, session)
 	if err != nil {
 		log.Println("Error setting session in keydb", err)
 	}
