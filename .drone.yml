@@ -33,6 +33,10 @@ steps:
         from_secret: DB_NAME
       DB_PORT:
         from_secret: DB_PORT_STAGE
+      AUTH_CLIENT_ID:
+        from_secret: AUTH_CLIENT_ID_STAGE
+      AUTH_URL:
+        from_secret: AUTH_URL
       KEYDB_HOST:
         from_secret: KEYDB_HOST
       KEYDB_PASSWORD:
