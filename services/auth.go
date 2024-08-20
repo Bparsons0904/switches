@@ -54,10 +54,11 @@ func GenerateAuthString() (Auth, error) {
 	codeChallenge := generateCodeChallenge(codeVerifier)
 
 	expiresAt := time.Now().Add(15 * time.Minute)
+	callbackUrl := fmt.Sprintf("%s/auth/callback", viper.GetString("BASE_URL"))
 	auth := Auth{
 		ClientID:      viper.GetString("AUTH_CLIENT_ID"),
 		AuthURL:       viper.GetString("AUTH_URL"),
-		CallbackURL:   viper.GetString("AUTH_REDIRECT_URL"),
+		CallbackURL:   callbackUrl,
 		State:         state,
 		Nonce:         nonce,
 		CodeChallenge: codeChallenge,
@@ -148,7 +149,6 @@ func refreshToken(session Session) {
 
 	clientID := viper.GetString("AUTH_CLIENT_ID")
 	authURL := viper.GetString("AUTH_URL")
-
 	tokenURL := fmt.Sprintf("https://%s/oauth/v2/token", authURL)
 	resp, err := http.PostForm(tokenURL, url.Values{
 		"grant_type":    {"refresh_token"},

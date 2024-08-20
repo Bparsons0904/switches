@@ -10,21 +10,20 @@ import (
 )
 
 type Config struct {
-	Tier            string
-	BaseURL         string
-	ServerPort      string
-	DBHost          string
-	DBUser          string
-	DBPassword      string
-	DBName          string
-	DBPort          string
-	AuthClientID    string
-	AuthURL         string
-	AuthRedirectURL string
-	KeyDBHost       string
-	KeyDBPassword   string
-	KeyDB           int64
-	AppendNumber    int64
+	Tier          string
+	BaseURL       string
+	ServerPort    string
+	DBHost        string
+	DBUser        string
+	DBPassword    string
+	DBName        string
+	DBPort        string
+	AuthClientID  string
+	AuthURL       string
+	KeyDBHost     string
+	KeyDBPassword string
+	KeyDB         int64
+	AppendNumber  int64
 }
 
 func LoadConfig() (Config, error) {
@@ -58,7 +57,6 @@ func LoadConfig() (Config, error) {
 		"DB_PORT",
 		"AUTH_CLIENT_ID",
 		"AUTH_URL",
-		"AUTH_REDIRECT_URL",
 		"KEYDB_HOST",
 		"KEYDB_PASSWORD",
 	}
@@ -68,21 +66,20 @@ func LoadConfig() (Config, error) {
 	}
 
 	config := Config{
-		Tier:            viper.GetString("TIER"),
-		BaseURL:         viper.GetString("BASE_URL"),
-		ServerPort:      viper.GetString("SERVER_PORT"),
-		DBHost:          viper.GetString("DB_HOST"),
-		DBUser:          viper.GetString("DB_USER"),
-		DBPassword:      viper.GetString("DB_PASSWORD"),
-		DBName:          viper.GetString("DB_NAME"),
-		DBPort:          viper.GetString("DB_PORT"),
-		AuthClientID:    viper.GetString("AUTH_CLIENT_ID"),
-		AuthURL:         viper.GetString("AUTH_URL"),
-		AuthRedirectURL: viper.GetString("AUTH_REDIRECT_URL"),
-		KeyDBHost:       viper.GetString("KEYDB_HOST"),
-		KeyDBPassword:   viper.GetString("KEYDB_PASSWORD"),
-		KeyDB:           viper.GetInt64("KEYDB_DB"),
-		AppendNumber:    appendNumber,
+		Tier:          viper.GetString("TIER"),
+		BaseURL:       viper.GetString("BASE_URL"),
+		ServerPort:    viper.GetString("SERVER_PORT"),
+		DBHost:        viper.GetString("DB_HOST"),
+		DBUser:        viper.GetString("DB_USER"),
+		DBPassword:    viper.GetString("DB_PASSWORD"),
+		DBName:        viper.GetString("DB_NAME"),
+		DBPort:        viper.GetString("DB_PORT"),
+		AuthClientID:  viper.GetString("AUTH_CLIENT_ID"),
+		AuthURL:       viper.GetString("AUTH_URL"),
+		KeyDBHost:     viper.GetString("KEYDB_HOST"),
+		KeyDBPassword: viper.GetString("KEYDB_PASSWORD"),
+		KeyDB:         viper.GetInt64("KEYDB_DB"),
+		AppendNumber:  appendNumber,
 	}
 
 	return config, nil

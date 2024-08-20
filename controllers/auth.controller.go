@@ -35,8 +35,6 @@ func UserLogoutCallback(c *fiber.Ctx) error {
 		if err != nil {
 			log.Println("Error setting session in keydb", err)
 		}
-		// database.KeyDB.Del(database.KeyDB.Context(), "session:"+sessionID)
-		// database.KeyDB.Del(database.KeyDB.Context(), "user:"+retrievedSession.UserID.String())
 		err = database.DeleteUUIDKeyDB("user", retrievedSession.UserID)
 		if err != nil {
 			log.Println("Error deleting user from keydb", err)
