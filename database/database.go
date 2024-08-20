@@ -9,6 +9,7 @@ import (
 
 	"github.com/go-redis/redis/v8"
 	"github.com/gofiber/fiber/v2"
+	"github.com/google/uuid"
 	"github.com/spf13/viper"
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
@@ -111,6 +112,23 @@ func SetJSONKeyDB[T any](hash, key string, value T) error {
 	}
 
 	return nil
+}
+
+func DeleteUUIDKeyDB(hash string, key uuid.UUID) error {
+	err := DeleteStringKeyDB(hash, key.String())
+	return err
+}
+
+func DeleteStringKeyDB(hash, key string) error {
+	if hash == "" || key == "" {
+		log.Println("Key is empty, cannot delete key/value store,")
+		return fmt.Errorf("Key is empty, cannot delete key/value store")
+	}
+
+	query := fmt.Sprintf("%s:%s", hash, key)
+	err := KeyDB.Del(KeyDB.Context(), query).Err()
+
+	return err
 }
 
 func GetJSONKeyDB[T any](hash, key string) (T, error) {

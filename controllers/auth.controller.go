@@ -15,30 +15,78 @@ import (
 
 	"github.com/gofiber/fiber/v2"
 	"github.com/google/uuid"
+	"github.com/spf13/viper"
 	"gorm.io/gorm"
 )
 
-func UserLogout(c *fiber.Ctx) error {
+func UserLogoutCallback(c *fiber.Ctx) error {
 	sessionID := c.Cookies("sessionID")
 	c.ClearCookie("sessionID")
 	log.Println("User logout", sessionID)
 	if sessionID != "" {
-		retrievedSession, err := database.GetJSONKeyDB[Session]("session", sessionID)
+		retrievedSession, err := database.GetJSONKeyDB[services.Session]("session", sessionID)
 		if err != nil {
 			log.Println("Error getting session from keydb", err)
 			c.ClearCookie("sessionID")
 			return c.Redirect("/")
 		}
 
-		log.Println("Deleting session", sessionID)
-		database.KeyDB.Del(database.KeyDB.Context(), "session:"+sessionID)
-		database.KeyDB.Del(database.KeyDB.Context(), "user:"+retrievedSession.UserID.String())
-
+		retrievedSession.IsLoggedIn = false
+		err = database.SetJSONKeyDB("session", sessionID, retrievedSession)
+		if err != nil {
+			log.Println("Error setting session in keydb", err)
+		}
+		// database.KeyDB.Del(database.KeyDB.Context(), "session:"+sessionID)
+		// database.KeyDB.Del(database.KeyDB.Context(), "user:"+retrievedSession.UserID.String())
+		err = database.DeleteUUIDKeyDB("user", retrievedSession.UserID)
+		if err != nil {
+			log.Println("Error deleting user from keydb", err)
+		}
 	}
 	return c.Redirect("/")
 }
 
-func GetAuthCallback(c *fiber.Ctx) error {
+func AuthLogin(c *fiber.Ctx) error {
+	auth, err := services.GenerateAuthString()
+	if err != nil {
+		log.Println("Error generating auth string", err)
+		return c.Status(fiber.StatusInternalServerError).SendString("Error generating auth string")
+	}
+
+	authURL := fmt.Sprintf(
+		"https://%s/oauth/v2/authorize?client_id=%s&redirect_uri=%s&response_type=code&scope=%s&state=%s&nonce=%s&code_challenge=%s&code_challenge_method=S256",
+		auth.AuthURL,
+		auth.ClientID,
+		url.QueryEscape(auth.CallbackURL),
+		url.QueryEscape("openid profile email offline_access"),
+		auth.State,
+		auth.Nonce,
+		auth.CodeChallenge,
+	)
+
+	return c.Redirect(authURL)
+}
+
+func UserLogout(c *fiber.Ctx) error {
+	baseLogoutURL := fmt.Sprintf("https://%s/oidc/v1/end_session", viper.GetString("AUTH_URL"))
+	params := url.Values{}
+	params.Add("client_id", viper.GetString("AUTH_CLIENT_ID"))
+	params.Add(
+		"post_logout_redirect_uri",
+		fmt.Sprintf("%s/auth/logout/callback", viper.GetString("BASE_URL")),
+	)
+	state, err := services.GenerateRandomString(32)
+	if err != nil {
+		return c.Status(fiber.StatusInternalServerError).
+			SendString("Error generating random string")
+	}
+	params.Add("state", state)
+	logoutURL := fmt.Sprintf("%s?%s", baseLogoutURL, params.Encode())
+
+	return c.Redirect(logoutURL)
+}
+
+func AuthCallback(c *fiber.Ctx) error {
 	timer := utils.StartTimer("Get auth callback")
 
 	log.Println("Get auth callback")
@@ -102,7 +150,7 @@ func GetAuthCallback(c *fiber.Ctx) error {
 		return err
 	}
 
-	userClaims := &Claims{
+	userClaims := &services.Claims{
 		Sub:               subInt,
 		Email:             claims["email"].(string),
 		EmailVerified:     claims["email_verified"].(bool),
@@ -136,7 +184,7 @@ func GetAuthCallback(c *fiber.Ctx) error {
 		return err
 	}
 	expiredAt := time.Now().Add(time.Duration(tokenResponse.ExpiresIn) * time.Second)
-	session := Session{
+	session := services.Session{
 		SessionID:    id,
 		UserID:       user.ID,
 		Sub:          user.Sub,
@@ -144,6 +192,7 @@ func GetAuthCallback(c *fiber.Ctx) error {
 		RefreshToken: tokenResponse.RefreshToken,
 		ExpiresAt:    expiredAt,
 		IDToken:      tokenResponse.IDToken,
+		IsLoggedIn:   true,
 	}
 
 	if err := database.SetJSONKeyDB("session", session.SessionID.String(), session); err != nil {
@@ -168,17 +217,7 @@ func GetAuthCallback(c *fiber.Ctx) error {
 	return c.Redirect("/")
 }
 
-type Session struct {
-	SessionID    uuid.UUID `json:"sessionId"`
-	UserID       uuid.UUID `json:"userId"`
-	Sub          int       `json:"sub"`
-	AccessToken  string    `json:"accessToken"`
-	RefreshToken string    `json:"refreshToken"`
-	ExpiresAt    time.Time `json:"expiresAt"`
-	IDToken      string    `json:"idToken"`
-}
-
-func createUser(user *models.User, claims *Claims) error {
+func createUser(user *models.User, claims *services.Claims) error {
 	user.Sub = claims.Sub
 	user.Email = claims.Email
 	user.EmailVerified = claims.EmailVerified
@@ -193,15 +232,4 @@ func createUser(user *models.User, claims *Claims) error {
 	}
 
 	return nil
-}
-
-type Claims struct {
-	Sub               int      `json:"sub"`
-	Email             string   `json:"email"`
-	EmailVerified     bool     `json:"email_verified"`
-	FamilyName        string   `json:"family_name"`
-	Name              string   `json:"name"`
-	PreferredUsername string   `json:"preferred_username"`
-	GivenName         string   `json:"given_name"`
-	Roles             []string `json:"roles"`
 }

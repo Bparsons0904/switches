@@ -12,13 +12,15 @@ import (
 
 func AuthenticateUser(config config.Config) fiber.Handler {
 	return func(c *fiber.Ctx) error {
+		log.Println("AuthenticateUser started")
 		sessionID := c.Cookies("sessionID")
-		log.Println("sessionID", sessionID)
+		log.Println("sessionID was found in the cookies", sessionID)
 		var user models.User
 		if sessionID != "" {
 			retrievedSession, err := services.SessionFlow(sessionID)
 			if err != nil {
 				c.ClearCookie("sessionID")
+				c.Locals("User", user)
 				log.Println("Error getting session from keydb", err)
 				return c.Next()
 			}

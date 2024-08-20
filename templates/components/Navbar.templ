@@ -4,10 +4,8 @@ import (
 	"fmt"
 	"github.com/google/uuid"
 	"github.com/spf13/viper"
-	"log"
 	"net/url"
 	"switches/models"
-	"switches/services"
 )
 
 templ Navbar(route string, user models.User) {
@@ -37,31 +35,12 @@ templ Navbar(route string, user models.User) {
 }
 
 templ LoginButton() {
-	<a href={ templ.SafeURL(getLoginLink()) }><button type="button" class="menu-button">Login</button></a>
-}
-
-func getLoginLink() string {
-	auth, err := services.GenerateAuthString()
-	if err != nil {
-		log.Println("Error generating auth string", err)
-		return ""
-	}
-
-	authURL := fmt.Sprintf(
-		"https://%s/oauth/v2/authorize?client_id=%s&redirect_uri=%s&response_type=code&scope=%s&state=%s&nonce=%s&code_challenge=%s&code_challenge_method=S256",
-		auth.AuthURL,
-		auth.ClientID,
-		url.QueryEscape(auth.CallbackURL),
-		url.QueryEscape("openid profile email offline_access"),
-		auth.State,
-		auth.Nonce,
-		auth.CodeChallenge,
-	)
-	return authURL
+	<a href="auth/login"><button type="button" class="menu-button">Login</button></a>
 }
 
 templ LogoutButton() {
-	<a href={ templ.SafeURL(getLogoutLink()) }><button class="btn-inverted" type="button">Logout</button></a>
+	<!-- <a href={ templ.SafeURL(getLogoutLink()) }><button class="btn-inverted" type="button">Logout</button></a> -->
+	<a href="auth/logout"><button class="btn-inverted" type="button">Logout</button></a>
 }
 
 func getLogoutLink() string {

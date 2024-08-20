@@ -123,9 +123,6 @@ func GetAuth(state string) (Auth, error) {
 }
 
 func SessionFlow(sessionID string) (Session, error) {
-	// Check if the SessionExists and is valid
-	// If the session is close to
-
 	session, err := database.GetJSONKeyDB[Session](
 		"session",
 		sessionID,
@@ -136,8 +133,18 @@ func SessionFlow(sessionID string) (Session, error) {
 	}
 
 	log.Println("Session found", session.ExpiresAt)
+
+	if !session.IsLoggedIn {
+		log.Println("Session not logged in", session)
+		err = fmt.Errorf("Session not logged in")
+	}
 	if time.Now().After(session.ExpiresAt) {
 		log.Println("Session expired", session)
+	}
+
+	if err != nil {
+		err = database.DeleteUUIDKeyDB("session", session.SessionID)
+		return Session{}, fmt.Errorf("Problem with the session %f", err)
 	}
 
 	return session, nil
@@ -151,4 +158,16 @@ type Session struct {
 	RefreshToken string    `json:"refreshToken"`
 	ExpiresAt    time.Time `json:"expiresAt"`
 	IDToken      string    `json:"idToken"`
+	IsLoggedIn   bool      `json:"isLoggedIn"`
+}
+
+type Claims struct {
+	Sub               int      `json:"sub"`
+	Email             string   `json:"email"`
+	EmailVerified     bool     `json:"email_verified"`
+	FamilyName        string   `json:"family_name"`
+	Name              string   `json:"name"`
+	PreferredUsername string   `json:"preferred_username"`
+	GivenName         string   `json:"given_name"`
+	Roles             []string `json:"roles"`
 }
