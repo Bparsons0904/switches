@@ -12,6 +12,7 @@ import (
 	"time"
 
 	"github.com/go-redis/redis/v8"
+	"github.com/google/uuid"
 	"github.com/spf13/viper"
 )
 
@@ -119,4 +120,35 @@ func GetAuth(state string) (Auth, error) {
 
 	keyDB.Del(keyDB.Context(), state)
 	return auth, nil
+}
+
+func SessionFlow(sessionID string) (Session, error) {
+	// Check if the SessionExists and is valid
+	// If the session is close to
+
+	session, err := database.GetJSONKeyDB[Session](
+		"session",
+		sessionID,
+	)
+	if err != nil {
+		log.Println("Error getting session from keydb", err)
+		return Session{}, err
+	}
+
+	log.Println("Session found", session.ExpiresAt)
+	if time.Now().After(session.ExpiresAt) {
+		log.Println("Session expired", session)
+	}
+
+	return session, nil
+}
+
+type Session struct {
+	SessionID    uuid.UUID `json:"sessionId"`
+	UserID       uuid.UUID `json:"userId"`
+	Sub          int       `json:"sub"`
+	AccessToken  string    `json:"accessToken"`
+	RefreshToken string    `json:"refreshToken"`
+	ExpiresAt    time.Time `json:"expiresAt"`
+	IDToken      string    `json:"idToken"`
 }

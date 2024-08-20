@@ -135,13 +135,14 @@ func GetAuthCallback(c *fiber.Ctx) error {
 		log.Println("Error generating session id", err)
 		return err
 	}
+	expiredAt := time.Now().Add(time.Duration(tokenResponse.ExpiresIn) * time.Second)
 	session := Session{
 		SessionID:    id,
 		UserID:       user.ID,
 		Sub:          user.Sub,
 		AccessToken:  tokenResponse.AccessToken,
 		RefreshToken: tokenResponse.RefreshToken,
-		ExpiresIn:    tokenResponse.ExpiresIn,
+		ExpiresAt:    expiredAt,
 		IDToken:      tokenResponse.IDToken,
 	}
 
@@ -173,7 +174,7 @@ type Session struct {
 	Sub          int       `json:"sub"`
 	AccessToken  string    `json:"accessToken"`
 	RefreshToken string    `json:"refreshToken"`
-	ExpiresIn    int       `json:"expiresIn"`
+	ExpiresAt    time.Time `json:"expiresAt"`
 	IDToken      string    `json:"idToken"`
 }
 

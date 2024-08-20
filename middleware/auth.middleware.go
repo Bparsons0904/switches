@@ -3,9 +3,9 @@ package middleware
 import (
 	"log"
 	"switches/config"
-	"switches/controllers"
 	"switches/database"
 	"switches/models"
+	"switches/services"
 
 	"github.com/gofiber/fiber/v2"
 )
@@ -16,13 +16,11 @@ func AuthenticateUser(config config.Config) fiber.Handler {
 		log.Println("sessionID", sessionID)
 		var user models.User
 		if sessionID != "" {
-			retrievedSession, err := database.GetJSONKeyDB[controllers.Session](
-				"session",
-				sessionID,
-			)
+			retrievedSession, err := services.SessionFlow(sessionID)
 			if err != nil {
-				log.Println("Error getting session from keydb", err)
 				c.ClearCookie("sessionID")
+				log.Println("Error getting session from keydb", err)
+				return c.Next()
 			}
 
 			user, err = database.GetJSONKeyDB[models.User]("user", retrievedSession.UserID.String())
