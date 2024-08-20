@@ -1,7 +1,15 @@
 package components
 
-templ Navbar(route string) {
-	<header id="header">
+import (
+	"fmt"
+	"github.com/google/uuid"
+	"github.com/spf13/viper"
+	"net/url"
+	"switches/models"
+)
+
+templ Navbar(route string, user models.User) {
+	<header id="navbar">
 		<a
 			class="header-wrapper"
 			hx-get="/"
@@ -9,9 +17,39 @@ templ Navbar(route string) {
 			hx-push-url="/"
 		>
 			<div class="img-wrapper">
-				<img src="images/switches_logo_white.webp" alt="switclh as a logo"/>
+				<img src="/images/switches_logo_white.webp" alt="switclh as a logo"/>
 			</div>
 			<h1 class="text-light">Waugze</h1>
 		</a>
+		<div class="menu-items">
+			if user.ID != uuid.Nil {
+				<div class="logged-in">
+					Hello, { user.Name }
+					@LogoutButton()
+				</div>
+			} else {
+				@LoginButton()
+			}
+		</div>
 	</header>
+}
+
+templ LoginButton() {
+	<a href="auth/login"><button type="button" class="menu-button">Login</button></a>
+}
+
+templ LogoutButton() {
+	<!-- <a href={ templ.SafeURL(getLogoutLink()) }><button class="btn-inverted" type="button">Logout</button></a> -->
+	<a href="auth/logout"><button class="btn-inverted" type="button">Logout</button></a>
+}
+
+func getLogoutLink() string {
+	baseLogoutURL := fmt.Sprintf("https://%s/oidc/v1/end_session", viper.GetString("AUTH_URL"))
+
+	params := url.Values{}
+	params.Add("client_id", viper.GetString("AUTH_CLIENT_ID"))
+	params.Add("post_logout_redirect_uri", fmt.Sprintf("%s/auth/logout", viper.GetString("BASE_URL")))
+
+	logoutURL := fmt.Sprintf("%s?%s", baseLogoutURL, params.Encode())
+	return logoutURL
 }

@@ -20,7 +20,7 @@ stop_on_error = true
 
 [proxy]
 enabled = true
-proxy_port = 8080
+proxy_port = 8008
 app_port = 3030
 
 [color]

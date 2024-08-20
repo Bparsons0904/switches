@@ -8,10 +8,9 @@ import (
 	"os/signal"
 	"path/filepath"
 	"strings"
-	"syscall"
-
 	"switches/database"
 	"switches/routes"
+	"syscall"
 
 	env "switches/config"
 
@@ -23,7 +22,6 @@ import (
 	"github.com/tdewolff/minify/v2/css"
 
 	"github.com/tdewolff/minify/v2/js"
-	"gorm.io/gorm"
 )
 
 var (
@@ -66,13 +64,6 @@ func LoadEnvMiddleware(c *fiber.Ctx) error {
 	return c.Next()
 }
 
-func DBMiddleware(db *gorm.DB) fiber.Handler {
-	return func(c *fiber.Ctx) error {
-		c.Locals("db", db)
-		return c.Next()
-	}
-}
-
 func main() {
 	log.Println("Starting server...", config.BaseURL)
 	server.Use(cors.New(cors.Config{
@@ -82,8 +73,7 @@ func main() {
 		AllowCredentials: true,
 	}))
 	server.Use(LoadEnvMiddleware)
-	db := database.ConnectDB(config)
-	server.Use(DBMiddleware(db))
+	database.ConnectDB(config, server)
 
 	if config.Tier == "local" {
 		server.Use(logger.New())
