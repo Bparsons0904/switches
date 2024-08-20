@@ -24,12 +24,12 @@ var (
 func ConnectDB(config config.Config, server *fiber.App) (*gorm.DB, *redis.Client) {
 	DB, err := StartPostgresDB(config)
 	if err != nil {
-		log.Fatal("Failed to connect to the PostgreSQL Database")
+		log.Fatal("Failed to connect to the PostgreSQL Database", err)
 	}
 
 	KeyDB, err := StartKeyDB(config)
 	if err != nil {
-		log.Fatal("Failed to connect to the KeyDB Database")
+		log.Fatal("Failed to connect to the KeyDB Database", err)
 	}
 
 	// server.Use(DBMiddleware(DB, KeyDB))
