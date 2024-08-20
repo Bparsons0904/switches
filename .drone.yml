@@ -23,6 +23,10 @@ steps:
     environment:
       TIER:
         from_secret: TIER_STAGE
+      BASE_URL:
+        from_secret: BASE_URL_STAGE
+      SERVER_PORT:
+        from_secret: SERVER_PORT_STAGE
       DB_HOST:
         from_secret: DB_HOST
       DB_USER:
