@@ -116,17 +116,13 @@ func AuthCallback(c *fiber.Ctx) error {
 	timer.LogTime("Token request")
 	defer resp.Body.Close()
 
-	var tokenResponse struct {
-		IDToken      string `json:"id_token"`
-		AccessToken  string `json:"access_token"`
-		RefreshToken string `json:"refresh_token"`
-		ExpiresIn    int    `json:"expires_in"`
-	}
+	var tokenResponse services.TokenResponse
 	if err := json.NewDecoder(resp.Body).Decode(&tokenResponse); err != nil {
 		log.Println("Error decoding token response", err)
 		return err
 	}
 
+	log.Println("Token response *************************************", tokenResponse.RefreshToken)
 	timer.LogTime("Token decode")
 	claims, err := services.VerifyIDToken(tokenResponse.IDToken, false)
 	if err != nil {
@@ -137,6 +133,8 @@ func AuthCallback(c *fiber.Ctx) error {
 			return err
 		}
 	}
+
+	log.Println("Claims", claims)
 
 	sub, ok := claims["sub"].(string)
 	if !ok {
@@ -183,14 +181,15 @@ func AuthCallback(c *fiber.Ctx) error {
 		log.Println("Error generating session id", err)
 		return err
 	}
-	expiredAt := time.Now().Add(time.Duration(tokenResponse.ExpiresIn) * time.Second)
+
 	session := services.Session{
 		SessionID:    id,
 		UserID:       user.ID,
 		Sub:          user.Sub,
 		AccessToken:  tokenResponse.AccessToken,
+		ExpiresAt:    time.Now().Add(time.Duration(tokenResponse.ExpiresIn) * time.Second),
 		RefreshToken: tokenResponse.RefreshToken,
-		ExpiresAt:    expiredAt,
+		RefreshBy:    time.Now().Add(30 * 24 * time.Hour), // 30 days
 		IDToken:      tokenResponse.IDToken,
 		IsLoggedIn:   true,
 	}

@@ -8,6 +8,9 @@ import (
 	"fmt"
 	"io"
 	"log"
+	"net/http"
+	"net/url"
+	"switches/config"
 	"switches/database"
 	"time"
 
@@ -15,22 +18,6 @@ import (
 	"github.com/google/uuid"
 	"github.com/spf13/viper"
 )
-
-type Auth struct {
-	ClientID      string    `json:"clientId"`
-	AuthURL       string    `json:"authUrl"`
-	CallbackURL   string    `json:"callbackUrl"`
-	State         string    `json:"state"`
-	Nonce         string    `json:"nonce"`
-	CodeChallenge string    `json:"codeChallenge"`
-	CodeVerifier  string    `json:"codeVerifier"`
-	ExpiresAt     time.Time `json:"expiresAt"`
-}
-
-type AuthResponse struct {
-	Code  string `json:"code"`
-	State string `json:"state"`
-}
 
 func GenerateRandomString(length int) (string, error) {
 	b := make([]byte, length)
@@ -138,8 +125,14 @@ func SessionFlow(sessionID string) (Session, error) {
 		log.Println("Session not logged in", session)
 		err = fmt.Errorf("Session not logged in")
 	}
+
 	if time.Now().After(session.ExpiresAt) {
 		log.Println("Session expired", session)
+		if time.Now().After(session.RefreshBy) {
+			err = fmt.Errorf("Session expired")
+		} else {
+			go refreshToken(session)
+		}
 	}
 
 	if err != nil {
@@ -147,7 +140,78 @@ func SessionFlow(sessionID string) (Session, error) {
 		return Session{}, fmt.Errorf("Problem with the session %f", err)
 	}
 
+	log.Println("Session flow completed", session)
 	return session, nil
+}
+
+func refreshToken(session Session) {
+	log.Println("Refreshing token for session", session.SessionID)
+
+	clientID := config.EnvConfig.AuthClientID
+	authURL := config.EnvConfig.AuthURL
+	tokenURL := fmt.Sprintf("https://%s/oauth/v2/token", authURL)
+	resp, err := http.PostForm(tokenURL, url.Values{
+		"grant_type":    {"refresh_token"},
+		"client_id":     {clientID},
+		"refresh_token": {session.RefreshToken}, // Use the refresh token here
+	})
+	if err != nil {
+		log.Println("Error getting token", err)
+		EndUserSession(session)
+		return
+	}
+	defer resp.Body.Close()
+
+	var tokenResponse TokenResponse
+	if err = json.NewDecoder(resp.Body).Decode(&tokenResponse); err != nil {
+		log.Println("Error decoding token response", err)
+		EndUserSession(session)
+		return
+	}
+
+	session.AccessToken = tokenResponse.AccessToken
+	session.ExpiresAt = time.Now().Add(time.Duration(tokenResponse.ExpiresIn) * time.Second)
+
+	if tokenResponse.RefreshToken != session.RefreshToken {
+		session.RefreshToken = tokenResponse.RefreshToken
+		session.RefreshBy = time.Now().Add(30 * 24 * time.Hour)
+	}
+
+	err = database.SetJSONKeyDB("session", session.SessionID.String(), session)
+	if err != nil {
+		EndUserSession(session)
+		log.Println("Error setting session in keydb", err)
+	}
+}
+
+func EndUserSession(session Session) {
+	err := database.DeleteUUIDKeyDB("session", session.SessionID)
+	if err != nil {
+		log.Println("Error setting session in keydb", err)
+	}
+}
+
+type Auth struct {
+	ClientID      string    `json:"clientId"`
+	AuthURL       string    `json:"authUrl"`
+	CallbackURL   string    `json:"callbackUrl"`
+	State         string    `json:"state"`
+	Nonce         string    `json:"nonce"`
+	CodeChallenge string    `json:"codeChallenge"`
+	CodeVerifier  string    `json:"codeVerifier"`
+	ExpiresAt     time.Time `json:"expiresAt"`
+}
+
+type TokenResponse struct {
+	IDToken      string `json:"id_token"`
+	AccessToken  string `json:"access_token"`
+	RefreshToken string `json:"refresh_token"`
+	ExpiresIn    int    `json:"expires_in"`
+}
+
+type AuthResponse struct {
+	Code  string `json:"code"`
+	State string `json:"state"`
 }
 
 type Session struct {
@@ -155,8 +219,9 @@ type Session struct {
 	UserID       uuid.UUID `json:"userId"`
 	Sub          int       `json:"sub"`
 	AccessToken  string    `json:"accessToken"`
-	RefreshToken string    `json:"refreshToken"`
 	ExpiresAt    time.Time `json:"expiresAt"`
+	RefreshToken string    `json:"refreshToken"`
+	RefreshBy    time.Time `json:"refreshBy"`
 	IDToken      string    `json:"idToken"`
 	IsLoggedIn   bool      `json:"isLoggedIn"`
 }

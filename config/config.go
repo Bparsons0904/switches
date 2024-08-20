@@ -4,10 +4,13 @@ import (
 	"fmt"
 	"log"
 	"os"
+	"reflect"
 	"time"
 
 	"github.com/spf13/viper"
 )
+
+var EnvConfig Config
 
 type Config struct {
 	Tier            string
@@ -85,7 +88,19 @@ func LoadConfig() (Config, error) {
 		AppendNumber:    appendNumber,
 	}
 
+	EnvConfig = config
 	return config, nil
+}
+
+func GetConfig[T any](name string) T {
+	v := reflect.ValueOf(EnvConfig)
+	fieldValue := v.FieldByName(name)
+	if fieldValue.IsValid() {
+		return fieldValue.Interface().(T)
+	}
+
+	var zeroValue T
+	return zeroValue
 }
 
 func validateEnvVars(envVars []string) error {
