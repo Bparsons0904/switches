@@ -87,9 +87,9 @@ func StartKeyDB(config config.Config) (*redis.Client, error) {
 	log.Println("KeyDB Database", config.KeyDBHost == "localhost:6379")
 
 	keydb := redis.NewClient(&redis.Options{
-		Addr:     config.KeyDBHost,
+		Addr:     "localhost:6379",
 		Password: config.KeyDBPassword,
-		DB:       int(config.KeyDB),
+		DB:       0,
 	})
 	log.Println("KeyDB instance", keydb)
 
