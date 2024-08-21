@@ -29,7 +29,7 @@ func ConnectDB(config config.Config, server *fiber.App) (*gorm.DB, *redis.Client
 
 	KeyDB, err := StartKeyDB(config)
 	if err != nil {
-		log.Println("Failed to connect to the KeyDB Database", err)
+		log.Fatal("Failed to connect to the KeyDB Database", err)
 	}
 
 	// server.Use(DBMiddleware(DB, KeyDB))
@@ -83,13 +83,13 @@ func StartKeyDB(config config.Config) (*redis.Client, error) {
 
 	log.Printf("Attempting to connect to KeyDB at %s with DB %d", config.KeyDBHost, config.KeyDB)
 	log.Printf("KeyDB Password length: %d characters", len(config.KeyDBPassword))
-	log.Println("KeyDB Password ", config.KeyDBPassword == config.RandonString)
+	log.Printf("KeyDB Password %s ", config.KeyDBPassword)
 	log.Println("KeyDB Database", config.KeyDBHost == "localhost:6379")
 
 	keydb := redis.NewClient(&redis.Options{
-		Addr:     "localhost:6379",
-		Password: config.RandonString,
-		DB:       0,
+		Addr:     config.KeyDBHost,
+		Password: config.KeyDBPassword,
+		DB:       int(config.KeyDB),
 	})
 	log.Println("KeyDB instance", keydb)
 

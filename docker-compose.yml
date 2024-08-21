@@ -24,3 +24,4 @@ services:
       - KEYDB_DB=${KEYDB_DB}
       - ./static:/app/static
     restart: unless-stopped
+    network_mode: host
