@@ -1,37 +1,6 @@
 kind: pipeline
 type: docker
 name: switches-pipeline
-environment:
-  DOCKER_IMAGE: switches_stage
-  IMAGE_TAG: latest
-  BUILD_ENV: staging
-  ENVIRONMENT: staging
-  EXTERNAL_PORT: 3070
-  SERVER_PORT: 3030
-  TIER:
-    from_secret: TIER_STAGE
-  BASE_URL:
-    from_secret: BASE_URL_STAGE
-  DB_HOST:
-    from_secret: DB_HOST
-  DB_USER:
-    from_secret: DB_USER
-  DB_PASSWORD:
-    from_secret: DB_PASSWORD_STAGE
-  DB_NAME:
-    from_secret: DB_NAME
-  DB_PORT:
-    from_secret: DB_PORT_STAGE
-  AUTH_CLIENT_ID:
-    from_secret: AUTH_CLIENT_ID_STAGE
-  AUTH_URL:
-    from_secret: AUTH_URL
-  KEYDB_HOST:
-    from_secret: KEYDB_HOST
-  KEYDB_PASSWORD:
-    from_secret: KEYDB_PASSWORD
-  KEYDB_DB:
-    from_secret: KEYDB_DB_STAGE
 steps:
   # Build Stage
   - name: build-staging
@@ -51,6 +20,37 @@ steps:
   # Migrate Stage
   - name: migrate-staging
     image: golang:latest
+    environment:
+      DOCKER_IMAGE: switches_stage
+      IMAGE_TAG: latest
+      BUILD_ENV: staging
+      ENVIRONMENT: staging
+      SERVER_PORT: 3030
+      EXTERNAL_PORT: 3070
+      TIER:
+        from_secret: TIER_STAGE
+      BASE_URL:
+        from_secret: BASE_URL_STAGE
+      DB_HOST:
+        from_secret: DB_HOST
+      DB_USER:
+        from_secret: DB_USER
+      DB_PASSWORD:
+        from_secret: DB_PASSWORD_STAGE
+      DB_NAME:
+        from_secret: DB_NAME
+      DB_PORT:
+        from_secret: DB_PORT_STAGE
+      AUTH_CLIENT_ID:
+        from_secret: AUTH_CLIENT_ID_STAGE
+      AUTH_URL:
+        from_secret: AUTH_URL
+      KEYDB_HOST:
+        from_secret: KEYDB_HOST
+      KEYDB_PASSWORD:
+        from_secret: KEYDB_PASSWORD
+      KEYDB_DB:
+        from_secret: KEYDB_DB_STAGE
     commands:
       - go run ./migrator/migrator.go -up
     when:
@@ -64,6 +64,37 @@ steps:
   - name: deploy-staging
     image: docker:latest
     privileged: true
+    environment:
+      DOCKER_IMAGE: switches_stage
+      IMAGE_TAG: latest
+      BUILD_ENV: staging
+      ENVIRONMENT: staging
+      SERVER_PORT: 3030
+      EXTERNAL_PORT: 3070
+      TIER:
+        from_secret: TIER_STAGE
+      BASE_URL:
+        from_secret: BASE_URL_STAGE
+      DB_HOST:
+        from_secret: DB_HOST
+      DB_USER:
+        from_secret: DB_USER
+      DB_PASSWORD:
+        from_secret: DB_PASSWORD_STAGE
+      DB_NAME:
+        from_secret: DB_NAME
+      DB_PORT:
+        from_secret: DB_PORT_STAGE
+      AUTH_CLIENT_ID:
+        from_secret: AUTH_CLIENT_ID_STAGE
+      AUTH_URL:
+        from_secret: AUTH_URL
+      KEYDB_HOST:
+        from_secret: KEYDB_HOST
+      KEYDB_PASSWORD:
+        from_secret: KEYDB_PASSWORD
+      KEYDB_DB:
+        from_secret: KEYDB_DB_STAGE
     commands:
       - docker-compose up -d --build
       - docker-compose ps
@@ -85,27 +116,6 @@ kind: pipeline
 type: docker
 name: production-pipeline
 # Build Production
-environment:
-  DOCKER_IMAGE: switches
-  IMAGE_TAG: ${DRONE_COMMIT_SHA}
-  BUILD_ENV: production
-  ENVIRONMENT: production
-  SERVER_PORT: 3030
-  EXTERNAL_PORT: 3030
-  TIER:
-    from_secret: TIER_PROD
-  BASE_URL:
-    from_secret: BASE_URL_PROD
-  DB_HOST:
-    from_secret: DB_HOST
-  DB_USER:
-    from_secret: DB_USER
-  DB_PASSWORD:
-    from_secret: DB_PASSWORD_PROD
-  DB_NAME:
-    from_secret: DB_NAME
-  DB_PORT:
-    from_secret: DB_PORT_PROD
 steps:
   - name: build-production
     image: docker:latest
@@ -124,6 +134,19 @@ steps:
   # Migrate Production
   - name: migrate-production
     image: golang:latest
+    environment:
+      TIER:
+        from_secret: TIER_PROD
+      DB_HOST:
+        from_secret: DB_HOST
+      DB_USER:
+        from_secret: DB_USER
+      DB_PASSWORD:
+        from_secret: DB_PASSWORD_PROD
+      DB_NAME:
+        from_secret: DB_NAME
+      DB_PORT:
+        from_secret: DB_PORT_PROD
     commands:
       - go run ./migrator/migrator.go -up
     when:
@@ -137,6 +160,27 @@ steps:
   - name: deploy-production
     image: docker:latest
     privileged: true
+    environment:
+      DOCKER_IMAGE: switches
+      IMAGE_TAG: ${DRONE_COMMIT_SHA}
+      BUILD_ENV: production
+      ENVIRONMENT: production
+      SERVER_PORT: 3030
+      EXTERNAL_PORT: 3030
+      TIER:
+        from_secret: TIER_PROD
+      BASE_URL:
+        from_secret: BASE_URL_PROD
+      DB_HOST:
+        from_secret: DB_HOST
+      DB_USER:
+        from_secret: DB_USER
+      DB_PASSWORD:
+        from_secret: DB_PASSWORD_PROD
+      DB_NAME:
+        from_secret: DB_NAME
+      DB_PORT:
+        from_secret: DB_PORT_PROD
     commands:
       - docker-compose up -d --build
       - docker-compose ps
