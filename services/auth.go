@@ -177,7 +177,7 @@ func refreshToken(session Session) {
 		session.RefreshBy = time.Now().Add(30 * 24 * time.Hour)
 	}
 
-	err = database.SetJSONKeyDB("session", session.SessionID.String(), session)
+	err = database.SetJSONKeyDB("session", session.SessionID.String(), session, 30*24*time.Hour)
 	if err != nil {
 		EndUserSession(session)
 		log.Println("Error setting session in keydb", err)
@@ -186,7 +186,7 @@ func refreshToken(session Session) {
 
 func EndUserSession(session Session) {
 	session.IsLoggedIn = false
-	err := database.SetUUIDJSONKeyDB("session", session.SessionID, session)
+	err := database.SetUUIDJSONKeyDB("session", session.SessionID, session, 15*time.Minute)
 	if err != nil {
 		log.Println("Error setting session in keydb", err)
 	}

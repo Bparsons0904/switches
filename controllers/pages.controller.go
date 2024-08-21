@@ -1,7 +1,6 @@
 package controllers
 
 import (
-	"log"
 	"switches/models"
 	"switches/templates/pages"
 
@@ -10,12 +9,10 @@ import (
 
 func GetHome(c *fiber.Ctx) error {
 	user := c.Locals("User").(models.User)
-
-	log.Println("GetHome", user)
 	return Render(pages.HomePage(user), pages.Home(user))(c)
 }
 
 func GetSwitches(c *fiber.Ctx) error {
-	log.Println("GetSwitches")
-	return Render(pages.SwitchesPage(), pages.Switches())(c)
+	user := c.Locals("User").(models.User)
+	return Render(pages.SwitchesPage(user), pages.Switches(user))(c)
 }

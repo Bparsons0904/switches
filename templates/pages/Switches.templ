@@ -7,33 +7,13 @@ import (
 	"switches/templates/layouts"
 )
 
-templ SwitchesPage() {
+templ SwitchesPage(user models.User) {
 	@layouts.Root() {
-		@Switches()
+		@Switches(user)
 	}
 }
 
-templ Switches() {
-	<style type="text/css">
-
-#cta {
-  padding: 1rem;
-  .cta-wrapper {
-    margin-top: 2rem;
-    .cta-header {
-      font-size: 1.5rem;
-      h1 {
-
-      line-height: 1.2;
-      margin-bottom: 1rem;
-      }
-
-    }
-  }
-}
-
-
-  </style>
+templ Switches(user models.User) {
 	<div class="">
 		@components.Navbar("switches", models.User{})
 		<main id="home">

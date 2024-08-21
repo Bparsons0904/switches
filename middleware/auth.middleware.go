@@ -6,6 +6,7 @@ import (
 	"switches/database"
 	"switches/models"
 	"switches/services"
+	"time"
 
 	"github.com/gofiber/fiber/v2"
 )
@@ -14,9 +15,9 @@ func AuthenticateUser(config config.Config) fiber.Handler {
 	return func(c *fiber.Ctx) error {
 		log.Println("AuthenticateUser started")
 		sessionID := c.Cookies("sessionID")
-		log.Println("sessionID was found in the cookies", sessionID)
 		var user models.User
 		if sessionID != "" {
+			log.Println("sessionID was found in the cookies", sessionID)
 			retrievedSession, err := services.SessionFlow(sessionID)
 			if err != nil {
 				c.ClearCookie("sessionID")
@@ -30,7 +31,7 @@ func AuthenticateUser(config config.Config) fiber.Handler {
 				if err := database.DB.First(&user, retrievedSession.UserID).Error; err != nil {
 					log.Println("Error getting user from keydb", err)
 				} else {
-					err := database.SetJSONKeyDB("user", user.ID.String(), user)
+					err := database.SetJSONKeyDB("user", user.ID.String(), user, 30*time.Hour)
 					if err != nil {
 						log.Println("Error setting user in keydb", err)
 					}
