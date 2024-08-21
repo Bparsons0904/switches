@@ -116,16 +116,16 @@ func SessionFlow(sessionID string) (Session, error) {
 	}
 
 	if err != nil {
-		err = database.DeleteStringKeyDB("session", session.SessionID)
+		err = database.DeleteStringKeyDB("session", session.AccessToken)
 		return Session{}, fmt.Errorf("Problem with the session %f", err)
 	}
 
-	log.Println("Session flow completed", session)
+	log.Println("Session flow completed", session.AccessToken)
 	return session, nil
 }
 
 func refreshToken(session Session) error {
-	log.Println("Refreshing token for session", session.SessionID)
+	log.Println("Refreshing token for session", session.AccessToken)
 
 	clientID := viper.GetString("AUTH_CLIENT_ID")
 	authURL := viper.GetString("AUTH_URL")
@@ -147,7 +147,7 @@ func refreshToken(session Session) error {
 		return err
 	}
 
-	session.SessionID = tokenResponse.AccessToken
+	session.AccessToken = tokenResponse.AccessToken
 	session.ExpiresAt = time.Now().Add(time.Duration(tokenResponse.ExpiresIn) * time.Second)
 
 	if tokenResponse.RefreshToken != session.RefreshToken {
@@ -155,7 +155,7 @@ func refreshToken(session Session) error {
 		session.RefreshBy = time.Now().Add(30 * 24 * time.Hour)
 	}
 
-	err = database.SetJSONKeyDB("session", session.SessionID, session, 30*24*time.Hour)
+	err = database.SetJSONKeyDB("session", session.AccessToken, session, 30*24*time.Hour)
 	if err != nil {
 		log.Println("Error setting session in keydb", err)
 		return err
@@ -188,7 +188,7 @@ type AuthResponse struct {
 }
 
 type Session struct {
-	SessionID    string    `json:"sessionId"`
+	AccessToken  string    `json:"accessToken"`
 	UserID       uuid.UUID `json:"userId"`
 	Sub          int       `json:"sub"`
 	ExpiresAt    time.Time `json:"expiresAt"`
