@@ -15,12 +15,22 @@ steps:
     when:
       branch:
         - main
+      event:
+        - push
   # Migrate Stage
   - name: migrate-staging
     image: golang:latest
     environment:
+      DOCKER_IMAGE: switches_stage
+      IMAGE_TAG: latest
+      BUILD_ENV: staging
+      ENVIRONMENT: staging
+      SERVER_PORT: 3030
+      EXTERNAL_PORT: 3070
       TIER:
         from_secret: TIER_STAGE
+      BASE_URL:
+        from_secret: BASE_URL_STAGE
       DB_HOST:
         from_secret: DB_HOST
       DB_USER:
@@ -31,11 +41,23 @@ steps:
         from_secret: DB_NAME
       DB_PORT:
         from_secret: DB_PORT_STAGE
+      AUTH_CLIENT_ID:
+        from_secret: AUTH_CLIENT_ID_STAGE
+      AUTH_URL:
+        from_secret: AUTH_URL
+      KEYDB_HOST:
+        from_secret: KEYDB_HOST
+      KEYDB_PASSWORD:
+        from_secret: KEYDB_PASSWORD
+      KEYDB_DB:
+        from_secret: KEYDB_DB_STAGE
     commands:
       - go run ./migrator/migrator.go -up
     when:
       branch:
         - main
+      event:
+        - push
     depends_on:
       - build-staging
   # Deploy Stage
@@ -63,6 +85,16 @@ steps:
         from_secret: DB_NAME
       DB_PORT:
         from_secret: DB_PORT_STAGE
+      AUTH_CLIENT_ID:
+        from_secret: AUTH_CLIENT_ID_STAGE
+      AUTH_URL:
+        from_secret: AUTH_URL
+      KEYDB_HOST:
+        from_secret: KEYDB_HOST
+      KEYDB_PASSWORD:
+        from_secret: KEYDB_PASSWORD
+      KEYDB_DB:
+        from_secret: KEYDB_DB_STAGE
     commands:
       - docker-compose up -d --build
       - docker-compose ps
@@ -70,9 +102,21 @@ steps:
     when:
       branch:
         - main
+      event:
+        - push
     depends_on:
       - migrate-staging
-  # Build Production
+trigger:
+  branch:
+    - main
+  event:
+    - push
+---
+kind: pipeline
+type: docker
+name: production-pipeline
+# Build Production
+steps:
   - name: build-production
     image: docker:latest
     privileged: true
@@ -148,6 +192,10 @@ steps:
         - refs/tags/v*
     depends_on:
       - migrate-production
+trigger:
+  event:
+    - push
+    - tag
 volumes:
   - name: docker_cache
     host:

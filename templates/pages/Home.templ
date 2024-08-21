@@ -1,25 +1,26 @@
 package pages
 
 import (
+	"switches/models"
 	"switches/templates/components"
 	"switches/templates/layouts"
 )
 
-templ HomePage() {
+templ HomePage(user models.User) {
 	@layouts.Root() {
-		@Home()
+		@Home(user)
 	}
 }
 
-templ Home() {
+templ Home(user models.User) {
 	<div class="">
-		@components.Navbar("home")
+		@components.Navbar("home", user)
 		<main id="home">
 			<section id="cta" class="dark">
 				<div class="cta-wrapper">
 					<div class="cta-header">
 						<h1>
-							Find Your Perfect Mechanical Switch
+							Find Your Perfect Switch
 						</h1>
 						<p>
 							Discover the ideal mechanical switch that fits your personal style and typing or gaming preferences.

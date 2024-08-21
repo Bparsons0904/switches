@@ -2,6 +2,7 @@
 package pages
 
 import (
+	"switches/models"
 	"switches/templates/components"
 	"switches/templates/layouts"
 )
@@ -34,7 +35,7 @@ templ Switches() {
 
   </style>
 	<div class="">
-		@components.Navbar("switches")
+		@components.Navbar("switches", models.User{})
 		<main id="home">
 			<section id="cta" class="dark">Yo</section>
 		</main>
