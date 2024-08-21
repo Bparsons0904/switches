@@ -13,7 +13,6 @@ import (
 	"time"
 
 	"github.com/gofiber/fiber/v2"
-	"github.com/google/uuid"
 	"github.com/spf13/viper"
 	"gorm.io/gorm"
 )
@@ -160,17 +159,10 @@ func AuthCallback(c *fiber.Ctx) error {
 		return err
 	}
 
-	id, err := uuid.NewV7()
-	if err != nil {
-		log.Println("Error generating session id", err)
-		return err
-	}
-
 	session := services.Session{
-		SessionID:    id,
+		SessionID:    tokenResponse.AccessToken,
 		UserID:       user.ID,
 		Sub:          user.Sub,
-		AccessToken:  tokenResponse.AccessToken,
 		ExpiresAt:    time.Now().Add(time.Duration(tokenResponse.ExpiresIn) * time.Second),
 		RefreshToken: tokenResponse.RefreshToken,
 		RefreshBy:    time.Now().Add(30 * 24 * time.Hour), // 30 days
@@ -178,14 +170,14 @@ func AuthCallback(c *fiber.Ctx) error {
 		IsLoggedIn:   true,
 	}
 
-	if err := database.SetUUIDJSONKeyDB("session", session.SessionID, session, 30*24*time.Hour); err != nil {
+	if err := database.SetJSONKeyDB("session", session.SessionID, session, 30*24*time.Hour); err != nil {
 		log.Println("Error setting session in keydb", err)
 	}
 
 	expiredIn := time.Now().Add(time.Duration(tokenResponse.ExpiresIn) * time.Second)
 	cookie := &fiber.Cookie{
 		Name:     "sessionID",
-		Value:    session.SessionID.String(),
+		Value:    session.SessionID,
 		Expires:  expiredIn,
 		HTTPOnly: true,
 		Secure:   true,
