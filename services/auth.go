@@ -13,7 +13,6 @@ import (
 	"switches/database"
 	"time"
 
-	"github.com/go-redis/redis/v8"
 	"github.com/google/uuid"
 	"github.com/spf13/viper"
 )
@@ -66,13 +65,7 @@ func GenerateAuthString() (Auth, error) {
 		ExpiresAt:     expiresAt,
 	}
 
-	authJSON, err := json.Marshal(auth)
-	if err != nil {
-		log.Println("Error marshalling auth:", err)
-		return Auth{}, err
-	}
-
-	if err := database.KeyDB.Set(database.KeyDB.Context(), state, authJSON, 15*time.Minute).Err(); err != nil {
+	if err := database.SetJSONKeyDB("auth", state, auth, 15*time.Minute); err != nil {
 		log.Println("Error saving auth", err)
 		return Auth{}, err
 	}
@@ -81,31 +74,22 @@ func GenerateAuthString() (Auth, error) {
 }
 
 func GetAuth(state string) (Auth, error) {
-	keyDB := database.KeyDB
-
-	authJSON, err := keyDB.Get(keyDB.Context(), state).Result()
-	if err == redis.Nil {
-		log.Println("Auth not found for state:", state)
-		return Auth{}, err
-	} else if err != nil {
+	auth, err := database.GetJSONKeyDB[Auth]("auth", state)
+	if err != nil {
 		log.Println("Error retrieving auth from Redis:", err)
 		return Auth{}, err
 	}
 
-	var auth Auth
-	err = json.Unmarshal([]byte(authJSON), &auth)
+	err = database.DeleteStringKeyDB("auth", state)
 	if err != nil {
-		log.Println("Error unmarshalling auth:", err)
-		return Auth{}, err
+		log.Println("Error deleting auth from Redis:", err)
 	}
 
 	if time.Now().After(auth.ExpiresAt) {
 		log.Println("Auth expired for state:", state)
-		keyDB.Del(keyDB.Context(), state)
 		return Auth{}, fmt.Errorf("Auth expired for state: %s", state)
 	}
 
-	keyDB.Del(keyDB.Context(), state)
 	return auth, nil
 }
 
@@ -128,24 +112,20 @@ func SessionFlow(sessionID string) (Session, error) {
 
 	if time.Now().After(session.ExpiresAt) {
 		log.Println("Session expired", session)
-		if time.Now().After(session.RefreshBy) {
-			err = fmt.Errorf("Session expired")
-		} else {
-			go refreshToken(session)
-		}
+		err = refreshToken(session)
 	}
 
 	if err != nil {
-		err = database.DeleteUUIDKeyDB("session", session.SessionID)
+		err = database.DeleteStringKeyDB("session", session.AccessToken)
 		return Session{}, fmt.Errorf("Problem with the session %f", err)
 	}
 
-	log.Println("Session flow completed", session)
+	log.Println("Session flow completed", session.AccessToken)
 	return session, nil
 }
 
-func refreshToken(session Session) {
-	log.Println("Refreshing token for session", session.SessionID)
+func refreshToken(session Session) error {
+	log.Println("Refreshing token for session", session.AccessToken)
 
 	clientID := viper.GetString("AUTH_CLIENT_ID")
 	authURL := viper.GetString("AUTH_URL")
@@ -157,16 +137,14 @@ func refreshToken(session Session) {
 	})
 	if err != nil {
 		log.Println("Error getting token", err)
-		EndUserSession(session)
-		return
+		return err
 	}
 	defer resp.Body.Close()
 
 	var tokenResponse TokenResponse
 	if err = json.NewDecoder(resp.Body).Decode(&tokenResponse); err != nil {
 		log.Println("Error decoding token response", err)
-		EndUserSession(session)
-		return
+		return err
 	}
 
 	session.AccessToken = tokenResponse.AccessToken
@@ -177,19 +155,13 @@ func refreshToken(session Session) {
 		session.RefreshBy = time.Now().Add(30 * 24 * time.Hour)
 	}
 
-	err = database.SetJSONKeyDB("session", session.SessionID.String(), session)
+	err = database.SetJSONKeyDB("session", session.AccessToken, session, 30*24*time.Hour)
 	if err != nil {
-		EndUserSession(session)
 		log.Println("Error setting session in keydb", err)
+		return err
 	}
-}
 
-func EndUserSession(session Session) {
-	session.IsLoggedIn = false
-	err := database.SetUUIDJSONKeyDB("session", session.SessionID, session)
-	if err != nil {
-		log.Println("Error setting session in keydb", err)
-	}
+	return nil
 }
 
 type Auth struct {
@@ -216,10 +188,9 @@ type AuthResponse struct {
 }
 
 type Session struct {
-	SessionID    uuid.UUID `json:"sessionId"`
+	AccessToken  string    `json:"accessToken"`
 	UserID       uuid.UUID `json:"userId"`
 	Sub          int       `json:"sub"`
-	AccessToken  string    `json:"accessToken"`
 	ExpiresAt    time.Time `json:"expiresAt"`
 	RefreshToken string    `json:"refreshToken"`
 	RefreshBy    time.Time `json:"refreshBy"`

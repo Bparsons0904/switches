@@ -8,6 +8,7 @@ import (
 	"math/big"
 	"net/http"
 	"switches/database"
+	"time"
 
 	"github.com/dgrijalva/jwt-go"
 	"github.com/spf13/viper"
@@ -78,8 +79,8 @@ func getPublicKey(kid string, force bool) (*rsa.PublicKey, error) {
 				E: int(e),
 			}
 
-			database.KeyDB.Set(database.KeyDB.Context(), redisKey+":N", key.N, 0)
-			database.KeyDB.Set(database.KeyDB.Context(), redisKey+":E", key.E, 0)
+			database.KeyDB.Set(database.KeyDB.Context(), redisKey+":N", key.N, 24*time.Hour)
+			database.KeyDB.Set(database.KeyDB.Context(), redisKey+":E", key.E, 24*time.Hour)
 
 			return pubKey, nil
 		}

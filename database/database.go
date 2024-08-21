@@ -6,6 +6,7 @@ import (
 	"log"
 	"os"
 	"switches/config"
+	"time"
 
 	"github.com/go-redis/redis/v8"
 	"github.com/gofiber/fiber/v2"
@@ -101,12 +102,12 @@ func StartKeyDB(config config.Config) (*redis.Client, error) {
 	return KeyDB, nil
 }
 
-func SetUUIDJSONKeyDB[T any](hash string, key uuid.UUID, value T) error {
-	err := SetJSONKeyDB(hash, key.String(), value)
+func SetUUIDJSONKeyDB[T any](hash string, key uuid.UUID, value T, duration time.Duration) error {
+	err := SetJSONKeyDB(hash, key.String(), value, duration)
 	return err
 }
 
-func SetJSONKeyDB[T any](hash, key string, value T) error {
+func SetJSONKeyDB[T any](hash, key string, value T, duration time.Duration) error {
 	jsonValue, err := json.Marshal(value)
 	if err != nil {
 		log.Println("Error marshalling JSON for key/value store", err)
@@ -114,7 +115,7 @@ func SetJSONKeyDB[T any](hash, key string, value T) error {
 	}
 
 	query := fmt.Sprintf("%s:%s", hash, key)
-	if err := KeyDB.Set(KeyDB.Context(), query, jsonValue, 0).Err(); err != nil {
+	if err := KeyDB.Set(KeyDB.Context(), query, jsonValue, duration).Err(); err != nil {
 		log.Println("Error setting key/value store for JSON value", err)
 		return err
 	}
