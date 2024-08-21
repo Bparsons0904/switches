@@ -24,6 +24,7 @@ type Config struct {
 	KeyDBPassword string
 	KeyDB         int64
 	AppendNumber  int64
+	RandonString  string
 }
 
 func LoadConfig() (Config, error) {
@@ -79,6 +80,7 @@ func LoadConfig() (Config, error) {
 		KeyDBHost:     viper.GetString("KEYDB_HOST"),
 		KeyDBPassword: viper.GetString("KEYDB_PASSWORD"),
 		KeyDB:         viper.GetInt64("KEYDB_DB"),
+		RandonString:  "7pdme2QREQqq15JZ",
 		AppendNumber:  appendNumber,
 	}
 
