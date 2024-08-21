@@ -81,30 +81,17 @@ func StartKeyDB(config config.Config) (*redis.Client, error) {
 		return KeyDB, nil
 	}
 
-	log.Printf("Attempting to connect to KeyDB at %s with DB %d", config.KeyDBHost, config.KeyDB)
-	log.Printf("KeyDB Password length: %d characters", len(config.KeyDBPassword))
-	log.Printf("KeyDB Password %s ", config.KeyDBPassword)
-	log.Println("KeyDB Database", config.KeyDBHost == "localhost:6379")
-
 	keydb := redis.NewClient(&redis.Options{
 		Addr:     config.KeyDBHost,
 		Password: config.KeyDBPassword,
 		DB:       int(config.KeyDB),
 	})
-	log.Println("KeyDB instance", keydb)
-
-	log.Println("Pinging KeyDB...")
 
 	_, err := keydb.Ping(keydb.Context()).Result()
 	if err != nil {
 		log.Printf("Failed to ping KeyDB at %s: %v", config.KeyDBHost, err)
 
-		log.Printf(
-			"Redis Options: Addr=%s, Password Length=%d, DB=%d",
-			config.KeyDBHost,
-			len(config.KeyDBPassword),
-			config.KeyDB,
-		)
+		log.Println("Redis stuff", config)
 		return nil, err
 	}
 
