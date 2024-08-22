@@ -86,7 +86,7 @@ func init() {
 				{
 					Name:             "Keychron K Pro Red",
 					ShortDescription: "Linear switch with smooth keypresses.",
-					LongDescription:  "Keychron K Pro Red is a linear switch that provides a smooth and consistent keypress, perfect for fast typists.",
+					LongDescription:  "The Keychron K Pro Red switch is a linear switch designed to deliver smooth and consistent keypresses, making it ideal for fast typists who require minimal resistance and swift actuation. Its quiet operation and reliable performance make it a versatile choice for both work and play.",
 					ManufacturerID:   ptr(12), // Keychron
 					BrandID:          ptr(12), // Keychron
 					SwitchTypeID:     1,       // Linear
@@ -97,7 +97,7 @@ func init() {
 				{
 					Name:             "Keychron K Pro Brown",
 					ShortDescription: "Tactile switch for a responsive typing experience.",
-					LongDescription:  "Keychron K Pro Brown offers a tactile bump, providing a responsive typing experience suitable for typing and gaming.",
+					LongDescription:  "The Keychron K Pro Brown switch offers a tactile bump that provides a responsive and satisfying typing experience, making it well-suited for both typing and gaming. The balanced feedback and moderate actuation force offer a comfortable and efficient keystroke.",
 					ManufacturerID:   ptr(12), // Keychron
 					BrandID:          ptr(12), // Keychron
 					SwitchTypeID:     2,       // Tactile
@@ -108,7 +108,7 @@ func init() {
 				{
 					Name:             "Keychron K Pro Blue",
 					ShortDescription: "Clicky switch with an audible click sound.",
-					LongDescription:  "Keychron K Pro Blue is a clicky switch known for its audible click sound and tactile feedback, enhancing the typing experience.",
+					LongDescription:  "The Keychron K Pro Blue switch is known for its distinctive clicky sound and tactile feedback, making it a favorite for typists who enjoy a traditional mechanical keyboard feel. Its audible click and precise actuation deliver a satisfying and engaging typing experience.",
 					ManufacturerID:   ptr(12), // Keychron
 					BrandID:          ptr(12), // Keychron
 					SwitchTypeID:     3,       // Clicky
@@ -126,7 +126,7 @@ func init() {
 				{
 					Name:             "Epomaker Flamingo",
 					ShortDescription: "Linear switch with smooth actuation.",
-					LongDescription:  "The Epomaker Flamingo is a linear switch known for its smooth actuation and consistent feel, making it a favorite among enthusiasts.",
+					LongDescription:  "The Epomaker Flamingo switch is a linear switch celebrated for its exceptionally smooth actuation and consistent keystroke. Its premium build and satisfying feel make it a favorite choice among mechanical keyboard enthusiasts looking for a high-quality linear experience.",
 					ManufacturerID:   ptr(13), // Epomaker
 					BrandID:          ptr(13), // Epomaker
 					SwitchTypeID:     1,       // Linear
@@ -137,7 +137,7 @@ func init() {
 				{
 					Name:             "Epomaker Budgerigar",
 					ShortDescription: "Tactile switch with a unique feel.",
-					LongDescription:  "The Epomaker Budgerigar is a tactile switch offering a unique bump feel, ideal for those who prefer a pronounced tactile experience.",
+					LongDescription:  "The Epomaker Budgerigar switch offers a distinct tactile bump that delivers a unique and pronounced feedback. Ideal for users who prefer a more tactile typing experience, this switch combines reliability with a satisfying keystroke.",
 					ManufacturerID:   ptr(13), // Epomaker
 					BrandID:          ptr(13), // Epomaker
 					SwitchTypeID:     2,       // Tactile
@@ -148,7 +148,7 @@ func init() {
 				{
 					Name:             "Epomaker Ice Candy",
 					ShortDescription: "Smooth linear switch with a distinct color.",
-					LongDescription:  "Epomaker Ice Candy switches offer a smooth linear experience with a visually appealing design, perfect for colorful builds.",
+					LongDescription:  "Epomaker Ice Candy switches provide a smooth linear typing experience complemented by a visually striking design. These switches are perfect for users who want both aesthetic appeal and consistent performance in their keyboard builds.",
 					ManufacturerID:   ptr(13), // Epomaker
 					BrandID:          ptr(13), // Epomaker
 					SwitchTypeID:     1,       // Linear
@@ -159,7 +159,7 @@ func init() {
 				{
 					Name:             "Epomaker Blue Ice",
 					ShortDescription: "Linear switch with smooth keypresses.",
-					LongDescription:  "Epomaker Blue Ice is a linear switch that provides a smooth and consistent keypress, ideal for fast typists.",
+					LongDescription:  "The Epomaker Blue Ice switch is a linear switch designed for fast typists, offering a smooth and consistent keypress. Its crisp actuation and unique color make it a popular choice for both gamers and typists who value performance and style.",
 					ManufacturerID:   ptr(13), // Epomaker
 					BrandID:          ptr(13), // Epomaker
 					SwitchTypeID:     1,       // Linear
@@ -177,7 +177,7 @@ func init() {
 				{
 					Name:             "Razer Green",
 					ShortDescription: "Clicky switch with tactile feedback.",
-					LongDescription:  "Razer Green switches provide a satisfying click and tactile feedback, ideal for gamers and typists who enjoy a clicky experience.",
+					LongDescription:  "The Razer Green switch is a clicky switch that provides a distinct tactile bump along with an audible click, making it perfect for gamers and typists who enjoy a highly responsive and clicky typing experience. Its satisfying feedback is designed to enhance both gaming precision and typing accuracy.",
 					ManufacturerID:   ptr(14), // Razer
 					BrandID:          ptr(14), // Razer
 					SwitchTypeID:     3,       // Clicky
@@ -188,7 +188,7 @@ func init() {
 				{
 					Name:             "Razer Yellow",
 					ShortDescription: "Smooth linear switch with fast actuation.",
-					LongDescription:  "Razer Yellow is a linear switch designed for fast actuation and smooth keystrokes, making it ideal for competitive gaming.",
+					LongDescription:  "The Razer Yellow switch is a linear switch engineered for ultra-fast actuation and smooth keypresses, making it ideal for competitive gaming. Its quiet operation and low actuation force allow for rapid key presses with minimal resistance, providing a seamless gaming experience.",
 					ManufacturerID:   ptr(14), // Razer
 					BrandID:          ptr(14), // Razer
 					SwitchTypeID:     1,       // Linear
@@ -199,7 +199,7 @@ func init() {
 				{
 					Name:             "Razer Orange",
 					ShortDescription: "Tactile switch with silent actuation.",
-					LongDescription:  "Razer Orange switches offer tactile feedback without the noise, providing a silent yet responsive typing experience.",
+					LongDescription:  "The Razer Orange switch offers tactile feedback without the accompanying click noise, providing a silent yet responsive typing experience. This switch is ideal for users who prefer the feel of a tactile bump but require quieter operation, making it suitable for both work and gaming environments.",
 					ManufacturerID:   ptr(14), // Razer
 					BrandID:          ptr(14), // Razer
 					SwitchTypeID:     2,       // Tactile
@@ -217,7 +217,7 @@ func init() {
 				{
 					Name:             "Logitech GX Blue",
 					ShortDescription: "Clicky switch with tactile feedback.",
-					LongDescription:  "Logitech GX Blue switches provide a clicky feel with tactile feedback, ideal for users who enjoy audible and tactile typing.",
+					LongDescription:  "The Logitech GX Blue switch is a clicky switch that provides a distinctive tactile bump and audible click, delivering a satisfying typing experience for those who enjoy pronounced feedback. It's designed for users who appreciate both the sound and feel of a traditional mechanical keyboard.",
 					ManufacturerID:   ptr(15), // Logitech
 					BrandID:          ptr(15), // Logitech
 					SwitchTypeID:     3,       // Clicky
@@ -228,7 +228,7 @@ func init() {
 				{
 					Name:             "Logitech GX Brown",
 					ShortDescription: "Tactile switch with a quieter operation.",
-					LongDescription:  "Logitech GX Brown switches offer a tactile bump with quieter operation, perfect for both gaming and typing.",
+					LongDescription:  "The Logitech GX Brown switch offers a tactile bump without the loud click, providing a more subtle yet responsive typing experience. Its quieter operation makes it suitable for both gaming and office use, striking a balance between feedback and noise control.",
 					ManufacturerID:   ptr(15), // Logitech
 					BrandID:          ptr(15), // Logitech
 					SwitchTypeID:     2,       // Tactile
@@ -239,7 +239,7 @@ func init() {
 				{
 					Name:             "Logitech GX Red",
 					ShortDescription: "Linear switch for smooth keypresses.",
-					LongDescription:  "Logitech GX Red is a linear switch designed for smooth keypresses and fast response times, suitable for gamers.",
+					LongDescription:  "The Logitech GX Red switch is a linear switch that delivers smooth and consistent keypresses, making it ideal for fast-paced gaming. Its low actuation force and quiet operation provide a seamless experience for gamers who prioritize speed and precision.",
 					ManufacturerID:   ptr(15), // Logitech
 					BrandID:          ptr(15), // Logitech
 					SwitchTypeID:     1,       // Linear
@@ -256,7 +256,7 @@ func init() {
 				{
 					Name:             "Roccat Titan Switch Tactile",
 					ShortDescription: "Tactile switch with a crisp feel.",
-					LongDescription:  "Roccat Titan Switch Tactile provides a crisp tactile feedback, enhancing typing precision and response.",
+					LongDescription:  "The Roccat Titan Switch Tactile is designed to deliver a crisp and responsive tactile feedback with each keystroke. This switch enhances typing precision and offers a satisfying bump, making it a great choice for both gaming and typing where accuracy is essential.",
 					ManufacturerID:   ptr(19), // Roccat
 					BrandID:          ptr(19), // Roccat
 					SwitchTypeID:     2,       // Tactile
@@ -267,7 +267,7 @@ func init() {
 				{
 					Name:             "Roccat Titan Switch Linear",
 					ShortDescription: "Smooth linear switch for fast response.",
-					LongDescription:  "Roccat Titan Switch Linear offers smooth keystrokes and fast response, ideal for gamers seeking a seamless experience.",
+					LongDescription:  "The Roccat Titan Switch Linear offers smooth, consistent keystrokes with a fast response time, making it ideal for gamers who require seamless performance. Its low actuation force and quiet operation ensure a fluid typing experience, perfect for fast-paced gaming sessions.",
 					ManufacturerID:   ptr(19), // Roccat
 					BrandID:          ptr(19), // Roccat
 					SwitchTypeID:     1,       // Linear
@@ -285,7 +285,7 @@ func init() {
 				{
 					Name:             "Cooler Master Green",
 					ShortDescription: "Clicky switch with a tactile feel.",
-					LongDescription:  "Cooler Master Green switches offer a clicky feel with tactile feedback, perfect for users who enjoy audible typing.",
+					LongDescription:  "The Cooler Master Green switch is a clicky switch that provides a tactile bump with each keystroke. It offers an audible and tactile typing experience, making it a great choice for users who enjoy the traditional clicky feel and sound.",
 					ManufacturerID:   ptr(20), // Cooler Master
 					BrandID:          ptr(20), // Cooler Master
 					SwitchTypeID:     3,       // Clicky
@@ -296,7 +296,7 @@ func init() {
 				{
 					Name:             "Cooler Master Brown",
 					ShortDescription: "Tactile switch with a quieter operation.",
-					LongDescription:  "Cooler Master Brown switches provide tactile feedback with quieter operation, ideal for both work and play.",
+					LongDescription:  "Cooler Master Brown switches provide a tactile bump with quieter operation, offering a balanced typing experience suitable for both work and play. These switches are ideal for users who prefer a tactile response without the loud click.",
 					ManufacturerID:   ptr(20), // Cooler Master
 					BrandID:          ptr(20), // Cooler Master
 					SwitchTypeID:     2,       // Tactile
@@ -307,7 +307,7 @@ func init() {
 				{
 					Name:             "Cooler Master Red",
 					ShortDescription: "Linear switch for fast keystrokes.",
-					LongDescription:  "Cooler Master Red is a linear switch designed for fast keystrokes and smooth typing, suitable for gaming.",
+					LongDescription:  "Cooler Master Red switches are linear switches designed for fast keystrokes and smooth typing, making them an excellent choice for gamers who require quick response times and a seamless typing experience.",
 					ManufacturerID:   ptr(20), // Cooler Master
 					BrandID:          ptr(20), // Cooler Master
 					SwitchTypeID:     1,       // Linear
@@ -318,7 +318,7 @@ func init() {
 				{
 					Name:             "Cooler Master Purple",
 					ShortDescription: "Tactile switch with a pronounced bump.",
-					LongDescription:  "Cooler Master Purple switches offer a tactile experience with a more pronounced bump than typical brown switches, suitable for typing enthusiasts.",
+					LongDescription:  "Cooler Master Purple switches offer a tactile experience with a more pronounced bump compared to typical brown switches. These switches provide a stronger tactile feedback, making them well-suited for typing enthusiasts who prefer more noticeable keystrokes.",
 					ManufacturerID:   ptr(20),                 // Cooler Master
 					BrandID:          ptr(20),                 // Cooler Master
 					SwitchTypeID:     2,                       // Tactile
@@ -329,7 +329,7 @@ func init() {
 				{
 					Name:             "Cooler Master Blue",
 					ShortDescription: "Clicky switch with tactile and audible feedback.",
-					LongDescription:  "Cooler Master Blue switches provide both tactile and audible feedback, offering a satisfying click sound with each keystroke.",
+					LongDescription:  "The Cooler Master Blue switch is known for providing both tactile and audible feedback with every keystroke. It delivers a satisfying click sound alongside a tactile bump, making it a favorite for those who enjoy a more interactive typing experience.",
 					ManufacturerID:   ptr(20),                 // Cooler Master
 					BrandID:          ptr(20),                 // Cooler Master
 					SwitchTypeID:     3,                       // Clicky
@@ -347,7 +347,7 @@ func init() {
 				{
 					Name:             "JWK Black",
 					ShortDescription: "Smooth linear switch with deep sound.",
-					LongDescription:  "JWK Black switches offer a smooth linear feel with a deep, satisfying sound, perfect for enthusiasts seeking a premium experience.",
+					LongDescription:  "JWK Black switches offer a premium linear experience with a smooth keystroke and deep, satisfying sound. These switches are ideal for enthusiasts who seek both performance and acoustics in their keyboard setup.",
 					ManufacturerID:   ptr(22), // JWK
 					BrandID:          ptr(22), // JWK
 					SwitchTypeID:     1,       // Linear
@@ -358,7 +358,7 @@ func init() {
 				{
 					Name:             "JWK Red",
 					ShortDescription: "Smooth linear switch with light actuation.",
-					LongDescription:  "JWK Red is a linear switch known for its smooth actuation and light feel, making it suitable for fast typists.",
+					LongDescription:  "JWK Red switches are linear switches known for their smooth actuation and light feel. These switches are perfect for fast typists who prefer a lighter keystroke for quick, responsive typing.",
 					ManufacturerID:   ptr(22), // JWK
 					BrandID:          ptr(22), // JWK
 					SwitchTypeID:     1,       // Linear
@@ -369,7 +369,7 @@ func init() {
 				{
 					Name:             "JWK Lavender",
 					ShortDescription: "Linear switch with a unique color and smooth feel.",
-					LongDescription:  "JWK Lavender switches are linear switches featuring a unique lavender color and known for their smooth keystroke.",
+					LongDescription:  "JWK Lavender switches offer a smooth linear typing experience with a distinctive lavender color. These switches are popular for their consistent feel and unique aesthetic appeal.",
 					ManufacturerID:   ptr(22),                 // JWK
 					BrandID:          ptr(22),                 // JWK
 					SwitchTypeID:     1,                       // Linear
@@ -380,7 +380,7 @@ func init() {
 				{
 					Name:             "JWK Alpaca",
 					ShortDescription: "Smooth linear switch with a light touch.",
-					LongDescription:  "JWK Alpaca switches are known for their smooth linear feel and light touch, making them popular among enthusiasts for both typing and gaming.",
+					LongDescription:  "JWK Alpaca switches are renowned for their smooth linear action and light touch. These switches are favored by both gamers and typists for their fluid keystrokes and consistent performance.",
 					ManufacturerID:   ptr(22),                 // JWK
 					BrandID:          ptr(22),                 // JWK
 					SwitchTypeID:     1,                       // Linear
@@ -391,7 +391,7 @@ func init() {
 				{
 					Name:             "JWK Moss",
 					ShortDescription: "Tactile switch with a rounded bump.",
-					LongDescription:  "JWK Moss switches offer a tactile experience with a rounded bump, providing a satisfying feedback without being too sharp.",
+					LongDescription:  "JWK Moss switches offer a tactile typing experience with a rounded bump that provides satisfying feedback without being overly sharp. These switches are great for users who prefer a more subtle tactile response.",
 					ManufacturerID:   ptr(22),                 // JWK
 					BrandID:          ptr(22),                 // JWK
 					SwitchTypeID:     2,                       // Tactile
@@ -402,7 +402,7 @@ func init() {
 				{
 					Name:             "JWK Marshmallow",
 					ShortDescription: "Smooth linear switch with a unique color.",
-					LongDescription:  "JWK Marshmallow switches are linear switches known for their smooth feel and unique marshmallow-inspired coloration.",
+					LongDescription:  "JWK Marshmallow switches are known for their smooth linear feel and soft, marshmallow-inspired color. These switches are perfect for those who appreciate both performance and aesthetics in their keyboard setup.",
 					ManufacturerID:   ptr(22),                 // JWK
 					BrandID:          ptr(22),                 // JWK
 					SwitchTypeID:     1,                       // Linear
@@ -415,7 +415,7 @@ func init() {
 			if err != nil {
 				return err
 			}
-
+			// End Updated Switches
 			tecseeSwitches := []Switch{
 				{
 					Name:             "Tecsee Carrot",
