@@ -88,14 +88,17 @@ func init() {
 						{
 							LinkAddress: "https://www.cherry-world.com/media/catalog/product/cache/661c0bae3bb54b88fbb1b415a9d390cb/m/x/mx3a-l1na_l1nn_image.jpg",
 							AltText:     "Cherry MX2A Silent Red switch",
+							OwnerType:   "switches",
 						},
 						{
 							LinkAddress: "https://www.cherry-world.com/media/catalog/product/cache/661c0bae3bb54b88fbb1b415a9d390cb/m/x/mx3a-l1nn_image.jpg",
 							AltText:     "Cherry MX2A Silent Red switch",
+							OwnerType:   "switches",
 						},
 						{
 							LinkAddress: "https://www.cherry-world.com/media/catalog/product/cache/661c0bae3bb54b88fbb1b415a9d390cb/m/x/mx3a-l1na_image.jpg",
 							AltText:     "Cherry MX2A Silent Red switch",
+							OwnerType:   "switches",
 						},
 					},
 				},
@@ -139,10 +142,12 @@ func init() {
 						{
 							LinkAddress: "https://www.cherry-world.com/media/catalog/product/cache/661c0bae3bb54b88fbb1b415a9d390cb/m/x/mx3a-11na_11nn_image.jpg",
 							AltText:     "Cherry MX2A Silent Black switch",
+							OwnerType:   "switches",
 						},
 						{
 							LinkAddress: "https://www.cherry-world.com/media/catalog/product/cache/661c0bae3bb54b88fbb1b415a9d390cb/m/x/mx-silent-black.jpg",
 							AltText:     "Cherry MX2A Silent Black switch opened",
+							OwnerType:   "switches",
 						},
 					},
 				},
@@ -161,10 +166,12 @@ func init() {
 						{
 							LinkAddress: "https://www.cherry-world.com/media/catalog/product/cache/9380e5bfba4d8931eee53843958a2c83/m/x/mx1a-g1na_g1nn_image.jpg",
 							AltText:     "Cherry MX2A Brown switch",
+							OwnerType:   "switches",
 						},
 						{
 							LinkAddress: "https://www.cherry-world.com/media/catalog/product/cache/661c0bae3bb54b88fbb1b415a9d390cb/m/x/mx1a-g1nn_explo.jpg",
 							AltText:     "Cherry MX2A Brown switch",
+							OwnerType:   "switches",
 						},
 					},
 				},
@@ -183,18 +190,22 @@ func init() {
 						{
 							LinkAddress: "https://www.cherry-world.com/media/catalog/product/cache/661c0bae3bb54b88fbb1b415a9d390cb/m/x/mx1a-l1nn_image.jpg",
 							AltText:     "Cherry MX2A Red switch",
+							OwnerType:   "switches",
 						},
 						{
 							LinkAddress: "https://www.cherry-world.com/media/catalog/product/cache/661c0bae3bb54b88fbb1b415a9d390cb/m/x/mx1a-l1nn_explo.jpg",
 							AltText:     "Cherry MX2A Red opened switch",
+							OwnerType:   "switches",
 						},
 						{
 							LinkAddress: "https://www.cherry-world.com/media/catalog/product/cache/661c0bae3bb54b88fbb1b415a9d390cb/m/x/mx1a-l1na_image.jpg",
 							AltText:     "Cherry MX2A Red switch",
+							OwnerType:   "switches",
 						},
 						{
 							LinkAddress: "https://www.cherry-world.com/media/catalog/product/cache/661c0bae3bb54b88fbb1b415a9d390cb/m/x/mx1a-l1nn_explo.jpg",
 							AltText:     "Cherry MX2A Red opened switch",
+							OwnerType:   "switches",
 						},
 					},
 				},
@@ -213,18 +224,22 @@ func init() {
 						{
 							LinkAddress: "https://www.cherry-world.com/media/catalog/product/cache/661c0bae3bb54b88fbb1b415a9d390cb/m/x/mx1a-51nn_image.jpg",
 							AltText:     "Cherry MX2A Speed Silver switch",
+							OwnerType:   "switches",
 						},
 						{
 							LinkAddress: "https://www.cherry-world.com/media/catalog/product/cache/661c0bae3bb54b88fbb1b415a9d390cb/m/x/mx1a-51nn_sideview4.jpg",
 							AltText:     "Cherry MX2A Speed Silver switch",
+							OwnerType:   "switches",
 						},
 						{
 							LinkAddress: "https://www.cherry-world.com/media/catalog/product/cache/661c0bae3bb54b88fbb1b415a9d390cb/m/x/mx1a-51na_image.jpg",
 							AltText:     "Cherry MX2A Speed Silver switch",
+							OwnerType:   "switches",
 						},
 						{
 							LinkAddress: "https://www.cherry-world.com/media/catalog/product/cache/661c0bae3bb54b88fbb1b415a9d390cb/m/x/mx1a-51na_sideview4.jpg",
 							AltText:     "Cherry MX2A Speed Silver switch",
+							OwnerType:   "switches",
 						},
 					},
 				},
@@ -243,19 +258,23 @@ func init() {
 						{
 							LinkAddress: "https://www.cherry-world.com/media/catalog/product/cache/661c0bae3bb54b88fbb1b415a9d390cb/m/x/mx1a-11nn_image.jpg",
 							AltText:     "Cherry MX2A Black switch",
+							OwnerType:   "switches",
 						},
 						{
 							LinkAddress: "https://www.cherry-world.com/media/catalog/product/cache/661c0bae3bb54b88fbb1b415a9d390cb/m/x/mx1a-11nn_explo.jpg",
 							AltText:     "Cherry MX2A Black opened switch",
+							OwnerType:   "switches",
 						},
 
 						{
 							LinkAddress: "https://www.cherry-world.com/media/catalog/product/cache/661c0bae3bb54b88fbb1b415a9d390cb/m/x/mx1a-11na_image.jpg",
 							AltText:     "Cherry MX2A Black switch",
+							OwnerType:   "switches",
 						},
 						{
 							LinkAddress: "https://www.cherry-world.com/media/catalog/product/cache/661c0bae3bb54b88fbb1b415a9d390cb/m/x/mx1a-11na_explo.jpg",
 							AltText:     "Cherry MX2A Black opened switch",
+							OwnerType:   "switches",
 						},
 					},
 				},
@@ -274,10 +293,12 @@ func init() {
 						{
 							LinkAddress: "https://www.cherry-world.com/media/catalog/product/cache/661c0bae3bb54b88fbb1b415a9d390cb/m/x/mx1a-c1na_c1nn_image.jpg",
 							AltText:     "Cherry MX2A Clear switch",
+							OwnerType:   "switches",
 						},
 						{
 							LinkAddress: "https://www.cherry-world.com/media/catalog/product/cache/661c0bae3bb54b88fbb1b415a9d390cb/m/x/mx1a-c1nn_image.jpg",
 							AltText:     "Cherry MX2A Clear switch",
+							OwnerType:   "switches",
 						},
 					},
 				},
@@ -296,14 +317,17 @@ func init() {
 						{
 							LinkAddress: "https://www.cherry-world.com/media/catalog/product/cache/661c0bae3bb54b88fbb1b415a9d390cb/m/x/mx1a-d1na_d1nn_image.jpg",
 							AltText:     "Cherry MX2A Grey switch",
+							OwnerType:   "switches",
 						},
 						{
 							LinkAddress: "https://www.cherry-world.com/media/catalog/product/cache/661c0bae3bb54b88fbb1b415a9d390cb/m/x/mx1a-d1nn_sideview4.jpg",
 							AltText:     "Cherry MX2A Grey switch",
+							OwnerType:   "switches",
 						},
 						{
 							LinkAddress: "https://www.cherry-world.com/media/catalog/product/cache/661c0bae3bb54b88fbb1b415a9d390cb/m/x/mx1a-d1na_top",
 							AltText:     "Cherry MX2A Grey switch",
+							OwnerType:   "switches",
 						},
 					},
 				},
@@ -322,10 +346,12 @@ func init() {
 						{
 							LinkAddress: "https://www.cherry-world.com/media/catalog/product/cache/661c0bae3bb54b88fbb1b415a9d390cb/m/x/mx2a-v1nw_imageview.jpg",
 							AltText:     "Cherry MX Purple switch",
+							OwnerType:   "switches",
 						},
 						{
 							LinkAddress: "https://www.cherry-world.com/media/catalog/product/cache/661c0bae3bb54b88fbb1b415a9d390cb/m/x/mx2a-v1nw_explo.jpg",
 							AltText:     "Cherry MX Purple switch",
+							OwnerType:   "switches",
 						},
 					},
 				},
@@ -344,10 +370,12 @@ func init() {
 						{
 							LinkAddress: "https://www.cherry-world.com/media/catalog/product/cache/661c0bae3bb54b88fbb1b415a9d390cb/m/x/mx1a-61nw_image.jpg",
 							AltText:     "Cherry MX Clear-Top switch",
+							OwnerType:   "switches",
 						},
 						{
 							LinkAddress: "https://www.cherry-world.com/media/catalog/product/cache/661c0bae3bb54b88fbb1b415a9d390cb/m/x/mx1a-61nw_explo.jpg",
 							AltText:     "Cherry MX Clear-Top switch",
+							OwnerType:   "switches",
 						},
 					},
 				},
@@ -366,10 +394,12 @@ func init() {
 						{
 							LinkAddress: "https://www.cherry-world.com/media/catalog/product/cache/661c0bae3bb54b88fbb1b415a9d390cb/m/x/mx1a-e1na_e1nn_image.jpg",
 							AltText:     "Cherry MX2A switch",
+							OwnerType:   "switches",
 						},
 						{
 							LinkAddress: "https://www.cherry-world.com/media/catalog/product/cache/661c0bae3bb54b88fbb1b415a9d390cb/m/x/mx1a-e1nn_explo.jpg",
 							AltText:     "Cherry MX2A switch",
+							OwnerType:   "switches",
 						},
 					},
 				},
@@ -424,15 +454,18 @@ func init() {
 						{
 							LinkAddress: "https://www.cherry-world.com/media/catalog/product/cache/661c0bae3bb54b88fbb1b415a9d390cb/m/x/mx1a-f1na_f1nn_image.jpg",
 							AltText:     "Cherry MX Green switch",
+							OwnerType:   "switches",
 						},
 						{
 							LinkAddress: "https://www.cherry-world.com/media/catalog/product/cache/661c0bae3bb54b88fbb1b415a9d390cb/m/x/mx1a-f1nn_sideview3.jpg",
 							AltText:     "Cherry MX Green switch",
+							OwnerType:   "switches",
 						},
 
 						{
 							LinkAddress: "https://www.cherry-world.com/media/catalog/product/cache/661c0bae3bb54b88fbb1b415a9d390cb/m/x/mx1a-f1na_image.jpg",
 							AltText:     "Cherry MX Green switch",
+							OwnerType:   "switches",
 						},
 					},
 				},
@@ -580,6 +613,7 @@ func init() {
 						{
 							LinkAddress: "https://www.gateron.co/cdn/shop/products/Gateron-G-Pro-Red-Switch-Set_1000x.jpg?v=1657361719",
 							AltText:     "Gateron G Pro Red switch",
+							OwnerType:   "switches",
 						},
 					},
 				},
@@ -598,6 +632,7 @@ func init() {
 						{
 							LinkAddress: "https://www.gateron.co/cdn/shop/products/Gateron-G-Pro-Yellow-Switch-Set_1000x.jpg?v=1657361719",
 							AltText:     "Gateron G Pro Red switch",
+							OwnerType:   "switches",
 						},
 					},
 				},
@@ -616,6 +651,7 @@ func init() {
 						{
 							LinkAddress: "https://www.gateron.co/cdn/shop/products/Gateron-G-Pro-Black-Switch-Set_1000x.jpg?v=1657361719",
 							AltText:     "Gateron G Pro Black switch",
+							OwnerType:   "switches",
 						},
 					},
 				},
@@ -634,6 +670,7 @@ func init() {
 						{
 							LinkAddress: "https://www.gateron.co/cdn/shop/products/Gateron-G-Pro-Brown-Switch-Set_1000x.jpg?v=1657361719",
 							AltText:     "Gateron G Pro Brown switch",
+							OwnerType:   "switches",
 						},
 					},
 				},
@@ -652,6 +689,7 @@ func init() {
 						{
 							LinkAddress: "https://www.gateron.co/cdn/shop/products/Gateron-G-Pro-Green-Switch-Set_1000x.jpg?v=1662948459",
 							AltText:     "Gateron G Pro Green switch",
+							OwnerType:   "switches",
 						},
 					},
 				},
@@ -670,6 +708,7 @@ func init() {
 						{
 							LinkAddress: "https://www.gateron.co/cdn/shop/products/Gateron-G-Pro-Blue-Switch-Set_1000x.jpg?v=1662948459",
 							AltText:     "Gateron G Pro Blue switch",
+							OwnerType:   "switches",
 						},
 					},
 				},
@@ -688,6 +727,7 @@ func init() {
 						{
 							LinkAddress: "https://www.gateron.co/cdn/shop/products/Gateron-G-Pro-2.0-Red-Switch-Set_1000x.jpg?v=1657505037",
 							AltText:     "Gateron G Pro 2.0 Blue switch",
+							OwnerType:   "switches",
 						},
 					},
 				},
@@ -706,6 +746,7 @@ func init() {
 						{
 							LinkAddress: "https://www.gateron.co/cdn/shop/products/Gateron-G-Pro-2.0-Yellow-Switch-Set_1000x.jpg?v=1657505119",
 							AltText:     "Gateron G Pro 2.0 Blue switch",
+							OwnerType:   "switches",
 						},
 					},
 				},
@@ -724,6 +765,7 @@ func init() {
 						{
 							LinkAddress: "https://www.gateron.co/cdn/shop/products/Gateron-G-Pro-2.0-Black-Switch-Set_1000x.jpg?v=1657505119",
 							AltText:     "Gateron G Pro 2.0 Blue switch",
+							OwnerType:   "switches",
 						},
 					},
 				},
@@ -742,6 +784,7 @@ func init() {
 						{
 							LinkAddress: "https://www.gateron.co/cdn/shop/products/Gateron-G-Pro-2.0-Brown-Switch-Set_1000x.jpg?v=1657505119",
 							AltText:     "Gateron G Pro 2.0 Blue switch",
+							OwnerType:   "switches",
 						},
 					},
 				},
@@ -760,6 +803,7 @@ func init() {
 						{
 							LinkAddress: "https://www.gateron.co/cdn/shop/products/Gateron-G-Pro-2.0-Blue-Switch-Set_1000x.jpg?v=1657505119",
 							AltText:     "Gateron G Pro 2.0 Blue switch",
+							OwnerType:   "switches",
 						},
 					},
 				},
@@ -778,6 +822,7 @@ func init() {
 						{
 							LinkAddress: "https://www.gateron.co/cdn/shop/files/Gateron-G-Pro-3.0-Red-Switch-Set_1000x.jpg?v=1683342544",
 							AltText:     "Gateron G Pro 3.0 Red switch",
+							OwnerType:   "switches",
 						},
 					},
 				},
@@ -796,6 +841,7 @@ func init() {
 						{
 							LinkAddress: "https://www.gateron.co/cdn/shop/files/Gateron-G-Pro-3.0-Yellow-Switch-Set_1000x.jpg?v=1702451537",
 							AltText:     "Gateron G Pro 3.0 Yellow  switch",
+							OwnerType:   "switches",
 						},
 					},
 				},
@@ -814,6 +860,7 @@ func init() {
 						{
 							LinkAddress: "https://www.gateron.co/cdn/shop/files/Gateron-G-Pro-3.0-Black-Switch-Set_1000x.jpg?v=1702451537",
 							AltText:     "Gateron G Pro 3.0 Black switch",
+							OwnerType:   "switches",
 						},
 					},
 				},
@@ -832,6 +879,7 @@ func init() {
 						{
 							LinkAddress: "https://www.gateron.co/cdn/shop/files/Gateron-G-Pro-3.0-Brown-Switch-Set_1000x.jpg?v=1702451537",
 							AltText:     "Gateron G Pro 3.0 Brown switch",
+							OwnerType:   "switches",
 						},
 					},
 				},
@@ -850,6 +898,7 @@ func init() {
 						{
 							LinkAddress: "https://www.gateron.co/cdn/shop/files/Gateron-G-Pro-3.0-Blue-Switch-Set_1000x.jpg?v=1702451537",
 							AltText:     "Gateron G Pro 3.0 Blue switch",
+							OwnerType:   "switches",
 						},
 					},
 				},
@@ -868,6 +917,7 @@ func init() {
 						{
 							LinkAddress: "https://www.gateron.co/cdn/shop/products/Gateron-Ink-V2-Red-Switch-Set_1000x.jpg?v=1657360038",
 							AltText:     "Gateron Ink V2 Red switch",
+							OwnerType:   "switches",
 						},
 					},
 				},
@@ -886,6 +936,7 @@ func init() {
 						{
 							LinkAddress: "https://www.gateron.co/cdn/shop/products/Gateron-Ink-V2-Black-Switch-Set_1000x.jpg?v=1657360038",
 							AltText:     "Gateron Ink V2 Black switch",
+							OwnerType:   "switches",
 						},
 					},
 				},
@@ -904,6 +955,7 @@ func init() {
 						{
 							LinkAddress: "https://www.gateron.co/cdn/shop/products/Gateron-Ink-V2-Yellow-Switch-Set_1000x.jpg?v=1657360038",
 							AltText:     "Gateron Ink V2 Yellow switch",
+							OwnerType:   "switches",
 						},
 					},
 				},
@@ -922,6 +974,7 @@ func init() {
 						{
 							LinkAddress: "https://www.gateron.co/cdn/shop/products/Gateron-Ink-V2-Blue-Switch-Set_1000x.jpg?v=1657360038",
 							AltText:     "Gateron Ink V2 Blue switch",
+							OwnerType:   "switches",
 						},
 					},
 				},
@@ -941,6 +994,7 @@ func init() {
 						{
 							LinkAddress: "https://www.gateron.co/cdn/shop/products/Gateron-Oil-King-Linear-Switch-Set_1000x.jpg?v=1657359635",
 							AltText:     "Gateron Oil King switch",
+							OwnerType:   "switches",
 						},
 					},
 				},
@@ -960,6 +1014,7 @@ func init() {
 						{
 							LinkAddress: "https://www.gateron.co/cdn/shop/files/Gateron-Baby-Kangaroo-2.0-Tactile-Switch-Set_1000x.jpg?v=1698722119",
 							AltText:     "Gateron Baby Kangaroo switch",
+							OwnerType:   "switches",
 						},
 					},
 				},
@@ -978,6 +1033,7 @@ func init() {
 						{
 							LinkAddress: "https://www.gateron.co/cdn/shop/products/Gateron-Cap-V2-Switch-Set-Golden-Brown_1000x.jpg?v=1659520097",
 							AltText:     "Gateron Cap V2 Brown switch",
+							OwnerType:   "switches",
 						},
 					},
 				},
@@ -996,6 +1052,7 @@ func init() {
 						{
 							LinkAddress: "https://www.gateron.co/cdn/shop/products/Gateron-Cap-V2-Switch-Set-Blue_1000x.jpg?v=1659520097",
 							AltText:     "Gateron Cap V2 Blue switch",
+							OwnerType:   "switches",
 						},
 					},
 				},
@@ -1014,10 +1071,10 @@ func init() {
 						{
 							LinkAddress: "https://www.gateron.co/cdn/shop/products/Gateron-Cap-V2-Switch-Set-Golden-Yellow_1000x.jpg?v=1657360751",
 							AltText:     "Gateron Cap V2 Yellow switch",
+							OwnerType:   "switches",
 						},
 					},
 				},
-				// Marking where we left off
 				{
 					Name:             "Gateron Red",
 					ShortDescription: "Linear switch with a light actuation force.",
@@ -1028,16 +1085,6 @@ func init() {
 					ReleaseDate:      parseDate("2014-01-01"),
 					Available:        true,
 					PricePoint:       1, // Value
-					ImageLinks: []*ImageLink{
-						{
-							LinkAddress: "",
-							AltText:     "Gateron switch",
-						},
-						{
-							LinkAddress: "",
-							AltText:     "Gateron switch",
-						},
-					},
 				},
 				{
 					Name:             "Gateron Blue",
@@ -1749,18 +1796,6 @@ func init() {
 					PricePoint:       2, // Average
 				},
 				{
-					Name:             "Gateron Aliaz Silent",
-					ShortDescription: "Silent tactile switch with a gentle to strong bump and quiet operation.",
-					LongDescription:  "Gateron Aliaz Silent switches are designed for users seeking a quiet tactile typing experience. Available in different spring weights such as 60g and 70g, these switches offer a range of tactile feedback from a gentle to a stronger bump. The Aliaz Silent switches are ideal for users who prefer a premium tactile feel with reduced noise, making them perfect for stealthy operation in quiet environments.",
-					ManufacturerID:   ptr(2), // Gateron
-					BrandID:          ptr(5), // ZealPC
-					SwitchTypeID:     5,      // Silent Tactile
-					ReleaseDate:      parseDate("2018-01-01"),
-					Available:        true,
-					PricePoint:       3,  // Expensive
-					SiteURL:          "", // Update if an official URL becomes available
-				},
-				{
 					Name:             "Gateron Melodic",
 					ShortDescription: "Tactile switch with a musical sound profile and smooth operation.",
 					LongDescription:  "The Gateron Melodic switch is a tactile switch designed to provide a unique typing experience with a musical sound profile. With an actuation force of 55 grams, the Melodic switch offers a gentle tactile bump along with a distinctive sound that sets it apart from other switches. This switch is ideal for users who enjoy a tactile feedback with an added element of auditory satisfaction, making typing not only functional but also enjoyable.",
@@ -2017,7 +2052,7 @@ func init() {
 			return nil // Replace with actual code
 		},
 		Rollback: func(tx *gorm.DB) error {
-			if err := tx.Exec("DELETE FROM switches WHERE id NOT null").Error; err != nil {
+			if err := tx.Exec("DELETE FROM switches").Error; err != nil {
 				log.Printf("Failed to delete from Switch table: %v", err)
 				return err
 			}
