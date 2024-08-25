@@ -49,6 +49,15 @@ func init() {
 				UpdatedAt        time.Time  `gorm:"autoUpdateTime"                                                                   json:"updatedAt"`
 			}
 
+			ptr := func(i int) *int {
+				return &i
+			}
+
+			parseDate := func(date string) *time.Time {
+				t, _ := time.Parse("2006-01-02", date)
+				return &t
+			}
+
 			ttcSwitches := []Switch{
 				{
 					Name:             "TTC Gold Pink",

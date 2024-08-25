@@ -49,14 +49,13 @@ func init() {
 				UpdatedAt        time.Time  `gorm:"autoUpdateTime"                                                                   json:"updatedAt"`
 			}
 
-			keydous := Producer{
-				Name:    "Cannon Keys",
-				Alias:   "cannonkeys",
-				SiteURL: "",
+			ptr := func(i int) *int {
+				return &i
 			}
 
-			if err := tx.Create(&keydous).Error; err != nil {
-				return err
+			parseDate := func(date string) *time.Time {
+				t, _ := time.Parse("2006-01-02", date)
+				return &t
 			}
 
 			cannonKeysSwitches := []Switch{

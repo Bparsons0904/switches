@@ -89,34 +89,36 @@ func init() {
 				}
 
 				type Producer struct {
-					ID        int       `gorm:"type:int;primaryKey;autoIncrement"     json:"id"`
-					Name      string    `gorm:"type:varchar(50);not null"             json:"name"`
-					Alias     string    `gorm:"type:varchar(50);not null;uniqueIndex" json:"alias"`
-					SiteURL   string    `gorm:"type:varchar(50)"                      json:"siteURL,omitempty"`
-					CreatedAt time.Time `gorm:"autoCreateTime"                        json:"createdAt"`
-					UpdateAt  time.Time `gorm:"autoUpdateTime"                        json:"updatedAt"`
+					ID        int        `gorm:"type:int;primaryKey;autoIncrement"                                                                             json:"id"`
+					Name      string     `gorm:"type:varchar(50);not null"                                                                                     json:"name"`
+					Alias     string     `gorm:"type:varchar(50);not null;uniqueIndex"                                                                         json:"alias"`
+					SiteURL   string     `gorm:"type:varchar(50)"                                                                                              json:"siteURL,omitempty"`
+					Logo      *ImageLink `gorm:"foreignKey:OwnerID;polymorphic:Owner;polymorphicValue:Producer;constraint:OnUpdate:CASCADE,OnDelete:SET NULL;" json:"logo,omitempty"`
+					CreatedAt time.Time  `gorm:"autoCreateTime"                                                                                                json:"createdAt"`
+					UpdateAt  time.Time  `gorm:"autoUpdateTime"                                                                                                json:"updatedAt"`
 				}
 				if err := tx.Migrator().CreateTable(&Producer{}); err != nil {
 					return err
 				}
 
 				type Switch struct {
-					ID               uuid.UUID  `gorm:"type:uuid;default:uuid_generate_v7();primaryKey"                                  json:"id"`
-					Name             string     `gorm:"type:varchar(50);not null;index:idx_name;uniqueIndex:idx_name_manufacturer_brand" json:"name"`
-					ShortDescription string     `gorm:"type:varchar(255);not null"                                                       json:"shortDescription"`
-					LongDescription  string     `gorm:"type:text;not null"                                                               json:"longDescription"`
-					ManufacturerID   *int       `gorm:"type:int;index;uniqueIndex:idx_name_manufacturer_brand"                           json:"manufacturerId,omitempty"`
-					Manufacturer     *Producer  `gorm:"foreignKey:ManufacturerID"                                                        json:"manufacturer,omitempty"`
-					BrandID          *int       `gorm:"type:int;index;uniqueIndex:idx_name_manufacturer_brand"                           json:"brandId,omitempty"`
-					Brand            *Producer  `gorm:"foreignKey:BrandID"                                                               json:"brand,omitempty"`
-					SwitchTypeID     int        `gorm:"type:int;not null;index;"                                                         json:"switchTypeId"`
-					SwitchType       *Type      `gorm:"foreignKey:SwitchTypeID"                                                          json:"switchType,omitempty"`
-					ReleaseDate      *time.Time `gorm:"type:date"                                                                        json:"releaseDate,omitempty"`
-					Available        bool       `gorm:"type:boolean;default:true"                                                        json:"available"`
-					PricePoint       int        `gorm:"type:int;not null"                                                                json:"pricePoint"`
-					SiteURL          string     `gorm:"type:varchar(255)"                                                                json:"siteURL,omitempty"`
-					CreatedAt        time.Time  `gorm:"autoCreateTime"                                                                   json:"createdAt"`
-					UpdatedAt        time.Time  `gorm:"autoUpdateTime"                                                                   json:"updatedAt"`
+					ID               uuid.UUID    `gorm:"type:uuid;default:uuid_generate_v7();primaryKey"                                          json:"id"`
+					Name             string       `gorm:"type:varchar(50);not null;index:idx_name;uniqueIndex:idx_name_manufacturer_type"          json:"name"`
+					ShortDescription string       `gorm:"type:varchar(255);not null"                                                               json:"shortDescription"`
+					LongDescription  string       `gorm:"type:text;not null"                                                                       json:"longDescription"`
+					ManufacturerID   *int         `gorm:"type:int;index;uniqueIndex:idx_name_manufacturer_type"                                    json:"manufacturerId,omitempty"`
+					Manufacturer     *Producer    `gorm:"foreignKey:ManufacturerID"                                                                json:"manufacturer,omitempty"`
+					BrandID          *int         `gorm:"type:int;index"                                                                           json:"brandId,omitempty"`
+					Brand            *Producer    `gorm:"foreignKey:BrandID"                                                                       json:"brand,omitempty"`
+					SwitchTypeID     int          `gorm:"type:int;not null;index;uniqueIndex:idx_name_manufacturer_type"                           json:"switchTypeId"`
+					SwitchType       *Type        `gorm:"foreignKey:SwitchTypeID"                                                                  json:"switchType,omitempty"`
+					ReleaseDate      *time.Time   `gorm:"type:date"                                                                                json:"releaseDate,omitempty"`
+					Available        bool         `gorm:"type:boolean;default:true"                                                                json:"available"`
+					PricePoint       int          `gorm:"type:int;not null"                                                                        json:"pricePoint"`
+					SiteURL          string       `gorm:"type:varchar(255)"                                                                        json:"siteURL,omitempty"`
+					CreatedAt        time.Time    `gorm:"autoCreateTime"                                                                           json:"createdAt"`
+					UpdatedAt        time.Time    `gorm:"autoUpdateTime"                                                                           json:"updatedAt"`
+					ImageLinks       []*ImageLink `gorm:"foreignKey:OwnerID;polymorphicValue:Switch;constraint:OnUpdate:CASCADE,OnDelete:CASCADE;" json:"imageLinks,omitempty"`
 				}
 				if err := tx.Migrator().CreateTable(&Switch{}); err != nil {
 					return err

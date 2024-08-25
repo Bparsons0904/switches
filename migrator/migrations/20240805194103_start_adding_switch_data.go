@@ -63,6 +63,15 @@ func init() {
 				ImageLinks       []*ImageLink `gorm:"foreignKey:OwnerID;polymorphicValue:Switch;constraint:OnUpdate:CASCADE,OnDelete:CASCADE;" json:"imageLinks,omitempty"`
 			}
 
+			ptr := func(i int) *int {
+				return &i
+			}
+
+			parseDate := func(date string) *time.Time {
+				t, _ := time.Parse("2006-01-02", date)
+				return &t
+			}
+
 			cherry := []Switch{
 				{
 					Name:             "Cherry MX2A Silent Red",
@@ -2015,13 +2024,4 @@ func init() {
 			return nil // Replace with actual code
 		},
 	})
-}
-
-func ptr(i int) *int {
-	return &i
-}
-
-func parseDate(date string) *time.Time {
-	t, _ := time.Parse("2006-01-02", date)
-	return &t
 }

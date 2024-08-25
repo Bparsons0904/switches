@@ -49,24 +49,13 @@ func init() {
 				UpdatedAt        time.Time  `gorm:"autoUpdateTime"                                                                   json:"updatedAt"`
 			}
 
-			kdfans := Producer{
-				Name:    "KDFans",
-				Alias:   "kdfans",
-				SiteURL: "",
+			ptr := func(i int) *int {
+				return &i
 			}
 
-			if err := tx.Create(&kdfans).Error; err != nil {
-				return err
-			}
-
-			hmx := Producer{
-				Name:    "HMX",
-				Alias:   "hmx",
-				SiteURL: "",
-			}
-
-			if err := tx.Create(&hmx).Error; err != nil {
-				return err
+			parseDate := func(date string) *time.Time {
+				t, _ := time.Parse("2006-01-02", date)
+				return &t
 			}
 
 			processSwitches := func(switches []Switch) error {
