@@ -405,7 +405,7 @@ func init() {
 				if err := tx.Migrator().DropTable("switches"); err != nil {
 					return err
 				}
-				if err := tx.Migrator().DropTable("producer"); err != nil {
+				if err := tx.Migrator().DropTable("producers"); err != nil {
 					return err
 				}
 				if err := tx.Migrator().DropTable("details"); err != nil {
