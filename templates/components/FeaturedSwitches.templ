@@ -36,6 +36,7 @@ func getFeaturedSwitches() []SwitchCardProps {
 		imageLink := s.ImageLinks[0].LinkAddress
 		imageAlt := fmt.Sprintf("Image of %s switch", s.Name)
 		newSwitch := SwitchCardProps{
+			ID:          s.ID.String(),
 			Title:       s.Name,
 			Description: s.ShortDescription,
 			ImageSrc:    imageLink,

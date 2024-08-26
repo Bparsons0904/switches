@@ -1,6 +1,7 @@
 package controllers
 
 import (
+	"switches/database"
 	"switches/models"
 	"switches/templates/components"
 	"switches/templates/pages"
@@ -15,5 +16,15 @@ func GetSwitches(c *fiber.Ctx) error {
 
 func GetFeaturedSwitches(c *fiber.Ctx) error {
 	component := components.FeaturedSwitches()
+	return Render(component)(c)
+}
+
+func GetSwitchModal(c *fiber.Ctx) error {
+	switchID := c.Params("switchID")
+
+	var switchModel models.Switch
+	database.DB.First(&switchModel, switchID)
+
+	component := components.SwitchModalCard(switchModel)
 	return Render(component)(c)
 }

@@ -25,6 +25,7 @@ templ Root() {
 		</head>
 		<body id="body">
 			{ children... }
+			<div id="portal"></div>
 		</body>
 		<script src={ fmt.Sprintf("/assets/htmx_%d.min.js", viper.GetInt64("appendNumber")) }></script>
 	</html>

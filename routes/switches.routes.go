@@ -11,4 +11,5 @@ func SwitchRoutes(app *fiber.App) {
 
 	switches.Get("/", controllers.GetSwitches)
 	switches.Get("/featured", controllers.GetFeaturedSwitches)
+	switches.Get("/modal", controllers.GetSwitchModal)
 }
