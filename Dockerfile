@@ -1,4 +1,4 @@
-FROM golang:1.22 AS base
+FROM golang:1.23 AS base
 
 # Create a stage for downloading dependencies
 FROM base AS deps
