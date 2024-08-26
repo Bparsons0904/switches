@@ -1,0 +1,57 @@
+package components
+
+import (
+	"fmt"
+	"switches/database"
+	"switches/models"
+	"switches/utils"
+)
+
+templ FeaturedSwitches() {
+	<section id="featured">
+		<div class="featured-header">
+			<h2>Featured Mechanical Switches</h2>
+			<p>Explore our selection of the most popular and highly-rated mechanical switches.</p>
+		</div>
+		<div class="featured-switches">
+			@DisplayFeaturedSwitches(getFeaturedSwitches())
+		</div>
+	</section>
+}
+
+func getFeaturedSwitches() []SwitchCardProps {
+	timer := utils.StartTimer("getFeaturedSwitches")
+	var switchesFromDB []models.Switch
+	database.DB.
+		Joins("INNER JOIN image_links ON image_links.owner_id = switches.id").
+		Preload("ImageLinks").
+		Limit(4).
+		Order("RANDOM()").
+		Find(&switchesFromDB)
+
+	timer.LogTotalTime("getFeaturedSwitches")
+
+	var switches []SwitchCardProps // Declare the variable
+	for _, s := range switchesFromDB {
+		imageLink := s.ImageLinks[0].LinkAddress
+		imageAlt := fmt.Sprintf("Image of %s switch", s.Name)
+		newSwitch := SwitchCardProps{
+			Title:       s.Name,
+			Description: s.ShortDescription,
+			ImageSrc:    imageLink,
+			ImageAlt:    imageAlt,
+		}
+
+		switches = append(switches, newSwitch)
+	}
+
+	return switches
+}
+
+templ DisplayFeaturedSwitches(switches []SwitchCardProps) {
+	<div class="switch-cards">
+		for _, item := range switches {
+			@SwitchCard(item)
+		}
+	</div>
+}
