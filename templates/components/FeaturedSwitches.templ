@@ -7,15 +7,11 @@ templ FeaturedSwitches(switches []SwitchCardProps) {
 			<p>Explore our selection of the most popular and highly-rated mechanical switches.</p>
 		</div>
 		<div class="featured-switches">
-			@DisplayFeaturedSwitches(switches)
+			<div class="switch-cards">
+				for _, item := range switches {
+					@SwitchCard(item)
+				}
+			</div>
 		</div>
 	</section>
-}
-
-templ DisplayFeaturedSwitches(switches []SwitchCardProps) {
-	<div class="switch-cards">
-		for _, item := range switches {
-			@SwitchCard(item)
-		}
-	</div>
 }
