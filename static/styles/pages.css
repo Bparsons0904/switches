@@ -95,3 +95,53 @@
     }
   }
 }
+
+@media screen and (min-width: 768px) {
+  #cta {
+    padding: 2.5rem;
+    .cta-wrapper {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      flex-direction: row;
+      gap: 2rem;
+      h1 {
+        font-size: 2.5rem;
+      }
+      .cta-header {
+        flex: 1;
+      }
+      .cta-image {
+        padding: 0 2rem 2rem;
+      }
+    }
+  }
+
+  #home-recommendations {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    padding: 4rem;
+    h2 {
+      font-size: 2.5rem;
+    }
+  }
+
+  #featured {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    h2 {
+      font-size: 2.5rem;
+    }
+    .switch-cards {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 5rem;
+      width: 100%;
+      .switch-details {
+        h2 {
+          font-size: 2rem;
+        }
+      }
+    }
+  }
+}
