@@ -25,3 +25,23 @@ templ Image(props ImageProps) {
 		/>
 	}
 }
+
+templ ImageLink(props ImageProps) {
+	if props.IsSquare {
+		<img
+			src={ props.Src }
+			width="250"
+			height="250"
+			alt={ props.Alt }
+			class="img-square"
+		/>
+	} else {
+		<img
+			src={ props.Src }
+			width="600"
+			height="400"
+			alt={ props.Alt }
+			class="img-rounded"
+		/>
+	}
+}

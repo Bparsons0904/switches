@@ -10,7 +10,7 @@ type SwitchCardProps struct {
 templ SwitchCard(props SwitchCardProps) {
 	<div class="switch-card">
 		<div class="switch-image">
-			@Image(ImageProps{
+			@ImageLink(ImageProps{
 				Src:      props.ImageSrc,
 				Alt:      props.ImageSrc,
 				IsSquare: true,

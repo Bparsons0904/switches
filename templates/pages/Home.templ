@@ -1,9 +1,12 @@
 package pages
 
 import (
+	"fmt"
+	"switches/database"
 	"switches/models"
 	"switches/templates/components"
 	"switches/templates/layouts"
+	"switches/utils"
 )
 
 templ HomePage(user models.User) {
@@ -84,32 +87,29 @@ templ Home(user models.User) {
 }
 
 func getFeaturedSwitches() []components.SwitchCardProps {
-	// TODO: Get from the DB!
-	switches := []components.SwitchCardProps{
-		{
-			Title:       "Anubus",
-			Description: "Thocky Tactile",
-			ImageSrc:    "anubus.jpeg",
-			ImageAlt:    "Image of an Anubus switch",
-		},
-		{
-			Title:       "Cherry MX Blue",
-			Description: "OG Clicky",
-			ImageSrc:    "blue_switches.webp",
-			ImageAlt:    "Image of an Cherry Blue switches",
-		},
-		{
-			Title:       "Sunny Side Up",
-			Description: "Medium Linear",
-			ImageSrc:    "sunny_side_up.webp",
-			ImageAlt:    "Image of Cannon Keys Sunnu Side Up switches",
-		},
-		{
-			Title:       "Drop Holy Pandy X",
-			Description: "Medium Sharp Tactile",
-			ImageSrc:    "drop_holy_panda_x.jpg",
-			ImageAlt:    "Image of Cannon Keys Sunnu Side Up switches",
-		},
+	timer := utils.StartTimer("getFeaturedSwitches")
+	var switchesFromDB []models.Switch
+	database.DB.
+		Joins("INNER JOIN image_links ON image_links.owner_id = switches.id").
+		Preload("ImageLinks").
+		Limit(4).
+		Order("RANDOM()").
+		Find(&switchesFromDB)
+
+	timer.LogTotalTime("getFeaturedSwitches")
+
+	var switches []components.SwitchCardProps // Declare the variable
+	for _, s := range switchesFromDB {
+		imageLink := s.ImageLinks[0].LinkAddress
+		imageAlt := fmt.Sprintf("Image of %s switch", s.Name)
+		newSwitch := components.SwitchCardProps{
+			Title:       s.Name,
+			Description: s.ShortDescription,
+			ImageSrc:    imageLink,
+			ImageAlt:    imageAlt,
+		}
+
+		switches = append(switches, newSwitch)
 	}
 
 	return switches
