@@ -26,7 +26,7 @@ func AuthenticateUser(config config.Config) fiber.Handler {
 				return c.Next()
 			}
 
-			user, err = database.GetJSONKeyDB[models.User]("user", retrievedSession.UserID.String())
+			user, err = database.GetUUIDJSONKeyDB[models.User]("user", retrievedSession.UserID)
 			if err != nil {
 				if err := database.DB.First(&user, retrievedSession.UserID).Error; err != nil {
 					log.Println("Error getting user from keydb", err)
@@ -40,6 +40,7 @@ func AuthenticateUser(config config.Config) fiber.Handler {
 		}
 
 		c.Locals("User", user)
+		c.Locals("UserID", user.ID)
 		log.Println("setting user in local: ", user.ID)
 		return c.Next()
 	}
