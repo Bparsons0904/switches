@@ -1,8 +1,12 @@
 package layouts
 
+import "switches/templates/components/icons"
+
 templ Modal() {
-	<dialog id="dialog">
-		<span class="close">&times;</span>
+	<dialog id="dialog" open>
+		<div class="close" onclick="closeDialog()">
+			@icons.Cancel()
+		</div>
 		<div class="modal-content">
 			{ children... }
 		</div>

@@ -2,6 +2,7 @@ package controllers
 
 import (
 	"fmt"
+	"log"
 	"switches/database"
 	"switches/models"
 	"switches/templates/components"
@@ -51,6 +52,7 @@ func GetSwitchModal(c *fiber.Ctx) error {
 	timer := utils.StartTimer("getSwitchModal")
 	switchID := c.Params("switchID")
 
+	log.Println(switchID)
 	var switchModel models.Switch
 	database.DB.First(&switchModel, switchID)
 

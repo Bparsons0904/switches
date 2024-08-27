@@ -1,7 +1,12 @@
 package components
 
-import "switches/models"
+import (
+	"switches/models"
+	"switches/templates/layouts"
+)
 
-templ SwitchModalCard(switch2 models.Switch) {
-	<div>Yo</div>
+templ SwitchModalCard(clickyClack models.Switch) {
+	@layouts.Modal() {
+		<div>Yo</div>
+	}
 }
