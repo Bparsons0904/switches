@@ -65,10 +65,8 @@
 
 #dialog {
   z-index: 1000;
-  width: 70vw;
-  max-width: 800px;
-  height: 70vh;
-  max-height: 600px;
+  width: 95vw;
+  height: 90vh;
   display: flex;
   flex-direction: column;
   place-self: center;
@@ -97,6 +95,15 @@
     overflow: auto;
     padding: 20px;
     white-space: pre-wrap;
+  }
+}
+
+@media (min-width: 768px) {
+  #dialog {
+    width: 70vw;
+    max-width: 800px;
+    height: 70vh;
+    max-height: 600px;
   }
 }
 
