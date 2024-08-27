@@ -1,0 +1,49 @@
+package components
+
+import (
+	"switches/models"
+	"switches/templates/layouts"
+)
+
+templ SwitchDetailCard(clickyClack models.Switch) {
+	@layouts.Modal() {
+		<div class="switch-detail-card">
+			<div class="switch-images">
+				@getSwitchImageLink(clickyClack)
+			</div>
+			<div class="switch-details">
+				<h2>{ clickyClack.Name }</h2>
+				<p>{ clickyClack.LongDescription }</p>
+			</div>
+		</div>
+	}
+}
+
+func getSwitchImageLink(clickyClack models.Switch) templ.Component {
+	if len(clickyClack.ImageLinks) == 0 {
+		return Image(ImageProps{
+			Src:      "switch_placeholder.jpg",
+			Alt:      "Placeholder image",
+			IsSquare: true,
+		})
+	}
+
+	if len(clickyClack.ImageLinks) == 1 {
+		return ImageLink(ImageProps{
+			Src:      clickyClack.ImageLinks[0].LinkAddress,
+			Alt:      clickyClack.ImageLinks[0].AltText,
+			IsSquare: true,
+		})
+	}
+
+	var imageLinks []ImageProps
+	for _, imageLink := range clickyClack.ImageLinks {
+		imageLinks = append(imageLinks, ImageProps{
+			Src:      imageLink.LinkAddress,
+			Alt:      imageLink.AltText,
+			IsSquare: true,
+		})
+	}
+
+	return ImageLinks(imageLinks[:2])
+}

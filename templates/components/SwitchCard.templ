@@ -1,14 +1,23 @@
 package components
 
+import "fmt"
+
 type SwitchCardProps struct {
+	ID          string
 	Title       string
 	Description string
 	ImageSrc    string
 	ImageAlt    string
 }
 
-templ SwitchCard(props SwitchCardProps) {
-	<div class="switch-card">
+templ SwitchCardPreview(props SwitchCardProps) {
+	<a
+		class="switch-card"
+		hx-get="switches/modal"
+		hx-swap="innerHTML"
+		hx-target="#portal"
+		hx-vals={ fmt.Sprintf(`{"switchID": "%s"}`, props.ID) }
+	>
 		<div class="switch-image">
 			@ImageLink(ImageProps{
 				Src:      props.ImageSrc,
@@ -20,5 +29,5 @@ templ SwitchCard(props SwitchCardProps) {
 			<h2>{ props.Title }</h2>
 			<p>{ props.Description }</p>
 		</div>
-	</div>
+	</a>
 }

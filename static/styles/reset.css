@@ -45,3 +45,7 @@ a {
 #__next {
   isolation: isolate;
 }
+dialog {
+  border: none !important;
+  outline: none !important;
+}
