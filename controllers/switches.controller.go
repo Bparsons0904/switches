@@ -6,16 +6,10 @@ import (
 	"switches/database"
 	"switches/models"
 	"switches/templates/components"
-	"switches/templates/pages"
 	"switches/utils"
 
 	"github.com/gofiber/fiber/v2"
 )
-
-func GetSwitches(c *fiber.Ctx) error {
-	user := c.Locals("User").(models.User)
-	return RenderPage(pages.SwitchesPage(user), pages.Switches(user))(c)
-}
 
 func GetFeaturedSwitches(c *fiber.Ctx) error {
 	timer := utils.StartTimer("getFeaturedSwitches")
@@ -48,7 +42,7 @@ func GetFeaturedSwitches(c *fiber.Ctx) error {
 	return Render(component)(c)
 }
 
-func GetSwitchDetail(c *fiber.Ctx) error {
+func GetSwitchDetailCard(c *fiber.Ctx) error {
 	timer := utils.StartTimer("getSwitchModal")
 	switchID := c.Query("switchID")
 

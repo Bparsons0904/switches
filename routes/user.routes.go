@@ -1,11 +1,19 @@
 package routes
 
-import "github.com/gofiber/fiber/v2"
+import (
+	"switches/controllers"
+
+	"github.com/gofiber/fiber/v2"
+)
 
 func UserRoutes(app *fiber.App) {
-	user := app.Group("/user")
+	users := app.Group("/users")
 
-	user.Get("/", UserPlaceHolder)
+	users.Get("/", UserPlaceHolder)
+	users.Post("/switch/owned", controllers.HandleUserOwnedSwitch)
+	users.Delete("/switch/owned", controllers.DeleteUserOwnedSwitch)
+	users.Post("/switch/liked", controllers.HandleUserLikedSwitch)
+	users.Delete("/switch/liked", controllers.DeleteUserLikedSwitch)
 }
 
 func UserPlaceHolder(c *fiber.Ctx) error {

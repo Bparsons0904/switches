@@ -1,0 +1,21 @@
+
+package pages
+
+import (
+	"switches/models"
+	"switches/templates/components"
+	"switches/templates/layouts"
+)
+
+templ SwitchDetailPage(user models.User, clickyClack models.Switch) {
+	@layouts.Root() {
+		@SwitchDetail(user, clickyClack)
+	}
+}
+
+templ SwitchDetail(user models.User, clickyClack models.Switch) {
+	<div class="">
+		@components.Navbar("switches", user)
+		<main id="switch-detail"></main>
+	</div>
+}
