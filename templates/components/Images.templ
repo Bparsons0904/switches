@@ -45,3 +45,13 @@ templ ImageLink(props ImageProps) {
 		/>
 	}
 }
+
+templ ImageLinks(props []ImageProps) {
+	for _, image := range props {
+		@ImageLink(ImageProps{
+			Src:      image.Src,
+			Alt:      image.Alt,
+			IsSquare: image.IsSquare,
+		})
+	}
+}

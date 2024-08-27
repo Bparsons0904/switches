@@ -9,7 +9,7 @@ templ FeaturedSwitches(switches []SwitchCardProps) {
 		<div class="featured-switches">
 			<div class="switch-cards">
 				for _, item := range switches {
-					@SwitchCard(item)
+					@SwitchCardPreview(item)
 				}
 			</div>
 		</div>

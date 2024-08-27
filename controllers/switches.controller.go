@@ -48,15 +48,15 @@ func GetFeaturedSwitches(c *fiber.Ctx) error {
 	return Render(component)(c)
 }
 
-func GetSwitchModal(c *fiber.Ctx) error {
+func GetSwitchDetail(c *fiber.Ctx) error {
 	timer := utils.StartTimer("getSwitchModal")
-	switchID := c.Params("switchID")
+	switchID := c.Query("switchID")
 
 	log.Println(switchID)
 	var switchModel models.Switch
-	database.DB.First(&switchModel, switchID)
+	database.DB.Preload("ImageLinks").First(&switchModel, "id = ?", switchID)
 
 	timer.LogTotalTime()
-	component := components.SwitchModalCard(switchModel)
+	component := components.SwitchDetailCard(switchModel)
 	return Render(component)(c)
 }

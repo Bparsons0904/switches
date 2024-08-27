@@ -1,0 +1,16 @@
+.switch-detail-card {
+  display: flex;
+  flex-direction: column;
+  gap: 40px;
+  .switch-images {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    gap: 20px;
+  }
+  .switch-details {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+}

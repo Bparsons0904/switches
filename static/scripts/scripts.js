@@ -1,16 +1,12 @@
-// const dialog = document.getElementsByClassName("dialog");
-// for (let i = 0; i < dialog.length; i++) {
-//   portal[i].style.display = "none";
-// }
-//
 const portal = document.getElementById("portal");
 function closeDialog() {
   portal.style.display = "none";
-  //   dialog.close();
+  document.body.classList.remove("body-no-scroll");
 }
 
 document.body.addEventListener("htmx:afterSwap", function (event) {
   if (event.detail.target.id === "portal") {
+    document.body.classList.add("body-no-scroll");
     portal.style.display = "flex";
 
     portal.addEventListener("click", (event) => {

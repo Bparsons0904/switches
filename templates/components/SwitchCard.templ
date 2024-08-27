@@ -10,13 +10,13 @@ type SwitchCardProps struct {
 	ImageAlt    string
 }
 
-templ SwitchCard(props SwitchCardProps) {
+templ SwitchCardPreview(props SwitchCardProps) {
 	<a
 		class="switch-card"
 		hx-get="switches/modal"
 		hx-swap="innerHTML"
 		hx-target="#portal"
-		hx-params={ fmt.Sprintf(`{"switchId": "%s"}`, props.ID) }
+		hx-vals={ fmt.Sprintf(`{"switchID": "%s"}`, props.ID) }
 	>
 		<div class="switch-image">
 			@ImageLink(ImageProps{
