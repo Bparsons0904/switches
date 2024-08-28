@@ -7,6 +7,7 @@ import (
 	"switches/utils"
 
 	"github.com/gofiber/fiber/v2"
+	"github.com/google/uuid"
 )
 
 func GetHomePage(c *fiber.Ctx) error {
@@ -21,11 +22,20 @@ func GetSwitchPage(c *fiber.Ctx) error {
 
 func GetSwitchDetailPage(c *fiber.Ctx) error {
 	timer := utils.StartTimer("getSwitchDetailPage")
-	user := c.Locals("User").(models.User)
+	userID := c.Locals("UserID").(uuid.UUID)
 	switchID, err := GetSwitchIDParam(c)
 	if err != nil {
 		return err
 	}
+
+	var user models.User
+	if err := database.DB.
+		Preload("OwnedSwitches").
+		Preload("LikedSwitches").
+		First(&user, userID).Error; err != nil {
+		return c.Status(fiber.StatusNotFound).Redirect("/404")
+	}
+	timer.LogTime("Get User")
 
 	var clickyClack models.Switch
 	if err := database.DB.
@@ -35,6 +45,7 @@ func GetSwitchDetailPage(c *fiber.Ctx) error {
 		First(&clickyClack, switchID).Error; err != nil {
 		return c.Status(fiber.StatusNotFound).Redirect("/404")
 	}
+	timer.LogTime("Get Switch")
 
 	timer.LogTotalTime()
 	return RenderPage(

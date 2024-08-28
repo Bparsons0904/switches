@@ -7,7 +7,7 @@ import (
 	"switches/templates/layouts"
 )
 
-templ SwitchDetailCard(clickyClack models.Switch) {
+templ SwitchDetailCard(user models.User, clickyClack models.Switch) {
 	@layouts.Modal() {
 		<div class="switch-detail-card">
 			<div class="switch-images">
@@ -19,23 +19,72 @@ templ SwitchDetailCard(clickyClack models.Switch) {
 					<h3>{ clickyClack.Brand.Name }<span>|</span>{ clickyClack.SwitchType.Name }</h3>
 				</div>
 				<div class="switch-selectors">
-					<a
-						class="heart"
-						hx-post={ fmt.Sprintf("/switches/%s/liked", clickyClack.ID) }
-					>
-						@icons.HeartOutlined()
-					</a>
-					<a
-						hx-post={ fmt.Sprintf("/switches/%s/owned", clickyClack.ID) }
-					>
-						@icons.Checkmark()
-					</a>
+					@LikedSelector(user, clickyClack)
+					@OwnedSelector(user, clickyClack)
 				</div>
 			</div>
 			<p>{ clickyClack.LongDescription }</p>
 			<div class="ratings"></div>
 		</div>
 	}
+}
+
+templ OwnedSelector(user models.User, clickyClack models.Switch) {
+	if isOwned(user, clickyClack) {
+		<a
+			class="checkmark"
+			hx-delete={ fmt.Sprintf("/switches/%s/owned", clickyClack.ID) }
+			hx-swap="outerHTML"
+		>
+			@icons.BookmarkCheckFilled()
+		</a>
+	} else {
+		<a
+			class="checkmark"
+			hx-post={ fmt.Sprintf("/switches/%s/owned", clickyClack.ID) }
+			hx-swap="outerHTML"
+		>
+			@icons.Checkmark()
+		</a>
+	}
+}
+
+func isOwned(user models.User, clickyClack models.Switch) bool {
+	for _, ownedSwitch := range user.OwnedSwitches {
+		if ownedSwitch.ID == clickyClack.ID {
+			return true
+		}
+	}
+	return false
+}
+
+templ LikedSelector(user models.User, clickyClack models.Switch) {
+	if isLiked(user, clickyClack) {
+		<a
+			class="heart"
+			hx-delete={ fmt.Sprintf("/switches/%s/liked", clickyClack.ID) }
+			hx-swap="outerHTML"
+		>
+			@icons.HeartFilled()
+		</a>
+	} else {
+		<a
+			class="heart"
+			hx-post={ fmt.Sprintf("/switches/%s/liked", clickyClack.ID) }
+			hx-swap="outerHTML"
+		>
+			@icons.HeartOutlined()
+		</a>
+	}
+}
+
+func isLiked(user models.User, clickyClack models.Switch) bool {
+	for _, likedSwitch := range user.LikedSwitches {
+		if likedSwitch.ID == clickyClack.ID {
+			return true
+		}
+	}
+	return false
 }
 
 func getSwitchImageLink(clickyClack models.Switch) templ.Component {

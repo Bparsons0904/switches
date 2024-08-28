@@ -6,7 +6,6 @@ import (
 	"switches/database"
 	"switches/models"
 	"switches/templates/components"
-	"switches/templates/components/icons"
 	"switches/utils"
 
 	"github.com/gofiber/fiber/v2"
@@ -45,6 +44,7 @@ func GetFeaturedSwitches(c *fiber.Ctx) error {
 
 func GetSwitchDetailCard(c *fiber.Ctx) error {
 	timer := utils.StartTimer("getSwitchModal")
+	user := c.Locals("User").(models.User)
 	switchID, err := GetSwitchIDQuery(c)
 	if err != nil {
 		log.Println("Error getting the uuid of Switch", err)
@@ -52,10 +52,16 @@ func GetSwitchDetailCard(c *fiber.Ctx) error {
 	}
 
 	var switchModel models.Switch
-	database.DB.Preload("ImageLinks").First(&switchModel, switchID)
+	database.DB.
+		Preload("ImageLinks").
+		Preload("Brand").
+		Preload("SwitchType").
+		Preload("OwnedSwitches").
+		Preload("LikedSwitches").
+		First(&switchModel, switchID)
 
 	timer.LogTotalTime()
-	component := components.SwitchDetailCard(switchModel)
+	component := components.SwitchDetailCard(user, switchModel)
 	return Render(component)(c)
 }
 
@@ -68,24 +74,89 @@ func CreateUserOwnedSwitch(c *fiber.Ctx) error {
 		return err
 	}
 
+	var clickyClack models.Switch
+	if err := database.DB.First(&clickyClack, switchID).Error; err != nil {
+		return c.Status(fiber.StatusInternalServerError).Next()
+	}
+
 	err = database.DB.Model(&user).Association("OwnedSwitches").Append(&models.Switch{ID: switchID})
 	if err != nil {
 		return c.Status(fiber.StatusInternalServerError).Next()
 	}
 
 	timer.LogTotalTime()
-	component := icons.BookmarkCheckFilled()
+	component := components.OwnedSelector(user, clickyClack)
 	return Render(component)(c)
 }
 
 func DeleteUserOwnedSwitch(c *fiber.Ctx) error {
-	return c.SendString("Delete User Owned Switch")
+	timer := utils.StartTimer("Delete user owned Switch")
+	user := c.Locals("User").(models.User)
+	switchID, err := GetSwitchIDParam(c)
+	if err != nil {
+		log.Println("Error getting the uuid of Switch", err)
+		return err
+	}
+
+	var clickyClack models.Switch
+	if err := database.DB.First(&clickyClack, switchID).Error; err != nil {
+		return c.Status(fiber.StatusInternalServerError).Next()
+	}
+
+	err = database.DB.Model(&user).Association("OwnedSwitches").Delete(&models.Switch{ID: switchID})
+	if err != nil {
+		return c.Status(fiber.StatusInternalServerError).Next()
+	}
+
+	timer.LogTotalTime()
+	component := components.OwnedSelector(user, clickyClack)
+	return Render(component)(c)
 }
 
 func CreateUserLikedSwitch(c *fiber.Ctx) error {
-	return c.SendString("Handle User Owned Switch")
+	timer := utils.StartTimer("Create user liked Switch")
+	user := c.Locals("User").(models.User)
+	switchID, err := GetSwitchIDParam(c)
+	if err != nil {
+		log.Println("Error getting the uuid of Switch", err)
+		return err
+	}
+
+	var clickyClack models.Switch
+	if err := database.DB.First(&clickyClack, switchID).Error; err != nil {
+		return c.Status(fiber.StatusInternalServerError).Next()
+	}
+
+	err = database.DB.Model(&user).Association("LikedSwitches").Append(&models.Switch{ID: switchID})
+	if err != nil {
+		return c.Status(fiber.StatusInternalServerError).Next()
+	}
+
+	timer.LogTotalTime()
+	component := components.LikedSelector(user, clickyClack)
+	return Render(component)(c)
 }
 
 func DeleteUserLikedSwitch(c *fiber.Ctx) error {
-	return c.SendString("Add User Owned Switch")
+	timer := utils.StartTimer("Delete user liked Switch")
+	user := c.Locals("User").(models.User)
+	switchID, err := GetSwitchIDParam(c)
+	if err != nil {
+		log.Println("Error getting the uuid of Switch", err)
+		return err
+	}
+
+	var clickyClack models.Switch
+	if err := database.DB.First(&clickyClack, switchID).Error; err != nil {
+		return c.Status(fiber.StatusInternalServerError).Next()
+	}
+
+	err = database.DB.Model(&user).Association("LikedSwitches").Delete(&models.Switch{ID: switchID})
+	if err != nil {
+		return c.Status(fiber.StatusInternalServerError).Next()
+	}
+
+	timer.LogTotalTime()
+	component := components.LikedSelector(user, clickyClack)
+	return Render(component)(c)
 }

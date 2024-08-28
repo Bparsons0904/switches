@@ -16,7 +16,7 @@ templ SwitchDetailPage(user models.User, clickyClack models.Switch) {
 templ SwitchDetail(user models.User, clickyClack models.Switch) {
 	<div class="">
 		@components.Navbar("switches", user)
-		@components.SwitchDetailCard(clickyClack)
+		@components.SwitchDetailCard(user, clickyClack)
 		<!-- <main id="switch-detail"> -->
 		<!-- 	<h1>{ clickyClack.Name }</h1> -->
 		<!-- 	<div class="owned"> -->
