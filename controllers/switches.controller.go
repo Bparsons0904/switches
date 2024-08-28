@@ -46,22 +46,31 @@ func GetFeaturedSwitches(c *fiber.Ctx) error {
 
 func GetSwitchDetailCard(c *fiber.Ctx) error {
 	timer := utils.StartTimer("getSwitchModal")
-	user := c.Locals("User").(models.User)
-	switchID, err := GetSwitchIDQuery(c)
+	defer timer.LogTotalTime()
+
+	userID, switchID, err := getParams(c)
 	if err != nil {
 		log.Println("Error getting the uuid of Switch", err)
 		return err
 	}
 
-	var switchModel models.Switch
+	var clickyClack models.Switch
 	database.DB.
 		Preload("ImageLinks").
 		Preload("Brand").
 		Preload("SwitchType").
-		First(&switchModel, switchID)
+		First(&clickyClack, switchID)
 
-	timer.LogTotalTime()
-	component := components.SwitchDetailCard(user, switchModel)
+	var user models.User
+	if err := database.DB.
+		Preload("OwnedSwitches").
+		Preload("LikedSwitches").
+		First(&user, userID).Error; err != nil {
+		return c.Status(fiber.StatusNotFound).Redirect("/404")
+	}
+	timer.LogTime("Get User")
+
+	component := components.SwitchDetailCard(user, clickyClack)
 	return Render(component)(c)
 }
 

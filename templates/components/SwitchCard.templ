@@ -13,10 +13,9 @@ type SwitchCardProps struct {
 templ SwitchCardPreview(props SwitchCardProps) {
 	<a
 		class="switch-card"
-		hx-get="switches/modal"
+		hx-get={ fmt.Sprintf("switches/%s/modal", props.ID) }
 		hx-swap="innerHTML"
 		hx-target="#portal"
-		hx-vals={ fmt.Sprintf(`{"switchID": "%s"}`, props.ID) }
 	>
 		<div class="switch-image">
 			@ImageLink(ImageProps{

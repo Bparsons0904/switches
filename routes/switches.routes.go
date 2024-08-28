@@ -11,8 +11,8 @@ func SwitchRoutes(app *fiber.App) {
 
 	switches.Get("/", controllers.GetSwitchPage)
 	switches.Get("/featured", controllers.GetFeaturedSwitches)
-	switches.Get("/modal", controllers.GetSwitchDetailCard)
 	switches.Get("/:switchID", controllers.GetSwitchDetailPage)
+	switches.Get("/:switchID/modal", controllers.GetSwitchDetailCard)
 	switches.Post("/:switchID/owned", controllers.CreateUserOwnedSwitch)
 	switches.Delete("/:switchID/owned", controllers.DeleteUserOwnedSwitch)
 	switches.Post("/:switchID/liked", controllers.CreateUserLikedSwitch)
