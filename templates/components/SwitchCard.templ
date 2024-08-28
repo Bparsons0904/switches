@@ -1,7 +1,5 @@
 package components
 
-import "fmt"
-
 type SwitchCardProps struct {
 	ID          string
 	Title       string
@@ -13,9 +11,8 @@ type SwitchCardProps struct {
 templ SwitchCardPreview(props SwitchCardProps) {
 	<a
 		class="switch-card"
-		hx-get={ fmt.Sprintf("switches/%s/modal", props.ID) }
-		hx-swap="innerHTML"
-		hx-target="#portal"
+		hx-on:click="updateQueryParam(event)"
+		data-switch-id={ props.ID }
 	>
 		<div class="switch-image">
 			@ImageLink(ImageProps{

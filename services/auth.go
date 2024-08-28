@@ -31,7 +31,7 @@ func generateCodeChallenge(verifier string) string {
 	return base64.RawURLEncoding.EncodeToString(h.Sum(nil))
 }
 
-func GenerateAuthString() (Auth, error) {
+func GenerateAuthString(originalURL string) (Auth, error) {
 	state, err := GenerateRandomString(32)
 	if err != nil {
 		log.Println("Error generating state", err)
@@ -63,6 +63,7 @@ func GenerateAuthString() (Auth, error) {
 		CodeChallenge: codeChallenge,
 		CodeVerifier:  codeVerifier,
 		ExpiresAt:     expiresAt,
+		OriginalURL:   originalURL,
 	}
 
 	if err := database.SetJSONKeyDB("auth", state, auth, 15*time.Minute); err != nil {
@@ -173,6 +174,7 @@ type Auth struct {
 	CodeChallenge string    `json:"codeChallenge"`
 	CodeVerifier  string    `json:"codeVerifier"`
 	ExpiresAt     time.Time `json:"expiresAt"`
+	OriginalURL   string    `json:"originalUrl"`
 }
 
 type TokenResponse struct {

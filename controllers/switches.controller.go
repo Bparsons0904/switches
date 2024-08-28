@@ -125,7 +125,8 @@ func processUserSwitch(
 	log.Println("User ID", userID)
 	if userID == uuid.Nil {
 		log.Println("User not logged in")
-		return c.Redirect("/auth/login", fiber.StatusTemporaryRedirect)
+		c.Set("HX-Redirect", "/auth/login")
+		return c.SendStatus(fiber.StatusUnauthorized)
 	}
 
 	if create {
