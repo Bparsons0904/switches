@@ -29,11 +29,13 @@ func GetSwitchDetailPage(c *fiber.Ctx) error {
 	}
 
 	var user models.User
-	if err := database.DB.
-		Preload("OwnedSwitches").
-		Preload("LikedSwitches").
-		First(&user, userID).Error; err != nil {
-		return c.Status(fiber.StatusNotFound).Redirect("/404")
+	if userID != uuid.Nil {
+		if err := database.DB.
+			Preload("OwnedSwitches").
+			Preload("LikedSwitches").
+			First(&user, userID).Error; err != nil {
+			return c.Status(fiber.StatusBadRequest).Next()
+		}
 	}
 	timer.LogTime("Get User")
 
@@ -43,7 +45,7 @@ func GetSwitchDetailPage(c *fiber.Ctx) error {
 		Preload("Brand").
 		Preload("SwitchType").
 		First(&clickyClack, switchID).Error; err != nil {
-		return c.Status(fiber.StatusNotFound).Redirect("/404")
+		return c.Status(fiber.StatusBadRequest).Next()
 	}
 	timer.LogTime("Get Switch")
 

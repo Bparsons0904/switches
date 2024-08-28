@@ -62,11 +62,13 @@ func GetSwitchDetailCard(c *fiber.Ctx) error {
 		First(&clickyClack, switchID)
 
 	var user models.User
-	if err := database.DB.
-		Preload("OwnedSwitches").
-		Preload("LikedSwitches").
-		First(&user, userID).Error; err != nil {
-		return c.Status(fiber.StatusNotFound).Redirect("/404")
+	if userID != uuid.Nil {
+		if err := database.DB.
+			Preload("OwnedSwitches").
+			Preload("LikedSwitches").
+			First(&user, userID).Error; err != nil {
+			return c.Status(fiber.StatusBadRequest).Next()
+		}
 	}
 	timer.LogTime("Get User")
 
@@ -79,11 +81,6 @@ func getParams(c *fiber.Ctx) (uuid.UUID, uuid.UUID, error) {
 	switchID, err := GetSwitchIDParam(c)
 	if err != nil {
 		log.Println("Error getting the uuid of Switch", err)
-	}
-
-	if userID == uuid.Nil || switchID == uuid.Nil {
-		log.Println("Error getting the uuid of User or Switch", userID, switchID)
-		err = fmt.Errorf("Error getting the uuid of User or Switch")
 	}
 
 	return userID, switchID, err
@@ -102,8 +99,10 @@ func getSwitchAndUser(
 	timer.LogTime("Get Switch")
 
 	var user models.User
-	if err := database.DB.Preload(preload).First(&user, userID).Error; err != nil {
-		return models.Switch{}, models.User{}, err
+	if userID != uuid.Nil {
+		if err := database.DB.Preload(preload).First(&user, userID).Error; err != nil {
+			return models.Switch{}, models.User{}, err
+		}
 	}
 	timer.LogTime("Get User")
 
@@ -121,6 +120,12 @@ func processUserSwitch(
 	userID, switchID, err := getParams(c)
 	if err != nil {
 		return c.Status(fiber.StatusInternalServerError).Next()
+	}
+
+	log.Println("User ID", userID)
+	if userID == uuid.Nil {
+		log.Println("User not logged in")
+		return c.Redirect("/auth/login", fiber.StatusTemporaryRedirect)
 	}
 
 	if create {
