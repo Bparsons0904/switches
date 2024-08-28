@@ -8,7 +8,9 @@ import (
 	"switches/templates/components"
 	"switches/utils"
 
+	"github.com/a-h/templ"
 	"github.com/gofiber/fiber/v2"
+	"github.com/google/uuid"
 )
 
 func GetFeaturedSwitches(c *fiber.Ctx) error {
@@ -56,8 +58,6 @@ func GetSwitchDetailCard(c *fiber.Ctx) error {
 		Preload("ImageLinks").
 		Preload("Brand").
 		Preload("SwitchType").
-		Preload("OwnedSwitches").
-		Preload("LikedSwitches").
 		First(&switchModel, switchID)
 
 	timer.LogTotalTime()
@@ -65,98 +65,130 @@ func GetSwitchDetailCard(c *fiber.Ctx) error {
 	return Render(component)(c)
 }
 
-func CreateUserOwnedSwitch(c *fiber.Ctx) error {
-	timer := utils.StartTimer("Create user owned Switch")
-	user := c.Locals("User").(models.User)
+func getParams(c *fiber.Ctx) (uuid.UUID, uuid.UUID, error) {
+	userID := c.Locals("UserID").(uuid.UUID)
 	switchID, err := GetSwitchIDParam(c)
 	if err != nil {
 		log.Println("Error getting the uuid of Switch", err)
-		return err
 	}
 
+	if userID == uuid.Nil || switchID == uuid.Nil {
+		log.Println("Error getting the uuid of User or Switch", userID, switchID)
+		err = fmt.Errorf("Error getting the uuid of User or Switch")
+	}
+
+	return userID, switchID, err
+}
+
+func getSwitchAndUser(
+	userID uuid.UUID,
+	switchID uuid.UUID,
+	preload string,
+	timer *utils.Timer,
+) (models.Switch, models.User, error) {
 	var clickyClack models.Switch
 	if err := database.DB.First(&clickyClack, switchID).Error; err != nil {
-		return c.Status(fiber.StatusInternalServerError).Next()
+		return models.Switch{}, models.User{}, err
 	}
+	timer.LogTime("Get Switch")
 
-	err = database.DB.Model(&user).Association("OwnedSwitches").Append(&models.Switch{ID: switchID})
+	var user models.User
+	if err := database.DB.Preload(preload).First(&user, userID).Error; err != nil {
+		return models.Switch{}, models.User{}, err
+	}
+	timer.LogTime("Get User")
+
+	return clickyClack, user, nil
+}
+
+func processUserSwitch(
+	c *fiber.Ctx,
+	create bool,
+	table interface{},
+	preload string,
+	selectorFunc func(models.User, models.Switch) templ.Component,
+	timer *utils.Timer,
+) error {
+	userID, switchID, err := getParams(c)
 	if err != nil {
 		return c.Status(fiber.StatusInternalServerError).Next()
 	}
 
-	timer.LogTotalTime()
-	component := components.OwnedSelector(user, clickyClack)
+	if create {
+		if err := database.DB.Model(table).Create(map[string]interface{}{
+			"UserID": userID, "SwitchID": switchID,
+		}).Error; err != nil {
+			return c.Status(fiber.StatusInternalServerError).Next()
+		}
+		timer.LogTime("Create Association")
+	} else {
+		if err := database.DB.Delete(table, "user_id = ? AND switch_id = ?", userID, switchID).Error; err != nil {
+			return c.Status(fiber.StatusInternalServerError).Next()
+		}
+		timer.LogTime("Delete Association")
+	}
+
+	clickyClack, user, err := getSwitchAndUser(userID, switchID, preload, timer)
+	if err != nil {
+		return c.Status(fiber.StatusInternalServerError).Next()
+	}
+
+	component := selectorFunc(user, clickyClack)
 	return Render(component)(c)
+}
+
+func CreateUserOwnedSwitch(c *fiber.Ctx) error {
+	timer := utils.StartTimer("Create User Owned Switch")
+	defer timer.LogTotalTime()
+
+	return processUserSwitch(
+		c,
+		true,
+		&models.UserOwnedSwitches{},
+		"OwnedSwitches",
+		components.OwnedSelector,
+		&timer,
+	)
 }
 
 func DeleteUserOwnedSwitch(c *fiber.Ctx) error {
-	timer := utils.StartTimer("Delete user owned Switch")
-	user := c.Locals("User").(models.User)
-	switchID, err := GetSwitchIDParam(c)
-	if err != nil {
-		log.Println("Error getting the uuid of Switch", err)
-		return err
-	}
+	timer := utils.StartTimer("Delete User Owned Switch")
+	defer timer.LogTotalTime()
 
-	var clickyClack models.Switch
-	if err := database.DB.First(&clickyClack, switchID).Error; err != nil {
-		return c.Status(fiber.StatusInternalServerError).Next()
-	}
-
-	err = database.DB.Model(&user).Association("OwnedSwitches").Delete(&models.Switch{ID: switchID})
-	if err != nil {
-		return c.Status(fiber.StatusInternalServerError).Next()
-	}
-
-	timer.LogTotalTime()
-	component := components.OwnedSelector(user, clickyClack)
-	return Render(component)(c)
+	return processUserSwitch(
+		c,
+		false,
+		&models.UserOwnedSwitches{},
+		"OwnedSwitches",
+		components.OwnedSelector,
+		&timer,
+	)
 }
 
 func CreateUserLikedSwitch(c *fiber.Ctx) error {
-	timer := utils.StartTimer("Create user liked Switch")
-	user := c.Locals("User").(models.User)
-	switchID, err := GetSwitchIDParam(c)
-	if err != nil {
-		log.Println("Error getting the uuid of Switch", err)
-		return err
-	}
+	timer := utils.StartTimer("Create User Liked Switch")
+	defer timer.LogTotalTime()
 
-	var clickyClack models.Switch
-	if err := database.DB.First(&clickyClack, switchID).Error; err != nil {
-		return c.Status(fiber.StatusInternalServerError).Next()
-	}
-
-	err = database.DB.Model(&user).Association("LikedSwitches").Append(&models.Switch{ID: switchID})
-	if err != nil {
-		return c.Status(fiber.StatusInternalServerError).Next()
-	}
-
-	timer.LogTotalTime()
-	component := components.LikedSelector(user, clickyClack)
-	return Render(component)(c)
+	return processUserSwitch(
+		c,
+		true,
+		&models.UserLikedSwitches{},
+		"LikedSwitches",
+		components.LikedSelector,
+		&timer,
+	)
 }
 
 func DeleteUserLikedSwitch(c *fiber.Ctx) error {
-	timer := utils.StartTimer("Delete user liked Switch")
-	user := c.Locals("User").(models.User)
-	switchID, err := GetSwitchIDParam(c)
-	if err != nil {
-		log.Println("Error getting the uuid of Switch", err)
-		return err
-	}
+	timer := utils.StartTimer("Delete User Liked Switch")
+	defer timer.LogTotalTime()
 
-	var clickyClack models.Switch
-	if err := database.DB.First(&clickyClack, switchID).Error; err != nil {
-		return c.Status(fiber.StatusInternalServerError).Next()
-	}
-
-	err = database.DB.Model(&user).Association("LikedSwitches").Delete(&models.Switch{ID: switchID})
-	if err != nil {
-		return c.Status(fiber.StatusInternalServerError).Next()
-	}
-
-	timer.LogTotalTime()
-	component := components.LikedSelector(user, clickyClack)
-	return Render(component)(c)
+	return processUserSwitch(
+		c,
+		false,
+		&models.UserLikedSwitches{},
+		"LikedSwitches",
+		components.LikedSelector,
+		&timer,
+	)
 }

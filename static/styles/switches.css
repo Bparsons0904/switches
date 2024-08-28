@@ -28,16 +28,29 @@
       place-content: flex-end;
       gap: 20px;
       align-items: center;
-      svg {
-        width: 35px;
-        height: 35px;
+      .checkmark {
+        svg {
+          width: 35px;
+          height: 35px;
+        }
+        &.filled svg {
+          fill: var(--primary-color);
+        }
         &:hover {
           cursor: pointer;
         }
       }
       .heart {
-        width: 30px;
-        height: 30px;
+        svg {
+          width: 30px;
+          height: 30px;
+        }
+        &.filled svg {
+          fill: var(--danger-color);
+        }
+        &:hover {
+          cursor: pointer;
+        }
       }
     }
   }
