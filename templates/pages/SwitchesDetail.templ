@@ -16,6 +16,17 @@ templ SwitchDetailPage(user models.User, clickyClack models.Switch) {
 templ SwitchDetail(user models.User, clickyClack models.Switch) {
 	<div class="">
 		@components.Navbar("switches", user)
-		<main id="switch-detail"></main>
+		@components.SwitchDetailCard(clickyClack)
+		<!-- <main id="switch-detail"> -->
+		<!-- 	<h1>{ clickyClack.Name }</h1> -->
+		<!-- 	<div class="owned"> -->
+		<!-- 		<a -->
+		<!-- 			hx-post={ fmt.Sprintf("/switches/%s/owned", clickyClack.ID) } -->
+		<!-- 		> -->
+		<!-- 			@icons.BookmarkCheckOutline() -->
+		<!-- 		</a> -->
+		<!-- 	</div> -->
+		<!-- 	<div class="liked"></div> -->
+		<!-- </main> -->
 	</div>
 }

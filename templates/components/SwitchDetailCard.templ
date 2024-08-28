@@ -1,7 +1,9 @@
 package components
 
 import (
+	"fmt"
 	"switches/models"
+	"switches/templates/components/icons"
 	"switches/templates/layouts"
 )
 
@@ -11,10 +13,27 @@ templ SwitchDetailCard(clickyClack models.Switch) {
 			<div class="switch-images">
 				@getSwitchImageLink(clickyClack)
 			</div>
-			<div class="switch-details">
-				<h2>{ clickyClack.Name }</h2>
-				<p>{ clickyClack.LongDescription }</p>
+			<div class="switch-header">
+				<div class="switch-names">
+					<h1>{  clickyClack.Name }</h1>
+					<h3>{ clickyClack.Brand.Name }<span>|</span>{ clickyClack.SwitchType.Name }</h3>
+				</div>
+				<div class="switch-selectors">
+					<a
+						class="heart"
+						hx-post={ fmt.Sprintf("/switches/%s/liked", clickyClack.ID) }
+					>
+						@icons.HeartOutlined()
+					</a>
+					<a
+						hx-post={ fmt.Sprintf("/switches/%s/owned", clickyClack.ID) }
+					>
+						@icons.Checkmark()
+					</a>
+				</div>
 			</div>
+			<p>{ clickyClack.LongDescription }</p>
+			<div class="ratings"></div>
 		</div>
 	}
 }

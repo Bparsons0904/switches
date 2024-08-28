@@ -9,10 +9,37 @@
     justify-content: center;
     gap: 20px;
   }
-  .switch-details {
-    display: flex;
-    flex-direction: column;
+  .switch-header {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    justify-content: space-between;
     gap: 10px;
+    .switch-names {
+      h3 {
+        color: var(--text-color-dark-muted);
+      }
+      span {
+        padding: 0px 15px;
+      }
+    }
+    .switch-selectors {
+      display: flex;
+      flex-direction: row;
+      place-content: flex-end;
+      gap: 20px;
+      align-items: center;
+      svg {
+        width: 35px;
+        height: 35px;
+        &:hover {
+          cursor: pointer;
+        }
+      }
+      .heart {
+        width: 30px;
+        height: 30px;
+      }
+    }
   }
 }
 

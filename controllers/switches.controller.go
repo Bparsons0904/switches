@@ -6,6 +6,7 @@ import (
 	"switches/database"
 	"switches/models"
 	"switches/templates/components"
+	"switches/templates/components/icons"
 	"switches/utils"
 
 	"github.com/gofiber/fiber/v2"
@@ -44,13 +45,47 @@ func GetFeaturedSwitches(c *fiber.Ctx) error {
 
 func GetSwitchDetailCard(c *fiber.Ctx) error {
 	timer := utils.StartTimer("getSwitchModal")
-	switchID := c.Query("switchID")
+	switchID, err := GetSwitchIDQuery(c)
+	if err != nil {
+		log.Println("Error getting the uuid of Switch", err)
+		return err
+	}
 
-	log.Println(switchID)
 	var switchModel models.Switch
-	database.DB.Preload("ImageLinks").First(&switchModel, "id = ?", switchID)
+	database.DB.Preload("ImageLinks").First(&switchModel, switchID)
 
 	timer.LogTotalTime()
 	component := components.SwitchDetailCard(switchModel)
 	return Render(component)(c)
+}
+
+func CreateUserOwnedSwitch(c *fiber.Ctx) error {
+	timer := utils.StartTimer("Create user owned Switch")
+	user := c.Locals("User").(models.User)
+	switchID, err := GetSwitchIDParam(c)
+	if err != nil {
+		log.Println("Error getting the uuid of Switch", err)
+		return err
+	}
+
+	err = database.DB.Model(&user).Association("OwnedSwitches").Append(&models.Switch{ID: switchID})
+	if err != nil {
+		return c.Status(fiber.StatusInternalServerError).Next()
+	}
+
+	timer.LogTotalTime()
+	component := icons.BookmarkCheckFilled()
+	return Render(component)(c)
+}
+
+func DeleteUserOwnedSwitch(c *fiber.Ctx) error {
+	return c.SendString("Delete User Owned Switch")
+}
+
+func CreateUserLikedSwitch(c *fiber.Ctx) error {
+	return c.SendString("Handle User Owned Switch")
+}
+
+func DeleteUserLikedSwitch(c *fiber.Ctx) error {
+	return c.SendString("Add User Owned Switch")
 }
