@@ -16,13 +16,22 @@ templ SwitchDetailCard(user models.User, clickyClack models.Switch) {
 			<div class="switch-header">
 				<div class="switch-names">
 					<h1>{  clickyClack.Name }</h1>
-					<h3>{ clickyClack.Brand.Name }<span>|</span>{ clickyClack.SwitchType.Name }</h3>
+					<h3>
+						{ clickyClack.Brand.Name }<span>|</span>{ clickyClack.SwitchType.Name }
+						<span class="share-wrapper">
+							<a
+								class="share-button"
+								hx-on:click="shareSwitch(event)"
+								data-switch-name={ clickyClack.Name }
+							>
+								@icons.Share()
+							</a>
+						</span>
+					</h3>
 				</div>
 				<div class="switch-selectors">
-					<!-- if user.ID != uuid.Nil { -->
 					@LikedSelector(user, clickyClack)
 					@OwnedSelector(user, clickyClack)
-					<!-- } -->
 				</div>
 			</div>
 			<p>{ clickyClack.LongDescription }</p>

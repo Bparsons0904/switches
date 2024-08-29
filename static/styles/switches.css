@@ -17,6 +17,20 @@
     .switch-names {
       h3 {
         color: var(--text-color-dark-muted);
+        display: flex;
+        flex-direction: row;
+        .share-wrapper {
+          display: flex;
+          align-items: center;
+          a {
+            display: inline-block;
+            width: 25px;
+            height: 25px;
+            &:hover {
+              cursor: pointer;
+            }
+          }
+        }
       }
       span {
         padding: 0px 15px;
