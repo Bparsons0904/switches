@@ -15,7 +15,14 @@ templ SwitchDetailCard(user models.User, clickyClack models.Switch) {
 			</div>
 			<div class="switch-header">
 				<div class="switch-names">
-					<h1>{  clickyClack.Name }</h1>
+					<h1
+						class="switch-detail-title"
+						hx-trigger="click"
+						hx-get={ fmt.Sprintf("/switches/%s", clickyClack.ID) }
+						hx-push-url={ fmt.Sprintf("/switches/%s", clickyClack.ID) }
+						hx-on:click="closeDialog()"
+						hx-target="#body"
+					>{  clickyClack.Name }</h1>
 					<h3>
 						{ clickyClack.Brand.Name }<span>|</span>{ clickyClack.SwitchType.Name }
 						<span class="share-wrapper">

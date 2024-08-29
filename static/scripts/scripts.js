@@ -1,6 +1,5 @@
-const portal = document.getElementById("portal");
-
 function closeDialog() {
+  const portal = document.getElementById("portal");
   portal.style.display = "none";
   document.body.classList.remove("body-no-scroll");
   const url = new URL(window.location);
@@ -11,6 +10,7 @@ function closeDialog() {
 }
 
 document.body.addEventListener("htmx:afterSwap", function (event) {
+  const portal = document.getElementById("portal");
   if (event.detail.target.id === "portal") {
     document.body.classList.add("body-no-scroll");
     portal.style.display = "flex";
@@ -84,5 +84,9 @@ document.body.addEventListener("htmx:beforeSend", function (event) {
       window.history.pushState({}, "", url);
       loadModalForSwitchId(switchId);
     }
+  }
+
+  if (event.detail.elt.classList.contains("switch-card")) {
+    closeDialog();
   }
 });
