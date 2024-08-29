@@ -140,6 +140,15 @@ func DeleteStringKeyDB(hash, key string) error {
 	return err
 }
 
+func GetUUIDJSONKeyDB[T any](hash string, key uuid.UUID) (T, error) {
+	stringKey := key.String()
+	value, err := GetJSONKeyDB[T](hash, stringKey)
+	if err != nil {
+		return value, err
+	}
+	return value, nil
+}
+
 func GetJSONKeyDB[T any](hash, key string) (T, error) {
 	var value T
 	if hash == "" || key == "" {

@@ -17,33 +17,14 @@ import (
 	"gorm.io/gorm"
 )
 
-func UserLogoutCallback(c *fiber.Ctx) error {
-	sessionID := c.Cookies("sessionID")
-	c.ClearCookie("sessionID")
-	log.Println("User logout", sessionID)
-	if sessionID != "" {
-		retrievedSession, err := database.GetJSONKeyDB[services.Session]("session", sessionID)
-		if err != nil {
-			log.Println("Error getting session from keydb", err)
-			c.ClearCookie("sessionID")
-			return c.Redirect("/")
-		}
-
-		retrievedSession.IsLoggedIn = false
-		err = database.SetJSONKeyDB("session", sessionID, retrievedSession, 15*time.Minute)
-		if err != nil {
-			log.Println("Error setting session in keydb", err)
-		}
-		err = database.DeleteUUIDKeyDB("user", retrievedSession.UserID)
-		if err != nil {
-			log.Println("Error deleting user from keydb", err)
-		}
-	}
-	return c.Redirect("/")
-}
-
 func AuthLogin(c *fiber.Ctx) error {
-	auth, err := services.GenerateAuthString()
+	originalURL := c.Get("Referer")
+	if originalURL == "" {
+		originalURL = "/"
+	}
+	log.Println("Original URL", originalURL)
+
+	auth, err := services.GenerateAuthString(originalURL)
 	if err != nil {
 		log.Println("Error generating auth string", err)
 		return c.Status(fiber.StatusInternalServerError).SendString("Error generating auth string")
@@ -61,25 +42,6 @@ func AuthLogin(c *fiber.Ctx) error {
 	)
 
 	return c.Redirect(authURL)
-}
-
-func UserLogout(c *fiber.Ctx) error {
-	baseLogoutURL := fmt.Sprintf("https://%s/oidc/v1/end_session", viper.GetString("AUTH_URL"))
-	params := url.Values{}
-	params.Add("client_id", viper.GetString("AUTH_CLIENT_ID"))
-	params.Add(
-		"post_logout_redirect_uri",
-		fmt.Sprintf("%s/auth/logout/callback", viper.GetString("BASE_URL")),
-	)
-	state, err := services.GenerateRandomString(32)
-	if err != nil {
-		return c.Status(fiber.StatusInternalServerError).
-			SendString("Error generating random string")
-	}
-	params.Add("state", state)
-	logoutURL := fmt.Sprintf("%s?%s", baseLogoutURL, params.Encode())
-
-	return c.Redirect(logoutURL)
 }
 
 func AuthCallback(c *fiber.Ctx) error {
@@ -185,6 +147,50 @@ func AuthCallback(c *fiber.Ctx) error {
 	}
 
 	c.Cookie(cookie)
+	return c.Redirect(auth.OriginalURL)
+}
+
+func UserLogout(c *fiber.Ctx) error {
+	baseLogoutURL := fmt.Sprintf("https://%s/oidc/v1/end_session", viper.GetString("AUTH_URL"))
+	params := url.Values{}
+	params.Add("client_id", viper.GetString("AUTH_CLIENT_ID"))
+	params.Add(
+		"post_logout_redirect_uri",
+		fmt.Sprintf("%s/auth/logout/callback", viper.GetString("BASE_URL")),
+	)
+	state, err := services.GenerateRandomString(32)
+	if err != nil {
+		return c.Status(fiber.StatusInternalServerError).
+			SendString("Error generating random string")
+	}
+	params.Add("state", state)
+	logoutURL := fmt.Sprintf("%s?%s", baseLogoutURL, params.Encode())
+
+	return c.Redirect(logoutURL)
+}
+
+func UserLogoutCallback(c *fiber.Ctx) error {
+	sessionID := c.Cookies("sessionID")
+	c.ClearCookie("sessionID")
+	log.Println("User logout", sessionID)
+	if sessionID != "" {
+		retrievedSession, err := database.GetJSONKeyDB[services.Session]("session", sessionID)
+		if err != nil {
+			log.Println("Error getting session from keydb", err)
+			c.ClearCookie("sessionID")
+			return c.Redirect("/")
+		}
+
+		retrievedSession.IsLoggedIn = false
+		err = database.SetJSONKeyDB("session", sessionID, retrievedSession, 15*time.Minute)
+		if err != nil {
+			log.Println("Error setting session in keydb", err)
+		}
+		err = database.DeleteUUIDKeyDB("user", retrievedSession.UserID)
+		if err != nil {
+			log.Println("Error deleting user from keydb", err)
+		}
+	}
 	return c.Redirect("/")
 }
 

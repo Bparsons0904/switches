@@ -32,7 +32,8 @@ func SetupRoutes(app *fiber.App, config config.Config) {
 		middleware.AuthenticateUser(config),
 	)
 
-	app.Get("/", controllers.GetHome)
+	app.Get("/", controllers.GetHomePage)
+
 	AdminRoutes(app)
 	AuthRoutes(app)
 	SwitchRoutes(app)
@@ -41,15 +42,13 @@ func SetupRoutes(app *fiber.App, config config.Config) {
 	api := app.Group("/api")
 	HealthRoutes(api)
 
-	app.Use(func(c *fiber.Ctx) error {
-		return c.Status(404).JSON(fiber.Map{"status": "error", "message": "Route Not found"})
-	})
+	app.Get("*", controllers.NotFound)
 }
 
 func HealthRoutes(app fiber.Router) {
 	app.Get("/health", getHealth)
 	app.Get("/health/monitor", monitor.New(monitor.Config{
-		Title: "Bob's Next Great Thing Health Monitor",
+		Title: "Switch Health Monitor",
 	}))
 }
 

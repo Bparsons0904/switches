@@ -9,10 +9,67 @@
     justify-content: center;
     gap: 20px;
   }
-  .switch-details {
-    display: flex;
-    flex-direction: column;
+  .switch-header {
+    display: grid;
+    grid-template-columns: 60% 1fr;
+    justify-content: space-between;
     gap: 10px;
+    .switch-names {
+      h1:hover {
+        cursor: pointer;
+      }
+      h3 {
+        color: var(--text-color-dark-muted);
+        display: flex;
+        flex-direction: row;
+        .share-wrapper {
+          display: flex;
+          align-items: center;
+          a {
+            display: inline-block;
+            width: 25px;
+            height: 25px;
+            &:hover {
+              cursor: pointer;
+            }
+          }
+        }
+      }
+      span {
+        padding: 0px 15px;
+      }
+    }
+    .switch-selectors {
+      display: flex;
+      flex-direction: row;
+      place-content: flex-end;
+      gap: 20px;
+      align-items: center;
+      .checkmark {
+        svg {
+          width: 35px;
+          height: 35px;
+        }
+        &.filled svg {
+          fill: var(--primary-color);
+        }
+        &:hover {
+          cursor: pointer;
+        }
+      }
+      .heart {
+        svg {
+          width: 30px;
+          height: 30px;
+        }
+        &.filled svg {
+          fill: var(--danger-color);
+        }
+        &:hover {
+          cursor: pointer;
+        }
+      }
+    }
   }
 }
 
@@ -20,6 +77,82 @@
   .switch-detail-card {
     .switch-images {
       flex-direction: row;
+    }
+  }
+}
+
+#switch-detail {
+  display: flex;
+  flex-direction: column;
+  gap: 40px;
+  padding: 0 20px;
+  .switch-images {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 20px;
+  }
+  .switch-header {
+    display: grid;
+    grid-template-columns: 60% 1fr;
+    justify-content: space-between;
+    gap: 10px;
+    .switch-names {
+      h1:hover {
+        cursor: pointer;
+      }
+      h3 {
+        color: var(--text-color-dark-muted);
+        display: flex;
+        flex-direction: row;
+        .share-wrapper {
+          display: flex;
+          align-items: center;
+          a {
+            display: inline-block;
+            width: 25px;
+            height: 25px;
+            &:hover {
+              cursor: pointer;
+            }
+          }
+        }
+      }
+      span {
+        padding: 0px 15px;
+      }
+    }
+    .switch-selectors {
+      display: flex;
+      flex-direction: row;
+      place-content: flex-end;
+      gap: 20px;
+      align-items: center;
+      .checkmark {
+        svg {
+          width: 35px;
+          height: 35px;
+        }
+        &.filled svg {
+          fill: var(--primary-color);
+        }
+        &:hover {
+          cursor: pointer;
+        }
+      }
+      .heart {
+        svg {
+          width: 30px;
+          height: 30px;
+        }
+        &.filled svg {
+          fill: var(--danger-color);
+        }
+        &:hover {
+          cursor: pointer;
+        }
+      }
     }
   }
 }

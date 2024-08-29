@@ -1,0 +1,16 @@
+package pages
+
+import (
+	"switches/models"
+	"switches/templates/components"
+	"switches/templates/layouts"
+)
+
+templ NotFound() {
+	@layouts.Root() {
+		<div>
+			@components.Navbar("notFound", models.User{})
+			<h1>Not Found</h1>
+		</div>
+	}
+}

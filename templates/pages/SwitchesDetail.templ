@@ -1,28 +1,30 @@
-package components
+
+package pages
 
 import (
 	"fmt"
 	"switches/models"
+	"switches/templates/components"
 	"switches/templates/components/icons"
 	"switches/templates/layouts"
 )
 
-templ SwitchDetailCard(user models.User, clickyClack models.Switch) {
-	@layouts.Modal() {
-		<div class="switch-detail-card">
+templ SwitchDetailPage(user models.User, clickyClack models.Switch) {
+	@layouts.Root() {
+		@SwitchDetail(user, clickyClack)
+	}
+}
+
+templ SwitchDetail(user models.User, clickyClack models.Switch) {
+	<div class="">
+		@components.Navbar("switches", user)
+		<main id="switch-detail">
 			<div class="switch-images">
 				@getSwitchImageLink(clickyClack)
 			</div>
 			<div class="switch-header">
 				<div class="switch-names">
-					<h1
-						class="switch-detail-title"
-						hx-trigger="click"
-						hx-get={ fmt.Sprintf("/switches/%s", clickyClack.ID) }
-						hx-push-url={ fmt.Sprintf("/switches/%s", clickyClack.ID) }
-						hx-on:click="closeDialog()"
-						hx-target="#body"
-					>{  clickyClack.Name }</h1>
+					<h1>{  clickyClack.Name }</h1>
 					<h3>
 						{ clickyClack.Brand.Name }<span>|</span>{ clickyClack.SwitchType.Name }
 						<span class="share-wrapper">
@@ -41,10 +43,11 @@ templ SwitchDetailCard(user models.User, clickyClack models.Switch) {
 					@OwnedSelector(user, clickyClack)
 				</div>
 			</div>
+			<p>{ clickyClack.ShortDescription }</p>
 			<p>{ clickyClack.LongDescription }</p>
 			<div class="ratings"></div>
-		</div>
-	}
+		</main>
+	</div>
 }
 
 templ OwnedSelector(user models.User, clickyClack models.Switch) {
@@ -107,7 +110,7 @@ func isLiked(user models.User, clickyClack models.Switch) bool {
 
 func getSwitchImageLink(clickyClack models.Switch) templ.Component {
 	if len(clickyClack.ImageLinks) == 0 {
-		return Image(ImageProps{
+		return components.Image(components.ImageProps{
 			Src:      "switch_placeholder.jpg",
 			Alt:      "Placeholder image",
 			IsSquare: true,
@@ -115,21 +118,21 @@ func getSwitchImageLink(clickyClack models.Switch) templ.Component {
 	}
 
 	if len(clickyClack.ImageLinks) == 1 {
-		return ImageLink(ImageProps{
+		return components.ImageLink(components.ImageProps{
 			Src:      clickyClack.ImageLinks[0].LinkAddress,
 			Alt:      clickyClack.ImageLinks[0].AltText,
 			IsSquare: true,
 		})
 	}
 
-	var imageLinks []ImageProps
+	var imageLinks []components.ImageProps
 	for _, imageLink := range clickyClack.ImageLinks {
-		imageLinks = append(imageLinks, ImageProps{
+		imageLinks = append(imageLinks, components.ImageProps{
 			Src:      imageLink.LinkAddress,
 			Alt:      imageLink.AltText,
 			IsSquare: true,
 		})
 	}
 
-	return ImageLinks(imageLinks[:2])
+	return components.ImageLinks(imageLinks[:2])
 }
