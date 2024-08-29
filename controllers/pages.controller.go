@@ -6,7 +6,6 @@ import (
 	"switches/models"
 	"switches/templates/pages"
 	"switches/utils"
-	"sync"
 
 	"github.com/gofiber/fiber/v2"
 	"github.com/google/uuid"
@@ -23,39 +22,46 @@ func GetSwitchPage(c *fiber.Ctx) error {
 
 	userID := c.Locals("UserID").(uuid.UUID)
 
-	wg := sync.WaitGroup{}
-	wg.Add(2)
-
-	var err error
 	var user models.User
-	go func(wg *sync.WaitGroup) {
-		defer wg.Done()
-		if userID != uuid.Nil {
-			err = database.DB.
-				Preload("OwnedSwitches").
-				Preload("LikedSwitches").
-				First(&user, userID).Error
+	if userID != uuid.Nil {
+		err := database.DB.
+			Preload("OwnedSwitches").
+			Preload("LikedSwitches").
+			First(&user, userID).Error
+		if err != nil {
+			log.Println("Error getting the switches", err)
+			return c.Status(fiber.StatusBadRequest).Next()
 		}
-	}(&wg)
+	}
 
 	var clickyClacks []models.Switch
-	go func(wg *sync.WaitGroup) {
-		defer wg.Done()
-		err = database.DB.
-			Preload("ImageLinks").
-			Preload("Brand").
-			Preload("SwitchType").
-			Order("RANDOM()").
-			Find(&clickyClacks).Error
-	}(&wg)
-
-	wg.Wait()
+	err := database.DB.
+		Preload("ImageLinks").
+		Preload("Brand").
+		Preload("SwitchType").
+		Find(&clickyClacks).Error
 	if err != nil {
-		log.Println("Error getting the user or switches", err)
+		log.Println("Error getting the user", err)
 		return c.Status(fiber.StatusBadRequest).Next()
 	}
 
-	return RenderPage(pages.SwitchesPage(user, clickyClacks), pages.Switches(user, clickyClacks))(c)
+	var switchTypes []models.Type
+	err = database.DB.
+		Select("id", "name").
+		Order("id").
+		Where("category = ?", "switch_type").
+		Find(&switchTypes).Error
+	if err != nil {
+		log.Println("Error getting the switch types", err)
+		return c.Status(fiber.StatusBadRequest).Next()
+	}
+
+	return RenderPage(
+		pages.SwitchesPage(user, clickyClacks, switchTypes),
+		pages.Switches(user, clickyClacks, switchTypes),
+	)(
+		c,
+	)
 }
 
 func GetSwitchDetailPage(c *fiber.Ctx) error {
