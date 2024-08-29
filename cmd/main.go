@@ -9,13 +9,16 @@ import (
 	"path/filepath"
 	"strings"
 	"switches/database"
+	"switches/middleware"
 	"switches/routes"
 	"syscall"
 
 	env "switches/config"
 
 	"github.com/gofiber/fiber/v2"
+	"github.com/gofiber/fiber/v2/middleware/compress"
 	"github.com/gofiber/fiber/v2/middleware/cors"
+	"github.com/gofiber/fiber/v2/middleware/limiter"
 	"github.com/gofiber/fiber/v2/middleware/logger"
 	"github.com/gofiber/fiber/v2/middleware/recover"
 	"github.com/tdewolff/minify/v2"
@@ -59,27 +62,23 @@ func init() {
 	// go scheduler.InitScheduler(db)
 }
 
-func LoadEnvMiddleware(c *fiber.Ctx) error {
-	c.Locals("clientOrigin", config.BaseURL)
-	return c.Next()
-}
+// func LoadEnvMiddleware(c *fiber.Ctx) error {
+// 	c.Locals("clientOrigin", config.BaseURL)
+// 	return c.Next()
+// }
 
 func main() {
 	log.Println("Starting server...", config.BaseURL)
-	server.Use(cors.New(cors.Config{
-		AllowOrigins:     config.BaseURL,
-		AllowHeaders:     "Origin, Content-Type, Accept, Authorization, withCredentials, X-Response-Type",
-		AllowMethods:     "GET, POST, PUT, DELETE, OPTIONS",
-		AllowCredentials: true,
-	}))
-	server.Use(LoadEnvMiddleware)
+	setStatic(config.AppendNumber, server)
 	database.ConnectDB(config, server)
-
-	if config.Tier == "local" {
+	if config.Tier == "development" {
 		server.Use(logger.New())
 	}
 
+	server.Use(limiter.New())
 	server.Use(recover.New())
+	// server.Use(helmet.New())
+	// server.Use(csrf.New())
 	server.Use(func(c *fiber.Ctx) error {
 		// Handle Preflight Request
 		if c.Method() == "OPTIONS" {
@@ -96,8 +95,21 @@ func main() {
 
 		return c.Next()
 	})
+	// server.Use(LoadEnvMiddleware)
+	server.Use(cors.New(cors.Config{
+		AllowOrigins:     config.BaseURL,
+		AllowHeaders:     "Origin, Content-Type, Accept, Authorization, withCredentials, X-Response-Type",
+		AllowMethods:     "GET, POST, PUT, DELETE, OPTIONS",
+		AllowCredentials: true,
+	}))
 
-	setStatic(config.AppendNumber, server)
+	server.Use(compress.New(compress.Config{
+		Level: compress.LevelDefault,
+	}))
+	server.Use(
+		middleware.AuthenticateUser(config),
+	)
+
 	routes.SetupRoutes(server, config)
 
 	// Create a channel to listen for a shutdown signal

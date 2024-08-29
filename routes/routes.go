@@ -5,11 +5,9 @@ import (
 	"runtime"
 	"switches/config"
 	"switches/controllers"
-	"switches/middleware"
 	"time"
 
 	"github.com/gofiber/fiber/v2"
-	"github.com/gofiber/fiber/v2/middleware/compress"
 	"github.com/gofiber/fiber/v2/middleware/monitor"
 )
 
@@ -25,13 +23,6 @@ type Health struct {
 var startTime = time.Now().UTC()
 
 func SetupRoutes(app *fiber.App, config config.Config) {
-	app.Use(compress.New(compress.Config{
-		Level: compress.LevelDefault,
-	}))
-	app.Use(
-		middleware.AuthenticateUser(config),
-	)
-
 	app.Get("/", controllers.GetHomePage)
 
 	AdminRoutes(app)
