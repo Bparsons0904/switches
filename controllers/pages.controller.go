@@ -1,10 +1,12 @@
 package controllers
 
 import (
+	"log"
 	"switches/database"
 	"switches/models"
 	"switches/templates/pages"
 	"switches/utils"
+	"sync"
 
 	"github.com/gofiber/fiber/v2"
 	"github.com/google/uuid"
@@ -16,12 +18,40 @@ func GetHomePage(c *fiber.Ctx) error {
 }
 
 func GetSwitchPage(c *fiber.Ctx) error {
-	user := c.Locals("User").(models.User)
+	timer := utils.StartTimer("Get Switch Page")
+	defer timer.LogTotalTime()
+
+	userID := c.Locals("UserID").(uuid.UUID)
+
+	wg := sync.WaitGroup{}
+	wg.Add(2)
+
+	var err error
+	var user models.User
+	go func(wg *sync.WaitGroup) {
+		defer wg.Done()
+		if userID != uuid.Nil {
+			err = database.DB.
+				Preload("OwnedSwitches").
+				Preload("LikedSwitches").
+				First(&user, userID).Error
+		}
+	}(&wg)
 
 	var clickyClacks []models.Switch
-	if err := database.DB.
-		Order("RANDOM()").
-		Find(&clickyClacks).Error; err != nil {
+	go func(wg *sync.WaitGroup) {
+		defer wg.Done()
+		err = database.DB.
+			Preload("ImageLinks").
+			Preload("Brand").
+			Preload("SwitchType").
+			Order("RANDOM()").
+			Find(&clickyClacks).Error
+	}(&wg)
+
+	wg.Wait()
+	if err != nil {
+		log.Println("Error getting the user or switches", err)
 		return c.Status(fiber.StatusBadRequest).Next()
 	}
 
@@ -30,6 +60,8 @@ func GetSwitchPage(c *fiber.Ctx) error {
 
 func GetSwitchDetailPage(c *fiber.Ctx) error {
 	timer := utils.StartTimer("getSwitchDetailPage")
+	defer timer.LogTotalTime()
+
 	userID := c.Locals("UserID").(uuid.UUID)
 	switchID, err := GetSwitchIDParam(c)
 	if err != nil {
@@ -57,7 +89,6 @@ func GetSwitchDetailPage(c *fiber.Ctx) error {
 	}
 	timer.LogTime("Get Switch")
 
-	timer.LogTotalTime()
 	return RenderPage(
 		pages.SwitchDetailPage(user, clickyClack),
 		pages.SwitchDetail(user, clickyClack),

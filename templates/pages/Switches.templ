@@ -15,19 +15,17 @@ templ SwitchesPage(user models.User, clickyClacks []models.Switch) {
 }
 
 templ Switches(user models.User, clickyClacks []models.Switch) {
-	<div class="">
+	<div class="switches">
 		@components.Navbar("switches", models.User{})
-		<main id="switches">
-			<section id="switches">
-				for _, clickyClack := range clickyClacks {
-					<h1
-						hx-trigger="click"
-						hx-get={ fmt.Sprintf("/switches/%s", clickyClack.ID) }
-						hx-push-url={ fmt.Sprintf("/switches/%s", clickyClack.ID) }
-						hx-target="#main"
-					>{ clickyClack.Name }</h1>
-				}
-			</section>
-		</main>
+		<section id="switches">
+			for _, clickyClack := range clickyClacks {
+				<h1
+					hx-trigger="click"
+					hx-get={ fmt.Sprintf("/switches/%s", clickyClack.ID) }
+					hx-push-url={ fmt.Sprintf("/switches/%s", clickyClack.ID) }
+					hx-target="#main"
+				>{ clickyClack.Name }</h1>
+			}
+		</section>
 	</div>
 }
