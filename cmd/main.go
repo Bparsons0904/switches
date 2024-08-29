@@ -18,7 +18,6 @@ import (
 	"github.com/gofiber/fiber/v2"
 	"github.com/gofiber/fiber/v2/middleware/compress"
 	"github.com/gofiber/fiber/v2/middleware/cors"
-	"github.com/gofiber/fiber/v2/middleware/limiter"
 	"github.com/gofiber/fiber/v2/middleware/logger"
 	"github.com/gofiber/fiber/v2/middleware/recover"
 	"github.com/tdewolff/minify/v2"
@@ -75,7 +74,7 @@ func main() {
 		server.Use(logger.New())
 	}
 
-	server.Use(limiter.New())
+	// server.Use(limiter.New())
 	server.Use(recover.New())
 	// server.Use(helmet.New())
 	// server.Use(csrf.New())

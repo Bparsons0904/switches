@@ -1,6 +1,7 @@
 package controllers
 
 import (
+	"log"
 	"switches/database"
 	"switches/models"
 	"switches/templates/pages"
@@ -16,20 +17,57 @@ func GetHomePage(c *fiber.Ctx) error {
 }
 
 func GetSwitchPage(c *fiber.Ctx) error {
-	user := c.Locals("User").(models.User)
+	timer := utils.StartTimer("Get Switch Page")
+	defer timer.LogTotalTime()
+
+	userID := c.Locals("UserID").(uuid.UUID)
+
+	var user models.User
+	if userID != uuid.Nil {
+		err := database.DB.
+			Preload("OwnedSwitches").
+			Preload("LikedSwitches").
+			First(&user, userID).Error
+		if err != nil {
+			log.Println("Error getting the switches", err)
+			return c.Status(fiber.StatusBadRequest).Next()
+		}
+	}
 
 	var clickyClacks []models.Switch
-	if err := database.DB.
-		Order("RANDOM()").
-		Find(&clickyClacks).Error; err != nil {
+	err := database.DB.
+		Preload("ImageLinks").
+		Preload("Brand").
+		Preload("SwitchType").
+		Find(&clickyClacks).Error
+	if err != nil {
+		log.Println("Error getting the user", err)
 		return c.Status(fiber.StatusBadRequest).Next()
 	}
 
-	return RenderPage(pages.SwitchesPage(user, clickyClacks), pages.Switches(user, clickyClacks))(c)
+	var switchTypes []models.Type
+	err = database.DB.
+		Select("id", "name").
+		Order("id").
+		Where("category = ?", "switch_type").
+		Find(&switchTypes).Error
+	if err != nil {
+		log.Println("Error getting the switch types", err)
+		return c.Status(fiber.StatusBadRequest).Next()
+	}
+
+	return RenderPage(
+		pages.SwitchesPage(user, clickyClacks, switchTypes),
+		pages.Switches(user, clickyClacks, switchTypes),
+	)(
+		c,
+	)
 }
 
 func GetSwitchDetailPage(c *fiber.Ctx) error {
 	timer := utils.StartTimer("getSwitchDetailPage")
+	defer timer.LogTotalTime()
+
 	userID := c.Locals("UserID").(uuid.UUID)
 	switchID, err := GetSwitchIDParam(c)
 	if err != nil {
@@ -57,7 +95,6 @@ func GetSwitchDetailPage(c *fiber.Ctx) error {
 	}
 	timer.LogTime("Get Switch")
 
-	timer.LogTotalTime()
 	return RenderPage(
 		pages.SwitchDetailPage(user, clickyClack),
 		pages.SwitchDetail(user, clickyClack),

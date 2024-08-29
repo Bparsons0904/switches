@@ -13,64 +13,62 @@ templ HomePage(user models.User) {
 }
 
 templ Home(user models.User) {
-	<div class="">
+	<div class="home">
 		@components.Navbar("home", user)
-		<main id="home">
-			<section id="cta" class="dark">
-				<div class="cta-wrapper">
-					<div class="cta-header">
-						<h1>
-							Find Your Perfect Switch
-						</h1>
-						<p>
-							Discover the ideal mechanical switch that fits your personal style and typing or gaming preferences.
-						</p>
-						<a htmx-get hx-get="/switches" hx-target="#body" hx-push-url="/switches">
-							<button type="button" class="button button-light">
-								Get Started
-							</button>
-						</a>
-					</div>
-					<div class="cta-image">
-						@components.Image(components.ImageProps{
-							Src:      "drop_holy_panda_x.jpg",
-							Alt:      "Drop Holy Panda X Mechanical Switches",
-							IsSquare: false,
-						})
-					</div>
+		<section id="cta" class="dark">
+			<div class="cta-wrapper">
+				<div class="cta-header">
+					<h1>
+						Find Your Perfect Switch
+					</h1>
+					<p>
+						Discover the ideal mechanical switch that fits your personal style and typing or gaming preferences.
+					</p>
+					<a class="get-started" htmx-get hx-get="/switches" hx-target="#main" hx-push-url="/switches">
+						<button type="button" class="button button-light">
+							Get Started
+						</button>
+					</a>
 				</div>
-			</section>
-			<section id="home-recommendations">
-				<div class="home-wrapper">
-					<div class="header">
-						<h2>Personalized Switch Recommendations</h2>
-						<p>
-							Our advanced algorithms and AI-powered recommendations help you find the perfect mechanical switch for your
-							typing needs and personal style.
-						</p>
-					</div>
-					<div id="discovery">
-						@components.DiscoveryCard(components.DiscoveryCardProps{
-							Icon:        "magnifying-glass",
-							Title:       "Discover",
-							Description: "Browse our extensive collection of mechanical switches.",
-						})
-						@components.DiscoveryCard(components.DiscoveryCardProps{
-							Icon:        "settings",
-							Title:       "Personalize",
-							Description: "Use our filters and AI recommendations to find your perfect match.",
-						})
-					</div>
-				</div>
-				<div class="discovery-image">
+				<div class="cta-image">
 					@components.Image(components.ImageProps{
-						Src:      "kaihl.webp",
-						Alt:      "Kaihl box style switches",
+						Src:      "drop_holy_panda_x.jpg",
+						Alt:      "Drop Holy Panda X Mechanical Switches",
 						IsSquare: false,
 					})
 				</div>
-			</section>
-			<section id="featured" hx-get="switches/featured" hx-trigger="load" hx-swap="outerHTML"></section>
-		</main>
+			</div>
+		</section>
+		<section id="home-recommendations">
+			<div class="home-wrapper">
+				<div class="header">
+					<h2>Personalized Switch Recommendations</h2>
+					<p>
+						Our advanced algorithms and AI-powered recommendations help you find the perfect mechanical switch for your
+						typing needs and personal style.
+					</p>
+				</div>
+				<div id="discovery">
+					@components.DiscoveryCard(components.DiscoveryCardProps{
+						Icon:        "magnifying-glass",
+						Title:       "Discover",
+						Description: "Browse our extensive collection of mechanical switches.",
+					})
+					@components.DiscoveryCard(components.DiscoveryCardProps{
+						Icon:        "settings",
+						Title:       "Personalize",
+						Description: "Use our filters and AI recommendations to find your perfect match.",
+					})
+				</div>
+			</div>
+			<div class="discovery-image">
+				@components.Image(components.ImageProps{
+					Src:      "kaihl.webp",
+					Alt:      "Kaihl box style switches",
+					IsSquare: false,
+				})
+			</div>
+		</section>
+		<section id="featured" hx-get="switches/featured" hx-trigger="load" hx-swap="outerHTML"></section>
 	</div>
 }

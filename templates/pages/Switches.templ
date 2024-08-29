@@ -3,31 +3,46 @@ package pages
 
 import (
 	"fmt"
+	"strconv"
 	"switches/models"
 	"switches/templates/components"
 	"switches/templates/layouts"
 )
 
-templ SwitchesPage(user models.User, clickyClacks []models.Switch) {
+templ SwitchesPage(user models.User, clickyClacks []models.Switch, switchTypes []models.Type) {
 	@layouts.Root() {
-		@Switches(user, clickyClacks)
+		@Switches(user, clickyClacks, switchTypes)
 	}
 }
 
-templ Switches(user models.User, clickyClacks []models.Switch) {
-	<div class="">
+templ Switches(user models.User, clickyClacks []models.Switch, switchTypes []models.Type) {
+	<div class="switches">
 		@components.Navbar("switches", models.User{})
-		<main id="switches">
-			<section id="switches">
-				for _, clickyClack := range clickyClacks {
-					<h1
-						hx-trigger="click"
-						hx-get={ fmt.Sprintf("/switches/%s", clickyClack.ID) }
-						hx-push-url={ fmt.Sprintf("/switches/%s", clickyClack.ID) }
-						hx-target="#body"
-					>{ clickyClack.Name }</h1>
-				}
-			</section>
-		</main>
+		<section id="filter">
+			<h1>Filters</h1>
+			<div id="filters">
+				<h2>Switch Type</h2>
+				<div class="filter">
+					// Checkboxes for each switch type
+					for _, switchType := range switchTypes {
+						<label>
+							<input type="checkbox" name="switchType" value={ strconv.Itoa(switchType.ID) }/>
+							{ switchType.Name }
+						</label>
+					}
+				</div>
+			</div>
+		</section>
+		<section id="search">Search</section>
+		<section id="switches">
+			for _, clickyClack := range clickyClacks {
+				<h1
+					hx-trigger="click"
+					hx-get={ fmt.Sprintf("/switches/%s", clickyClack.ID) }
+					hx-push-url={ fmt.Sprintf("/switches/%s", clickyClack.ID) }
+					hx-target="#main"
+				>{ clickyClack.Name }</h1>
+			}
+		</section>
 	</div>
 }
