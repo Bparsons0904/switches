@@ -2,22 +2,32 @@
 package pages
 
 import (
+	"fmt"
 	"switches/models"
 	"switches/templates/components"
 	"switches/templates/layouts"
 )
 
-templ SwitchesPage(user models.User) {
+templ SwitchesPage(user models.User, clickyClacks []models.Switch) {
 	@layouts.Root() {
-		@Switches(user)
+		@Switches(user, clickyClacks)
 	}
 }
 
-templ Switches(user models.User) {
+templ Switches(user models.User, clickyClacks []models.Switch) {
 	<div class="">
 		@components.Navbar("switches", models.User{})
-		<main id="home">
-			<section id="cta" class="dark">Yo</section>
+		<main id="switches">
+			<section id="switches">
+				for _, clickyClack := range clickyClacks {
+					<h1
+						hx-trigger="click"
+						hx-get={ fmt.Sprintf("/switches/%s", clickyClack.ID) }
+						hx-push-url={ fmt.Sprintf("/switches/%s", clickyClack.ID) }
+						hx-target="#body"
+					>{ clickyClack.Name }</h1>
+				}
+			</section>
 		</main>
 	</div>
 }

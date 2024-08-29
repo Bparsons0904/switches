@@ -17,7 +17,15 @@ func GetHomePage(c *fiber.Ctx) error {
 
 func GetSwitchPage(c *fiber.Ctx) error {
 	user := c.Locals("User").(models.User)
-	return RenderPage(pages.SwitchesPage(user), pages.Switches(user))(c)
+
+	var clickyClacks []models.Switch
+	if err := database.DB.
+		Order("RANDOM()").
+		Find(&clickyClacks).Error; err != nil {
+		return c.Status(fiber.StatusBadRequest).Next()
+	}
+
+	return RenderPage(pages.SwitchesPage(user, clickyClacks), pages.Switches(user, clickyClacks))(c)
 }
 
 func GetSwitchDetailPage(c *fiber.Ctx) error {

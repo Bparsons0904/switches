@@ -43,6 +43,7 @@ templ SwitchDetail(user models.User, clickyClack models.Switch) {
 					@OwnedSelector(user, clickyClack)
 				</div>
 			</div>
+			<p>{ clickyClack.ShortDescription }</p>
 			<p>{ clickyClack.LongDescription }</p>
 			<div class="ratings"></div>
 		</main>
