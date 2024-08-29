@@ -24,7 +24,7 @@ templ Switches(user models.User, clickyClacks []models.Switch) {
 						hx-trigger="click"
 						hx-get={ fmt.Sprintf("/switches/%s", clickyClack.ID) }
 						hx-push-url={ fmt.Sprintf("/switches/%s", clickyClack.ID) }
-						hx-target="#body"
+						hx-target="#main"
 					>{ clickyClack.Name }</h1>
 				}
 			</section>

@@ -8,11 +8,26 @@ type SwitchCardProps struct {
 	ImageAlt    string
 }
 
+script withUpdateQueryParams(switchId string) {
+  const url = new URL(window.location);
+  url.searchParams.set("modal", switchId);
+  window.history.pushState({}, "", url);
+
+  const modalLoader = document.getElementById("modal-loader");
+  modalLoader.innerHTML = `
+    <div hx-get="/switches/${switchId}/modal"
+         hx-trigger="load"
+         hx-target="#portal"
+         hx-swap="innerHTML"></div>
+  `;
+  htmx.process(modalLoader);
+}
+
 templ SwitchCardPreview(props SwitchCardProps) {
-	<a
+	<button
 		class="switch-card"
-		hx-on:click="updateQueryParam(event)"
-		data-switch-id={ props.ID }
+		id={ props.ID }
+		onclick={ withUpdateQueryParams(props.ID) }
 	>
 		<div class="switch-image">
 			@ImageLink(ImageProps{
@@ -25,5 +40,5 @@ templ SwitchCardPreview(props SwitchCardProps) {
 			<h2>{ props.Title }</h2>
 			<p>{ props.Description }</p>
 		</div>
-	</a>
+	</button>
 }
