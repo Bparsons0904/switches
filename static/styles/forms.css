@@ -26,7 +26,7 @@
     height: 20px;
     width: 20px;
     background-color: #fff;
-    border: 2px solid var(--primary-color);
+    border: 2px solid var(--text-color-dark);
     border-radius: 4px;
     transition: all 0.3s ease;
     &:after {
@@ -40,6 +40,45 @@
       border: solid white;
       border-width: 0 2px 2px 0;
       transform: rotate(45deg);
+    }
+  }
+}
+
+.selectable-label {
+  display: inline-block;
+  position: relative;
+
+  & span {
+    display: inline-block;
+    padding: 5px 12px;
+    font-size: 1rem;
+    cursor: pointer;
+    background-color: #ffffff;
+    color: var(--text-color-dark);
+    border: 2px solid var(--text-color-dark);
+    border-radius: 20px;
+    transition: all 0.3s ease;
+    user-select: none;
+  }
+
+  &:hover span {
+    background-color: var(--primary-color);
+  }
+
+  & input {
+    position: absolute;
+    opacity: 0;
+    cursor: pointer;
+    height: 0;
+    width: 0;
+
+    &:checked + span {
+      background-color: var(--primary-color);
+      border-color: var(--primary-color);
+      color: #ffffff;
+      /* svg { */
+      /*   fill: var(--primary-color); */
+      /* } */
     }
   }
 }

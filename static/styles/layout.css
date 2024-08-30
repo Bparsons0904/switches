@@ -98,7 +98,7 @@
 }
 
 .card {
-  padding: 10px;
+  padding: 20px;
   box-shadow: var(--box-shadow);
   border-radius: 5px;
 }

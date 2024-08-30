@@ -5,16 +5,23 @@ import (
 	"strconv"
 	"switches/models"
 	"switches/templates/components"
+	"switches/templates/components/icons"
 	"switches/templates/layouts"
 )
 
-templ SwitchesPage(clickyClacks []models.Switch, switchTypes []models.Type) {
+type SwitchesPageProps struct {
+	ClickyClacks []models.Switch
+	SwitchTypes  []models.Type
+	SwitchBrands []models.Producer
+}
+
+templ SwitchesPage(props SwitchesPageProps) {
 	@layouts.Root() {
-		@Switches(clickyClacks, switchTypes)
+		@Switches(props)
 	}
 }
 
-templ Switches(clickyClacks []models.Switch, switchTypes []models.Type) {
+templ Switches(props SwitchesPageProps) {
 	@components.Navbar("switches", models.User{})
 	<div id="switches">
 		<h1>MX Switches</h1>
@@ -23,15 +30,51 @@ templ Switches(clickyClacks []models.Switch, switchTypes []models.Type) {
 				<h1>Filters</h1>
 				<div id="filters">
 					<form id="filter-form" hx-trigger="change" hx-get="/switches/list" hx-target="#switch-list" hx-include="#search-form">
-						<h3>Switch Type</h3>
 						<div class="filter">
-							for _, switchType := range switchTypes {
+							<h3>Switch Type</h3>
+							for _, switchType := range props.SwitchTypes {
 								<label class="checkbox-label">
 									{ switchType.Name }
 									<input type="checkbox" name="switchTypeIDs" value={ strconv.Itoa(switchType.ID) }/>
 									<span class="checkmark"></span>
 								</label>
 							}
+						</div>
+						<div class="filter">
+							<h3>Switch Brands</h3>
+							for _, brand := range props.SwitchBrands {
+								<label class="checkbox-label">
+									{ brand.Name }
+									<input type="checkbox" name="brandIDs" value={ strconv.Itoa(brand.ID) }/>
+									<span class="checkmark"></span>
+								</label>
+							}
+						</div>
+						<div class="filter">
+							<h3>Switch Cost</h3>
+							<div class="cost-wrapper">
+								<label class="selectable-label">
+									<input type="checkbox" name="brandIDs" value="1"/>
+									<span>
+										@icons.Dollar()
+									</span>
+								</label>
+								<label class="selectable-label">
+									<input type="checkbox" name="brandIDs" value="1"/>
+									<span class="cost">
+										@icons.Dollar()
+										@icons.Dollar()
+									</span>
+								</label>
+								<label class="selectable-label">
+									<input type="checkbox" name="brandIDs" value="1"/>
+									<span class="cost">
+										@icons.Dollar()
+										@icons.Dollar()
+										@icons.Dollar()
+									</span>
+								</label>
+							</div>
 						</div>
 					</form>
 				</div>

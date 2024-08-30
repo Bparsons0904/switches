@@ -44,9 +44,23 @@ func GetSwitchPage(c *fiber.Ctx) error {
 	}
 	timer.LogTime("Get Switch Types")
 
+	var switchBrands []models.Producer
+	if err := database.DB.
+		Find(&switchBrands).Error; err != nil {
+		log.Println("Error getting the switch brands", err)
+		return c.Status(fiber.StatusBadRequest).Next()
+	}
+	timer.LogTime("Get Switch Brands")
+
+	props := pages.SwitchesPageProps{
+		ClickyClacks: clickyClacks,
+		SwitchTypes:  switchTypes,
+		SwitchBrands: switchBrands,
+	}
+
 	return RenderPage(
-		pages.SwitchesPage(clickyClacks, switchTypes),
-		pages.Switches(clickyClacks, switchTypes),
+		pages.SwitchesPage(props),
+		pages.Switches(props),
 	)(
 		c,
 	)
