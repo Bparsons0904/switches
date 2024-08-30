@@ -20,20 +20,6 @@ func GetSwitchPage(c *fiber.Ctx) error {
 	timer := utils.StartTimer("Get Switch Page")
 	defer timer.LogTotalTime()
 
-	userID := c.Locals("UserID").(uuid.UUID)
-
-	var user models.User
-	if userID != uuid.Nil {
-		err := database.DB.
-			Preload("OwnedSwitches").
-			Preload("LikedSwitches").
-			First(&user, userID).Error
-		if err != nil {
-			log.Println("Error getting the switches", err)
-			return c.Status(fiber.StatusBadRequest).Next()
-		}
-	}
-
 	var clickyClacks []models.Switch
 	err := database.DB.
 		Preload("ImageLinks").
@@ -44,6 +30,7 @@ func GetSwitchPage(c *fiber.Ctx) error {
 		log.Println("Error getting the user", err)
 		return c.Status(fiber.StatusBadRequest).Next()
 	}
+	timer.LogTime("Get Switches")
 
 	var switchTypes []models.Type
 	err = database.DB.
@@ -55,10 +42,11 @@ func GetSwitchPage(c *fiber.Ctx) error {
 		log.Println("Error getting the switch types", err)
 		return c.Status(fiber.StatusBadRequest).Next()
 	}
+	timer.LogTime("Get Switch Types")
 
 	return RenderPage(
-		pages.SwitchesPage(user, clickyClacks, switchTypes),
-		pages.Switches(user, clickyClacks, switchTypes),
+		pages.SwitchesPage(clickyClacks, switchTypes),
+		pages.Switches(clickyClacks, switchTypes),
 	)(
 		c,
 	)
