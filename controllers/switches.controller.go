@@ -40,7 +40,7 @@ func GetSwitchList(c *fiber.Ctx) error {
 		clickyClackQuery.Where("switch_type_id IN (?)", request.SwitchTypeIDs)
 	}
 
-	if request.Search != "" {
+	if len(request.Search) > 2 {
 		clickyClackQuery.Where("LOWER(name) LIKE LOWER(?)", fmt.Sprintf("%%%s%%", request.Search))
 	}
 

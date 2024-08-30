@@ -43,7 +43,7 @@ templ Switches(clickyClacks []models.Switch, switchTypes []models.Type) {
 									type="search"
 									name="search"
 									placeholder="Search switches..."
-									hx-trigger="keyup changed delay:500ms"
+									hx-trigger="keyup changed delay:500ms, search"
 									hx-get="/switches/list"
 									hx-target="#switch-list"
 									hx-include="#filter-form"
@@ -55,18 +55,5 @@ templ Switches(clickyClacks []models.Switch, switchTypes []models.Type) {
 			</section>
 			<section id="switch-list" hx-get="/switches/list" hx-trigger="load" hx-swap="innerHTML"></section>
 		</div>
-		<!-- <script> -->
-		<!-- 	document.body.addEventListener('htmx:configRequest', function(evt) { -->
-		<!-- 		var url = new URL(evt.detail.path, window.location.origin); -->
-		<!-- 		var searchParams = new URLSearchParams(url.search); -->
-		<!---->
-		<!-- 		// Remove empty search parameter -->
-		<!-- 		if (searchParams.get('search') === '') { -->
-		<!-- 			searchParams.delete('search'); -->
-		<!-- 		} -->
-		<!---->
-		<!-- 		evt.detail.path = url.pathname + '?' + searchParams.toString(); -->
-		<!-- 	}); -->
-		<!-- </script> -->
 	</div>
 }
