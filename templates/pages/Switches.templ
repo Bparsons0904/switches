@@ -17,12 +17,11 @@ templ SwitchesPage(clickyClacks []models.Switch, switchTypes []models.Type) {
 templ Switches(clickyClacks []models.Switch, switchTypes []models.Type) {
 	<div class="switches">
 		@components.Navbar("switches", models.User{})
-		<section id="filter">
-			<h1>Filters</h1>
-			<div id="filters">
-				<h2>Switch Type</h2>
-				<form id="filter-form" hx-get="/switches/list" hx-trigger="change" hx-target="#switches">
-					<div id="filters">
+		<div id="switch-content">
+			<section id="filter">
+				<h1>Filters</h1>
+				<div id="filters">
+					<form id="filter-form" hx-trigger="change" hx-get="/switches/list" hx-target="#switch-list" hx-include="#search-form">
 						<h2>Switch Type</h2>
 						<div class="filter">
 							for _, switchType := range switchTypes {
@@ -32,11 +31,42 @@ templ Switches(clickyClacks []models.Switch, switchTypes []models.Type) {
 								</label>
 							}
 						</div>
+					</form>
+				</div>
+			</section>
+			<section id="search">
+				<form id="search-form">
+					<div id="search">
+						<div class="search">
+							<label>
+								<input
+									type="search"
+									name="search"
+									placeholder="Search switches..."
+									hx-trigger="keyup changed delay:500ms"
+									hx-get="/switches/list"
+									hx-target="#switch-list"
+									hx-include="#filter-form"
+								/>
+							</label>
+						</div>
 					</div>
 				</form>
-			</div>
-		</section>
-		<section id="search">Search</section>
-		<section id="switches" hx-get="switches/list" hx-trigger="load" hx-swap="outerHTML"></section>
+			</section>
+			<section id="switch-list" hx-get="/switches/list" hx-trigger="load" hx-swap="innerHTML"></section>
+		</div>
+		<!-- <script> -->
+		<!-- 	document.body.addEventListener('htmx:configRequest', function(evt) { -->
+		<!-- 		var url = new URL(evt.detail.path, window.location.origin); -->
+		<!-- 		var searchParams = new URLSearchParams(url.search); -->
+		<!---->
+		<!-- 		// Remove empty search parameter -->
+		<!-- 		if (searchParams.get('search') === '') { -->
+		<!-- 			searchParams.delete('search'); -->
+		<!-- 		} -->
+		<!---->
+		<!-- 		evt.detail.path = url.pathname + '?' + searchParams.toString(); -->
+		<!-- 	}); -->
+		<!-- </script> -->
 	</div>
 }

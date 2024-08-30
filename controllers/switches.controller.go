@@ -21,15 +21,14 @@ func GetSwitchList(c *fiber.Ctx) error {
 	user := c.Locals("User").(models.User)
 
 	type SwitchQueryParams struct {
-		SwitchTypeIDs []int `json:"switchTypeIDs"`
+		SwitchTypeIDs []int  `json:"switchTypeIDs"`
+		Search        string `json:"search"`
 	}
 	request := new(SwitchQueryParams)
 
 	if err := c.QueryParser(request); err != nil {
 		log.Println("Error parsing query params", err)
 	}
-
-	log.Println("Switch Types", request)
 
 	var clickyClacks []models.Switch
 	clickyClackQuery := database.DB.
@@ -39,6 +38,10 @@ func GetSwitchList(c *fiber.Ctx) error {
 
 	if len(request.SwitchTypeIDs) > 0 {
 		clickyClackQuery.Where("switch_type_id IN (?)", request.SwitchTypeIDs)
+	}
+
+	if request.Search != "" {
+		clickyClackQuery.Where("LOWER(name) LIKE LOWER(?)", fmt.Sprintf("%%%s%%", request.Search))
 	}
 
 	err := clickyClackQuery.Find(&clickyClacks).Error
@@ -134,16 +137,17 @@ func getUpdatedUser(user models.User, timer *utils.Timer, c *fiber.Ctx) (models.
 		First(&updatedUser, user.ID).Error; err != nil {
 		return models.User{}, err
 	}
+	timer.LogTime("Get User")
 
-	go func() {
-		c.Locals("User", updatedUser)
-		if err := database.SetUUIDJSONKeyDB("user", updatedUser.ID, updatedUser, 30*time.Hour); err != nil {
-			log.Println("Error setting user in keydb", err)
-			if err := database.DeleteUUIDKeyDB("user", updatedUser.ID); err != nil {
-				log.Println("Error deleting user in keydb", err)
-			}
+	c.Locals("User", updatedUser)
+	if err := database.SetUUIDJSONKeyDB("user", updatedUser.ID, updatedUser, 30*time.Hour); err != nil {
+		log.Println("Error setting user in keydb", err)
+		if err := database.DeleteUUIDKeyDB("user", updatedUser.ID); err != nil {
+			log.Println("Error deleting user in keydb", err)
 		}
-	}()
+	}
+	timer.LogTime("Set User in KeyDB")
+
 	return updatedUser, nil
 }
 
