@@ -15,45 +15,47 @@ templ SwitchesPage(clickyClacks []models.Switch, switchTypes []models.Type) {
 }
 
 templ Switches(clickyClacks []models.Switch, switchTypes []models.Type) {
-	<div class="switches">
-		@components.Navbar("switches", models.User{})
-		<div id="switch-content">
-			<section id="filter">
+	@components.Navbar("switches", models.User{})
+	<div id="switches">
+		<h1>MX Switches</h1>
+		<section id="filter">
+			@layouts.Card() {
 				<h1>Filters</h1>
 				<div id="filters">
 					<form id="filter-form" hx-trigger="change" hx-get="/switches/list" hx-target="#switch-list" hx-include="#search-form">
-						<h2>Switch Type</h2>
+						<h3>Switch Type</h3>
 						<div class="filter">
 							for _, switchType := range switchTypes {
-								<label>
-									<input type="checkbox" name="switchTypeIDs" value={ strconv.Itoa(switchType.ID) }/>
+								<label class="checkbox-label">
 									{ switchType.Name }
+									<input type="checkbox" name="switchTypeIDs" value={ strconv.Itoa(switchType.ID) }/>
+									<span class="checkmark"></span>
 								</label>
 							}
 						</div>
 					</form>
 				</div>
-			</section>
-			<section id="search">
-				<form id="search-form">
-					<div id="search">
-						<div class="search">
-							<label>
-								<input
-									type="search"
-									name="search"
-									placeholder="Search switches..."
-									hx-trigger="keyup changed delay:500ms, search"
-									hx-get="/switches/list"
-									hx-target="#switch-list"
-									hx-include="#filter-form"
-								/>
-							</label>
-						</div>
+			}
+		</section>
+		<section id="search">
+			<form id="search-form">
+				<div id="search">
+					<div class="search">
+						<label>
+							<input
+								type="search"
+								name="search"
+								placeholder="Search switches..."
+								hx-trigger="keyup changed delay:500ms, search"
+								hx-get="/switches/list"
+								hx-target="#switch-list"
+								hx-include="#filter-form"
+							/>
+						</label>
 					</div>
-				</form>
-			</section>
-			<section id="switch-list" hx-get="/switches/list" hx-trigger="load" hx-swap="innerHTML"></section>
-		</div>
+				</div>
+			</form>
+		</section>
+		<section id="switch-list" hx-get="/switches/list" hx-trigger="load" hx-swap="innerHTML"></section>
 	</div>
 }

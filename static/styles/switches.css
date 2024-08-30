@@ -156,3 +156,15 @@
     }
   }
 }
+
+#switches {
+  padding: 20px;
+  #filters {
+    margin-top: 10px;
+    .filter {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+  }
+}

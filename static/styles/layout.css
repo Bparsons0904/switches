@@ -97,6 +97,12 @@
   }
 }
 
+.card {
+  padding: 10px;
+  box-shadow: var(--box-shadow);
+  border-radius: 5px;
+}
+
 @media (min-width: 768px) {
   #dialog {
     width: 70vw;
