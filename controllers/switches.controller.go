@@ -22,6 +22,8 @@ func GetSwitchList(c *fiber.Ctx) error {
 
 	type SwitchQueryParams struct {
 		SwitchTypeIDs []int  `json:"switchTypeIDs"`
+		BrandIDs      []int  `json:"brandIDs"`
+		Pricepoints   []int  `json:"pricepoints"`
 		Search        string `json:"search"`
 	}
 	request := new(SwitchQueryParams)
@@ -42,6 +44,14 @@ func GetSwitchList(c *fiber.Ctx) error {
 
 	if len(request.Search) > 2 {
 		clickyClackQuery.Where("LOWER(name) LIKE LOWER(?)", fmt.Sprintf("%%%s%%", request.Search))
+	}
+
+	if len(request.BrandIDs) > 0 {
+		clickyClackQuery.Where("brand_id IN (?)", request.BrandIDs)
+	}
+
+	if len(request.Pricepoints) > 0 {
+		clickyClackQuery.Where("price_point IN (?)", request.Pricepoints)
 	}
 
 	err := clickyClackQuery.Find(&clickyClacks).Error
