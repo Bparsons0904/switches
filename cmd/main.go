@@ -45,14 +45,16 @@ func init() {
 
 	if config.Tier == "development" {
 		server = fiber.New(fiber.Config{
-			ReadBufferSize:    16384,
-			StreamRequestBody: true,
+			ReadBufferSize:           16384,
+			StreamRequestBody:        true,
+			EnableSplittingOnParsers: true,
 		})
 	} else {
 		server = fiber.New(fiber.Config{
-			DisableStartupMessage: true,
-			StreamRequestBody:     true,
-			ReadBufferSize:        16384,
+			DisableStartupMessage:    true,
+			StreamRequestBody:        true,
+			ReadBufferSize:           16384,
+			EnableSplittingOnParsers: true,
 		})
 	}
 	m = minify.New()
