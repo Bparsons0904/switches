@@ -225,23 +225,21 @@
   #switches {
     padding: 2rem;
     width: 100%;
+    #filters {
+      .filter {
+        .checkboxes {
+          display: grid;
+          grid-template-columns: 1fr 1fr;
+          gap: 5px;
+        }
+      }
+    }
     #switch-container {
       width: 100%;
       #filter {
         margin-bottom: 2rem;
         .card {
           padding: 2rem;
-        }
-      }
-      #filters {
-        #filter-form {
-          .filter {
-            .checkboxes {
-              display: grid;
-              grid-template-columns: 1fr 1fr 1fr;
-              gap: 5px;
-            }
-          }
         }
       }
       #switch-list {
@@ -257,18 +255,16 @@
 }
 
 @media (min-width: 1024px) {
-  #switch-list {
-    #switch-container {
-      display: grid;
-      grid-template-columns: 35% 1fr;
-      #filters {
-        #filter-form {
-          .checkboxes {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 5px;
-          }
-        }
+  #switch-container {
+    display: grid;
+    grid-template-columns: 35% 1fr;
+  }
+  #filters {
+    #filter-form {
+      .checkboxes {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 5px;
       }
     }
   }

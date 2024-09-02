@@ -73,11 +73,13 @@ func GetFeaturedSwitches(c *fiber.Ctx) error {
 	database.DB.
 		Joins("INNER JOIN image_links ON image_links.owner_id = switches.id").
 		Preload("ImageLinks").
+		Preload("SwitchType").
 		Limit(4).
 		Order("RANDOM()").
 		Find(&clickyClacks)
 	timer.LogTime("Get Switches")
 
+	log.Println("Clicky Clacks", clickyClacks)
 	component := components.FeaturedSwitches(clickyClacks)
 	return Render(component)(c)
 }

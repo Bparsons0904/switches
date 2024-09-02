@@ -8,12 +8,12 @@ import (
 
 script withUpdateQueryParams(switchID uuid.UUID) {
   const url = new URL(window.location);
-  url.searchParams.set("modal", switchId);
+  url.searchParams.set("modal", switchID);
   window.history.pushState({}, "", url);
 
   const modalLoader = document.getElementById("modal-loader");
   modalLoader.innerHTML = `
-    <div hx-get="/switches/${switchId}/modal"
+    <div hx-get="/switches/${switchID}/modal"
          hx-trigger="load"
          hx-target="#portal"
          hx-swap="innerHTML"></div>
