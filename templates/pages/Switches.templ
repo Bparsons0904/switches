@@ -13,6 +13,7 @@ type SwitchesPageProps struct {
 	ClickyClacks []models.Switch
 	SwitchTypes  []models.Type
 	SwitchBrands []models.Producer
+	User         models.User
 }
 
 templ SwitchesPage(props SwitchesPageProps) {
@@ -22,7 +23,7 @@ templ SwitchesPage(props SwitchesPageProps) {
 }
 
 templ Switches(props SwitchesPageProps) {
-	@components.Navbar("switches", models.User{})
+	@components.Navbar("switches", props.User)
 	<div id="switches">
 		<h1>MX Switches</h1>
 		<div id="switch-container">
@@ -50,6 +51,21 @@ templ Switches(props SwitchesPageProps) {
 					<h1>Filters</h1>
 					<div id="filters">
 						<form id="filter-form" hx-trigger="change" hx-get="/switches/list" hx-target="#switch-list" hx-include="#search-form">
+							<div id="switch-linked" class="filter">
+								<h3>Owned and Favorite</h3>
+								<div id="favorite" class="checkboxes">
+									<label class="checkbox-label">
+										Favorite 
+										<input type="checkbox" name="switchFavorites"/>
+										<span class="checkmark"></span>
+									</label>
+									<label class="checkbox-label">
+										Owned 
+										<input type="checkbox" name="switchOwned"/>
+										<span class="checkmark"></span>
+									</label>
+								</div>
+							</div>
 							<div id="switch-type" class="filter">
 								<h3>Switch Type</h3>
 								<div class="checkboxes">

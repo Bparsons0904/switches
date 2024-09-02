@@ -115,6 +115,11 @@
   overflow: hidden;
 }
 
+.center-svg {
+  display: flex;
+  place-items: center;
+}
+
 /* .img-wrapper { */
 /*   width: 100%; */
 /*   height: auto; */

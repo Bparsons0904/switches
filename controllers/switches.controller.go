@@ -21,10 +21,12 @@ func GetSwitchList(c *fiber.Ctx) error {
 	user := c.Locals("User").(models.User)
 
 	type SwitchQueryParams struct {
-		SwitchTypeIDs []int  `json:"switchTypeIDs"`
-		BrandIDs      []int  `json:"brandIDs"`
-		Pricepoints   []int  `json:"pricepoints"`
-		Search        string `json:"search"`
+		SwitchTypeIDs   []int  `json:"switchTypeIDs"`
+		BrandIDs        []int  `json:"brandIDs"`
+		Pricepoints     []int  `json:"pricepoints"`
+		Search          string `json:"search"`
+		SwitchFavorites bool   `json:"switchFavorites"`
+		SwitchOwned     bool   `json:"switchOwned"`
 	}
 	request := new(SwitchQueryParams)
 
@@ -52,6 +54,33 @@ func GetSwitchList(c *fiber.Ctx) error {
 
 	if len(request.Pricepoints) > 0 {
 		clickyClackQuery.Where("price_point IN (?)", request.Pricepoints)
+	}
+
+	if request.SwitchFavorites || request.SwitchOwned {
+		var idsToInclude []uuid.UUID
+		if request.SwitchOwned {
+			var userOwnedSwitches []uuid.UUID
+			if err := database.DB.Model(&models.UserOwnedSwitches{}).
+				Where("user_id = ?", user.ID).
+				Pluck("switch_id", &userOwnedSwitches).Error; err != nil {
+				log.Println("Error getting the user owned switches", err)
+				return c.Status(fiber.StatusBadRequest).Next()
+			}
+			idsToInclude = append(idsToInclude, userOwnedSwitches...)
+		}
+
+		if request.SwitchFavorites {
+			var userLikedSwitches []uuid.UUID
+			if err := database.DB.Model(&models.UserLikedSwitches{}).
+				Where("user_id = ?", user.ID).
+				Pluck("switch_id", &userLikedSwitches).Error; err != nil {
+				log.Println("Error getting the user liked switches", err)
+				return c.Status(fiber.StatusBadRequest).Next()
+			}
+			idsToInclude = append(idsToInclude, userLikedSwitches...)
+		}
+
+		clickyClackQuery.Where("id IN (?)", idsToInclude)
 	}
 
 	err := clickyClackQuery.Find(&clickyClacks).Error

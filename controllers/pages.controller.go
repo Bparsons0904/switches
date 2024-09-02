@@ -56,6 +56,7 @@ func GetSwitchPage(c *fiber.Ctx) error {
 		ClickyClacks: clickyClacks,
 		SwitchTypes:  switchTypes,
 		SwitchBrands: switchBrands,
+		User:         c.Locals("User").(models.User),
 	}
 
 	return RenderPage(
