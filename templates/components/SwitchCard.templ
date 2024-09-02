@@ -1,6 +1,7 @@
 package components
 
 import (
+	"fmt"
 	"github.com/google/uuid"
 	"switches/models"
 	"switches/templates/components/icons"
@@ -21,11 +22,15 @@ script withUpdateQueryParams(switchID uuid.UUID) {
   htmx.process(modalLoader);
 }
 
-templ SwitchCardPreview(clickyClack models.Switch) {
-	<button
+templ SwitchCardPreview(user models.User, clickyClack models.Switch) {
+	<div
 		class="switch-card-preview"
 		id={ clickyClack.ID.String() }
-		onclick={ withUpdateQueryParams(clickyClack.ID) }
+		hx-trigger="click"
+		hx-get={ fmt.Sprintf("/switches/%s", clickyClack.ID) }
+		hx-push-url={ fmt.Sprintf("/switches/%s", clickyClack.ID) }
+		hx-target="#main"
+		hx-disinherit="*"
 	>
 		<div class="switch-image">
 			@getSwitchImageLink(clickyClack)
@@ -43,8 +48,22 @@ templ SwitchCardPreview(clickyClack models.Switch) {
 					}
 				</span>
 			</div>
+			<div class="switch-selectors">
+				@LikedSelector(user, clickyClack)
+				@OwnedSelector(user, clickyClack)
+				<span class="share-wrapper">
+					<a
+						class="share-button"
+						hx-on:click="shareSwitchDetail(event)"
+						data-switch-name={ clickyClack.Name }
+						data-switch-id={ clickyClack.ID.String() }
+					>
+						@icons.Share()
+					</a>
+				</span>
+			</div>
 		</div>
-	</button>
+	</div>
 }
 
 templ SwitchCardFeatured(clickyClack models.Switch) {
