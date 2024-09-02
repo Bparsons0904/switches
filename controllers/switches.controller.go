@@ -69,31 +69,16 @@ func GetFeaturedSwitches(c *fiber.Ctx) error {
 	timer := utils.StartTimer("Get Featured Switches")
 	defer timer.LogTotalTime()
 
-	var switchesFromDB []models.Switch
+	var clickyClacks []models.Switch
 	database.DB.
 		Joins("INNER JOIN image_links ON image_links.owner_id = switches.id").
 		Preload("ImageLinks").
 		Limit(4).
 		Order("RANDOM()").
-		Find(&switchesFromDB)
+		Find(&clickyClacks)
 	timer.LogTime("Get Switches")
 
-	var switches []components.SwitchCardProps
-	for _, clickyClack := range switchesFromDB {
-		imageLink := clickyClack.ImageLinks[0].LinkAddress
-		imageAlt := fmt.Sprintf("Image of %s switch", clickyClack.Name)
-		newSwitch := components.SwitchCardProps{
-			ID:          clickyClack.ID.String(),
-			Title:       clickyClack.Name,
-			Description: clickyClack.ShortDescription,
-			ImageSrc:    imageLink,
-			ImageAlt:    imageAlt,
-		}
-
-		switches = append(switches, newSwitch)
-	}
-
-	component := components.FeaturedSwitches(switches)
+	component := components.FeaturedSwitches(clickyClacks)
 	return Render(component)(c)
 }
 

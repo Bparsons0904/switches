@@ -1,14 +1,12 @@
 package components
 
-type SwitchCardProps struct {
-	ID          string
-	Title       string
-	Description string
-	ImageSrc    string
-	ImageAlt    string
-}
+import (
+	"github.com/google/uuid"
+	"switches/models"
+	"switches/templates/components/icons"
+)
 
-script withUpdateQueryParams(switchId string) {
+script withUpdateQueryParams(switchID uuid.UUID) {
   const url = new URL(window.location);
   url.searchParams.set("modal", switchId);
   window.history.pushState({}, "", url);
@@ -23,22 +21,41 @@ script withUpdateQueryParams(switchId string) {
   htmx.process(modalLoader);
 }
 
-templ SwitchCardPreview(props SwitchCardProps) {
+templ SwitchCardPreview(clickyClack models.Switch) {
 	<button
-		class="switch-card"
-		id={ props.ID }
-		onclick={ withUpdateQueryParams(props.ID) }
+		class="switch-card-preview"
+		id={ clickyClack.ID.String() }
+		onclick={ withUpdateQueryParams(clickyClack.ID) }
 	>
 		<div class="switch-image">
-			@ImageLink(ImageProps{
-				Src:      props.ImageSrc,
-				Alt:      props.ImageSrc,
-				IsSquare: true,
-			})
+			@getSwitchImageLink(clickyClack)
 		</div>
 		<div class="switch-details">
-			<h2>{ props.Title }</h2>
-			<p>{ props.Description }</p>
+			<h2>{ clickyClack.Name }</h2>
+			<div class="attributes">
+				{ clickyClack.SwitchType.Name }
+				<span class="price-point">
+					for i := 0; i < clickyClack.PricePoint; i++ {
+						@icons.Dollar()
+					}
+				</span>
+			</div>
+		</div>
+	</button>
+}
+
+templ SwitchCardFeatured(clickyClack models.Switch) {
+	<button
+		class="switch-card-featured"
+		id={ clickyClack.ID.String() }
+		onclick={ withUpdateQueryParams(clickyClack.ID) }
+	>
+		<div class="switch-image">
+			@getSwitchImageLink(clickyClack)
+		</div>
+		<div class="switch-details">
+			<h2>{ clickyClack.Name }</h2>
+			<p>{ clickyClack.SwitchType.Name }</p>
 		</div>
 	</button>
 }
