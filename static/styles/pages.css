@@ -70,7 +70,6 @@
 .switch-card-preview {
   display: flex;
   flex-direction: column;
-  /* align-items: center; */
   padding: 1rem;
   gap: 1rem;
   background-color: var(--background-light);
@@ -78,34 +77,41 @@
   transition: all 300ms ease-in-out;
   border: none;
   outline: none;
-  width: calc(200px + 2rem);
+  width: 100%;
   h2 {
     font-size: 1rem;
     text-wrap: wrap;
     color: var(--text-color-dark);
   }
   .switch-image {
+    display: flex;
+    place-self: center;
     height: 200px;
-    width: 200px;
+    width: auto;
+    padding: 10px;
   }
 
   .switch-details {
     width: 100%;
     .attributes {
       font-size: 0.875rem;
-      color: var(--text-color-light-muted);
+      color: var(--text-color-dark-muted);
       align-self: flex-start;
       text-align: left;
       display: flex;
-      justify-content: space-between;
+      justify-content: center;
+      .divider {
+        margin: 0 7px;
+      }
       .price-point {
         display: flex;
         flex-direction: row;
+        margin-left: -5px;
+        align-items: center;
         svg {
-          height: 20px;
-          width: 20px;
-          margin-right: -10px;
-          fill: var(--text-color-light-muted);
+          height: 18px;
+          width: 18px;
+          fill: var(--text-color-dark-muted);
         }
       }
     }
@@ -116,6 +122,12 @@
   box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.2);
   scale: 1.03;
   cursor: pointer;
+}
+
+@media (min-width: 1024px) {
+  .switch-card-preview {
+    width: 300px;
+  }
 }
 
 #home-recommendations {

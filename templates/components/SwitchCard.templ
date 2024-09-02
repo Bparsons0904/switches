@@ -34,6 +34,9 @@ templ SwitchCardPreview(clickyClack models.Switch) {
 			<h2>{ clickyClack.Name }</h2>
 			<div class="attributes">
 				{ clickyClack.SwitchType.Name }
+				<span class="divider">|</span>
+				{ clickyClack.Brand.Name }
+				<span class="divider">|</span>
 				<span class="price-point">
 					for i := 0; i < clickyClack.PricePoint; i++ {
 						@icons.Dollar()

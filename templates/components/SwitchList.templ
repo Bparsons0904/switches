@@ -6,16 +6,16 @@ import (
 )
 
 templ SwitchList(user models.User, clickyClacks []models.Switch) {
-	<section id="switches">
-		for _, clickyClack := range clickyClacks {
-			<h1
-				hx-trigger="click"
-				hx-get={ fmt.Sprintf("/switches/%s", clickyClack.ID) }
-				hx-push-url={ fmt.Sprintf("/switches/%s", clickyClack.ID) }
-				hx-target="#main"
-			>
-				@SwitchCardPreview(clickyClack)
-			</h1>
-		}
-	</section>
+	<!-- <section id="switches"> -->
+	for _, clickyClack := range clickyClacks {
+		<div
+			hx-trigger="click"
+			hx-get={ fmt.Sprintf("/switches/%s", clickyClack.ID) }
+			hx-push-url={ fmt.Sprintf("/switches/%s", clickyClack.ID) }
+			hx-target="#main"
+		>
+			@SwitchCardPreview(clickyClack)
+		</div>
+	}
+	<!-- </section> -->
 }

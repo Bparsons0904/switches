@@ -25,10 +25,28 @@ templ Switches(props SwitchesPageProps) {
 	@components.Navbar("switches", models.User{})
 	<div id="switches">
 		<h1>MX Switches</h1>
-		<h2>getTime()</h2>
 		<div id="switch-container">
 			<section id="filter">
 				@layouts.Card() {
+					<section id="search">
+						<form id="search-form">
+							<div id="search">
+								<div class="search">
+									<label>
+										<input
+											type="search"
+											name="search"
+											placeholder="Search switches..."
+											hx-trigger="keyup changed delay:500ms, search"
+											hx-get="/switches/list"
+											hx-target="#switch-list"
+											hx-include="#filter-form"
+										/>
+									</label>
+								</div>
+							</div>
+						</form>
+					</section>
 					<h1>Filters</h1>
 					<div id="filters">
 						<form id="filter-form" hx-trigger="change" hx-get="/switches/list" hx-target="#switch-list" hx-include="#search-form">
@@ -86,28 +104,7 @@ templ Switches(props SwitchesPageProps) {
 					</div>
 				}
 			</section>
-			<div id="switch-list-container">
-				<section id="search">
-					<form id="search-form">
-						<div id="search">
-							<div class="search">
-								<label>
-									<input
-										type="search"
-										name="search"
-										placeholder="Search switches..."
-										hx-trigger="keyup changed delay:500ms, search"
-										hx-get="/switches/list"
-										hx-target="#switch-list"
-										hx-include="#filter-form"
-									/>
-								</label>
-							</div>
-						</div>
-					</form>
-				</section>
-				<section id="switch-list" hx-get="/switches/list" hx-trigger="load" hx-swap="innerHTML"></section>
-			</div>
+			<section id="switch-list" hx-get="/switches/list" hx-trigger="load" hx-swap="innerHTML"></section>
 		</div>
 	</div>
 }
