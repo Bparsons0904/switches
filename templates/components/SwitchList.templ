@@ -3,17 +3,55 @@ package components
 import (
 	"fmt"
 	"switches/models"
+	"switches/templates/components/icons"
 )
 
 templ SwitchList(user models.User, clickyClacks []models.Switch) {
-	<section id="switches">
-		for _, clickyClack := range clickyClacks {
-			<h1
-				hx-trigger="click"
-				hx-get={ fmt.Sprintf("/switches/%s", clickyClack.ID) }
-				hx-push-url={ fmt.Sprintf("/switches/%s", clickyClack.ID) }
-				hx-target="#main"
-			>{ clickyClack.Name }</h1>
-		}
-	</section>
+	for _, clickyClack := range clickyClacks {
+		@SwitchCardPreview(user, clickyClack)
+	}
+}
+
+templ SwitchCardPreview(user models.User, clickyClack models.Switch) {
+	<div
+		class="switch-card-preview"
+		id={ clickyClack.ID.String() }
+		hx-trigger="click"
+		hx-get={ fmt.Sprintf("/switches/%s", clickyClack.ID) }
+		hx-push-url={ fmt.Sprintf("/switches/%s", clickyClack.ID) }
+		hx-target="#main"
+		hx-disinherit="*"
+	>
+		<div class="switch-image">
+			@GetSwitchImageLink(clickyClack)
+		</div>
+		<div class="switch-details">
+			<h2>{ clickyClack.Name }</h2>
+			<div class="attributes">
+				{ clickyClack.SwitchType.Name }
+				<span class="divider">|</span>
+				{ clickyClack.Brand.Name }
+				<span class="divider">|</span>
+				<span class="price-point">
+					for i := 0; i < clickyClack.PricePoint; i++ {
+						@icons.Dollar()
+					}
+				</span>
+			</div>
+			<div class="switch-selectors">
+				@LikedSelector(user, clickyClack)
+				@OwnedSelector(user, clickyClack)
+				<span class="share-wrapper">
+					<a
+						class="share-button"
+						hx-on:click="shareSwitchDetail(event)"
+						data-switch-name={ clickyClack.Name }
+						data-switch-id={ clickyClack.ID.String() }
+					>
+						@icons.Share()
+					</a>
+				</span>
+			</div>
+		</div>
+	</div>
 }

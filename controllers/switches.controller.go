@@ -21,8 +21,12 @@ func GetSwitchList(c *fiber.Ctx) error {
 	user := c.Locals("User").(models.User)
 
 	type SwitchQueryParams struct {
-		SwitchTypeIDs []int  `json:"switchTypeIDs"`
-		Search        string `json:"search"`
+		SwitchTypeIDs   []int  `json:"switchTypeIDs"`
+		BrandIDs        []int  `json:"brandIDs"`
+		Pricepoints     []int  `json:"pricepoints"`
+		Search          string `json:"search"`
+		SwitchFavorites bool   `json:"switchFavorites"`
+		SwitchOwned     bool   `json:"switchOwned"`
 	}
 	request := new(SwitchQueryParams)
 
@@ -44,6 +48,41 @@ func GetSwitchList(c *fiber.Ctx) error {
 		clickyClackQuery.Where("LOWER(name) LIKE LOWER(?)", fmt.Sprintf("%%%s%%", request.Search))
 	}
 
+	if len(request.BrandIDs) > 0 {
+		clickyClackQuery.Where("brand_id IN (?)", request.BrandIDs)
+	}
+
+	if len(request.Pricepoints) > 0 {
+		clickyClackQuery.Where("price_point IN (?)", request.Pricepoints)
+	}
+
+	if request.SwitchFavorites || request.SwitchOwned {
+		var idsToInclude []uuid.UUID
+		if request.SwitchOwned {
+			var userOwnedSwitches []uuid.UUID
+			if err := database.DB.Model(&models.UserOwnedSwitches{}).
+				Where("user_id = ?", user.ID).
+				Pluck("switch_id", &userOwnedSwitches).Error; err != nil {
+				log.Println("Error getting the user owned switches", err)
+				return c.Status(fiber.StatusBadRequest).Next()
+			}
+			idsToInclude = append(idsToInclude, userOwnedSwitches...)
+		}
+
+		if request.SwitchFavorites {
+			var userLikedSwitches []uuid.UUID
+			if err := database.DB.Model(&models.UserLikedSwitches{}).
+				Where("user_id = ?", user.ID).
+				Pluck("switch_id", &userLikedSwitches).Error; err != nil {
+				log.Println("Error getting the user liked switches", err)
+				return c.Status(fiber.StatusBadRequest).Next()
+			}
+			idsToInclude = append(idsToInclude, userLikedSwitches...)
+		}
+
+		clickyClackQuery.Where("id IN (?)", idsToInclude)
+	}
+
 	err := clickyClackQuery.Find(&clickyClacks).Error
 	if err != nil {
 		log.Println("Error getting the user", err)
@@ -59,31 +98,18 @@ func GetFeaturedSwitches(c *fiber.Ctx) error {
 	timer := utils.StartTimer("Get Featured Switches")
 	defer timer.LogTotalTime()
 
-	var switchesFromDB []models.Switch
+	var clickyClacks []models.Switch
 	database.DB.
 		Joins("INNER JOIN image_links ON image_links.owner_id = switches.id").
 		Preload("ImageLinks").
+		Preload("SwitchType").
 		Limit(4).
 		Order("RANDOM()").
-		Find(&switchesFromDB)
+		Find(&clickyClacks)
 	timer.LogTime("Get Switches")
 
-	var switches []components.SwitchCardProps
-	for _, clickyClack := range switchesFromDB {
-		imageLink := clickyClack.ImageLinks[0].LinkAddress
-		imageAlt := fmt.Sprintf("Image of %s switch", clickyClack.Name)
-		newSwitch := components.SwitchCardProps{
-			ID:          clickyClack.ID.String(),
-			Title:       clickyClack.Name,
-			Description: clickyClack.ShortDescription,
-			ImageSrc:    imageLink,
-			ImageAlt:    imageAlt,
-		}
-
-		switches = append(switches, newSwitch)
-	}
-
-	component := components.FeaturedSwitches(switches)
+	log.Println("Clicky Clacks", clickyClacks)
+	component := components.FeaturedSwitches(clickyClacks)
 	return Render(component)(c)
 }
 

@@ -1,0 +1,38 @@
+package components
+
+import (
+	"github.com/google/uuid"
+	"switches/models"
+)
+
+script withUpdateQueryParams(switchID uuid.UUID) {
+  const url = new URL(window.location);
+  url.searchParams.set("modal", switchID);
+  window.history.pushState({}, "", url);
+
+  const modalLoader = document.getElementById("modal-loader");
+  modalLoader.innerHTML = `
+    <div hx-get="/switches/${switchID}/modal"
+       hx-trigger="load"
+       hx-target="#portal"
+       hx-swap="innerHTML">
+    </div>
+  `;
+  htmx.process(modalLoader);
+}
+
+templ SwitchCardFeatured(clickyClack models.Switch) {
+	<button
+		class="switch-card-featured"
+		id={ clickyClack.ID.String() }
+		onclick={ withUpdateQueryParams(clickyClack.ID) }
+	>
+		<div class="switch-image">
+			@GetSwitchImageLink(clickyClack)
+		</div>
+		<div class="switch-details">
+			<h2>{ clickyClack.Name }</h2>
+			<p>{ clickyClack.SwitchType.Name }</p>
+		</div>
+	</button>
+}

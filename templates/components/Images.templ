@@ -1,9 +1,56 @@
 package components
 
+import (
+	"strings"
+	"switches/models"
+)
+
 type ImageProps struct {
 	Src      string
 	Alt      string
 	IsSquare bool
+}
+
+templ Thumbnail(imageLink *models.ImageLink) {
+	<img
+		if strings.Contains(imageLink.LinkAddress, "http") {
+			src={ imageLink.LinkAddress }
+		} else {
+			src={ "/images/" + imageLink.LinkAddress }
+		}
+		width="100"
+		height="100"
+		alt={ imageLink.AltText }
+		class="img-thumbnail"
+	/>
+}
+
+templ ImageNew(imageLink *models.ImageLink, isSquare bool) {
+	if isSquare {
+		<img
+			if strings.Contains(imageLink.LinkAddress, "http") {
+				src={ imageLink.LinkAddress }
+			} else {
+				src={ "/images/" + imageLink.LinkAddress }
+			}
+			width="250"
+			height="250"
+			alt={ imageLink.AltText }
+			class="img-square"
+		/>
+	} else {
+		<img
+			if strings.Contains(imageLink.LinkAddress, "http") {
+				src={ imageLink.LinkAddress }
+			} else {
+				src={ "/images/" + imageLink.LinkAddress }
+			}
+			width="600"
+			height="400"
+			alt={ imageLink.AltText }
+			class="img-rounded"
+		/>
+	}
 }
 
 templ Image(props ImageProps) {
@@ -54,4 +101,37 @@ templ ImageLinks(props []ImageProps) {
 			IsSquare: image.IsSquare,
 		})
 	}
+}
+
+func GetSwitchImageLinks(clickyClack models.Switch, max int) templ.Component {
+	if len(clickyClack.ImageLinks) <= 1 {
+		return GetSwitchImageLink(clickyClack)
+	}
+
+	var imageLinks []ImageProps
+	for _, imageLink := range clickyClack.ImageLinks {
+		imageLinks = append(imageLinks, ImageProps{
+			Src:      imageLink.LinkAddress,
+			Alt:      imageLink.AltText,
+			IsSquare: true,
+		})
+	}
+
+	return ImageLinks(imageLinks[:max])
+}
+
+func GetSwitchImageLink(clickyClack models.Switch) templ.Component {
+	if len(clickyClack.ImageLinks) == 0 {
+		return Image(ImageProps{
+			Src:      "switch_placeholder.jpg",
+			Alt:      "Placeholder image",
+			IsSquare: true,
+		})
+	}
+
+	return ImageLink(ImageProps{
+		Src:      clickyClack.ImageLinks[0].LinkAddress,
+		Alt:      clickyClack.ImageLinks[0].AltText,
+		IsSquare: true,
+	})
 }

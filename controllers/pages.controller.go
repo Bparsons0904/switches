@@ -16,6 +16,16 @@ func GetHomePage(c *fiber.Ctx) error {
 	return RenderPage(pages.HomePage(user), pages.Home(user))(c)
 }
 
+func GetAdminHome(c *fiber.Ctx) error {
+	user := c.Locals("User").(models.User)
+	return RenderPage(pages.AdminPage(user), pages.Admin(user))(c)
+}
+
+func GetAdminSwitchEdit(c *fiber.Ctx) error {
+	user := c.Locals("User").(models.User)
+	return RenderPage(pages.SwitchEditPage(user), pages.SwitchEdit(user))(c)
+}
+
 func GetSwitchPage(c *fiber.Ctx) error {
 	timer := utils.StartTimer("Get Switch Page")
 	defer timer.LogTotalTime()
@@ -44,9 +54,24 @@ func GetSwitchPage(c *fiber.Ctx) error {
 	}
 	timer.LogTime("Get Switch Types")
 
+	var switchBrands []models.Producer
+	if err := database.DB.
+		Find(&switchBrands).Error; err != nil {
+		log.Println("Error getting the switch brands", err)
+		return c.Status(fiber.StatusBadRequest).Next()
+	}
+	timer.LogTime("Get Switch Brands")
+
+	props := pages.SwitchesPageProps{
+		ClickyClacks: clickyClacks,
+		SwitchTypes:  switchTypes,
+		SwitchBrands: switchBrands,
+		User:         c.Locals("User").(models.User),
+	}
+
 	return RenderPage(
-		pages.SwitchesPage(clickyClacks, switchTypes),
-		pages.Switches(clickyClacks, switchTypes),
+		pages.SwitchesPage(props),
+		pages.Switches(props),
 	)(
 		c,
 	)

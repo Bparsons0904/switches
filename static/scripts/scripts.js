@@ -29,6 +29,28 @@ document.body.addEventListener("htmx:afterSwap", function (event) {
   }
 });
 
+async function shareSwitchDetail(event) {
+  event.preventDefault();
+  event.stopPropagation();
+  const switchName = event.currentTarget.getAttribute("data-switch-name");
+  const switchID = event.currentTarget.getAttribute("data-switch-id");
+  console.log(switchID);
+  const domain = window.location.origin;
+  const url = `${domain}/switches/${switchID}`;
+
+  if (navigator.share && navigator.canShare(shareData)) {
+    const shareData = {
+      title: "Check out this awesome switch!",
+      text: switchName,
+      url: url,
+    };
+    await navigator.share(shareData);
+  } else {
+    await navigator.clipboard.writeText(url);
+    alert("Switch address copied to clipboard!");
+  }
+}
+
 async function shareSwitch(event) {
   if (navigator.share && navigator.canShare(shareData)) {
     const switchName = event.currentTarget.getAttribute("data-switch-name");

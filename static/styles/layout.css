@@ -97,6 +97,12 @@
   }
 }
 
+.card {
+  padding: 20px;
+  box-shadow: var(--box-shadow);
+  border-radius: 5px;
+}
+
 @media (min-width: 768px) {
   #dialog {
     width: 70vw;
@@ -107,6 +113,11 @@
 
 .body-no-scroll {
   overflow: hidden;
+}
+
+.center-svg {
+  display: flex;
+  place-items: center;
 }
 
 /* .img-wrapper { */

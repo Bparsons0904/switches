@@ -1,0 +1,18 @@
+package pages
+
+import (
+	"switches/models"
+	"switches/templates/components"
+	"switches/templates/layouts"
+)
+
+templ AdminPage(user models.User) {
+	@layouts.Root() {
+		@Admin(user)
+	}
+}
+
+templ Admin(user models.User) {
+	@components.Navbar("admin", user)
+	<main>Admin</main>
+}
