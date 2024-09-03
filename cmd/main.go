@@ -13,6 +13,7 @@ import (
 	"syscall"
 
 	env "switches/config"
+	_ "switches/utils/logutil"
 
 	"github.com/gofiber/fiber/v2"
 	"github.com/gofiber/fiber/v2/middleware/cors"

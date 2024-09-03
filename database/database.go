@@ -6,6 +6,7 @@ import (
 	"log"
 	"os"
 	"switches/config"
+	"switches/utils/logutil"
 	"time"
 
 	"github.com/go-redis/redis/v8"
@@ -56,7 +57,7 @@ func StartPostgresDB(config config.Config) (*gorm.DB, error) {
 	)
 
 	var logLevel logger.LogLevel
-	if viper.Get("DB_LOGGING") == "true" {
+	if viper.GetString("TIER") == "development" {
 		logLevel = logger.Info
 	} else {
 		logLevel = logger.Warn
@@ -64,7 +65,7 @@ func StartPostgresDB(config config.Config) (*gorm.DB, error) {
 
 	db, err := gorm.Open(
 		postgres.Open(dsn),
-		&gorm.Config{Logger: logger.Default.LogMode(logLevel), PrepareStmt: true},
+		&gorm.Config{Logger: logutil.NewGormLogger(logLevel), PrepareStmt: true},
 	)
 	if err != nil {
 		return nil, err
