@@ -16,6 +16,16 @@ func GetHomePage(c *fiber.Ctx) error {
 	return RenderPage(pages.HomePage(user), pages.Home(user))(c)
 }
 
+func GetAdminHome(c *fiber.Ctx) error {
+	user := c.Locals("User").(models.User)
+	return RenderPage(pages.AdminPage(user), pages.Admin(user))(c)
+}
+
+func GetAdminSwitchEdit(c *fiber.Ctx) error {
+	user := c.Locals("User").(models.User)
+	return RenderPage(pages.SwitchEditPage(user), pages.SwitchEdit(user))(c)
+}
+
 func GetSwitchPage(c *fiber.Ctx) error {
 	timer := utils.StartTimer("Get Switch Page")
 	defer timer.LogTotalTime()

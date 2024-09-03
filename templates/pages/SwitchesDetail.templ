@@ -20,7 +20,7 @@ templ SwitchDetail(user models.User, clickyClack models.Switch) {
 	<main id="switch-detail">
 		if user.IsAdmin {
 			<div
-				hx-get={ fmt.Sprintf("/admin/switches/edit/%s", clickyClack.ID) }
+				hx-get={ fmt.Sprintf("/admin/switches/%s/edit", clickyClack.ID) }
 				hx-target="#main"
 				hx-swap="innerHTML"
 				hx-push-url="true"

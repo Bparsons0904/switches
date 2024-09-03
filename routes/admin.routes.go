@@ -1,15 +1,17 @@
 package routes
 
 import (
+	"switches/controllers"
 	"switches/middleware"
 
 	"github.com/gofiber/fiber/v2"
 )
 
 func AdminRoutes(app *fiber.App) {
-	admin := app.Group("/admin", middleware.IsAdmin())
+	adminApi := app.Group("/admin", middleware.IsAdmin())
 
-	admin.Get("/", AdminPlaceHolder)
+	adminApi.Get("/", controllers.GetAdminHome)
+	adminApi.Get("/switches/:switchID/edit", controllers.GetAdminSwitchEdit)
 }
 
 func AdminPlaceHolder(c *fiber.Ctx) error {
