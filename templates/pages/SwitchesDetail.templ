@@ -24,62 +24,69 @@ templ SwitchDetail(user models.User, clickyClack models.Switch) {
 				hx-target="#main"
 				hx-swap="innerHTML"
 				hx-push-url="true"
-			>Edit</div>
+			></div>
 		}
-		<div id="switch-image">
-			@components.GetSwitchImageLink(clickyClack)
-		</div>
-		<div class="thumbnails">
-			for _, imageLink := range clickyClack.ImageLinks {
-				<div
-					hx-get={ fmt.Sprintf("/images/%s", imageLink.ID) }
-					hx-target="#switch-image"
-					hx-swap="innerHTML"
-				>
-					@components.Thumbnail(imageLink)
+		<section id="details-area">
+			<div id="images-container">
+				<div id="switch-image">
+					@components.GetSwitchImageLink(clickyClack)
 				</div>
-			}
-		</div>
-		<div id="switch-info">
-			<h1>{ clickyClack.Name }</h1>
-			<div class="attributes">
-				{ clickyClack.SwitchType.Name }
-				<span class="divider">|</span>
-				{ clickyClack.Brand.Name }
-				<span class="divider">|</span>
-				<span class="price-point">
-					for i := 0; i < clickyClack.PricePoint; i++ {
-						@icons.Dollar()
+				<div class="thumbnails">
+					for _, imageLink := range clickyClack.ImageLinks {
+						<div
+							hx-get={ fmt.Sprintf("/images/%s", imageLink.ID) }
+							hx-target="#switch-image"
+							hx-swap="innerHTML"
+						>
+							@components.Thumbnail(imageLink)
+						</div>
 					}
-				</span>
+				</div>
 			</div>
-		</div>
-		<div class="switch-selectors">
-			@components.LikedSelector(user, clickyClack)
-			@components.OwnedSelector(user, clickyClack)
-			<span class="share-wrapper">
-				<a
-					class="share-button"
-					hx-on:click="shareSwitchDetail(event)"
-					data-switch-name={ clickyClack.Name }
-					data-switch-id={ clickyClack.ID.String() }
-				>
-					@icons.Share()
-				</a>
-			</span>
-		</div>
-		<div id="description" class="info">
-			<h2>Description</h2>
-			<p>{ clickyClack.ShortDescription }</p>
-			<p>{ clickyClack.LongDescription }</p>
-		</div>
-		<div id="technical" class="info">
-			<h2>Technical Specifications</h2>
-			<p>Actuation Force: <span>55</span>g</p>
-			<p>Travel Distance: <span>4</span>mm</p>
-			<p>Housing Material: <span>POM</span></p>
-			<p>Stem Material: <span>Polycarbonate</span></p>
-		</div>
+			<div id="info-container">
+				<div id="switch-info">
+					<h1>{ clickyClack.Name }</h1>
+					<div class="attributes">
+						{ clickyClack.SwitchType.Name }
+						<span class="divider">|</span>
+						{ clickyClack.Brand.Name }
+						<span class="divider">|</span>
+						<span class="price-point">
+							for i := 0; i < clickyClack.PricePoint; i++ {
+								@icons.Dollar()
+							}
+						</span>
+					</div>
+				</div>
+				<div class="switch-selectors">
+					@components.LikedSelector(user, clickyClack)
+					@components.OwnedSelector(user, clickyClack)
+					<span class="share-wrapper">
+						<a
+							class="share-button"
+							hx-on:click="shareSwitchDetail(event)"
+							data-switch-name={ clickyClack.Name }
+							data-switch-id={ clickyClack.ID.String() }
+						>
+							@icons.Share()
+						</a>
+					</span>
+				</div>
+				<div id="description" class="info">
+					<h2>Description</h2>
+					<p>{ clickyClack.ShortDescription }</p>
+					<p>{ clickyClack.LongDescription }</p>
+				</div>
+				<div id="technical" class="info">
+					<h2>Technical Specifications</h2>
+					<p>Actuation Force: <span>55</span>g</p>
+					<p>Travel Distance: <span>4</span>mm</p>
+					<p>Housing Material: <span>POM</span></p>
+					<p>Stem Material: <span>Polycarbonate</span></p>
+				</div>
+			</div>
+		</section>
+		<section id="switch-recommendations"></section>
 	</main>
 }
 
