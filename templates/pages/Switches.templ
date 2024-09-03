@@ -2,22 +2,125 @@
 package pages
 
 import (
+	"strconv"
 	"switches/models"
 	"switches/templates/components"
+	"switches/templates/components/icons"
 	"switches/templates/layouts"
 )
 
-templ SwitchesPage(user models.User) {
+type SwitchesPageProps struct {
+	ClickyClacks []models.Switch
+	SwitchTypes  []models.Type
+	SwitchBrands []models.Producer
+	User         models.User
+}
+
+templ SwitchesPage(props SwitchesPageProps) {
 	@layouts.Root() {
-		@Switches(user)
+		@Switches(props)
 	}
 }
 
-templ Switches(user models.User) {
-	<div class="">
-		@components.Navbar("switches", models.User{})
-		<main id="home">
-			<section id="cta" class="dark">Yo</section>
-		</main>
+templ Switches(props SwitchesPageProps) {
+	@components.Navbar("switches", props.User)
+	<div id="switches">
+		<h1>MX Switches</h1>
+		<div id="switch-container">
+			<section id="filter">
+				@layouts.Card() {
+					<section id="search">
+						<form id="search-form">
+							<div id="search">
+								<div class="search">
+									<label>
+										<input
+											type="search"
+											name="search"
+											placeholder="Search switches..."
+											hx-trigger="keyup changed delay:500ms, search"
+											hx-get="/switches/list"
+											hx-target="#switch-list"
+											hx-include="#filter-form"
+										/>
+									</label>
+								</div>
+							</div>
+						</form>
+					</section>
+					<h1>Filters</h1>
+					<div id="filters">
+						<form id="filter-form" hx-trigger="change" hx-get="/switches/list" hx-target="#switch-list" hx-include="#search-form">
+							<div id="switch-linked" class="filter">
+								<h3>Owned and Favorite</h3>
+								<div id="favorite" class="checkboxes">
+									<label class="checkbox-label">
+										Favorite 
+										<input type="checkbox" name="switchFavorites"/>
+										<span class="checkmark"></span>
+									</label>
+									<label class="checkbox-label">
+										Owned 
+										<input type="checkbox" name="switchOwned"/>
+										<span class="checkmark"></span>
+									</label>
+								</div>
+							</div>
+							<div id="switch-type" class="filter">
+								<h3>Switch Type</h3>
+								<div class="checkboxes">
+									for _, switchType := range props.SwitchTypes {
+										<label class="checkbox-label">
+											{ switchType.Name }
+											<input type="checkbox" name="switchTypeIDs" value={ strconv.Itoa(switchType.ID) }/>
+											<span class="checkmark"></span>
+										</label>
+									}
+								</div>
+							</div>
+							<div id="brand-type" class="filter">
+								<h3>Switch Brands</h3>
+								<div class="checkboxes">
+									for _, brand := range props.SwitchBrands {
+										<label class="checkbox-label">
+											{ brand.Name }
+											<input type="checkbox" name="brandIDs" value={ strconv.Itoa(brand.ID) }/>
+											<span class="checkmark"></span>
+										</label>
+									}
+								</div>
+							</div>
+							<div id="cost" class="filter">
+								<h3>Switch Cost</h3>
+								<div class="cost-wrapper">
+									<label class="selectable-label">
+										<input type="checkbox" name="pricePoints" value="1"/>
+										<span>
+											@icons.Dollar()
+										</span>
+									</label>
+									<label class="selectable-label">
+										<input type="checkbox" name="pricePoints" value="2"/>
+										<span class="cost">
+											@icons.Dollar()
+											@icons.Dollar()
+										</span>
+									</label>
+									<label class="selectable-label">
+										<input type="checkbox" name="pricePoints" value="3"/>
+										<span class="cost">
+											@icons.Dollar()
+											@icons.Dollar()
+											@icons.Dollar()
+										</span>
+									</label>
+								</div>
+							</div>
+						</form>
+					</div>
+				}
+			</section>
+			<section id="switch-list" hx-get="/switches/list" hx-trigger="load" hx-swap="innerHTML"></section>
+		</div>
 	</div>
 }

@@ -1,0 +1,19 @@
+
+package pages
+
+import (
+	"switches/models"
+	"switches/templates/components"
+	"switches/templates/layouts"
+)
+
+templ SwitchEditPage(user models.User) {
+	@layouts.Root() {
+		@SwitchEdit(user)
+	}
+}
+
+templ SwitchEdit(user models.User) {
+	@components.Navbar("switch_edit", user)
+	<main>SwitchEdit</main>
+}

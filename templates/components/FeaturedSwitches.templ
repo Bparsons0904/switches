@@ -1,6 +1,8 @@
 package components
 
-templ FeaturedSwitches(switches []SwitchCardProps) {
+import "switches/models"
+
+templ FeaturedSwitches(clickyClacks []models.Switch) {
 	<section id="featured">
 		<div class="featured-header">
 			<h2>Featured Mechanical Switches</h2>
@@ -8,8 +10,8 @@ templ FeaturedSwitches(switches []SwitchCardProps) {
 		</div>
 		<div class="featured-switches">
 			<div class="switch-cards">
-				for _, item := range switches {
-					@SwitchCardPreview(item)
+				for _, clickyClack := range clickyClacks {
+					@SwitchCardFeatured(clickyClack)
 				}
 			</div>
 		</div>

@@ -9,11 +9,13 @@
   --text-color-light: #d3d3d3;
   --text-color-light-muted: #6e6e77;
   --text-color-dark: #121212;
+  --text-color-dark-muted: #6e6e77;
 
   /* Additional Colors */
   --success-color: #32cd32;
   --warning-color: #ffa500;
   --info-color: #87ceeb;
+  --danger-color: #dc143c;
 
   /* Background Colors */
   --background-dark: #1b1b1b;

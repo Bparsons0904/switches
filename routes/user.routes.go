@@ -1,13 +1,13 @@
 package routes
 
-import "github.com/gofiber/fiber/v2"
+import (
+	"switches/controllers"
+
+	"github.com/gofiber/fiber/v2"
+)
 
 func UserRoutes(app *fiber.App) {
-	user := app.Group("/user")
+	users := app.Group("/users")
 
-	user.Get("/", UserPlaceHolder)
-}
-
-func UserPlaceHolder(c *fiber.Ctx) error {
-	return c.SendString("User Placeholder")
+	users.Get("/", controllers.UserPlaceHolder)
 }

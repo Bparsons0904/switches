@@ -18,4 +18,6 @@ type User struct {
 	IsAdmin           bool      `gorm:"type:boolean;default:false"                      json:"isAdmin"`
 	CreatedAt         time.Time `gorm:"autoCreateTime"                                  json:"createdAt"`
 	UpdatedAt         time.Time `gorm:"autoUpdateTime"                                  json:"updatedAt"`
+	OwnedSwitches     []*Switch `gorm:"many2many:user_owned_switches;"                  json:"ownedSwitches,omitempty"`
+	LikedSwitches     []*Switch `gorm:"many2many:user_liked_switches;"                  json:"likedSwitches,omitempty"`
 }

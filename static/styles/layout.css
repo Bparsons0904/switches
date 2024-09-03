@@ -66,7 +66,6 @@
 #dialog {
   z-index: 1000;
   width: 95vw;
-  height: 90vh;
   display: flex;
   flex-direction: column;
   place-self: center;
@@ -98,17 +97,27 @@
   }
 }
 
+.card {
+  padding: 20px;
+  box-shadow: var(--box-shadow);
+  border-radius: 5px;
+}
+
 @media (min-width: 768px) {
   #dialog {
     width: 70vw;
     max-width: 800px;
-    height: 70vh;
-    max-height: 600px;
+    max-height: 80vh;
   }
 }
 
 .body-no-scroll {
   overflow: hidden;
+}
+
+.center-svg {
+  display: flex;
+  place-items: center;
 }
 
 /* .img-wrapper { */

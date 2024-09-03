@@ -5,11 +5,9 @@ import (
 	"runtime"
 	"switches/config"
 	"switches/controllers"
-	"switches/middleware"
 	"time"
 
 	"github.com/gofiber/fiber/v2"
-	"github.com/gofiber/fiber/v2/middleware/compress"
 	"github.com/gofiber/fiber/v2/middleware/monitor"
 )
 
@@ -25,31 +23,24 @@ type Health struct {
 var startTime = time.Now().UTC()
 
 func SetupRoutes(app *fiber.App, config config.Config) {
-	app.Use(compress.New(compress.Config{
-		Level: compress.LevelDefault,
-	}))
-	app.Use(
-		middleware.AuthenticateUser(config),
-	)
+	app.Get("/", controllers.GetHomePage)
 
-	app.Get("/", controllers.GetHome)
 	AdminRoutes(app)
 	AuthRoutes(app)
 	SwitchRoutes(app)
 	UserRoutes(app)
+	ImageRoutes(app)
 
 	api := app.Group("/api")
 	HealthRoutes(api)
 
-	app.Use(func(c *fiber.Ctx) error {
-		return c.Status(404).JSON(fiber.Map{"status": "error", "message": "Route Not found"})
-	})
+	app.Get("*", controllers.NotFound)
 }
 
 func HealthRoutes(app fiber.Router) {
 	app.Get("/health", getHealth)
 	app.Get("/health/monitor", monitor.New(monitor.Config{
-		Title: "Bob's Next Great Thing Health Monitor",
+		Title: "Switch Health Monitor",
 	}))
 }
 
