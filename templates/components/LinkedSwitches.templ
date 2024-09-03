@@ -1,0 +1,70 @@
+
+package components
+
+import (
+	"fmt"
+	"switches/models"
+	"switches/templates/components/icons"
+)
+
+templ OwnedSelector(user models.User, clickyClack models.Switch) {
+	if isOwned(user, clickyClack) {
+		<a
+			class="checkmark filled"
+			hx-delete={ fmt.Sprintf("/switches/%s/owned", clickyClack.ID) }
+			hx-swap="outerHTML"
+			hx-on:click="event.stopPropagation()"
+		>
+			@icons.BookmarkCheckFilled()
+		</a>
+	} else {
+		<a
+			class="checkmark"
+			hx-post={ fmt.Sprintf("/switches/%s/owned", clickyClack.ID) }
+			hx-swap="outerHTML"
+			hx-on:click="event.stopPropagation()"
+		>
+			@icons.Checkmark()
+		</a>
+	}
+}
+
+func isOwned(user models.User, clickyClack models.Switch) bool {
+	for _, ownedSwitch := range user.OwnedSwitches {
+		if ownedSwitch.ID == clickyClack.ID {
+			return true
+		}
+	}
+	return false
+}
+
+templ LikedSelector(user models.User, clickyClack models.Switch) {
+	if isLiked(user, clickyClack) {
+		<a
+			class="heart filled"
+			hx-delete={ fmt.Sprintf("/switches/%s/liked", clickyClack.ID) }
+			hx-swap="outerHTML"
+			hx-on:click="event.stopPropagation()"
+		>
+			@icons.HeartFilled()
+		</a>
+	} else {
+		<a
+			class="heart"
+			hx-post={ fmt.Sprintf("/switches/%s/liked", clickyClack.ID) }
+			hx-swap="outerHTML"
+			hx-on:click="event.stopPropagation()"
+		>
+			@icons.HeartOutlined()
+		</a>
+	}
+}
+
+func isLiked(user models.User, clickyClack models.Switch) bool {
+	for _, likedSwitch := range user.LikedSwitches {
+		if likedSwitch.ID == clickyClack.ID {
+			return true
+		}
+	}
+	return false
+}

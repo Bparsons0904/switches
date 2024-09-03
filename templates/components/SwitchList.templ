@@ -23,7 +23,7 @@ templ SwitchCardPreview(user models.User, clickyClack models.Switch) {
 		hx-disinherit="*"
 	>
 		<div class="switch-image">
-			@getSwitchImageLink(clickyClack)
+			@GetSwitchImageLink(clickyClack)
 		</div>
 		<div class="switch-details">
 			<h2>{ clickyClack.Name }</h2>

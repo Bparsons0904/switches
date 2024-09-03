@@ -11,7 +11,7 @@ templ SwitchDetailCard(user models.User, clickyClack models.Switch) {
 	@layouts.Modal() {
 		<div class="switch-detail-card">
 			<div class="switch-images">
-				@getSwitchImageLinks(clickyClack, 2)
+				@GetSwitchImageLinks(clickyClack, 2)
 			</div>
 			<div class="switch-header">
 				<div class="switch-names">
@@ -46,99 +46,4 @@ templ SwitchDetailCard(user models.User, clickyClack models.Switch) {
 			<div class="ratings"></div>
 		</div>
 	}
-}
-
-templ OwnedSelector(user models.User, clickyClack models.Switch) {
-	if isOwned(user, clickyClack) {
-		<a
-			class="checkmark filled"
-			hx-delete={ fmt.Sprintf("/switches/%s/owned", clickyClack.ID) }
-			hx-swap="outerHTML"
-			hx-on:click="event.stopPropagation()"
-		>
-			@icons.BookmarkCheckFilled()
-		</a>
-	} else {
-		<a
-			class="checkmark"
-			hx-post={ fmt.Sprintf("/switches/%s/owned", clickyClack.ID) }
-			hx-swap="outerHTML"
-			hx-on:click="event.stopPropagation()"
-		>
-			@icons.Checkmark()
-		</a>
-	}
-}
-
-func isOwned(user models.User, clickyClack models.Switch) bool {
-	for _, ownedSwitch := range user.OwnedSwitches {
-		if ownedSwitch.ID == clickyClack.ID {
-			return true
-		}
-	}
-	return false
-}
-
-templ LikedSelector(user models.User, clickyClack models.Switch) {
-	if isLiked(user, clickyClack) {
-		<a
-			class="heart filled"
-			hx-delete={ fmt.Sprintf("/switches/%s/liked", clickyClack.ID) }
-			hx-swap="outerHTML"
-			hx-on:click="event.stopPropagation()"
-		>
-			@icons.HeartFilled()
-		</a>
-	} else {
-		<a
-			class="heart"
-			hx-post={ fmt.Sprintf("/switches/%s/liked", clickyClack.ID) }
-			hx-swap="outerHTML"
-			hx-on:click="event.stopPropagation()"
-		>
-			@icons.HeartOutlined()
-		</a>
-	}
-}
-
-func isLiked(user models.User, clickyClack models.Switch) bool {
-	for _, likedSwitch := range user.LikedSwitches {
-		if likedSwitch.ID == clickyClack.ID {
-			return true
-		}
-	}
-	return false
-}
-
-func getSwitchImageLinks(clickyClack models.Switch, max int) templ.Component {
-	if len(clickyClack.ImageLinks) <= 1 {
-		return getSwitchImageLink(clickyClack)
-	}
-
-	var imageLinks []ImageProps
-	for _, imageLink := range clickyClack.ImageLinks {
-		imageLinks = append(imageLinks, ImageProps{
-			Src:      imageLink.LinkAddress,
-			Alt:      imageLink.AltText,
-			IsSquare: true,
-		})
-	}
-
-	return ImageLinks(imageLinks[:max])
-}
-
-func getSwitchImageLink(clickyClack models.Switch) templ.Component {
-	if len(clickyClack.ImageLinks) == 0 {
-		return Image(ImageProps{
-			Src:      "switch_placeholder.jpg",
-			Alt:      "Placeholder image",
-			IsSquare: true,
-		})
-	}
-
-	return ImageLink(ImageProps{
-		Src:      clickyClack.ImageLinks[0].LinkAddress,
-		Alt:      clickyClack.ImageLinks[0].AltText,
-		IsSquare: true,
-	})
 }

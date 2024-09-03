@@ -29,6 +29,7 @@ func SetupRoutes(app *fiber.App, config config.Config) {
 	AuthRoutes(app)
 	SwitchRoutes(app)
 	UserRoutes(app)
+	ImageRoutes(app)
 
 	api := app.Group("/api")
 	HealthRoutes(api)

@@ -16,123 +16,54 @@ templ SwitchDetailPage(user models.User, clickyClack models.Switch) {
 }
 
 templ SwitchDetail(user models.User, clickyClack models.Switch) {
-	<div class="">
-		@components.Navbar("switches", user)
-		<main id="switch-detail">
-			<div class="switch-images">
-				@getSwitchImageLink(clickyClack)
-			</div>
-			<div class="switch-header">
-				<div class="switch-names">
-					<h1>{  clickyClack.Name }</h1>
-					<h3>
-						{ clickyClack.Brand.Name }<span>|</span>{ clickyClack.SwitchType.Name }
-						<span class="share-wrapper">
-							<a
-								class="share-button"
-								hx-on:click="shareSwitch(event)"
-								data-switch-name={ clickyClack.Name }
-							>
-								@icons.Share()
-							</a>
-						</span>
-					</h3>
+	@components.Navbar("switchDetails", user)
+	<main id="switch-detail">
+		<div id="switch-image">
+			@components.GetSwitchImageLink(clickyClack)
+		</div>
+		<div class="thumbnails">
+			for _, imageLink := range clickyClack.ImageLinks {
+				<div
+					hx-get={ fmt.Sprintf("/images/%s", imageLink.ID) }
+					hx-target="#switch-image"
+					hx-swap="innerHTML"
+				>
+					@components.Thumbnail(imageLink)
 				</div>
-				<div class="switch-selectors">
-					@LikedSelector(user, clickyClack)
-					@OwnedSelector(user, clickyClack)
-				</div>
+			}
+		</div>
+	</main>
+}
+
+templ SwitchDetailOld(user models.User, clickyClack models.Switch) {
+	@components.Navbar("switches", user)
+	<main id="switch-detail">
+		<div class="switch-images">
+			@components.GetSwitchImageLink(clickyClack)
+		</div>
+		<div class="switch-header">
+			<div class="switch-names">
+				<h1>{  clickyClack.Name }</h1>
+				<h3>
+					{ clickyClack.Brand.Name }<span>|</span>{ clickyClack.SwitchType.Name }
+					<span class="share-wrapper">
+						<a
+							class="share-button"
+							hx-on:click="shareSwitch(event)"
+							data-switch-name={ clickyClack.Name }
+						>
+							@icons.Share()
+						</a>
+					</span>
+				</h3>
 			</div>
-			<p>{ clickyClack.ShortDescription }</p>
-			<p>{ clickyClack.LongDescription }</p>
-			<div class="ratings"></div>
-		</main>
-	</div>
-}
-
-templ OwnedSelector(user models.User, clickyClack models.Switch) {
-	if isOwned(user, clickyClack) {
-		<a
-			class="checkmark filled"
-			hx-delete={ fmt.Sprintf("/switches/%s/owned", clickyClack.ID) }
-			hx-swap="outerHTML"
-		>
-			@icons.BookmarkCheckFilled()
-		</a>
-	} else {
-		<a
-			class="checkmark"
-			hx-post={ fmt.Sprintf("/switches/%s/owned", clickyClack.ID) }
-			hx-swap="outerHTML"
-		>
-			@icons.Checkmark()
-		</a>
-	}
-}
-
-func isOwned(user models.User, clickyClack models.Switch) bool {
-	for _, ownedSwitch := range user.OwnedSwitches {
-		if ownedSwitch.ID == clickyClack.ID {
-			return true
-		}
-	}
-	return false
-}
-
-templ LikedSelector(user models.User, clickyClack models.Switch) {
-	if isLiked(user, clickyClack) {
-		<a
-			class="heart filled"
-			hx-delete={ fmt.Sprintf("/switches/%s/liked", clickyClack.ID) }
-			hx-swap="outerHTML"
-		>
-			@icons.HeartFilled()
-		</a>
-	} else {
-		<a
-			class="heart"
-			hx-post={ fmt.Sprintf("/switches/%s/liked", clickyClack.ID) }
-			hx-swap="outerHTML"
-		>
-			@icons.HeartOutlined()
-		</a>
-	}
-}
-
-func isLiked(user models.User, clickyClack models.Switch) bool {
-	for _, likedSwitch := range user.LikedSwitches {
-		if likedSwitch.ID == clickyClack.ID {
-			return true
-		}
-	}
-	return false
-}
-
-func getSwitchImageLink(clickyClack models.Switch) templ.Component {
-	if len(clickyClack.ImageLinks) == 0 {
-		return components.Image(components.ImageProps{
-			Src:      "switch_placeholder.jpg",
-			Alt:      "Placeholder image",
-			IsSquare: true,
-		})
-	}
-
-	if len(clickyClack.ImageLinks) == 1 {
-		return components.ImageLink(components.ImageProps{
-			Src:      clickyClack.ImageLinks[0].LinkAddress,
-			Alt:      clickyClack.ImageLinks[0].AltText,
-			IsSquare: true,
-		})
-	}
-
-	var imageLinks []components.ImageProps
-	for _, imageLink := range clickyClack.ImageLinks {
-		imageLinks = append(imageLinks, components.ImageProps{
-			Src:      imageLink.LinkAddress,
-			Alt:      imageLink.AltText,
-			IsSquare: true,
-		})
-	}
-
-	return components.ImageLinks(imageLinks[:2])
+			<div class="switch-selectors">
+				@components.LikedSelector(user, clickyClack)
+				@components.OwnedSelector(user, clickyClack)
+			</div>
+		</div>
+		<p>{ clickyClack.ShortDescription }</p>
+		<p>{ clickyClack.LongDescription }</p>
+		<div class="ratings"></div>
+	</main>
 }
