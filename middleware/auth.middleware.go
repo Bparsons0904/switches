@@ -56,7 +56,7 @@ func IsAdmin() fiber.Handler {
 		user := c.Locals("User").(models.User)
 		if !user.IsAdmin {
 			log.Warn().Str("userID", user.ID.String()).Msg("Unauthorized attempted access")
-			return c.Status(fiber.StatusUnauthorized).SendString("Unauthorized")
+			return c.Status(fiber.StatusUnauthorized).Redirect("/")
 		}
 
 		return c.Next()

@@ -3,5 +3,14 @@ package pages
 import "switches/models"
 
 templ Admin(user models.User) {
-	<main>Admin</main>
+	<section>
+		<h1>Admin</h1>
+		<button
+			hx-trigger="click"
+			hx-get="/admin/switches"
+			hx-target="#main"
+			hx-swap="innerHTML"
+			hx-push-url="/admin/switches"
+		>Switch Admin</button>
+	</section>
 }

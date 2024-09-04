@@ -1,0 +1,45 @@
+package components
+
+import (
+	"switches/models"
+	"switches/templates/layouts"
+)
+
+templ AdminSwitches(clickyClacks []models.Switch, search string) {
+	<section id="admin-switch">
+		@layouts.Card() {
+			<section id="search">
+				<h1>Switches</h1>
+				<form id="search-form">
+					<div id="search">
+						<div class="search">
+							<label>
+								<input
+									type="search"
+									name="search"
+									placeholder="Search switches..."
+									hx-trigger="keyup changed delay:500ms, search"
+									hx-get="/admin/switches"
+									hx-target="#admin-switch"
+									value={ search }
+								/>
+							</label>
+						</div>
+					</div>
+				</form>
+			</section>
+			for _, clickyClack := range clickyClacks {
+				<div>
+					<h3>
+						{ clickyClack.Brand.Name }
+						{ clickyClack.Name }
+					</h3>
+					<div>
+						<button>Edit</button>
+						<button>Delete</button>
+					</div>
+				</div>
+			}
+		}
+	</section>
+}
