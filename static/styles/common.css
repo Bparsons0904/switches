@@ -1,8 +1,23 @@
-.button {
+.cta-button {
   padding: 6px 20px;
   border-radius: 12px;
 }
 
+.button {
+  border: none;
+  border-radius: 8px;
+  padding: 2px 10px;
+  background-color: var(--primary-color);
+  outline: none;
+  color: var(--color-light);
+  transition: all 200ms ease-in-out;
+
+  &:hover {
+    background-color: var(--secondary-color);
+    color: var(--color-dark);
+    cursor: pointer;
+  }
+}
 .img-rounded {
   border-radius: 12px;
   object-fit: cover;

@@ -6,10 +6,29 @@ import (
 )
 
 templ AdminSwitches(clickyClacks []models.Switch, search string) {
+	<style type="text/css">
+    .admin-switches {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1rem;
+    }
+  
+    .admin-switch-card {
+      width: 300px;
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+      padding: 1rem;
+      .options {
+        display: flex;
+        justify-content: space-between;
+      }
+    }
+  </style>
 	<section id="admin-switch">
 		@layouts.Card() {
 			<section id="search">
-				<h1>Switches</h1>
+				<h1>Switche Management</h1>
 				<form id="search-form">
 					<div id="search">
 						<div class="search">
@@ -28,18 +47,22 @@ templ AdminSwitches(clickyClacks []models.Switch, search string) {
 					</div>
 				</form>
 			</section>
-			for _, clickyClack := range clickyClacks {
-				<div>
-					<h3>
-						{ clickyClack.Brand.Name }
-						{ clickyClack.Name }
-					</h3>
-					<div>
-						<button>Edit</button>
-						<button>Delete</button>
-					</div>
-				</div>
-			}
+			<div class="admin-switches">
+				for _, clickyClack := range clickyClacks {
+					@layouts.Card() {
+						<div class="admin-switch-card">
+							<h3>
+								{ clickyClack.Brand.Name }
+								{ clickyClack.Name }
+							</h3>
+							<div class="options">
+								<button class="button">Edit</button>
+								<button class="button">Delete</button>
+							</div>
+						</div>
+					}
+				}
+			</div>
 		}
 	</section>
 }
