@@ -3,45 +3,25 @@ package controllers
 import (
 	"switches/database"
 	"switches/models"
-	"switches/templates/layouts"
 	"switches/templates/pages"
 	"switches/utils"
 
-	"github.com/a-h/templ"
 	"github.com/gofiber/fiber/v2"
-	"github.com/gofiber/fiber/v2/middleware/adaptor"
 	"github.com/google/uuid"
 )
 
-func RenderPage(selectedComponent templ.Component) fiber.Handler {
-	return func(c *fiber.Ctx) error {
-		user := c.Locals("User").(models.User)
-
-		if c.Get("HX-Request") != "true" {
-			selectedComponent = layouts.FullPage(user, selectedComponent)
-		}
-
-		componentHandler := templ.Handler(selectedComponent)
-		err := adaptor.HTTPHandler(componentHandler)(c)
-		if err != nil {
-			return c.Status(fiber.StatusInternalServerError).SendString("Internal Server Error")
-		}
-		return nil
-	}
-}
-
 func GetHomePage(c *fiber.Ctx) error {
-	return RenderPage(pages.Home())(c)
+	return Render(pages.Home())(c)
 }
 
 func GetAdminHome(c *fiber.Ctx) error {
 	user := c.Locals("User").(models.User)
-	return RenderPage(pages.Admin(user))(c)
+	return Render(pages.Admin(user))(c)
 }
 
 func GetAdminSwitchEdit(c *fiber.Ctx) error {
 	user := c.Locals("User").(models.User)
-	return RenderPage(pages.SwitchEdit(user))(c)
+	return Render(pages.SwitchEdit(user))(c)
 }
 
 func GetSwitchPage(c *fiber.Ctx) error {
@@ -87,7 +67,7 @@ func GetSwitchPage(c *fiber.Ctx) error {
 		User:         c.Locals("User").(models.User),
 	}
 
-	return RenderPage(
+	return Render(
 		pages.Switches(props),
 	)(
 		c,
@@ -125,7 +105,7 @@ func GetSwitchDetailPage(c *fiber.Ctx) error {
 	}
 	timer.LogTime("Get Switch")
 
-	return RenderPage(
+	return Render(
 		pages.SwitchDetail(user, clickyClack),
 	)(
 		c,
@@ -133,5 +113,5 @@ func GetSwitchDetailPage(c *fiber.Ctx) error {
 }
 
 func NotFound(c *fiber.Ctx) error {
-	return RenderPage(pages.NotFound())(c)
+	return Render(pages.NotFound())(c)
 }
