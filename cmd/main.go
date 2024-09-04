@@ -10,7 +10,7 @@ import (
 	"switches/database"
 	"switches/middleware"
 	"switches/routes"
-	"switches/utils/logutil"
+	"switches/utils"
 	"syscall"
 
 	env "switches/config"
@@ -64,7 +64,7 @@ func main() {
 	log.Info().Str("domain", config.BaseURL).Msg("Starting server...")
 	setStatic(config.AppendNumber, server)
 	database.ConnectDB(config, server)
-	zlog := logutil.GetLogger()
+	zlog := utils.GetLogger()
 	server.Use(fiberzerolog.New(fiberzerolog.Config{
 		Logger: &zlog,
 	}))

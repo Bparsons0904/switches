@@ -4,7 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"switches/config"
-	"switches/utils/logutil"
+	"switches/utils"
 	"time"
 
 	"github.com/go-redis/redis/v8"
@@ -44,10 +44,10 @@ func StartPostgresDB(config config.Config) (*gorm.DB, error) {
 		config.DBPort,
 	)
 
-	zlog := logutil.GetLogger()
+	zlog := utils.GetLogger()
 	db, err := gorm.Open(
 		postgres.Open(dsn),
-		&gorm.Config{Logger: logutil.NewGormLogger(zlog), PrepareStmt: true},
+		&gorm.Config{Logger: utils.NewGormLogger(zlog), PrepareStmt: true},
 	)
 	if err != nil {
 		return nil, err
