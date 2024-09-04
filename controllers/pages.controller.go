@@ -3,30 +3,45 @@ package controllers
 import (
 	"switches/database"
 	"switches/models"
+	"switches/templates/layouts"
 	"switches/templates/pages"
 	"switches/utils"
 
+	"github.com/a-h/templ"
 	"github.com/gofiber/fiber/v2"
+	"github.com/gofiber/fiber/v2/middleware/adaptor"
 	"github.com/google/uuid"
-	"github.com/rs/zerolog/log"
 )
 
+func RenderPage(selectedComponent templ.Component) fiber.Handler {
+	return func(c *fiber.Ctx) error {
+		user := c.Locals("User").(models.User)
+
+		if c.Get("HX-Request") != "true" {
+			selectedComponent = layouts.FullPage(user, selectedComponent)
+		}
+
+		componentHandler := templ.Handler(selectedComponent)
+		err := adaptor.HTTPHandler(componentHandler)(c)
+		if err != nil {
+			return c.Status(fiber.StatusInternalServerError).SendString("Internal Server Error")
+		}
+		return nil
+	}
+}
+
 func GetHomePage(c *fiber.Ctx) error {
-	user := c.Locals("User").(models.User)
-
-	log.Info().Str("userID", user.Name).Msg("Home page")
-
-	return RenderPage(pages.HomePage(user), pages.Home(user))(c)
+	return RenderPage(pages.Home())(c)
 }
 
 func GetAdminHome(c *fiber.Ctx) error {
 	user := c.Locals("User").(models.User)
-	return RenderPage(pages.AdminPage(user), pages.Admin(user))(c)
+	return RenderPage(pages.Admin(user))(c)
 }
 
 func GetAdminSwitchEdit(c *fiber.Ctx) error {
 	user := c.Locals("User").(models.User)
-	return RenderPage(pages.SwitchEditPage(user), pages.SwitchEdit(user))(c)
+	return RenderPage(pages.SwitchEdit(user))(c)
 }
 
 func GetSwitchPage(c *fiber.Ctx) error {
@@ -73,7 +88,6 @@ func GetSwitchPage(c *fiber.Ctx) error {
 	}
 
 	return RenderPage(
-		pages.SwitchesPage(props),
 		pages.Switches(props),
 	)(
 		c,
@@ -112,7 +126,6 @@ func GetSwitchDetailPage(c *fiber.Ctx) error {
 	timer.LogTime("Get Switch")
 
 	return RenderPage(
-		pages.SwitchDetailPage(user, clickyClack),
 		pages.SwitchDetail(user, clickyClack),
 	)(
 		c,
@@ -120,5 +133,5 @@ func GetSwitchDetailPage(c *fiber.Ctx) error {
 }
 
 func NotFound(c *fiber.Ctx) error {
-	return RenderPage(pages.NotFound(), pages.NotFound())(c)
+	return RenderPage(pages.NotFound())(c)
 }

@@ -1,20 +1,9 @@
 package pages
 
-import (
-	"switches/models"
-	"switches/templates/components"
-	"switches/templates/layouts"
-)
+import "switches/templates/components"
 
-templ HomePage(user models.User) {
-	@layouts.Root() {
-		@Home(user)
-	}
-}
-
-templ Home(user models.User) {
+templ Home() {
 	<div class="home">
-		@components.Navbar("home", user)
 		<section id="cta" class="dark">
 			<div class="cta-wrapper">
 				<div class="cta-header">

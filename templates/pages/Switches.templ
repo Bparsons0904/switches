@@ -4,7 +4,6 @@ package pages
 import (
 	"strconv"
 	"switches/models"
-	"switches/templates/components"
 	"switches/templates/components/icons"
 	"switches/templates/layouts"
 )
@@ -16,14 +15,7 @@ type SwitchesPageProps struct {
 	User         models.User
 }
 
-templ SwitchesPage(props SwitchesPageProps) {
-	@layouts.Root() {
-		@Switches(props)
-	}
-}
-
 templ Switches(props SwitchesPageProps) {
-	@components.Navbar("switches", props.User)
 	<div id="switches">
 		<h1>MX Switches</h1>
 		<div id="switch-container">

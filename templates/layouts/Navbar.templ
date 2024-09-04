@@ -1,11 +1,11 @@
-package components
+package layouts
 
 import (
 	"github.com/google/uuid"
 	"switches/models"
 )
 
-templ Navbar(route string, user models.User) {
+templ Navbar(user models.User) {
 	<header id="navbar">
 		<a
 			class="header-wrapper"

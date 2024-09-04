@@ -6,17 +6,9 @@ import (
 	"switches/models"
 	"switches/templates/components"
 	"switches/templates/components/icons"
-	"switches/templates/layouts"
 )
 
-templ SwitchDetailPage(user models.User, clickyClack models.Switch) {
-	@layouts.Root() {
-		@SwitchDetail(user, clickyClack)
-	}
-}
-
 templ SwitchDetail(user models.User, clickyClack models.Switch) {
-	@components.Navbar("switchDetails", user)
 	<main id="switch-detail">
 		if user.IsAdmin {
 			<div
@@ -91,7 +83,6 @@ templ SwitchDetail(user models.User, clickyClack models.Switch) {
 }
 
 templ SwitchDetailOld(user models.User, clickyClack models.Switch) {
-	@components.Navbar("switches", user)
 	<main id="switch-detail">
 		<div class="switch-images">
 			@components.GetSwitchImageLink(clickyClack)
