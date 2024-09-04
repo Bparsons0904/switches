@@ -108,7 +108,6 @@ func GetFeaturedSwitches(c *fiber.Ctx) error {
 		Find(&clickyClacks)
 	timer.LogTime("Get Switches")
 
-	log.Println("Clicky Clacks", clickyClacks)
 	component := components.FeaturedSwitches(clickyClacks)
 	return Render(component)(c)
 }

@@ -3,7 +3,6 @@ package main
 import (
 	"fmt"
 	"io"
-	"log"
 	"os"
 	"os/signal"
 	"path/filepath"
@@ -11,16 +10,17 @@ import (
 	"switches/database"
 	"switches/middleware"
 	"switches/routes"
+	"switches/utils/logutil"
 	"syscall"
 
 	env "switches/config"
-	_ "switches/utils/logutil"
 
+	"github.com/gofiber/contrib/fiberzerolog"
 	"github.com/gofiber/fiber/v2"
 	"github.com/gofiber/fiber/v2/middleware/compress"
 	"github.com/gofiber/fiber/v2/middleware/cors"
-	"github.com/gofiber/fiber/v2/middleware/logger"
 	"github.com/gofiber/fiber/v2/middleware/recover"
+	"github.com/rs/zerolog/log"
 	"github.com/tdewolff/minify/v2"
 	"github.com/tdewolff/minify/v2/css"
 
@@ -34,15 +34,11 @@ var (
 )
 
 func init() {
-	log.SetOutput(os.Stdout)
-
 	var err error
 	config, err = env.LoadConfig()
 	if err != nil {
-		log.Fatal("? Could not load environment variables", err)
+		log.Fatal().Err(err).Msg("? Could not load environment variables")
 	}
-
-	log.Println("Environment variables loaded successfully", config)
 
 	if config.Tier == "development" {
 		server = fiber.New(fiber.Config{
@@ -64,18 +60,14 @@ func init() {
 	// go scheduler.InitScheduler(db)
 }
 
-// func LoadEnvMiddleware(c *fiber.Ctx) error {
-// 	c.Locals("clientOrigin", config.BaseURL)
-// 	return c.Next()
-// }
-
 func main() {
-	log.Println("Starting server...", config.BaseURL)
+	log.Info().Str("domain", config.BaseURL).Msg("Starting server...")
 	setStatic(config.AppendNumber, server)
 	database.ConnectDB(config, server)
-	if config.Tier == "development" {
-		server.Use(logger.New())
-	}
+	zlog := logutil.GetLogger()
+	server.Use(fiberzerolog.New(fiberzerolog.Config{
+		Logger: &zlog,
+	}))
 
 	// server.Use(limiter.New())
 	server.Use(recover.New())
@@ -97,7 +89,6 @@ func main() {
 
 		return c.Next()
 	})
-	// server.Use(LoadEnvMiddleware)
 	server.Use(cors.New(cors.Config{
 		AllowOrigins:     config.BaseURL,
 		AllowHeaders:     "Origin, Content-Type, Accept, Authorization, withCredentials, X-Response-Type",
@@ -117,8 +108,9 @@ func main() {
 	// Create a channel to listen for a shutdown signal
 	go setupGracefulShutdown(server)
 
-	log.Println("Server is running in", config.Tier, "mode on port", config.ServerPort)
-	log.Fatal(server.Listen(":" + config.ServerPort))
+	log.Info().Msg("Server is running in " + config.Tier + " mode on port " + config.ServerPort)
+	serverErr := server.Listen(":" + config.ServerPort)
+	log.Error().Err(serverErr).Msg("Server error")
 }
 
 func setStatic(appendNumber int64, server *fiber.App) {
@@ -136,15 +128,15 @@ func setStatic(appendNumber int64, server *fiber.App) {
 		return
 	}
 
-	log.Println("Copying static files...")
+	// log.Println("Copying static files...")
 	err := copyStaticFiles(stylesDir, destDir, appendNumber)
 	if err != nil {
-		log.Fatal("Error copying static style files", err)
+		log.Fatal().Err(err).Msg("Error copying static style files")
 	}
 
 	err = copyStaticFiles(scriptsDir, destDir, appendNumber)
 	if err != nil {
-		log.Fatal("Error copying static script files", err)
+		log.Fatal().Err(err).Msg("Error copying static script files")
 	}
 
 	server.Static("/assets", "./assets")
@@ -152,9 +144,7 @@ func setStatic(appendNumber int64, server *fiber.App) {
 }
 
 func copyStaticFiles(sourceDir, destDir string, appendNumber int64) error {
-	log.Printf("Reading directory %s\n", sourceDir)
 	files, err := os.ReadDir(sourceDir)
-	log.Println("files", files)
 	if err != nil {
 		fmt.Printf("Error reading directory: %v\n", err)
 		return err
@@ -166,7 +156,6 @@ func copyStaticFiles(sourceDir, destDir string, appendNumber int64) error {
 		}
 
 		oldPath := filepath.Join(sourceDir, file.Name())
-		log.Println("oldPath", oldPath)
 
 		ext := filepath.Ext(file.Name())
 		baseName := strings.TrimSuffix(file.Name(), ext)
@@ -174,11 +163,12 @@ func copyStaticFiles(sourceDir, destDir string, appendNumber int64) error {
 		newPath := filepath.Join(destDir, newFileName)
 
 		if err := copyAndMinifyFile(oldPath, newPath); err != nil {
-			fmt.Printf("Error copying and minifying file %s: %v\n", file.Name(), err)
+			log.Error().
+				Err(err).
+				Str("filename", file.Name()).
+				Msg("Error copying and minifying file")
 			continue
 		}
-
-		fmt.Printf("Copied, minified, and renamed %s to %s\n", file.Name(), newFileName)
 	}
 	return nil
 }
@@ -222,10 +212,10 @@ func setupGracefulShutdown(server *fiber.App) {
 
 	go func() {
 		<-channel
-		log.Println("Received termination signal, gracefully shutting down...")
+		log.Info().Msg("Received termination signal, gracefully shutting down...")
 
 		if err := server.Shutdown(); err != nil {
-			log.Fatal("Server forced to shutdown:", err)
+			log.Error().Err(err).Msg("Server forced to shutdown")
 		}
 	}()
 }

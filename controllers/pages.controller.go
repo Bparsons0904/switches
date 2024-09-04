@@ -1,7 +1,6 @@
 package controllers
 
 import (
-	"log"
 	"switches/database"
 	"switches/models"
 	"switches/templates/pages"
@@ -9,10 +8,14 @@ import (
 
 	"github.com/gofiber/fiber/v2"
 	"github.com/google/uuid"
+	"github.com/rs/zerolog/log"
 )
 
 func GetHomePage(c *fiber.Ctx) error {
 	user := c.Locals("User").(models.User)
+
+	log.Info().Str("userID", user.Name).Msg("Home page")
+
 	return RenderPage(pages.HomePage(user), pages.Home(user))(c)
 }
 
@@ -37,7 +40,7 @@ func GetSwitchPage(c *fiber.Ctx) error {
 		Preload("SwitchType").
 		Find(&clickyClacks).Error
 	if err != nil {
-		log.Println("Error getting the user", err)
+		// log.Println("Error getting the user", err)
 		return c.Status(fiber.StatusBadRequest).Next()
 	}
 	timer.LogTime("Get Switches")
@@ -49,7 +52,7 @@ func GetSwitchPage(c *fiber.Ctx) error {
 		Where("category = ?", "switch_type").
 		Find(&switchTypes).Error
 	if err != nil {
-		log.Println("Error getting the switch types", err)
+		// log.Println("Error getting the switch types", err)
 		return c.Status(fiber.StatusBadRequest).Next()
 	}
 	timer.LogTime("Get Switch Types")
@@ -57,7 +60,7 @@ func GetSwitchPage(c *fiber.Ctx) error {
 	var switchBrands []models.Producer
 	if err := database.DB.
 		Find(&switchBrands).Error; err != nil {
-		log.Println("Error getting the switch brands", err)
+		// log.Println("Error getting the switch brands", err)
 		return c.Status(fiber.StatusBadRequest).Next()
 	}
 	timer.LogTime("Get Switch Brands")
