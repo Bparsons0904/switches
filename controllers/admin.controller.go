@@ -48,3 +48,7 @@ func GetAdminSwitches(c *fiber.Ctx) error {
 	}
 	return Render(components.AdminSwitches(clickyClacks, request.Search))(c)
 }
+
+func GetAdminSwitchCreate(c *fiber.Ctx) error {
+	return Render(pages.SwitchCreate())(c)
+}

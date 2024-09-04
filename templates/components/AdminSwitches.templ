@@ -7,6 +7,13 @@ import (
 
 templ AdminSwitches(clickyClacks []models.Switch, search string) {
 	<style type="text/css">
+    .management {
+      padding: 1rem;
+      display: flex;
+      flex-direction: row;
+      gap: 2rem;
+    }
+  
     .admin-switches {
       display: flex;
       flex-wrap: wrap;
@@ -29,23 +36,32 @@ templ AdminSwitches(clickyClacks []models.Switch, search string) {
 		@layouts.Card() {
 			<section id="search">
 				<h1>Switche Management</h1>
-				<form id="search-form">
-					<div id="search">
-						<div class="search">
-							<label>
-								<input
-									type="search"
-									name="search"
-									placeholder="Search switches..."
-									hx-trigger="keyup changed delay:500ms, search"
-									hx-get="/admin/switches"
-									hx-target="#admin-switch"
-									value={ search }
-								/>
-							</label>
+				<div class="management">
+					<form id="search-form">
+						<div id="search">
+							<div class="search">
+								<label>
+									<input
+										type="search"
+										name="search"
+										placeholder="Search switches..."
+										hx-trigger="keyup changed delay:500ms, search"
+										hx-get="/admin/switches"
+										hx-target="#admin-switch"
+										value={ search }
+									/>
+								</label>
+							</div>
 						</div>
-					</div>
-				</form>
+					</form>
+					<button
+						class="button"
+						hx-trigger="click"
+						hx-get="/admin/switches/create"
+						hx-push-url="true"
+						hx-target="#main"
+					>Create</button>
+				</div>
 			</section>
 			<div class="admin-switches">
 				for _, clickyClack := range clickyClacks {
