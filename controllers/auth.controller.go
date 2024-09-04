@@ -3,7 +3,6 @@ package controllers
 import (
 	"encoding/json"
 	"fmt"
-	"log"
 	"net/http"
 	"net/url"
 	"strconv"
@@ -13,6 +12,7 @@ import (
 	"time"
 
 	"github.com/gofiber/fiber/v2"
+	"github.com/rs/zerolog/log"
 	"github.com/spf13/viper"
 	"gorm.io/gorm"
 )
@@ -22,11 +22,9 @@ func AuthLogin(c *fiber.Ctx) error {
 	if originalURL == "" {
 		originalURL = "/"
 	}
-	log.Println("Original URL", originalURL)
-
 	auth, err := services.GenerateAuthString(originalURL)
 	if err != nil {
-		log.Println("Error generating auth string", err)
+		log.Error().Err(err).Msg("Error generating auth string")
 		return c.Status(fiber.StatusInternalServerError).SendString("Error generating auth string")
 	}
 
@@ -45,13 +43,12 @@ func AuthLogin(c *fiber.Ctx) error {
 }
 
 func AuthCallback(c *fiber.Ctx) error {
-	log.Println("Get auth callback")
 	code := c.Query("code")
 	state := c.Query("state")
 
 	auth, err := services.GetAuth(state)
 	if err != nil {
-		log.Println("Error getting auth")
+		log.Error().Err(err).Msg("Error getting auth")
 		return c.Status(fiber.StatusInternalServerError).SendString("Error getting auth")
 	}
 
@@ -64,36 +61,36 @@ func AuthCallback(c *fiber.Ctx) error {
 		"code_verifier": {auth.CodeVerifier},
 	})
 	if err != nil {
-		log.Println("Error getting token", err)
+		log.Error().Err(err).Msg("Error getting token")
 		return err
 	}
 	defer resp.Body.Close()
 
 	var tokenResponse services.TokenResponse
 	if err := json.NewDecoder(resp.Body).Decode(&tokenResponse); err != nil {
-		log.Println("Error decoding token response", err)
+		log.Error().Err(err).Msg("Error decoding token response")
 		return err
 	}
 
 	claims, err := services.VerifyIDToken(tokenResponse.IDToken, false)
 	if err != nil {
-		log.Println("Error verifying ID token w/o force", err)
+		log.Warn().Err(err).Msg("Error verifying ID token w/o force")
 		claims, err = services.VerifyIDToken(tokenResponse.IDToken, true)
 		if err != nil {
-			log.Println("Error verifying ID token, /w force", err)
+			log.Error().Err(err).Msg("Error verifying ID token, /w force")
 			return err
 		}
 	}
 
 	sub, ok := claims["sub"].(string)
 	if !ok {
-		log.Println("Error getting sub claim from claims")
+		log.Warn().Msg("Error getting sub claim from claims")
 		return fmt.Errorf("invalid sub claim")
 	}
 
 	subInt, err := strconv.Atoi(sub)
 	if err != nil {
-		log.Println("Error converting sub to int", err)
+		log.Error().Err(err).Msg("Error converting sub to int")
 		return err
 	}
 
@@ -111,13 +108,13 @@ func AuthCallback(c *fiber.Ctx) error {
 	err = database.DB.First(&user, "sub = ?", userClaims.Sub).Error
 
 	if err == gorm.ErrRecordNotFound {
-		log.Println("User does not exist, creating user")
+		log.Warn().Msg("User does not exist, creating user")
 		if err := createUser(&user, userClaims); err != nil {
-			log.Println("Error creating user", err)
+			log.Error().Err(err).Msg("Error creating user")
 			return err
 		}
 	} else if err != nil {
-		log.Println("Error getting user", err)
+		log.Error().Err(err).Msg("Error getting user")
 		return err
 	}
 
@@ -132,9 +129,7 @@ func AuthCallback(c *fiber.Ctx) error {
 		IsLoggedIn:   true,
 	}
 
-	if err := database.SetJSONKeyDB("session", session.AccessToken, session, 30*24*time.Hour); err != nil {
-		log.Println("Error setting session in keydb", err)
-	}
+	_ = database.SetJSONKeyDB("session", session.AccessToken, session, 30*24*time.Hour)
 
 	expiredIn := time.Now().Add(time.Duration(tokenResponse.ExpiresIn) * time.Second)
 	cookie := &fiber.Cookie{
@@ -172,11 +167,10 @@ func UserLogout(c *fiber.Ctx) error {
 func UserLogoutCallback(c *fiber.Ctx) error {
 	sessionID := c.Cookies("sessionID")
 	c.ClearCookie("sessionID")
-	log.Println("User logout", sessionID)
 	if sessionID != "" {
 		retrievedSession, err := database.GetJSONKeyDB[services.Session]("session", sessionID)
 		if err != nil {
-			log.Println("Error getting session from keydb", err)
+			log.Error().Err(err).Msg("Error getting session from keydb")
 			c.ClearCookie("sessionID")
 			return c.Redirect("/")
 		}
@@ -184,11 +178,11 @@ func UserLogoutCallback(c *fiber.Ctx) error {
 		retrievedSession.IsLoggedIn = false
 		err = database.SetJSONKeyDB("session", sessionID, retrievedSession, 15*time.Minute)
 		if err != nil {
-			log.Println("Error setting session in keydb", err)
+			log.Error().Err(err).Msg("Error setting session in keydb")
 		}
 		err = database.DeleteUUIDKeyDB("user", retrievedSession.UserID)
 		if err != nil {
-			log.Println("Error deleting user from keydb", err)
+			log.Error().Err(err).Msg("Error deleting user from keydb")
 		}
 	}
 	return c.Redirect("/")
@@ -204,7 +198,7 @@ func createUser(user *models.User, claims *services.Claims) error {
 	user.GivenName = claims.GivenName
 
 	if err := database.DB.Create(&user).Error; err != nil {
-		log.Println("Error creating user", err)
+		log.Error().Err(err).Msg("Error creating user")
 		return err
 	}
 
