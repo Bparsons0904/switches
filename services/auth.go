@@ -7,13 +7,13 @@ import (
 	"encoding/json"
 	"fmt"
 	"io"
-	"log"
 	"net/http"
 	"net/url"
 	"switches/database"
 	"time"
 
 	"github.com/google/uuid"
+	"github.com/rs/zerolog/log"
 	"github.com/spf13/viper"
 )
 
@@ -34,19 +34,19 @@ func generateCodeChallenge(verifier string) string {
 func GenerateAuthString(originalURL string) (Auth, error) {
 	state, err := GenerateRandomString(32)
 	if err != nil {
-		log.Println("Error generating state", err)
+		log.Error().Err(err).Msg("Error generating state")
 		return Auth{}, err
 	}
 
 	nonce, err := GenerateRandomString(32)
 	if err != nil {
-		log.Println("Error generating nonce", err)
+		log.Error().Err(err).Msg("Error generating nonce")
 		return Auth{}, err
 	}
 
 	codeVerifier, err := GenerateRandomString(32)
 	if err != nil {
-		log.Println("Error generating code verifier", err)
+		log.Error().Err(err).Msg("Error generating code verifier")
 		return Auth{}, err
 	}
 
@@ -67,7 +67,7 @@ func GenerateAuthString(originalURL string) (Auth, error) {
 	}
 
 	if err := database.SetJSONKeyDB("auth", state, auth, 15*time.Minute); err != nil {
-		log.Println("Error saving auth", err)
+		log.Error().Err(err).Msg("Error saving auth")
 		return Auth{}, err
 	}
 
@@ -77,17 +77,17 @@ func GenerateAuthString(originalURL string) (Auth, error) {
 func GetAuth(state string) (Auth, error) {
 	auth, err := database.GetJSONKeyDB[Auth]("auth", state)
 	if err != nil {
-		log.Println("Error retrieving auth from Redis:", err)
+		log.Error().Err(err).Msg("Error retrieving auth from Redis")
 		return Auth{}, err
 	}
 
 	err = database.DeleteStringKeyDB("auth", state)
 	if err != nil {
-		log.Println("Error deleting auth from Redis:", err)
+		log.Error().Err(err).Msg("Error deleting auth from Redis")
 	}
 
 	if time.Now().After(auth.ExpiresAt) {
-		log.Println("Auth expired for state:", state)
+		log.Error().Err(err).Any("state", state).Msg("Auth expired for state")
 		return Auth{}, fmt.Errorf("Auth expired for state: %s", state)
 	}
 
@@ -100,34 +100,30 @@ func SessionFlow(sessionID string) (Session, error) {
 		sessionID,
 	)
 	if err != nil {
-		log.Println("Error getting session from keydb", err)
+		log.Error().Err(err).Msg("Error getting session from keydb")
 		return Session{}, err
 	}
 
-	log.Println("Session found", session.ExpiresAt)
-
 	if !session.IsLoggedIn {
-		log.Println("Session not logged in", session)
+		log.Warn().Any("session", session).Msg("Session not logged in")
 		err = fmt.Errorf("Session not logged in")
 	}
 
 	if time.Now().After(session.ExpiresAt) {
-		log.Println("Session expired", session)
+		log.Warn().Any("session", session).Msg("Session expired")
 		err = refreshToken(session)
 	}
 
 	if err != nil {
-		err = database.DeleteStringKeyDB("session", session.AccessToken)
+		_ = database.DeleteStringKeyDB("session", session.AccessToken)
+		log.Error().Err(err).Msg("Error refreshing token")
 		return Session{}, fmt.Errorf("Problem with the session %f", err)
 	}
 
-	log.Println("Session flow completed", session.AccessToken)
 	return session, nil
 }
 
 func refreshToken(session Session) error {
-	log.Println("Refreshing token for session", session.AccessToken)
-
 	clientID := viper.GetString("AUTH_CLIENT_ID")
 	authURL := viper.GetString("AUTH_URL")
 	tokenURL := fmt.Sprintf("https://%s/oauth/v2/token", authURL)
@@ -137,14 +133,14 @@ func refreshToken(session Session) error {
 		"refresh_token": {session.RefreshToken}, // Use the refresh token here
 	})
 	if err != nil {
-		log.Println("Error getting token", err)
+		log.Error().Err(err).Msg("Error getting token")
 		return err
 	}
 	defer resp.Body.Close()
 
 	var tokenResponse TokenResponse
 	if err = json.NewDecoder(resp.Body).Decode(&tokenResponse); err != nil {
-		log.Println("Error decoding token response", err)
+		log.Error().Err(err).Msg("Error decoding token response")
 		return err
 	}
 
@@ -158,7 +154,7 @@ func refreshToken(session Session) error {
 
 	err = database.SetJSONKeyDB("session", session.AccessToken, session, 30*24*time.Hour)
 	if err != nil {
-		log.Println("Error setting session in keydb", err)
+		log.Error().Err(err).Msg("Error setting session in keydb")
 		return err
 	}
 
