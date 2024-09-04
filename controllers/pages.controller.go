@@ -1,7 +1,6 @@
 package controllers
 
 import (
-	"log"
 	"switches/database"
 	"switches/models"
 	"switches/templates/pages"
@@ -12,18 +11,17 @@ import (
 )
 
 func GetHomePage(c *fiber.Ctx) error {
-	user := c.Locals("User").(models.User)
-	return RenderPage(pages.HomePage(user), pages.Home(user))(c)
+	return Render(pages.Home())(c)
 }
 
 func GetAdminHome(c *fiber.Ctx) error {
 	user := c.Locals("User").(models.User)
-	return RenderPage(pages.AdminPage(user), pages.Admin(user))(c)
+	return Render(pages.Admin(user))(c)
 }
 
 func GetAdminSwitchEdit(c *fiber.Ctx) error {
 	user := c.Locals("User").(models.User)
-	return RenderPage(pages.SwitchEditPage(user), pages.SwitchEdit(user))(c)
+	return Render(pages.SwitchEdit(user))(c)
 }
 
 func GetSwitchPage(c *fiber.Ctx) error {
@@ -37,7 +35,7 @@ func GetSwitchPage(c *fiber.Ctx) error {
 		Preload("SwitchType").
 		Find(&clickyClacks).Error
 	if err != nil {
-		log.Println("Error getting the user", err)
+		// log.Println("Error getting the user", err)
 		return c.Status(fiber.StatusBadRequest).Next()
 	}
 	timer.LogTime("Get Switches")
@@ -49,7 +47,7 @@ func GetSwitchPage(c *fiber.Ctx) error {
 		Where("category = ?", "switch_type").
 		Find(&switchTypes).Error
 	if err != nil {
-		log.Println("Error getting the switch types", err)
+		// log.Println("Error getting the switch types", err)
 		return c.Status(fiber.StatusBadRequest).Next()
 	}
 	timer.LogTime("Get Switch Types")
@@ -57,7 +55,7 @@ func GetSwitchPage(c *fiber.Ctx) error {
 	var switchBrands []models.Producer
 	if err := database.DB.
 		Find(&switchBrands).Error; err != nil {
-		log.Println("Error getting the switch brands", err)
+		// log.Println("Error getting the switch brands", err)
 		return c.Status(fiber.StatusBadRequest).Next()
 	}
 	timer.LogTime("Get Switch Brands")
@@ -69,8 +67,7 @@ func GetSwitchPage(c *fiber.Ctx) error {
 		User:         c.Locals("User").(models.User),
 	}
 
-	return RenderPage(
-		pages.SwitchesPage(props),
+	return Render(
 		pages.Switches(props),
 	)(
 		c,
@@ -108,8 +105,7 @@ func GetSwitchDetailPage(c *fiber.Ctx) error {
 	}
 	timer.LogTime("Get Switch")
 
-	return RenderPage(
-		pages.SwitchDetailPage(user, clickyClack),
+	return Render(
 		pages.SwitchDetail(user, clickyClack),
 	)(
 		c,
@@ -117,5 +113,5 @@ func GetSwitchDetailPage(c *fiber.Ctx) error {
 }
 
 func NotFound(c *fiber.Ctx) error {
-	return RenderPage(pages.NotFound(), pages.NotFound())(c)
+	return Render(pages.NotFound())(c)
 }

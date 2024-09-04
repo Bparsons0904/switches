@@ -3,9 +3,10 @@ package layouts
 import (
 	"fmt"
 	"github.com/spf13/viper"
+	"switches/models"
 )
 
-templ Root() {
+templ Root(user models.User) {
 	<!DOCTYPE html>
 	<html>
 		<meta charset="UTF-8"/>
@@ -26,6 +27,7 @@ templ Root() {
 			<title>Waugze</title>
 		</head>
 		<body id="body">
+			@Navbar(user)
 			<div id="main">
 				{ children... }
 			</div>
@@ -35,4 +37,10 @@ templ Root() {
 		<script src={ fmt.Sprintf("/assets/htmx_%d.min.js", viper.GetInt64("appendNumber")) }></script>
 		<script src={ fmt.Sprintf("/assets/scripts_%d.min.js", viper.GetInt64("appendNumber")) }></script>
 	</html>
+}
+
+templ FullPage(user models.User, component templ.Component) {
+	@Root(user) {
+		@component
+	}
 }
