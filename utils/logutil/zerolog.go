@@ -3,6 +3,7 @@ package logutil
 import (
 	"context"
 	"errors"
+	"fmt"
 	"io"
 	"os"
 	"time"
@@ -22,8 +23,21 @@ func init() {
 	if env == "" || env == "development" {
 		output = zerolog.ConsoleWriter{
 			Out:        os.Stdout,
-			TimeFormat: time.RFC3339,
+			TimeFormat: "2006/01/02 15:04:05",
 			NoColor:    false,
+			FormatTimestamp: func(i interface{}) string {
+				switch t := i.(type) {
+				case string:
+					if parsed, err := time.Parse(time.RFC3339, t); err == nil {
+						return parsed.Format("2006/01/02 15:04:05")
+					}
+					return t
+				case time.Time:
+					return t.Format("2006/01/02 15:04:05")
+				default:
+					return fmt.Sprint(i)
+				}
+			},
 		}
 		zerolog.SetGlobalLevel(zerolog.InfoLevel)
 	} else {
