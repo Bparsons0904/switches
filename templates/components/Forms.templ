@@ -127,6 +127,7 @@ templ CheckBox(input CheckInput) {
 
 type Form struct {
 	ID         string
+	Get        string
 	Post       string
 	Include    string
 	ButtonText string
@@ -138,7 +139,12 @@ templ FormContainer(input Form) {
 	<div class="form-container">
 		<form
 			id={ input.ID }
-			hx-post={ input.Post }
+			if input.Get != "" {
+				hx-get={ input.Get }
+			}
+			if input.Post != "" {
+				hx-post={ input.Post }
+			}
 			if input.Include != "" {
 				hx-include={ input.Include }
 			}

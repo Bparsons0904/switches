@@ -28,7 +28,41 @@ func PostAdminSwitchCreate(c *fiber.Ctx) error {
 	return Render(pages.SwitchEdit(user))(c)
 }
 
-func AddImageLinkToList(c *fiber.Ctx) error {
+func DeleteImageLinkToList(c *fiber.Ctx) error {
+	imageLinkIndex, err := c.ParamsInt("imageLinkIndex")
+	if err != nil {
+		log.Error().Msg("No image link index provided")
+		return c.Status(fiber.StatusBadRequest).Next()
+	}
+
+	log.Info().Int("imageLinkIndex", imageLinkIndex).Msg("Deleting image link")
+	linkCountStr := c.FormValue("link-count")
+	linkCount, err := strconv.Atoi(linkCountStr)
+	if err != nil {
+		log.Error().Err(err).Msg("Error parsing link count")
+		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
+			"error": "Invalid link count",
+		})
+	}
+
+	var imageLinks []pages.ImageLinksInput
+	for i := 0; i < linkCount; i++ {
+		if i == imageLinkIndex {
+			continue
+		}
+		linkAddress := c.FormValue(fmt.Sprintf("link-address-%d", i))
+		altText := c.FormValue(fmt.Sprintf("link-alt-text-%d", i))
+
+		imageLinks = append(imageLinks, pages.ImageLinksInput{
+			LinkAddress: linkAddress,
+			AltText:     altText,
+		})
+	}
+
+	return Render(pages.ImageLinkForm(imageLinks))(c)
+}
+
+func GetImageLinkToList(c *fiber.Ctx) error {
 	linkCountStr := c.FormValue("link-count")
 	linkCount, err := strconv.Atoi(linkCountStr)
 	if err != nil {
