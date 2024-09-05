@@ -4,7 +4,8 @@ type Input struct {
 	Name        string
 	Label       string
 	Placeholder string
-	Value       *string
+	Value       string
+	Required    bool
 }
 
 type Number struct {
@@ -44,8 +45,11 @@ templ TextInput(input Input) {
 			id={ input.Name }
 			name={ input.Name }
 			placeholder={ input.Placeholder }
-			if input.Value != nil {
-				value={ *input.Value }
+			if input.Value != "" {
+				value={ input.Value }
+			}
+			if input.Required {
+				required
 			}
 		/>
 	</div>
@@ -58,8 +62,8 @@ templ AreaInput(input Input) {
 			id={ input.Name }
 			name={ input.Name }
 			placeholder={ input.Placeholder }
-			if input.Value != nil {
-				value={ *input.Value }
+			if input.Value != "" {
+				value={ input.Value }
 			}
 		></textarea>
 	</div>
@@ -122,9 +126,12 @@ templ CheckBox(input CheckInput) {
 }
 
 type Form struct {
-	ID      string
-	Post    string
-	Include string
+	ID         string
+	Post       string
+	Include    string
+	ButtonText string
+	Target     string
+	Button     templ.Component
 }
 
 templ FormContainer(input Form) {
@@ -132,10 +139,25 @@ templ FormContainer(input Form) {
 		<form
 			id={ input.ID }
 			hx-post={ input.Post }
-			hx-include={ input.Include }
+			if input.Include != "" {
+				hx-include={ input.Include }
+			}
+			if input.Target != "" {
+				hx-target={ input.Target }
+			}
 		>
 			{ children... }
-			<button type="submit" class="button">Submit</button>
+			if input.Button != nil {
+				@input.Button
+			} else {
+				<button type="submit" class="button">
+					if len(input.ButtonText) > 0 {
+						{ input.ButtonText }
+					} else {
+						Submit
+					}
+				</button>
+			}
 		</form>
 	</div>
 }

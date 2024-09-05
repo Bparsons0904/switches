@@ -6,6 +6,10 @@
   border-radius: 5px;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 }
+form:invalid button[type="submit"] {
+  opacity: 0.5;
+  pointer-events: none;
+}
 
 .form-group {
   margin-bottom: 20px;

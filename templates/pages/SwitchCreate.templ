@@ -1,6 +1,9 @@
 package pages
 
-import "switches/templates/components"
+import (
+	"strconv"
+	"switches/templates/components"
+)
 
 type SwitchCreateInput struct {
 	SwitchTypes   []components.Option
@@ -16,65 +19,96 @@ templ SwitchCreate(input SwitchCreateInput) {
 			components.Form{
 				ID:      "switch-create-form",
 				Post:    "/admin/switches/create",
-				Include: ""}) {
+				Include: "switch-images-form"}) {
 			@components.TextInput(components.Input{
 				Name:        "switch-name",
 				Label:       "Switch Name",
 				Placeholder: "Enter switch name"})
-			@components.TextInput(components.Input{
-				Name:        "short-desc",
-				Label:       "Short Description",
-				Placeholder: "Enter Short Description"})
-			@components.AreaInput(components.Input{
-				Name:        "long-desc",
-				Label:       "Long Description",
-				Placeholder: "Enter Long Description"})
-			@components.SelectInput(components.Select{
-				Name:        "switch-type",
-				Label:       "Switch Type",
-				Options:     input.SwitchTypes,
-				Placeholder: "Select switch type"})
-			@components.SelectInput(components.Select{
-				Name:        "brand",
-				Label:       "Brand",
-				Options:     input.Brands,
-				Placeholder: "Select switch brand"})
-			@components.SelectInput(components.Select{
-				Name:        "manufacturer",
-				Label:       "Manufacturer",
-				Options:     input.Manufacturers,
-				Placeholder: "Select switch manufacturer"})
-			@components.DateInput(components.Input{
-				Name:        "release-date",
-				Label:       "Release Date",
-				Placeholder: "Select release date"})
-			@components.CheckBox(components.CheckInput{
-				Name:    "available",
-				Label:   "Available",
-				Checked: true})
-			@components.NumberInput(components.Number{
-				Name:        "price",
-				Label:       "Price",
-				Min:         "1",
-				Max:         "3",
-				Step:        "1",
-				Placeholder: "Enter switch price"})
-			@components.TextInput(components.Input{
-				Name:        "site-url",
-				Label:       "Site URL",
-				Placeholder: "Enter switch site URL"})
-			@ImageLinkInput()
+			<!-- @components.TextInput(components.Input{ -->
+			<!-- 	Name:        "short-desc", -->
+			<!-- 	Label:       "Short Description", -->
+			<!-- 	Placeholder: "Enter Short Description"}) -->
+			<!-- @components.AreaInput(components.Input{ -->
+			<!-- 	Name:        "long-desc", -->
+			<!-- 	Label:       "Long Description", -->
+			<!-- 	Placeholder: "Enter Long Description"}) -->
+			<!-- @components.SelectInput(components.Select{ -->
+			<!-- 	Name:        "switch-type", -->
+			<!-- 	Label:       "Switch Type", -->
+			<!-- 	Options:     input.SwitchTypes, -->
+			<!-- 	Placeholder: "Select switch type"}) -->
+			<!-- @components.SelectInput(components.Select{ -->
+			<!-- 	Name:        "brand", -->
+			<!-- 	Label:       "Brand", -->
+			<!-- 	Options:     input.Brands, -->
+			<!-- 	Placeholder: "Select switch brand"}) -->
+			<!-- @components.SelectInput(components.Select{ -->
+			<!-- 	Name:        "manufacturer", -->
+			<!-- 	Label:       "Manufacturer", -->
+			<!-- 	Options:     input.Manufacturers, -->
+			<!-- 	Placeholder: "Select switch manufacturer"}) -->
+			<!-- @components.DateInput(components.Input{ -->
+			<!-- 	Name:        "release-date", -->
+			<!-- 	Label:       "Release Date", -->
+			<!-- 	Placeholder: "Select release date"}) -->
+			<!-- @components.CheckBox(components.CheckInput{ -->
+			<!-- 	Name:    "available", -->
+			<!-- 	Label:   "Available", -->
+			<!-- 	Checked: true}) -->
+			<!-- @components.NumberInput(components.Number{ -->
+			<!-- 	Name:        "price", -->
+			<!-- 	Label:       "Price", -->
+			<!-- 	Min:         "1", -->
+			<!-- 	Max:         "3", -->
+			<!-- 	Step:        "1", -->
+			<!-- 	Placeholder: "Enter switch price"}) -->
+			<!-- @components.TextInput(components.Input{ -->
+			<!-- 	Name:        "site-url", -->
+			<!-- 	Label:       "Site URL", -->
+			<!-- 	Placeholder: "Enter switch site URL"}) -->
 		}
+		<div id="image-links-container">
+			@ImageLinkForm([]ImageLinksInput{
+				{AltText: "asdf", LinkAddress: "asdf"},
+			})
+		</div>
 	</section>
 }
 
-templ ImageLinkInput() {
+type ImageLinksInput struct {
+	AltText     string
+	LinkAddress string
+}
+
+templ ImageLinkForm(imageLinks []ImageLinksInput) {
+	@components.FormContainer(
+		components.Form{
+			ID:     "switch-images-form",
+			Post:   "/admin/images/create",
+			Target: "#image-links-container",
+			Button: ImageAddButton()}) {
+		<input type="hidden" name="link-count" value={ strconv.Itoa(len(imageLinks)) }/>
+		for i := 0; i < len(imageLinks); i++ {
+			@ImageLink(strconv.Itoa(i), imageLinks[i])
+		}
+	}
+}
+
+templ ImageLink(index string, imageLink ImageLinksInput) {
 	@components.TextInput(components.Input{
-		Name:        "link-address",
+		Name:        "link-address-" + index,
 		Label:       "Image URL",
-		Placeholder: "Enter switch image link"})
+		Placeholder: "Enter switch image link",
+		Value:       imageLink.LinkAddress,
+		Required:    true})
 	@components.TextInput(components.Input{
-		Name:        "link-alt-text",
+		Name:        "link-alt-text-" + index,
 		Label:       "Image Alt Text",
-		Placeholder: "Enter switch image alt text"})
+		Value:       imageLink.AltText,
+		Placeholder: "Enter switch image alt text",
+		Required:    true})
+}
+
+templ ImageAddButton() {
+	<button type="submit">Yo</button>
 }

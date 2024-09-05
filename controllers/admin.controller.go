@@ -28,6 +28,30 @@ func PostAdminSwitchCreate(c *fiber.Ctx) error {
 	return Render(pages.SwitchEdit(user))(c)
 }
 
+func PostAdminImagesCreate(c *fiber.Ctx) error {
+	linkCountStr := c.FormValue("link-count")
+	linkCount, err := strconv.Atoi(linkCountStr)
+	if err != nil {
+		log.Error().Err(err).Msg("Error parsing link count")
+		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
+			"error": "Invalid link count",
+		})
+	}
+
+	var imageLinks []pages.ImageLinksInput
+	for i := 0; i <= linkCount; i++ {
+		linkAddress := c.FormValue(fmt.Sprintf("link-address-%d", i))
+		altText := c.FormValue(fmt.Sprintf("link-alt-text-%d", i))
+
+		imageLinks = append(imageLinks, pages.ImageLinksInput{
+			LinkAddress: linkAddress,
+			AltText:     altText,
+		})
+	}
+
+	return Render(pages.ImageLinkForm(imageLinks))(c)
+}
+
 type SwitchQueryParams struct {
 	Search string `json:"search"`
 }

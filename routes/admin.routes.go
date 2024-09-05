@@ -14,6 +14,7 @@ func AdminRoutes(app *fiber.App) {
 	adminApi.Get("/switches", controllers.GetAdminSwitches)
 	adminApi.Get("/switches/create", controllers.GetAdminSwitchCreate)
 	adminApi.Post("/switches/create", controllers.PostAdminSwitchCreate)
+	adminApi.Post("/images/create", controllers.PostAdminImagesCreate)
 	adminApi.Get("/switches/:switchID/edit", controllers.GetAdminSwitchEdit)
 }
 
