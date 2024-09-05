@@ -3,8 +3,8 @@
   margin: 0 auto;
   background-color: var(--color-light);
   padding: 20px;
-  border-radius: 5px;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  /* border-radius: 5px; */
+  /* box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); */
 }
 form:invalid button[type="submit"] {
   opacity: 0.5;
@@ -19,7 +19,7 @@ label {
   display: block;
   margin-bottom: 5px;
   font-weight: bold;
-  color: var(--text-color-dark);
+  color: var(--text-color-dark-muted);
 }
 
 input[type="text"],

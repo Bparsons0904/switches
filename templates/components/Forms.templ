@@ -156,13 +156,15 @@ templ FormContainer(input Form) {
 			if input.Button != nil {
 				@input.Button
 			} else {
-				<button type="submit" class="button">
-					if len(input.ButtonText) > 0 {
-						{ input.ButtonText }
-					} else {
-						Submit
-					}
-				</button>
+				<div style="width: 100%; margin-top: 12px">
+					<button type="submit" class="button" style="margin-left: auto; display: block;">
+						if len(input.ButtonText) > 0 {
+							{ input.ButtonText }
+						} else {
+							Submit
+						}
+					</button>
+				</div>
 			}
 		</form>
 	</div>

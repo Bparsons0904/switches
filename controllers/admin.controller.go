@@ -63,6 +63,9 @@ func DeleteImageLinkToList(c *fiber.Ctx) error {
 }
 
 func GetImageLinkToList(c *fiber.Ctx) error {
+	log.Info().Msg("Adding a new image link")
+	test := c.Query("link-count")
+	log.Info().Str("link-count", test).Msg("Link count")
 	linkCountStr := c.FormValue("link-count")
 	linkCount, err := strconv.Atoi(linkCountStr)
 	if err != nil {
