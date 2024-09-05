@@ -63,30 +63,30 @@ func GetAdminSwitchCreate(c *fiber.Ctx) error {
 	}
 
 	var switchTypes []models.Type
-	if err := database.DB.Find(&switchTypes).Error; err != nil {
+	if err := database.DB.Where("category = 'switch_type'").Find(&switchTypes).Error; err != nil {
 		log.Error().Err(err).Msg("Error getting the switch types")
 		return c.Status(fiber.StatusBadRequest).Next()
 	}
 
-	var brandOptions []pages.Option
+	var brandOptions []components.Option
 	for _, brand := range brands {
-		brandOptions = append(brandOptions, pages.Option{
+		brandOptions = append(brandOptions, components.Option{
 			Value: strconv.Itoa(brand.ID),
 			Label: brand.Name,
 		})
 	}
 
-	var manufacturerOptions []pages.Option
+	var manufacturerOptions []components.Option
 	for _, manufacturer := range manufacturers {
-		manufacturerOptions = append(manufacturerOptions, pages.Option{
+		manufacturerOptions = append(manufacturerOptions, components.Option{
 			Value: strconv.Itoa(manufacturer.ID),
 			Label: manufacturer.Name,
 		})
 	}
 
-	var switchOptions []pages.Option
+	var switchOptions []components.Option
 	for _, switchType := range switchTypes {
-		switchOptions = append(switchOptions, pages.Option{
+		switchOptions = append(switchOptions, components.Option{
 			Value: strconv.Itoa(switchType.ID),
 			Label: switchType.Name,
 		})

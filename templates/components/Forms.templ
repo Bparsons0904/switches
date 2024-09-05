@@ -1,0 +1,130 @@
+package components
+
+type Input struct {
+	Name        string
+	Label       string
+	Placeholder string
+	Value       *string
+}
+
+type Number struct {
+	Name        string
+	Label       string
+	Min         string
+	Max         string
+	Step        string
+	Placeholder string
+}
+
+type Option struct {
+	Value       string
+	Label       string
+	Placeholder string
+}
+
+type Select struct {
+	Name        string
+	Label       string
+	Options     []Option
+	Placeholder string
+}
+
+type CheckInput struct {
+	Name        string
+	Label       string
+	Checked     bool
+	Placeholder string
+}
+
+templ TextInput(input Input) {
+	<div class="form-group">
+		<label for={ input.Name }>{ input.Label }</label>
+		<input
+			type="text"
+			id={ input.Name }
+			name={ input.Name }
+			placeholder={ input.Placeholder }
+			if input.Value != nil {
+				value={ *input.Value }
+			}
+		/>
+	</div>
+}
+
+templ AreaInput(input Input) {
+	<div class="form-group">
+		<label for={ input.Name }>{ input.Label }</label>
+		<textarea
+			id={ input.Name }
+			name={ input.Name }
+			placeholder={ input.Placeholder }
+			if input.Value != nil {
+				value={ *input.Value }
+			}
+		></textarea>
+	</div>
+}
+
+templ SelectInput(input Select) {
+	<div class="form-group">
+		<label for={ input.Name }>{ input.Label }</label>
+		<select id={ input.Name } name={ input.Name }>
+			<option value="">{ input.Placeholder }</option>
+			for _, option := range input.Options {
+				<option value={ option.Value }>{ option.Label }</option>
+			}
+		</select>
+	</div>
+}
+
+templ DateInput(input Input) {
+	<div class="form-group">
+		<label for={ input.Name }>{ input.Label }</label>
+		<input
+			type="date"
+			id={ input.Name }
+			name={ input.Name }
+			class="date-input"
+		/>
+	</div>
+}
+
+templ NumberInput(input Number) {
+	<div class="form-group">
+		<label for={ input.Name }>{ input.Label }</label>
+		<input
+			type="number"
+			id={ input.Name }
+			name={ input.Name }
+			min={ input.Min }
+			max={ input.Max }
+			step={ input.Step }
+			class="number-input"
+			placeholder={ input.Placeholder }
+		/>
+	</div>
+}
+
+templ CheckBox(input CheckInput) {
+	<div class="form-group">
+		<label class="checkbox-label" for={ input.Name }>
+			{ input.Label }
+			<input
+				type="checkbox"
+				name={ input.Name }
+				if input.Checked {
+					checked
+				}
+			/>
+			<span class="checkmark"></span>
+		</label>
+	</div>
+}
+
+templ FormContainer() {
+	<div class="form-container">
+		<form>
+			{ children... }
+		</form>
+	</div>
+}

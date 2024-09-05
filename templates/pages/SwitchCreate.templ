@@ -1,107 +1,64 @@
 package pages
 
+import "switches/templates/components"
+
 type SwitchCreateInput struct {
-	Brands        []Option
-	Manufacturers []Option
-	SwitchTypes   []Option
+	SwitchTypes   []components.Option
+	Brands        []components.Option
+	Manufacturers []components.Option
 }
+
+var ()
 
 templ SwitchCreate(input SwitchCreateInput) {
 	<section>
-		@FormContainer() {
-			@TextInput(Input{
+		@components.FormContainer() {
+			@components.TextInput(components.Input{
 				Name:        "switch-name",
 				Label:       "Switch Name",
 				Placeholder: "Enter switch name"})
-			@TextInput(Input{
+			@components.TextInput(components.Input{
 				Name:        "short-desc",
 				Label:       "Short Description",
 				Placeholder: "Enter Short Description"})
-			@AreaInput(Input{
+			@components.AreaInput(components.Input{
 				Name:        "long-desc",
 				Label:       "Long Description",
 				Placeholder: "Enter Long Description"})
-			@SelectInput(Select{
-				Name:    "brand",
-				Label:   "Brand",
-				Options: input.Brands})
+			@components.SelectInput(components.Select{
+				Name:        "switch-type",
+				Label:       "Switch Type",
+				Options:     input.SwitchTypes,
+				Placeholder: "Select switch type"})
+			@components.SelectInput(components.Select{
+				Name:        "brand",
+				Label:       "Brand",
+				Options:     input.Brands,
+				Placeholder: "Select switch brand"})
+			@components.SelectInput(components.Select{
+				Name:        "manufacturer",
+				Label:       "Manufacturer",
+				Options:     input.Manufacturers,
+				Placeholder: "Select switch manufacturer"})
+			@components.DateInput(components.Input{
+				Name:        "release-date",
+				Label:       "Release Date",
+				Placeholder: "Select release date"})
+			@components.CheckBox(components.CheckInput{
+				Name:    "available",
+				Label:   "Available",
+				Checked: true})
+			@components.NumberInput(components.Number{
+				Name:        "price",
+				Label:       "Price",
+				Min:         "1",
+				Max:         "3",
+				Step:        "1",
+				Placeholder: "Enter switch price"})
+			@components.TextInput(components.Input{
+				Name:        "site-url",
+				Label:       "Site URL",
+				Placeholder: "Enter switch site URL"})
 		}
 	</section>
-}
-
-type Input struct {
-	Name        string
-	Label       string
-	Placeholder string
-	Value       *string
-}
-
-templ TextInput(input Input) {
-	<div class="form-group">
-		<label for={ input.Name }>{ input.Label }</label>
-		<input
-			type="text"
-			id={ input.Name }
-			name={ input.Name }
-			placeholder={ input.Placeholder }
-			if input.Value != nil {
-				value={ *input.Value }
-			}
-		/>
-	</div>
-}
-
-templ AreaInput(input Input) {
-	<div class="form-group">
-		<label for={ input.Name }>{ input.Label }</label>
-		<textarea
-			id={ input.Name }
-			name={ input.Name }
-			placeholder={ input.Placeholder }
-			if input.Value != nil {
-				value={ *input.Value }
-			}
-		></textarea>
-	</div>
-}
-
-templ SelectInput(input Select) {
-	<div class="form-group">
-		<label for={ input.Name }>{ input.Label }</label>
-		<select id={ input.Name } name={ input.Name }>
-			<option value="">Choose an option</option>
-			for _, option := range input.Options {
-				<option value={ option.Value }>{ option.Label }</option>
-			}
-		</select>
-	</div>
-}
-
-type Option struct {
-	Value string
-	Label string
-}
-
-type Select struct {
-	Name    string
-	Label   string
-	Options []Option
-}
-
-templ CheckBox() {
-	<div class="form-group">
-		<label class="checkbox-label">
-			Favorite 
-			<input type="checkbox" name="switchFavorites"/>
-			<span class="checkmark"></span>
-		</label>
-	</div>
-}
-
-templ FormContainer() {
-	<div class="form-container">
-		<form>
-			{ children... }
-		</form>
-	</div>
 }

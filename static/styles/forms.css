@@ -19,6 +19,8 @@ label {
 }
 
 input[type="text"],
+input[type="date"],
+input[type="number"],
 textarea,
 select {
   width: 100%;
@@ -32,6 +34,8 @@ select {
 }
 
 input[type="text"]:focus,
+input[type="date"]:hover,
+input[type="number"]:hover,
 textarea:focus,
 select:focus {
   outline: none;
@@ -54,10 +58,24 @@ select {
   padding-right: 30px;
 }
 
+input[type="text"]:hover,
+input[type="date"]:hover,
+input[type="number"]:hover,
+textarea:hover,
 select:hover {
   background-color: var(--hover-color);
 }
 
+input[type="number"] {
+  appearance: textfield;
+  -moz-appearance: textfield;
+}
+
+input[type="number"]::-webkit-outer-spin-button,
+input[type="number"]::-webkit-inner-spin-button {
+  /* -webkit-appearance: none; */
+  margin: 0;
+}
 .checkbox-label {
   display: inline-block;
   position: relative;
