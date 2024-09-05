@@ -20,11 +20,14 @@
 
   /* Background Colors */
   --background-dark: #1b1b1b;
+  --background-dark-muted: #dddddd;
   --background-light: #f8f8f8;
   --background-light-muted: #6e6e77;
 
   --color-light: #ffffff;
   --color-dark: #000000;
+
+  --hover-color: #f5f5f5;
 
   /* Box Shadows */
   --box-shadow: rgba(14, 63, 126, 0.04) 0px 0px 0px 1px,

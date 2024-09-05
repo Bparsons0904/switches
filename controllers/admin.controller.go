@@ -2,6 +2,7 @@ package controllers
 
 import (
 	"fmt"
+	"strconv"
 	"switches/database"
 	"switches/models"
 	"switches/templates/components"
@@ -50,5 +51,50 @@ func GetAdminSwitches(c *fiber.Ctx) error {
 }
 
 func GetAdminSwitchCreate(c *fiber.Ctx) error {
-	return Render(pages.SwitchCreate())(c)
+	var brands, manufacturers []models.Producer
+	if err := database.DB.Find(&brands).Error; err != nil {
+		log.Error().Err(err).Msg("Error getting the brands")
+		return c.Status(fiber.StatusBadRequest).Next()
+	}
+
+	if err := database.DB.Find(&manufacturers).Error; err != nil {
+		log.Error().Err(err).Msg("Error getting the manufacturers")
+		return c.Status(fiber.StatusBadRequest).Next()
+	}
+
+	var switchTypes []models.Type
+	if err := database.DB.Find(&switchTypes).Error; err != nil {
+		log.Error().Err(err).Msg("Error getting the switch types")
+		return c.Status(fiber.StatusBadRequest).Next()
+	}
+
+	var brandOptions []pages.Option
+	for _, brand := range brands {
+		brandOptions = append(brandOptions, pages.Option{
+			Value: strconv.Itoa(brand.ID),
+			Label: brand.Name,
+		})
+	}
+
+	var manufacturerOptions []pages.Option
+	for _, manufacturer := range manufacturers {
+		manufacturerOptions = append(manufacturerOptions, pages.Option{
+			Value: strconv.Itoa(manufacturer.ID),
+			Label: manufacturer.Name,
+		})
+	}
+
+	var switchOptions []pages.Option
+	for _, switchType := range switchTypes {
+		switchOptions = append(switchOptions, pages.Option{
+			Value: strconv.Itoa(switchType.ID),
+			Label: switchType.Name,
+		})
+	}
+
+	return Render(pages.SwitchCreate(pages.SwitchCreateInput{
+		Brands:        brandOptions,
+		Manufacturers: manufacturerOptions,
+		SwitchTypes:   switchOptions,
+	}))(c)
 }

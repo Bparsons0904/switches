@@ -1,7 +1,107 @@
 package pages
 
-templ SwitchCreate() {
+type SwitchCreateInput struct {
+	Brands        []Option
+	Manufacturers []Option
+	SwitchTypes   []Option
+}
+
+templ SwitchCreate(input SwitchCreateInput) {
 	<section>
-		<h1>Create Switch</h1>
+		@FormContainer() {
+			@TextInput(Input{
+				Name:        "switch-name",
+				Label:       "Switch Name",
+				Placeholder: "Enter switch name"})
+			@TextInput(Input{
+				Name:        "short-desc",
+				Label:       "Short Description",
+				Placeholder: "Enter Short Description"})
+			@AreaInput(Input{
+				Name:        "long-desc",
+				Label:       "Long Description",
+				Placeholder: "Enter Long Description"})
+			@SelectInput(Select{
+				Name:    "brand",
+				Label:   "Brand",
+				Options: input.Brands})
+		}
 	</section>
+}
+
+type Input struct {
+	Name        string
+	Label       string
+	Placeholder string
+	Value       *string
+}
+
+templ TextInput(input Input) {
+	<div class="form-group">
+		<label for={ input.Name }>{ input.Label }</label>
+		<input
+			type="text"
+			id={ input.Name }
+			name={ input.Name }
+			placeholder={ input.Placeholder }
+			if input.Value != nil {
+				value={ *input.Value }
+			}
+		/>
+	</div>
+}
+
+templ AreaInput(input Input) {
+	<div class="form-group">
+		<label for={ input.Name }>{ input.Label }</label>
+		<textarea
+			id={ input.Name }
+			name={ input.Name }
+			placeholder={ input.Placeholder }
+			if input.Value != nil {
+				value={ *input.Value }
+			}
+		></textarea>
+	</div>
+}
+
+templ SelectInput(input Select) {
+	<div class="form-group">
+		<label for={ input.Name }>{ input.Label }</label>
+		<select id={ input.Name } name={ input.Name }>
+			<option value="">Choose an option</option>
+			for _, option := range input.Options {
+				<option value={ option.Value }>{ option.Label }</option>
+			}
+		</select>
+	</div>
+}
+
+type Option struct {
+	Value string
+	Label string
+}
+
+type Select struct {
+	Name    string
+	Label   string
+	Options []Option
+}
+
+templ CheckBox() {
+	<div class="form-group">
+		<label class="checkbox-label">
+			Favorite 
+			<input type="checkbox" name="switchFavorites"/>
+			<span class="checkmark"></span>
+		</label>
+	</div>
+}
+
+templ FormContainer() {
+	<div class="form-container">
+		<form>
+			{ children... }
+		</form>
+	</div>
 }
