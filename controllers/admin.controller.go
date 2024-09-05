@@ -28,7 +28,7 @@ func PostAdminSwitchCreate(c *fiber.Ctx) error {
 	return Render(pages.SwitchEdit(user))(c)
 }
 
-func PostAdminImagesCreate(c *fiber.Ctx) error {
+func AddImageLinkToList(c *fiber.Ctx) error {
 	linkCountStr := c.FormValue("link-count")
 	linkCount, err := strconv.Atoi(linkCountStr)
 	if err != nil {

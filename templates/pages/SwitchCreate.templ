@@ -69,7 +69,7 @@ templ SwitchCreate(input SwitchCreateInput) {
 		}
 		<div id="image-links-container">
 			@ImageLinkForm([]ImageLinksInput{
-				{AltText: "asdf", LinkAddress: "asdf"},
+				{AltText: "", LinkAddress: ""},
 			})
 		</div>
 	</section>
@@ -95,20 +95,33 @@ templ ImageLinkForm(imageLinks []ImageLinksInput) {
 }
 
 templ ImageLink(index string, imageLink ImageLinksInput) {
-	@components.TextInput(components.Input{
-		Name:        "link-address-" + index,
-		Label:       "Image URL",
-		Placeholder: "Enter switch image link",
-		Value:       imageLink.LinkAddress,
-		Required:    true})
-	@components.TextInput(components.Input{
-		Name:        "link-alt-text-" + index,
-		Label:       "Image Alt Text",
-		Value:       imageLink.AltText,
-		Placeholder: "Enter switch image alt text",
-		Required:    true})
+	<div>
+		if index == "0" {
+			<h3>Primary Image</h3>
+		} else {
+			<h3>Secondary Image({ index })</h3>
+		}
+		@components.TextInput(components.Input{
+			Name:        "link-address-" + index,
+			Label:       "Image URL",
+			Placeholder: "Enter switch image link",
+			Value:       imageLink.LinkAddress,
+			Required:    true})
+		@components.TextInput(components.Input{
+			Name:        "link-alt-text-" + index,
+			Label:       "Image Alt Text",
+			Value:       imageLink.AltText,
+			Placeholder: "Enter switch image alt text",
+			Required:    true})
+		<button
+			type="button"
+			hx-post="/admin/images/delete"
+			hx-target="#image-links-container"
+			hx-include="switch-images-form"
+		>Remove Image</button>
+	</div>
 }
 
 templ ImageAddButton() {
-	<button type="submit">Yo</button>
+	<button type="submit">Add</button>
 }
