@@ -22,6 +22,12 @@ func GetAdminSwitchEdit(c *fiber.Ctx) error {
 	return Render(pages.SwitchEdit(user))(c)
 }
 
+func PostAdminSwitchCreate(c *fiber.Ctx) error {
+	user := c.Locals("User").(models.User)
+	log.Info().Msg("Creating a new switch")
+	return Render(pages.SwitchEdit(user))(c)
+}
+
 type SwitchQueryParams struct {
 	Search string `json:"search"`
 }

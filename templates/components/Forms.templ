@@ -121,10 +121,21 @@ templ CheckBox(input CheckInput) {
 	</div>
 }
 
-templ FormContainer() {
+type Form struct {
+	ID      string
+	Post    string
+	Include string
+}
+
+templ FormContainer(input Form) {
 	<div class="form-container">
-		<form>
+		<form
+			id={ input.ID }
+			hx-post={ input.Post }
+			hx-include={ input.Include }
+		>
 			{ children... }
+			<button type="submit" class="button">Submit</button>
 		</form>
 	</div>
 }

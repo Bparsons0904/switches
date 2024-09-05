@@ -12,7 +12,11 @@ var ()
 
 templ SwitchCreate(input SwitchCreateInput) {
 	<section>
-		@components.FormContainer() {
+		@components.FormContainer(
+			components.Form{
+				ID:      "switch-create-form",
+				Post:    "/admin/switches/create",
+				Include: ""}) {
 			@components.TextInput(components.Input{
 				Name:        "switch-name",
 				Label:       "Switch Name",
@@ -59,6 +63,18 @@ templ SwitchCreate(input SwitchCreateInput) {
 				Name:        "site-url",
 				Label:       "Site URL",
 				Placeholder: "Enter switch site URL"})
+			@ImageLinkInput()
 		}
 	</section>
+}
+
+templ ImageLinkInput() {
+	@components.TextInput(components.Input{
+		Name:        "link-address",
+		Label:       "Image URL",
+		Placeholder: "Enter switch image link"})
+	@components.TextInput(components.Input{
+		Name:        "link-alt-text",
+		Label:       "Image Alt Text",
+		Placeholder: "Enter switch image alt text"})
 }
