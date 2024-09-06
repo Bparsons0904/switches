@@ -1,38 +1,7 @@
 package icons
 
-templ IconButton(class string) {
-	<style type="text/css">
-    .icon-button {
-      background: none;
-      border: none;
-      color: inherit;
-      cursor: pointer;
-      font: inherit;
-      margin: 0;
-      padding: 3px 8px;
-      border-radius: 8px;
-      display: flex;
-
-      flex-direction: row;
-      gap: 5px;
-    }
-
-    .success {
-      background-color: var(--success-color);
-      svg {
-        fill: var(--color-light)
-      }
-    }
-
-    .danger {
-      background-color: var(--danger-color);
-      color: var(--color-light);
-      svg {
-        fill: var(--color-light)
-      }
-    }
-  </style>
-	<button type="button" class={ "icon-button " + class }>
+templ IconButton(id, class string) {
+	<button id={ id } type="button" class={ "icon-button " + class }>
 		{ children... }
 	</button>
 }

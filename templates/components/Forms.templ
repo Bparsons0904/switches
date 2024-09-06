@@ -15,6 +15,7 @@ type Number struct {
 	Max         string
 	Step        string
 	Placeholder string
+	Required    bool
 }
 
 type Option struct {
@@ -28,6 +29,7 @@ type Select struct {
 	Label       string
 	Options     []Option
 	Placeholder string
+	Required    bool
 }
 
 type CheckInput struct {
@@ -35,6 +37,16 @@ type CheckInput struct {
 	Label       string
 	Checked     bool
 	Placeholder string
+}
+
+type Form struct {
+	ID         string
+	Get        string
+	Post       string
+	Include    string
+	ButtonText string
+	Target     string
+	Button     templ.Component
 }
 
 templ TextInput(input Input) {
@@ -72,7 +84,13 @@ templ AreaInput(input Input) {
 templ SelectInput(input Select) {
 	<div class="form-group">
 		<label for={ input.Name }>{ input.Label }</label>
-		<select id={ input.Name } name={ input.Name }>
+		<select
+			id={ input.Name }
+			name={ input.Name }
+			if input.Required {
+				required
+			}
+		>
 			<option value="">{ input.Placeholder }</option>
 			for _, option := range input.Options {
 				<option value={ option.Value }>{ option.Label }</option>
@@ -105,6 +123,9 @@ templ NumberInput(input Number) {
 			step={ input.Step }
 			class="number-input"
 			placeholder={ input.Placeholder }
+			if input.Required {
+				required
+			}
 		/>
 	</div>
 }
@@ -123,16 +144,6 @@ templ CheckBox(input CheckInput) {
 			<span class="checkmark"></span>
 		</label>
 	</div>
-}
-
-type Form struct {
-	ID         string
-	Get        string
-	Post       string
-	Include    string
-	ButtonText string
-	Target     string
-	Button     templ.Component
 }
 
 templ FormContainer(input Form) {

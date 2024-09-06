@@ -59,7 +59,7 @@ func DeleteImageLinkToList(c *fiber.Ctx) error {
 		})
 	}
 
-	return Render(pages.ImageLinkForm(imageLinks))(c)
+	return Render(pages.ImageLinks(imageLinks))(c)
 }
 
 func GetImageLinkToList(c *fiber.Ctx) error {
@@ -86,7 +86,7 @@ func GetImageLinkToList(c *fiber.Ctx) error {
 		})
 	}
 
-	return Render(pages.ImageLinkForm(imageLinks))(c)
+	return Render(pages.ImageLinks(imageLinks))(c)
 }
 
 type SwitchQueryParams struct {

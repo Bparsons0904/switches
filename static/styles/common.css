@@ -14,7 +14,6 @@
 
   &:hover {
     background-color: var(--secondary-color);
-    color: var(--color-dark);
     cursor: pointer;
   }
 }
@@ -30,4 +29,36 @@
   aspect-ratio: 1 / 1;
   max-width: 100%;
   max-height: 100%;
+}
+
+.icon-button {
+  background: none;
+  border: none;
+  color: inherit;
+  cursor: pointer;
+  font: inherit;
+  margin: 0;
+  padding: 3px 8px;
+  border-radius: 8px;
+  display: flex;
+
+  flex-direction: row;
+  gap: 5px;
+  &.success {
+    background-color: var(--success-color);
+    svg {
+      fill: var(--color-light);
+    }
+  }
+  &.danger {
+    background-color: var(--danger-color);
+    color: var(--color-light);
+    svg {
+      fill: var(--color-light);
+    }
+  }
+  &.disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
 }
