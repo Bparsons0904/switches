@@ -2,17 +2,107 @@ package controllers
 
 import (
 	"fmt"
-	"log"
 	"switches/database"
 	"switches/models"
 	"switches/templates/components"
+	"switches/templates/pages"
 	"switches/utils"
 	"time"
 
 	"github.com/a-h/templ"
 	"github.com/gofiber/fiber/v2"
 	"github.com/google/uuid"
+	"github.com/rs/zerolog/log"
 )
+
+func GetSwitchPage(c *fiber.Ctx) error {
+	timer := utils.StartTimer("Get Switch Page")
+	defer timer.LogTotalTime()
+
+	var clickyClacks []models.Switch
+	err := database.DB.
+		Preload("ImageLinks").
+		Preload("Brand").
+		Preload("SwitchType").
+		Find(&clickyClacks).Error
+	if err != nil {
+		log.Error().Err(err).Msg("Error getting the switches")
+		return c.Status(fiber.StatusBadRequest).Next()
+	}
+	timer.LogTime("Get Switches")
+
+	var switchTypes []models.Type
+	err = database.DB.
+		Select("id", "name").
+		Order("id").
+		Where("category = ?", "switch_type").
+		Find(&switchTypes).Error
+	if err != nil {
+		log.Error().Err(err).Msg("Error getting the switch types")
+		return c.Status(fiber.StatusBadRequest).Next()
+	}
+	timer.LogTime("Get Switch Types")
+
+	var switchBrands []models.Producer
+	if err := database.DB.
+		Find(&switchBrands).Error; err != nil {
+		log.Error().Err(err).Msg("Error getting the switch brands")
+		return c.Status(fiber.StatusBadRequest).Next()
+	}
+	timer.LogTime("Get Switch Brands")
+
+	props := pages.SwitchesPageProps{
+		ClickyClacks: clickyClacks,
+		SwitchTypes:  switchTypes,
+		SwitchBrands: switchBrands,
+		User:         c.Locals("User").(models.User),
+	}
+
+	return Render(
+		pages.Switches(props),
+	)(
+		c,
+	)
+}
+
+func GetSwitchDetailPage(c *fiber.Ctx) error {
+	timer := utils.StartTimer("getSwitchDetailPage")
+	defer timer.LogTotalTime()
+
+	userID := c.Locals("UserID").(uuid.UUID)
+	switchID, err := GetSwitchIDParam(c)
+	if err != nil {
+		return err
+	}
+
+	var user models.User
+	if userID != uuid.Nil {
+		if err := database.DB.
+			Preload("OwnedSwitches").
+			Preload("LikedSwitches").
+			First(&user, userID).Error; err != nil {
+			return c.Status(fiber.StatusBadRequest).Next()
+		}
+	}
+	timer.LogTime("Get User")
+
+	var clickyClack models.Switch
+	if err := database.DB.
+		Preload("ImageLinks").
+		Preload("Brand").
+		Preload("SwitchType").
+		First(&clickyClack, switchID).Error; err != nil {
+		log.Error().Err(err).Msg("Error getting the switch")
+		return c.Status(fiber.StatusBadRequest).Next()
+	}
+	timer.LogTime("Get Switch")
+
+	return Render(
+		pages.SwitchDetail(user, clickyClack),
+	)(
+		c,
+	)
+}
 
 func GetSwitchList(c *fiber.Ctx) error {
 	timer := utils.StartTimer("Get Switch List")
@@ -31,7 +121,7 @@ func GetSwitchList(c *fiber.Ctx) error {
 	request := new(SwitchQueryParams)
 
 	if err := c.QueryParser(request); err != nil {
-		log.Println("Error parsing query params", err)
+		log.Warn().Err(err).Msg("Error parsing query params")
 	}
 
 	var clickyClacks []models.Switch
@@ -63,7 +153,7 @@ func GetSwitchList(c *fiber.Ctx) error {
 			if err := database.DB.Model(&models.UserOwnedSwitches{}).
 				Where("user_id = ?", user.ID).
 				Pluck("switch_id", &userOwnedSwitches).Error; err != nil {
-				log.Println("Error getting the user owned switches", err)
+				log.Error().Err(err).Msg("Error getting the user owned switches")
 				return c.Status(fiber.StatusBadRequest).Next()
 			}
 			idsToInclude = append(idsToInclude, userOwnedSwitches...)
@@ -74,7 +164,7 @@ func GetSwitchList(c *fiber.Ctx) error {
 			if err := database.DB.Model(&models.UserLikedSwitches{}).
 				Where("user_id = ?", user.ID).
 				Pluck("switch_id", &userLikedSwitches).Error; err != nil {
-				log.Println("Error getting the user liked switches", err)
+				log.Error().Err(err).Msg("Error getting the user liked switches")
 				return c.Status(fiber.StatusBadRequest).Next()
 			}
 			idsToInclude = append(idsToInclude, userLikedSwitches...)
@@ -85,7 +175,7 @@ func GetSwitchList(c *fiber.Ctx) error {
 
 	err := clickyClackQuery.Find(&clickyClacks).Error
 	if err != nil {
-		log.Println("Error getting the user", err)
+		log.Error().Err(err).Msg("Error getting the switches")
 		return c.Status(fiber.StatusBadRequest).Next()
 	}
 	timer.LogTime("Get Switches")
@@ -118,7 +208,7 @@ func GetSwitchDetailCard(c *fiber.Ctx) error {
 
 	user, switchID, err := getParams(c)
 	if err != nil {
-		log.Println("Error getting the uuid of Switch", err)
+		log.Error().Err(err).Msg("Error getting the params")
 		return err
 	}
 
@@ -135,10 +225,9 @@ func GetSwitchDetailCard(c *fiber.Ctx) error {
 
 func getParams(c *fiber.Ctx) (models.User, uuid.UUID, error) {
 	user := c.Locals("User").(models.User)
-	log.Println("User", user)
 	switchID, err := GetSwitchIDParam(c)
 	if err != nil {
-		log.Println("Error getting the uuid of Switch", err)
+		log.Error().Err(err).Msg("Error getting the switch id")
 	}
 
 	return user, switchID, err
@@ -166,9 +255,9 @@ func getUpdatedUser(user models.User, timer *utils.Timer, c *fiber.Ctx) (models.
 
 	c.Locals("User", updatedUser)
 	if err := database.SetUUIDJSONKeyDB("user", updatedUser.ID, updatedUser, 30*time.Hour); err != nil {
-		log.Println("Error setting user in keydb", err)
+		log.Error().Err(err).Msg("Error setting user in keydb")
 		if err := database.DeleteUUIDKeyDB("user", updatedUser.ID); err != nil {
-			log.Println("Error deleting user in keydb", err)
+			log.Error().Err(err).Msg("Error deleting user in keydb")
 		}
 	}
 	timer.LogTime("Set User in KeyDB")
@@ -189,7 +278,7 @@ func processUserSwitch(
 	}
 
 	if user.ID == uuid.Nil {
-		log.Println("User not logged in")
+		log.Warn().Msg("User not logged in")
 		c.Set("HX-Redirect", "/auth/login")
 		return c.SendStatus(fiber.StatusUnauthorized)
 	}
@@ -198,11 +287,13 @@ func processUserSwitch(
 		if err := database.DB.Model(table).Create(map[string]interface{}{
 			"UserID": user.ID, "SwitchID": switchID,
 		}).Error; err != nil {
+			log.Error().Err(err).Msg("Error creating the association")
 			return c.Status(fiber.StatusInternalServerError).Next()
 		}
 		timer.LogTime("Create Association")
 	} else {
 		if err := database.DB.Delete(table, "user_id = ? AND switch_id = ?", user.ID, switchID).Error; err != nil {
+			log.Error().Err(err).Msg("Error deleting the association")
 			return c.Status(fiber.StatusInternalServerError).Next()
 		}
 		timer.LogTime("Delete Association")
@@ -210,11 +301,13 @@ func processUserSwitch(
 
 	clickyClack, err := getSwitches(switchID, timer)
 	if err != nil {
+		log.Error().Err(err).Msg("Error getting the switch")
 		return c.Status(fiber.StatusInternalServerError).Next()
 	}
 
 	updatedUser, err := getUpdatedUser(user, timer, c)
 	if err != nil {
+		log.Error().Err(err).Msg("Error getting the updated user")
 		return c.Status(fiber.StatusInternalServerError).Next()
 	}
 
