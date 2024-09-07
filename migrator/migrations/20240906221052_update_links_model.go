@@ -24,7 +24,7 @@ func init() {
 			}
 			type ImageLink struct {
 				ID          uuid.UUID      `gorm:"type:uuid;default:uuid_generate_v7();primaryKey" json:"id"`
-				LinkAddress string         `gorm:"type:varchar(255);not null"                      json:"linkAddress"`
+				LinkAddress string         `gorm:"type:varchar(255);default:''"                    json:"linkAddress"`
 				AltText     string         `gorm:"type:varchar(255);default:''"                    json:"altText,omitempty"`
 				Thumbnail   string         `gorm:"type:varchar(255);default:''"                    json:"thumbnail,omitempty"`
 				FullSize    string         `gorm:"type:varchar(255);default:''"                    json:"fullSize,omitempty"`
@@ -35,9 +35,8 @@ func init() {
 				UpdatedAt   time.Time      `gorm:"autoUpdateTime"                                  json:"updatedAt"`
 				DeletedAt   gorm.DeletedAt `gorm:"index"                                           json:"deletedAt"`
 				CreatedByID uuid.UUID      `gorm:"type:uuid"                                       json:"createdById"`
-				CreatedBy   User           `gorm:"foreignKey:CreatedByID;references:ID"            json:"createdBy,omitempty"`
-				UpdateByID  uuid.UUID      `gorm:"type:uuid"                                       json:"updateById"`
-				UpdateBy    User           `gorm:"foreignKey:UpdateByID;references:ID"             json:"updateBy,omitempty"`
+				UpdatedByID uuid.UUID      `gorm:"type:uuid"                                       json:"updatedById"`
+				UpdatedBy   User           `gorm:"foreignKey:UpdatedByID;references:ID"            json:"updatedBy,omitempty"`
 			}
 			type Switch struct {
 				ID               uuid.UUID      `gorm:"type:uuid;default:uuid_generate_v7();primaryKey"                                          json:"id"`
@@ -57,6 +56,10 @@ func init() {
 				CreatedAt        time.Time      `gorm:"autoCreateTime"                                                                           json:"createdAt"`
 				UpdatedAt        time.Time      `gorm:"autoUpdateTime"                                                                           json:"updatedAt"`
 				DeletedAt        gorm.DeletedAt `gorm:"index"                                                                                    json:"deletedAt"`
+				CreatedByID      uuid.UUID      `gorm:"type:uuid"                                                                                json:"createdById"`
+				CreatedBy        User           `gorm:"foreignKey:CreatedByID;references:ID"                                                     json:"createdBy,omitempty"`
+				UpdatedByID      uuid.UUID      `gorm:"type:uuid"                                                                                json:"updatedById"`
+				UpdatedBy        User           `gorm:"foreignKey:UpdatedByID;references:ID"                                                     json:"updatedBy,omitempty"`
 				ImageLinks       []*ImageLink   `gorm:"foreignKey:OwnerID;polymorphicValue:Switch;constraint:OnUpdate:CASCADE,OnDelete:CASCADE;" json:"imageLinks,omitempty"`
 			}
 

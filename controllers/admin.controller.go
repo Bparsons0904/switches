@@ -7,6 +7,8 @@ import (
 	"switches/models"
 	"switches/templates/components"
 	"switches/templates/pages"
+	"switches/utils"
+	"time"
 
 	"github.com/gofiber/fiber/v2"
 	"github.com/rs/zerolog/log"
@@ -22,10 +24,133 @@ func GetAdminSwitchEdit(c *fiber.Ctx) error {
 	return Render(pages.SwitchEdit(user))(c)
 }
 
+type SwitchQueryParams struct {
+	Name             string  `form:"switch-name"`
+	ShortDescription string  `form:"short-desc"`
+	LongDescription  string  `form:"long-desc"`
+	SwitchTypeID     string  `form:"switch-type-id"`
+	BrandID          *string `form:"brand-id"`
+	ManufacturerID   *string `form:"manufacturer-id"`
+	ReleaseDate      *string `form:"release-date"`
+	Avaliable        string  `form:"avaliable"`
+	Price            string  `form:"price"`
+	SiteURL          string  `form:"site-url"`
+	LinkCount        string  `form:"link-count"`
+}
+
 func PostAdminSwitchCreate(c *fiber.Ctx) error {
+	timer := utils.StartTimer("Create Switch")
+	defer timer.LogTotalTime()
 	user := c.Locals("User").(models.User)
 	log.Info().Msg("Creating a new switch")
-	return Render(pages.SwitchEdit(user))(c)
+
+	var request SwitchQueryParams
+	if err := c.BodyParser(&request); err != nil {
+		log.Error().Err(err).Msg("Error parsing request")
+		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
+			"error": "Invalid link count",
+		})
+	}
+	timer.LogTime("Parse Request")
+
+	var imageLinks []*models.ImageLink
+	linkCount, err := strconv.Atoi(request.LinkCount)
+	if err != nil {
+		log.Error().Err(err).Msg("Error parsing link count")
+		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
+			"message": "Invalid link count", "error": err,
+		})
+	}
+
+	for i := 0; i < linkCount; i++ {
+		linkAddress := c.FormValue(fmt.Sprintf("link-address-%d", i))
+		altText := c.FormValue(fmt.Sprintf("link-alt-text-%d", i))
+		if linkAddress == "" || altText == "" {
+			log.Warn().Msg("Empty link address or alt text")
+			continue
+		}
+
+		imageLinks = append(imageLinks, &models.ImageLink{
+			LinkAddress: linkAddress,
+			AltText:     altText,
+			CreatedByID: user.ID,
+			UpdatedByID: user.ID,
+			IsPrimary:   i == 0,
+			OwnerType:   "switch",
+		})
+	}
+
+	switchTypeID, err := strconv.Atoi(request.SwitchTypeID)
+	if err != nil {
+		log.Error().Err(err).Msg("Error parsing switch type ID")
+		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
+			"message": "Error parsing switch type ID", "error": err,
+		})
+	}
+	brandID, err := strconv.Atoi(*request.BrandID)
+	if err != nil {
+		log.Error().Err(err).Msg("Error parsing brand ID")
+		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
+			"message": "Error parsing brand ID", "error": err,
+		})
+	}
+	manufacturerID, err := strconv.Atoi(*request.ManufacturerID)
+	if err != nil {
+		log.Error().Err(err).Msg("Error parsing manufacturer ID")
+		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
+			"message": "Error parsing manufacturer ID", "error": err,
+		})
+	}
+	releaseDate, err := time.Parse("2006-01-02", *request.ReleaseDate)
+	if err != nil {
+		log.Error().Err(err).Msg("Error parsing release date")
+		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
+			"message": "Error parsing release date", "error": err,
+		})
+	}
+	pricePoint, err := strconv.Atoi(request.Price)
+	if err != nil {
+		log.Error().Err(err).Msg("Error parsing price")
+		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
+			"message": "Error parsing price", "error": err,
+		})
+	}
+
+	clickyClack := models.Switch{
+		Name:             request.Name,
+		ShortDescription: request.ShortDescription,
+		LongDescription:  request.LongDescription,
+		SwitchTypeID:     switchTypeID,
+		BrandID:          &brandID,
+		ManufacturerID:   &manufacturerID,
+		ReleaseDate:      &releaseDate,
+		Available:        request.Avaliable == "true",
+		PricePoint:       pricePoint,
+		SiteURL:          request.SiteURL,
+		CreatedByID:      user.ID,
+		UpdatedByID:      user.ID,
+		ImageLinks:       imageLinks,
+	}
+
+	timer.LogTime("Set data")
+	if err := database.DB.Create(&clickyClack).Error; err != nil {
+		log.Error().Err(err).Msg("Error creating the switch")
+		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
+			"message": "Error creating the switch", "error": err,
+		})
+	}
+	timer.LogTime("Create switch")
+
+	if err := database.DB.
+		Preload("ImageLinks").
+		Preload("Brand").
+		Preload("SwitchType").
+		First(&clickyClack, clickyClack.ID).Error; err != nil {
+		log.Error().Err(err).Msg("Error getting the switch")
+		return c.Status(fiber.StatusBadRequest).Next()
+	}
+	timer.LogTime("Get Switch")
+	return Render(pages.SwitchDetail(user, clickyClack))(c)
 }
 
 func DeleteImageLinkToList(c *fiber.Ctx) error {
@@ -89,12 +214,12 @@ func GetImageLinkToList(c *fiber.Ctx) error {
 	return Render(pages.ImageLinks(imageLinks))(c)
 }
 
-type SwitchQueryParams struct {
+type SwitchSearchQueryParams struct {
 	Search string `json:"search"`
 }
 
 func GetAdminSwitches(c *fiber.Ctx) error {
-	var request SwitchQueryParams
+	var request SwitchSearchQueryParams
 	if err := c.QueryParser(&request); err != nil {
 		log.Warn().Err(err).Msg("Error parsing query params")
 	}

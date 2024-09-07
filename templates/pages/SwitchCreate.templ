@@ -37,23 +37,21 @@ templ SwitchCreate(input SwitchCreateInput) {
 				Placeholder: "Enter Long Description",
 				Required:    true})
 			@components.SelectInput(components.Select{
-				Name:        "switch-type",
+				Name:        "switch-type-id",
 				Label:       "Switch Type",
 				Options:     input.SwitchTypes,
 				Placeholder: "Select switch type",
 				Required:    true})
 			@components.SelectInput(components.Select{
-				Name:        "brand",
+				Name:        "brand-id",
 				Label:       "Brand",
 				Options:     input.Brands,
-				Placeholder: "Select switch brand",
-				Required:    true})
+				Placeholder: "Select switch brand"})
 			@components.SelectInput(components.Select{
-				Name:        "manufacturer",
+				Name:        "manufacturer-id",
 				Label:       "Manufacturer",
 				Options:     input.Manufacturers,
-				Placeholder: "Select switch manufacturer",
-				Required:    true})
+				Placeholder: "Select switch manufacturer"})
 			@components.DateInput(components.Input{
 				Name:        "release-date",
 				Label:       "Release Date",

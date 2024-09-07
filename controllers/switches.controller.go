@@ -97,11 +97,7 @@ func GetSwitchDetailPage(c *fiber.Ctx) error {
 	}
 	timer.LogTime("Get Switch")
 
-	return Render(
-		pages.SwitchDetail(user, clickyClack),
-	)(
-		c,
-	)
+	return Render(pages.SwitchDetail(user, clickyClack))(c)
 }
 
 func GetSwitchList(c *fiber.Ctx) error {

@@ -25,5 +25,9 @@ type Switch struct {
 	CreatedAt        time.Time      `gorm:"autoCreateTime"                                                                           json:"createdAt"`
 	UpdatedAt        time.Time      `gorm:"autoUpdateTime"                                                                           json:"updatedAt"`
 	DeletedAt        gorm.DeletedAt `gorm:"index"                                                                                    json:"deletedAt"`
+	CreatedByID      uuid.UUID      `gorm:"type:uuid"                                                                                json:"createdById"`
+	CreatedBy        User           `gorm:"foreignKey:CreatedByID;references:ID"                                                     json:"createdBy,omitempty"`
+	UpdatedByID      uuid.UUID      `gorm:"type:uuid"                                                                                json:"updatedById"`
+	UpdatedBy        User           `gorm:"foreignKey:UpdatedByID;references:ID"                                                     json:"updatedBy,omitempty"`
 	ImageLinks       []*ImageLink   `gorm:"foreignKey:OwnerID;polymorphicValue:Switch;constraint:OnUpdate:CASCADE,OnDelete:CASCADE;" json:"imageLinks,omitempty"`
 }
