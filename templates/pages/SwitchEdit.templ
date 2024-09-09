@@ -1,15 +1,23 @@
 
 package pages
 
-import "switches/templates/components"
+import (
+	"switches/models"
+	"switches/templates/components"
+)
 
-templ SwitchEdit(input components.SwitchInput) {
+type SwitchEditInput struct {
+	FormData components.SwitchInput
+	Switch   models.Switch
+}
+
+templ SwitchEdit(input SwitchEditInput) {
 	<section id="switch-create-form">
 		@components.FormContainer(
 			components.Form{
 				ID:   "switch-create-form",
 				Post: "/admin/switches/create"}) {
-			@components.SwitchGeneralForm(input)
+			@components.SwitchGeneralForm(input.FormData)
 		}
 	</section>
 }

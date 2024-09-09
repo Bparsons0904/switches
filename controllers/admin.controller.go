@@ -20,13 +20,34 @@ func GetAdminHome(c *fiber.Ctx) error {
 }
 
 func GetAdminSwitchEdit(c *fiber.Ctx) error {
+	switchID, err := GetSwitchIDParam(c)
+	if err != nil {
+		return err
+	}
+
 	switchInput, err := getSwitchInputData()
 	if err != nil {
 		log.Error().Err(err).Msg("Error getting the switch input data for edit")
 		return c.Status(fiber.StatusBadRequest).Next()
 	}
 
-	return Render(pages.SwitchEdit(switchInput))(c)
+	var clickyClack models.Switch
+	err = database.DB.
+		Preload("ImageLinks").
+		Preload("Brand").
+		Preload("SwitchType").
+		First(&clickyClack, switchID).Error
+	if err != nil {
+		log.Error().Err(err).Msg("Error getting the switche")
+		return c.Status(fiber.StatusBadRequest).Next()
+	}
+
+	input := pages.SwitchEditInput{
+		FormData: switchInput,
+		Switch:   clickyClack,
+	}
+
+	return Render(pages.SwitchEdit(input))(c)
 }
 
 type SwitchQueryParams struct {
