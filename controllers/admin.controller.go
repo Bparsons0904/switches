@@ -20,8 +20,13 @@ func GetAdminHome(c *fiber.Ctx) error {
 }
 
 func GetAdminSwitchEdit(c *fiber.Ctx) error {
-	user := c.Locals("User").(models.User)
-	return Render(pages.SwitchEdit(user))(c)
+	switchInput, err := getSwitchInputData()
+	if err != nil {
+		log.Error().Err(err).Msg("Error getting the switch input data for edit")
+		return c.Status(fiber.StatusBadRequest).Next()
+	}
+
+	return Render(pages.SwitchEdit(switchInput))(c)
 }
 
 type SwitchQueryParams struct {
@@ -170,7 +175,7 @@ func DeleteImageLinkToList(c *fiber.Ctx) error {
 		})
 	}
 
-	var imageLinks []pages.ImageLinksInput
+	var imageLinks []components.ImageLinksInput
 	for i := 0; i < linkCount; i++ {
 		if i == imageLinkIndex {
 			continue
@@ -178,13 +183,13 @@ func DeleteImageLinkToList(c *fiber.Ctx) error {
 		linkAddress := c.FormValue(fmt.Sprintf("link-address-%d", i))
 		altText := c.FormValue(fmt.Sprintf("link-alt-text-%d", i))
 
-		imageLinks = append(imageLinks, pages.ImageLinksInput{
+		imageLinks = append(imageLinks, components.ImageLinksInput{
 			LinkAddress: linkAddress,
 			AltText:     altText,
 		})
 	}
 
-	return Render(pages.ImageLinks(imageLinks))(c)
+	return Render(components.ImageLinksForm(imageLinks))(c)
 }
 
 func GetImageLinkToList(c *fiber.Ctx) error {
@@ -200,18 +205,18 @@ func GetImageLinkToList(c *fiber.Ctx) error {
 		})
 	}
 
-	var imageLinks []pages.ImageLinksInput
+	var imageLinks []components.ImageLinksInput
 	for i := 0; i <= linkCount; i++ {
 		linkAddress := c.FormValue(fmt.Sprintf("link-address-%d", i))
 		altText := c.FormValue(fmt.Sprintf("link-alt-text-%d", i))
 
-		imageLinks = append(imageLinks, pages.ImageLinksInput{
+		imageLinks = append(imageLinks, components.ImageLinksInput{
 			LinkAddress: linkAddress,
 			AltText:     altText,
 		})
 	}
 
-	return Render(pages.ImageLinks(imageLinks))(c)
+	return Render(components.ImageLinksForm(imageLinks))(c)
 }
 
 type SwitchSearchQueryParams struct {
@@ -243,21 +248,32 @@ func GetAdminSwitches(c *fiber.Ctx) error {
 }
 
 func GetAdminSwitchCreate(c *fiber.Ctx) error {
+	switchInput, err := getSwitchInputData()
+	if err != nil {
+		log.Error().Err(err).Msg("Error getting the switch input data for create")
+		return c.Status(fiber.StatusBadRequest).Next()
+	}
+
+	return Render(pages.SwitchCreate(switchInput))(c)
+}
+
+func getSwitchInputData() (components.SwitchInput, error) {
+	switchInput := components.SwitchInput{}
 	var brands, manufacturers []models.Producer
 	if err := database.DB.Find(&brands).Error; err != nil {
 		log.Error().Err(err).Msg("Error getting the brands")
-		return c.Status(fiber.StatusBadRequest).Next()
+		return switchInput, err
 	}
 
 	if err := database.DB.Find(&manufacturers).Error; err != nil {
 		log.Error().Err(err).Msg("Error getting the manufacturers")
-		return c.Status(fiber.StatusBadRequest).Next()
+		return switchInput, err
 	}
 
 	var switchTypes []models.Type
 	if err := database.DB.Where("category = 'switch_type'").Find(&switchTypes).Error; err != nil {
 		log.Error().Err(err).Msg("Error getting the switch types")
-		return c.Status(fiber.StatusBadRequest).Next()
+		return switchInput, err
 	}
 
 	var brandOptions []components.Option
@@ -284,9 +300,11 @@ func GetAdminSwitchCreate(c *fiber.Ctx) error {
 		})
 	}
 
-	return Render(pages.SwitchCreate(pages.SwitchCreateInput{
+	switchInput = components.SwitchInput{
 		Brands:        brandOptions,
 		Manufacturers: manufacturerOptions,
 		SwitchTypes:   switchOptions,
-	}))(c)
+	}
+
+	return switchInput, nil
 }
