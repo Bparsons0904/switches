@@ -87,6 +87,7 @@
   flex-direction: column;
   gap: 20px;
   padding: 1rem;
+  position: relative;
   #info-container {
     display: flex;
     flex-direction: column;

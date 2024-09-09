@@ -12,11 +12,16 @@ templ SwitchDetail(user models.User, clickyClack models.Switch) {
 	<main id="switch-detail">
 		if user.IsAdmin {
 			<div
+				style="position: absolute; top: 0; right: 0; padding: 1rem; cursor: pointer;"
 				hx-get={ fmt.Sprintf("/admin/switches/%s/edit", clickyClack.ID) }
 				hx-target="#main"
 				hx-swap="innerHTML"
 				hx-push-url="true"
-			></div>
+			>
+				@icons.IconButton("admin-edit", "") {
+					@icons.Edit()
+				}
+			</div>
 		}
 		<section id="details-area">
 			<div id="images-container">
