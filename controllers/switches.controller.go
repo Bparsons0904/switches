@@ -15,6 +15,12 @@ import (
 	"github.com/rs/zerolog/log"
 )
 
+func PutSwitch(c *fiber.Ctx) error {
+	log.Info().Msg("Put Switch")
+
+	return GetAdminSwitchEdit(c)
+}
+
 func GetSwitchPage(c *fiber.Ctx) error {
 	timer := utils.StartTimer("Get Switch Page")
 	defer timer.LogTotalTime()

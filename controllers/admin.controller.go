@@ -42,7 +42,7 @@ func GetAdminSwitchEdit(c *fiber.Ctx) error {
 		return c.Status(fiber.StatusBadRequest).Next()
 	}
 
-	input := pages.SwitchEditInput{
+	input := components.SwitchInput{
 		FormData: switchInput,
 		Switch:   clickyClack,
 	}
@@ -269,17 +269,22 @@ func GetAdminSwitches(c *fiber.Ctx) error {
 }
 
 func GetAdminSwitchCreate(c *fiber.Ctx) error {
-	switchInput, err := getSwitchInputData()
+	switchData, err := getSwitchInputData()
 	if err != nil {
 		log.Error().Err(err).Msg("Error getting the switch input data for create")
 		return c.Status(fiber.StatusBadRequest).Next()
 	}
 
+	switchInput := components.SwitchInput{
+		FormData: switchData,
+		Switch:   models.Switch{},
+	}
+
 	return Render(pages.SwitchCreate(switchInput))(c)
 }
 
-func getSwitchInputData() (components.SwitchInput, error) {
-	switchInput := components.SwitchInput{}
+func getSwitchInputData() (components.SwitchData, error) {
+	switchInput := components.SwitchData{}
 	var brands, manufacturers []models.Producer
 	if err := database.DB.Find(&brands).Error; err != nil {
 		log.Error().Err(err).Msg("Error getting the brands")
@@ -321,7 +326,7 @@ func getSwitchInputData() (components.SwitchInput, error) {
 		})
 	}
 
-	switchInput = components.SwitchInput{
+	switchInput = components.SwitchData{
 		Brands:        brandOptions,
 		Manufacturers: manufacturerOptions,
 		SwitchTypes:   switchOptions,

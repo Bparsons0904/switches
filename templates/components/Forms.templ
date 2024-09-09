@@ -39,16 +39,6 @@ type CheckInput struct {
 	Placeholder string
 }
 
-type Form struct {
-	ID         string
-	Get        string
-	Post       string
-	Include    string
-	ButtonText string
-	Target     string
-	Button     templ.Component
-}
-
 templ TextInput(input Input) {
 	<div class="form-group">
 		<label for={ input.Name }>{ input.Label }</label>
@@ -146,6 +136,17 @@ templ CheckBox(input CheckInput) {
 	</div>
 }
 
+type Form struct {
+	ID         string
+	Get        string
+	Post       string
+	Put        string
+	Include    string
+	ButtonText string
+	Target     string
+	Button     templ.Component
+}
+
 templ FormContainer(input Form) {
 	<div class="form-container">
 		<form
@@ -155,6 +156,9 @@ templ FormContainer(input Form) {
 			}
 			if input.Post != "" {
 				hx-post={ input.Post }
+			}
+			if input.Put != "" {
+				hx-post={ input.Put }
 			}
 			if input.Include != "" {
 				hx-include={ input.Include }

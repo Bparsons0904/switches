@@ -3,13 +3,19 @@ package components
 import (
 	"fmt"
 	"strconv"
+	"switches/models"
 	"switches/templates/components/icons"
 )
 
-type SwitchInput struct {
+type SwitchData struct {
 	SwitchTypes   []Option
 	Brands        []Option
 	Manufacturers []Option
+}
+
+type SwitchInput struct {
+	FormData SwitchData
+	Switch   models.Switch
 }
 
 templ SwitchGeneralForm(input SwitchInput) {
@@ -31,18 +37,18 @@ templ SwitchGeneralForm(input SwitchInput) {
 	@SelectInput(Select{
 		Name:        "switch-type-id",
 		Label:       "Switch Type",
-		Options:     input.SwitchTypes,
+		Options:     input.FormData.SwitchTypes,
 		Placeholder: "Select switch type",
 		Required:    true})
 	@SelectInput(Select{
 		Name:        "brand-id",
 		Label:       "Brand",
-		Options:     input.Brands,
+		Options:     input.FormData.Brands,
 		Placeholder: "Select switch brand"})
 	@SelectInput(Select{
 		Name:        "manufacturer-id",
 		Label:       "Manufacturer",
-		Options:     input.Manufacturers,
+		Options:     input.FormData.Manufacturers,
 		Placeholder: "Select switch manufacturer"})
 	@DateInput(Input{
 		Name:        "release-date",
