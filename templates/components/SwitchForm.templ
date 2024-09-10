@@ -20,73 +20,92 @@ type SwitchInput struct {
 
 templ SwitchGeneralForm(input SwitchInput) {
 	@TextInput(Input{
+		ID:          input.Switch.ID.String(),
+		Value:       input.Switch.Name,
 		Name:        "switch-name",
 		Label:       "Switch Name",
 		Placeholder: "Enter switch name",
 		Required:    true})
 	@TextInput(Input{
+		ID:          input.Switch.ID.String(),
+		Value:       input.Switch.ShortDescription,
 		Name:        "short-desc",
 		Label:       "Short Description",
 		Placeholder: "Enter Short Description",
 		Required:    true})
 	@AreaInput(Input{
+		ID:          input.Switch.ID.String(),
+		Value:       input.Switch.LongDescription,
 		Name:        "long-desc",
 		Label:       "Long Description",
 		Placeholder: "Enter Long Description",
 		Required:    true})
 	@SelectInput(Select{
+		ID:          input.Switch.ID.String(),
 		Name:        "switch-type-id",
 		Label:       "Switch Type",
 		Options:     input.FormData.SwitchTypes,
+		Selected:    strconv.Itoa(input.Switch.SwitchTypeID),
 		Placeholder: "Select switch type",
 		Required:    true})
 	@SelectInput(Select{
+		ID:          input.Switch.ID.String(),
 		Name:        "brand-id",
 		Label:       "Brand",
 		Options:     input.FormData.Brands,
+		Selected:    pointerIntToString(input.Switch.BrandID),
 		Placeholder: "Select switch brand"})
 	@SelectInput(Select{
+		ID:          input.Switch.ID.String(),
 		Name:        "manufacturer-id",
 		Label:       "Manufacturer",
 		Options:     input.FormData.Manufacturers,
+		Selected:    pointerIntToString(input.Switch.ManufacturerID),
 		Placeholder: "Select switch manufacturer"})
 	@DateInput(Input{
+		ID:          input.Switch.ID.String(),
 		Name:        "release-date",
 		Label:       "Release Date",
 		Placeholder: "Select release date"})
 	@CheckBox(CheckInput{
+		ID:      input.Switch.ID.String(),
 		Name:    "available",
 		Label:   "Available",
-		Checked: true})
+		Checked: input.Switch.Available})
 	@NumberInput(Number{
+		ID:          input.Switch.ID.String(),
 		Name:        "price",
 		Label:       "Price ($ $$ $$$)",
 		Min:         "1",
 		Max:         "3",
 		Step:        "1",
 		Placeholder: "Enter switch price",
+		Value:       input.Switch.PricePoint,
 		Required:    true})
 	@TextInput(Input{
+		ID:          input.Switch.ID.String(),
 		Name:        "site-url",
 		Label:       "Site URL",
 		Placeholder: "Enter switch site URL",
+		Value:       input.Switch.SiteURL,
 		Required:    true})
 	<div id="image-links-container">
 		<div id="image-links-wrapper">
-			@ImageLinksForm([]ImageLinksInput{
-				{AltText: "", LinkAddress: ""},
-			})
+			if len(input.Switch.ImageLinks) == 0 {
+				@ImageLinksForm([]*models.ImageLink{{
+					LinkAddress: "",
+					AltText:     "",
+				}})
+			} else {
+				@ImageLinksForm(input.Switch.ImageLinks)
+			}
 		</div>
 	</div>
 }
 
-type ImageLinksInput struct {
-	AltText     string
-	LinkAddress string
-}
-
-templ ImageLinksForm(imageLinks []ImageLinksInput) {
+templ ImageLinksForm(imageLinks []*models.ImageLink) {
 	<input type="hidden" name="link-count" value={ strconv.Itoa(len(imageLinks)) }/>
+	{ fmt.Sprintf("lenth %d", len(imageLinks)) }
 	for i := 0; i < len(imageLinks); i++ {
 		@ImageLinkForm(i, imageLinks[i])
 		<div style="display:flex; flex-direction: row; justify-content: space-between">
@@ -143,7 +162,7 @@ templ ImageLinksForm(imageLinks []ImageLinksInput) {
 	}
 }
 
-templ ImageLinkForm(index int, imageLink ImageLinksInput) {
+templ ImageLinkForm(index int, imageLink *models.ImageLink) {
 	<div class="linked-group">
 		<h3 style="margin-bottom: .5rem">{ fmt.Sprintf("Image %d", index + 1) }</h3>
 		@TextInput(Input{
@@ -159,4 +178,11 @@ templ ImageLinkForm(index int, imageLink ImageLinksInput) {
 			Placeholder: "Enter switch image alt text",
 			Required:    true})
 	</div>
+}
+
+func pointerIntToString(p *int) string {
+	if p == nil {
+		return ""
+	}
+	return strconv.Itoa(*p)
 }

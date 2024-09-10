@@ -19,6 +19,12 @@ func GetAdminHome(c *fiber.Ctx) error {
 	return Render(pages.Admin(user))(c)
 }
 
+func PutSwitch(c *fiber.Ctx) error {
+	log.Info().Msg("Put Switch")
+
+	return GetAdminSwitchEdit(c)
+}
+
 func GetAdminSwitchEdit(c *fiber.Ctx) error {
 	switchID, err := GetSwitchIDParam(c)
 	if err != nil {
@@ -41,6 +47,8 @@ func GetAdminSwitchEdit(c *fiber.Ctx) error {
 		log.Error().Err(err).Msg("Error getting the switche")
 		return c.Status(fiber.StatusBadRequest).Next()
 	}
+
+	log.Info().Int("image links", len(clickyClack.ImageLinks)).Msg("Got the switch")
 
 	input := components.SwitchInput{
 		FormData: switchInput,
@@ -196,7 +204,7 @@ func DeleteImageLinkToList(c *fiber.Ctx) error {
 		})
 	}
 
-	var imageLinks []components.ImageLinksInput
+	var imageLinks []*models.ImageLink
 	for i := 0; i < linkCount; i++ {
 		if i == imageLinkIndex {
 			continue
@@ -204,7 +212,7 @@ func DeleteImageLinkToList(c *fiber.Ctx) error {
 		linkAddress := c.FormValue(fmt.Sprintf("link-address-%d", i))
 		altText := c.FormValue(fmt.Sprintf("link-alt-text-%d", i))
 
-		imageLinks = append(imageLinks, components.ImageLinksInput{
+		imageLinks = append(imageLinks, &models.ImageLink{
 			LinkAddress: linkAddress,
 			AltText:     altText,
 		})
@@ -226,12 +234,12 @@ func GetImageLinkToList(c *fiber.Ctx) error {
 		})
 	}
 
-	var imageLinks []components.ImageLinksInput
+	var imageLinks []*models.ImageLink
 	for i := 0; i <= linkCount; i++ {
 		linkAddress := c.FormValue(fmt.Sprintf("link-address-%d", i))
 		altText := c.FormValue(fmt.Sprintf("link-alt-text-%d", i))
 
-		imageLinks = append(imageLinks, components.ImageLinksInput{
+		imageLinks = append(imageLinks, &models.ImageLink{
 			LinkAddress: linkAddress,
 			AltText:     altText,
 		})

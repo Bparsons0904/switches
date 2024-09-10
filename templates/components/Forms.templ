@@ -1,42 +1,17 @@
 package components
 
+import (
+	"fmt"
+	"strconv"
+)
+
 type Input struct {
+	ID          string
 	Name        string
 	Label       string
 	Placeholder string
 	Value       string
 	Required    bool
-}
-
-type Number struct {
-	Name        string
-	Label       string
-	Min         string
-	Max         string
-	Step        string
-	Placeholder string
-	Required    bool
-}
-
-type Option struct {
-	Value       string
-	Label       string
-	Placeholder string
-}
-
-type Select struct {
-	Name        string
-	Label       string
-	Options     []Option
-	Placeholder string
-	Required    bool
-}
-
-type CheckInput struct {
-	Name        string
-	Label       string
-	Checked     bool
-	Placeholder string
 }
 
 templ TextInput(input Input) {
@@ -44,12 +19,14 @@ templ TextInput(input Input) {
 		<label for={ input.Name }>{ input.Label }</label>
 		<input
 			type="text"
-			id={ input.Name }
+			if input.ID != "" {
+				id={ fmt.Sprintf("%s-%s", input.ID, input.Name) }
+			} else {
+				id={ input.Name }
+			}
 			name={ input.Name }
 			placeholder={ input.Placeholder }
-			if input.Value != "" {
-				value={ input.Value }
-			}
+			value={ input.Value }
 			if input.Required {
 				required
 			}
@@ -61,21 +38,44 @@ templ AreaInput(input Input) {
 	<div class="form-group">
 		<label for={ input.Name }>{ input.Label }</label>
 		<textarea
-			id={ input.Name }
+			if input.ID != "" {
+				id={ fmt.Sprintf("%s-%s", input.ID, input.Name) }
+			} else {
+				id={ input.Name }
+			}
 			name={ input.Name }
 			placeholder={ input.Placeholder }
-			if input.Value != "" {
-				value={ input.Value }
-			}
-		></textarea>
+		>
+			{ input.Value }
+		</textarea>
 	</div>
+}
+
+type Option struct {
+	Value       string
+	Label       string
+	Placeholder string
+}
+
+type Select struct {
+	ID          string
+	Name        string
+	Label       string
+	Options     []Option
+	Selected    string
+	Placeholder string
+	Required    bool
 }
 
 templ SelectInput(input Select) {
 	<div class="form-group">
 		<label for={ input.Name }>{ input.Label }</label>
 		<select
-			id={ input.Name }
+			if input.ID != "" {
+				id={ fmt.Sprintf("%s-%s", input.ID, input.Name) }
+			} else {
+				id={ input.Name }
+			}
 			name={ input.Name }
 			if input.Required {
 				required
@@ -83,7 +83,12 @@ templ SelectInput(input Select) {
 		>
 			<option value="">{ input.Placeholder }</option>
 			for _, option := range input.Options {
-				<option value={ option.Value }>{ option.Label }</option>
+				<option
+					value={ option.Value }
+					if option.Value == input.Selected {
+						selected
+					}
+				>{ option.Label }</option>
 			}
 		</select>
 	</div>
@@ -101,12 +106,28 @@ templ DateInput(input Input) {
 	</div>
 }
 
+type Number struct {
+	ID          string
+	Name        string
+	Label       string
+	Min         string
+	Max         string
+	Step        string
+	Placeholder string
+	Value       int
+	Required    bool
+}
+
 templ NumberInput(input Number) {
 	<div class="form-group">
 		<label for={ input.Name }>{ input.Label }</label>
 		<input
 			type="number"
-			id={ input.Name }
+			if input.ID != "" {
+				id={ fmt.Sprintf("%s-%s", input.ID, input.Name) }
+			} else {
+				id={ input.Name }
+			}
 			name={ input.Name }
 			min={ input.Min }
 			max={ input.Max }
@@ -116,8 +137,17 @@ templ NumberInput(input Number) {
 			if input.Required {
 				required
 			}
+			value={ strconv.Itoa(input.Value) }
 		/>
 	</div>
+}
+
+type CheckInput struct {
+	ID          string
+	Name        string
+	Label       string
+	Checked     bool
+	Placeholder string
 }
 
 templ CheckBox(input CheckInput) {
@@ -125,6 +155,11 @@ templ CheckBox(input CheckInput) {
 		<label class="checkbox-label" for={ input.Name }>
 			{ input.Label }
 			<input
+				if input.ID != "" {
+					id={ fmt.Sprintf("%s-%s", input.ID, input.Name) }
+				} else {
+					id={ input.Name }
+				}
 				type="checkbox"
 				name={ input.Name }
 				if input.Checked {
