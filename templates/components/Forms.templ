@@ -102,6 +102,7 @@ templ DateInput(input Input) {
 			id={ input.Name }
 			name={ input.Name }
 			class="date-input"
+			value={ input.Value }
 		/>
 	</div>
 }
@@ -184,8 +185,6 @@ type Form struct {
 
 templ FormContainer(input Form) {
 	<div class="form-container">
-		post { input.Post }
-		put { input.Put }
 		<form
 			id={ input.ID }
 			if input.Get != "" {

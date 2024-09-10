@@ -19,6 +19,7 @@ type SwitchInput struct {
 }
 
 templ SwitchGeneralForm(input SwitchInput) {
+	<input type="hidden" name="switch-id" value={ input.Switch.ID.String() }/>
 	@TextInput(Input{
 		ID:          input.Switch.ID.String(),
 		Value:       input.Switch.Name,
@@ -66,6 +67,7 @@ templ SwitchGeneralForm(input SwitchInput) {
 		ID:          input.Switch.ID.String(),
 		Name:        "release-date",
 		Label:       "Release Date",
+		Value:       input.Switch.ReleaseDate.Format("2006-01-02"),
 		Placeholder: "Select release date"})
 	@CheckBox(CheckInput{
 		ID:      input.Switch.ID.String(),
@@ -105,7 +107,6 @@ templ SwitchGeneralForm(input SwitchInput) {
 
 templ ImageLinksForm(imageLinks []*models.ImageLink) {
 	<input type="hidden" name="link-count" value={ strconv.Itoa(len(imageLinks)) }/>
-	{ fmt.Sprintf("lenth %d", len(imageLinks)) }
 	for i := 0; i < len(imageLinks); i++ {
 		@ImageLinkForm(i, imageLinks[i])
 		<div style="display:flex; flex-direction: row; justify-content: space-between">
@@ -165,7 +166,9 @@ templ ImageLinksForm(imageLinks []*models.ImageLink) {
 templ ImageLinkForm(index int, imageLink *models.ImageLink) {
 	<div class="linked-group">
 		<h3 style="margin-bottom: .5rem">{ fmt.Sprintf("Image %d", index + 1) }</h3>
+		<input type="hidden" name={ fmt.Sprintf("link-id-%d", index+1) } value={ imageLink.ID.String() }/>
 		@TextInput(Input{
+			ID:          imageLink.ID.String(),
 			Name:        "link-address-" + strconv.Itoa(index),
 			Label:       "Image URL",
 			Placeholder: "Enter switch image link",
