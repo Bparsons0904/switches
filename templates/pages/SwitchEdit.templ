@@ -1,14 +1,17 @@
 
 package pages
 
-import "switches/templates/components"
+import (
+	"fmt"
+	"switches/templates/components"
+)
 
 templ SwitchEdit(input components.SwitchInput) {
 	<section id="switch-create-form">
 		@components.FormContainer(
 			components.Form{
 				ID:  "switch-edit-form",
-				Put: "/admin/switches/edit"}) {
+				Put: fmt.Sprintf("/admin/switches/%s/edit", input.Switch.ID)}) {
 			@components.SwitchGeneralForm(input)
 		}
 	</section>

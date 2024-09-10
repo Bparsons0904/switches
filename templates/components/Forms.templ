@@ -184,6 +184,8 @@ type Form struct {
 
 templ FormContainer(input Form) {
 	<div class="form-container">
+		post { input.Post }
+		put { input.Put }
 		<form
 			id={ input.ID }
 			if input.Get != "" {
@@ -193,7 +195,7 @@ templ FormContainer(input Form) {
 				hx-post={ input.Post }
 			}
 			if input.Put != "" {
-				hx-post={ input.Put }
+				hx-put={ input.Put }
 			}
 			if input.Include != "" {
 				hx-include={ input.Include }
