@@ -19,6 +19,40 @@
   }
 }
 
+#home-recommendations {
+  padding: 1rem;
+  .header {
+    h2 {
+      margin-bottom: 1rem;
+      line-height: 1.3;
+      font-weight: 800;
+    }
+  }
+  #discovery {
+    display: flex;
+    flex-direction: column;
+    .discovery-card {
+      display: flex;
+      margin-top: 2rem;
+      flex-direction: column;
+      padding: 16px;
+      box-shadow: var(--box-shadow);
+      transition: all 300ms ease-in-out;
+      &:hover {
+        box-shadow: unset;
+      }
+      .discovery-header {
+        display: flex;
+        flex-direction: row;
+        gap: 1rem;
+      }
+    }
+    .discovery-image {
+      margin-top: 1rem;
+    }
+  }
+}
+
 #featured {
   display: flex;
   flex-direction: column;
@@ -48,6 +82,8 @@
       }
       .cta-image {
         padding: 0 2rem 2rem;
+        display: flex;
+        place-content: center;
       }
     }
   }
@@ -55,7 +91,11 @@
   #home-recommendations {
     display: grid;
     grid-template-columns: 1fr 1fr;
-    padding: 4rem;
+    place-items: center;
+    padding: 2rem;
+    .home-wrapper {
+      max-width: 800px;
+    }
     h2 {
       font-size: 2.5rem;
     }
@@ -65,6 +105,7 @@
     display: flex;
     justify-content: center;
     align-items: center;
+    padding: 2rem;
     h2 {
       font-size: 2.5rem;
     }
@@ -77,6 +118,30 @@
         h2 {
           font-size: 2rem;
         }
+      }
+    }
+  }
+}
+
+@media screen and (min-width: 1024px) {
+  #home-recommendations {
+    padding: 4rem;
+  }
+
+  #featured {
+    padding: 4rem;
+  }
+}
+
+@media screen and (min-width: 1800px) {
+  #featured {
+    .switch-cards {
+      display: flex;
+      flex-direction: row;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      .switch-card-featured {
+        width: 400px;
       }
     }
   }

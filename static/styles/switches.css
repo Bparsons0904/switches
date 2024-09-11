@@ -405,37 +405,3 @@
     width: 300px;
   }
 }
-
-#home-recommendations {
-  padding: 1rem;
-  .header {
-    h2 {
-      margin-bottom: 1rem;
-      line-height: 1.3;
-      font-weight: 800;
-    }
-  }
-  #discovery {
-    display: flex;
-    flex-direction: column;
-    .discovery-card {
-      display: flex;
-      margin-top: 2rem;
-      flex-direction: column;
-      padding: 16px;
-      box-shadow: var(--box-shadow);
-      transition: all 300ms ease-in-out;
-      &:hover {
-        box-shadow: unset;
-      }
-      .discovery-header {
-        display: flex;
-        flex-direction: row;
-        gap: 1rem;
-      }
-    }
-    .discovery-image {
-      margin-top: 1rem;
-    }
-  }
-}
