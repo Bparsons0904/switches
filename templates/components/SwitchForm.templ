@@ -94,7 +94,7 @@ templ SwitchGeneralForm(input SwitchInput) {
 	<div id="image-links-container">
 		<div id="image-links-wrapper">
 			if len(input.Switch.ImageLinks) == 0 {
-				@ImageLinksForm([]*models.ImageLink{{
+				@ImageLinksForm([]models.ImageLink{{
 					LinkAddress: "",
 					AltText:     "",
 				}})
@@ -105,7 +105,7 @@ templ SwitchGeneralForm(input SwitchInput) {
 	</div>
 }
 
-templ ImageLinksForm(imageLinks []*models.ImageLink) {
+templ ImageLinksForm(imageLinks []models.ImageLink) {
 	<input type="hidden" name="link-count" value={ strconv.Itoa(len(imageLinks)) }/>
 	for i := 0; i < len(imageLinks); i++ {
 		@ImageLinkForm(i, imageLinks[i])
@@ -163,7 +163,7 @@ templ ImageLinksForm(imageLinks []*models.ImageLink) {
 	}
 }
 
-templ ImageLinkForm(index int, imageLink *models.ImageLink) {
+templ ImageLinkForm(index int, imageLink models.ImageLink) {
 	<div class="linked-group">
 		<h3 style="margin-bottom: .5rem">{ fmt.Sprintf("Image %d", index + 1) }</h3>
 		<input type="hidden" name={ fmt.Sprintf("link-id-%d", index) } value={ imageLink.ID.String() }/>

@@ -1,0 +1,23 @@
+package models
+
+import (
+	"time"
+
+	"github.com/google/uuid"
+)
+
+type Rating struct {
+	ID          uuid.UUID `gorm:"type:uuid;default:uuid_generate_v7();primaryKey"        json:"id"`
+	Rating      int       `gorm:"type:int;not null"                                      json:"rating"`
+	Comment     string    `gorm:"type:text"                                              json:"comment"`
+	UserID      uuid.UUID `gorm:"type:uuid;uniqueIndex:idx_user_switch"                  json:"userId"`
+	User        User      `gorm:"foreignKey:UserID;references:ID"                        json:"user,omitempty"`
+	SwitchID    uuid.UUID `gorm:"type:uuid;uniqueIndex:idx_user_switch;index:idx_switch" json:"switchId"`
+	Switch      Switch    `gorm:"foreignKey:SwitchID;references:ID"                      json:"switch,omitempty"`
+	CreatedAt   time.Time `gorm:"autoCreateTime"                                         json:"createdAt"`
+	UpdatedAt   time.Time `gorm:"autoUpdateTime"                                         json:"updatedAt"`
+	CreatedByID uuid.UUID `gorm:"type:uuid"                                              json:"createdById"`
+	CreatedBy   User      `gorm:"foreignKey:CreatedByID;references:ID"                   json:"createdBy,omitempty"`
+	UpdatedByID uuid.UUID `gorm:"type:uuid"                                              json:"updatedById"`
+	UpdatedBy   User      `gorm:"foreignKey:UpdatedByID;references:ID"                   json:"updatedBy,omitempty"`
+}
