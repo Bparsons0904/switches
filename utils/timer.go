@@ -1,7 +1,6 @@
 package utils
 
 import (
-	"fmt"
 	"time"
 
 	"github.com/rs/zerolog/log"
@@ -14,7 +13,7 @@ type Timer struct {
 }
 
 func StartTimer(name string) Timer {
-	log.Info().Str("name", name).Msg("Starting Timer")
+	log.Debug().Str("name", name).Msg("Starting Timer")
 	return Timer{
 		name:        name,
 		totalTimer:  time.Now(),
@@ -23,19 +22,20 @@ func StartTimer(name string) Timer {
 }
 
 func (t *Timer) LogTime(segment string) {
-	title := fmt.Sprintf("Segment %s Elapsed Time", segment)
-	log.Info().
+	duration := time.Since(t.sectionTime)
+	log.Debug().
 		Str("name", t.name).
-		Str("title", title).
-		Str("time", time.Duration(time.Since(t.sectionTime)).String()).
+		Str("segment", segment).
+		Str("duration", duration.String()).
 		Msg("Timing")
 	t.sectionTime = time.Now()
 }
 
 func (t *Timer) LogTotalTime() {
-	log.Info().
+	duration := time.Since(t.totalTimer)
+	log.Debug().
 		Str("name", t.name).
-		Str("title", "Total Elapsed Time").
-		Str("time", time.Duration(time.Since(t.totalTimer)).String()).
+		Str("segement", "Total Elapsed Time").
+		Str("duration", duration.String()).
 		Msg("Timing")
 }

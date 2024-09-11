@@ -2,13 +2,13 @@ package routes
 
 import (
 	"switches/controllers"
+	"switches/middleware"
 
 	"github.com/gofiber/fiber/v2"
 )
 
 func AdminRoutes(app *fiber.App) {
-	// adminApi := app.Group("/admin", middleware.IsAdmin())
-	adminApi := app.Group("/admin")
+	adminApi := app.Group("/admin", middleware.IsAdmin())
 
 	adminApi.Get("/", controllers.GetAdminHome)
 	adminApi.Get("/switches", controllers.GetAdminSwitches)
@@ -17,6 +17,7 @@ func AdminRoutes(app *fiber.App) {
 	adminApi.Get("/images/create", controllers.GetImageLinkToList)
 	adminApi.Delete("/images/:imageLinkIndex", controllers.DeleteImageLinkToList)
 	adminApi.Get("/switches/:switchID/edit", controllers.GetAdminSwitchEdit)
+	adminApi.Put("/switches/:switchID/edit", controllers.PutSwitch)
 }
 
 func AdminPlaceHolder(c *fiber.Ctx) error {
