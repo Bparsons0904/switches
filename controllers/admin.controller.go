@@ -20,7 +20,7 @@ func GetAdminHome(c *fiber.Ctx) error {
 	return Render(pages.Admin(user))(c)
 }
 
-func GetAdminSwitchEdit(c *fiber.Ctx) error {
+func GetAdminSwitchEdit(c *fiber.Ctx) error { // {{{
 	timer := utils.StartTimer("Get Admin Switch Edit")
 	defer timer.LogTotalTime()
 
@@ -52,7 +52,7 @@ func GetAdminSwitchEdit(c *fiber.Ctx) error {
 	}
 
 	return Render(pages.SwitchEdit(input))(c)
-}
+} // }}}
 
 type SwitchQueryParams struct {
 	ID               uuid.UUID `form:"switch-id"`
@@ -69,7 +69,7 @@ type SwitchQueryParams struct {
 	LinkCount        int       `form:"link-count"`
 }
 
-func PutSwitch(c *fiber.Ctx) error {
+func PutSwitch(c *fiber.Ctx) error { // {{{
 	timer := utils.StartTimer("Put Switches")
 	defer timer.LogTotalTime()
 
@@ -115,6 +115,70 @@ func PutSwitch(c *fiber.Ctx) error {
 		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
 			"message": "Error updating the switch", "error": err,
 		})
+	}
+	timer.LogTime("Update Switch")
+
+	var currentImageLinkIDs []uuid.UUID
+	if err := tx.Model(&models.ImageLink{}).
+		Where("owner_id = ? AND owner_type = 'switches'", clickyClack.ID).
+		Pluck("id", &currentImageLinkIDs).Error; err != nil {
+		tx.Rollback()
+		log.Error().Err(err).Msg("Error getting the current image links")
+	}
+	timer.LogTime("Get Current Image Links")
+
+	var includedImageLinkIDS []uuid.UUID
+	for i := 0; i < request.LinkCount; i++ {
+		id := c.FormValue(fmt.Sprintf("link-id-%d", i))
+		linkAddress := c.FormValue(fmt.Sprintf("link-address-%d", i))
+		altText := c.FormValue(fmt.Sprintf("link-alt-text-%d", i))
+		if id == uuid.Nil.String() {
+			if err := tx.Create(&models.ImageLink{
+				LinkAddress: linkAddress,
+				AltText:     altText,
+				OwnerID:     clickyClack.ID,
+				OwnerType:   "switches",
+				CreatedByID: user.ID,
+				UpdatedByID: user.ID,
+				IsPrimary:   i == 0,
+			}).Error; err != nil {
+				tx.Rollback()
+				log.Error().Err(err).Msg("Error creating the image link")
+			}
+			timer.LogTime("Create New Image Link")
+		} else {
+			includedImageLinkIDS = append(includedImageLinkIDS, uuid.MustParse(id))
+			if err := tx.
+				Model(&models.ImageLink{}).
+				Where("id = ?", id).
+				Updates(models.ImageLink{
+					LinkAddress: linkAddress,
+					AltText:     altText,
+					UpdatedByID: user.ID,
+					IsPrimary:   i == 0,
+				}).Error; err != nil {
+				tx.Rollback()
+				log.Error().Err(err).Msg("Error updating the image link")
+			}
+			timer.LogTime(fmt.Sprintf("Update Image Link %s", id))
+		}
+	}
+
+	for _, currentID := range currentImageLinkIDs {
+		var found bool
+		for _, includedImageLinkID := range includedImageLinkIDS {
+			if currentID == includedImageLinkID {
+				found = true
+				continue
+			}
+		}
+		if !found {
+			log.Info().Str("ID", currentID.String()).Msg("Deleting the image link")
+			if err := tx.Where("id = ?", currentID).Delete(&models.ImageLink{}).Error; err != nil {
+				tx.Rollback()
+				log.Error().Err(err).Msg("Error deleting the image link")
+			}
+		}
 	}
 
 	tx.Commit()
@@ -206,7 +270,7 @@ func PostAdminSwitchCreate(c *fiber.Ctx) error {
 	}
 	timer.LogTime("Get Switch")
 	return Render(pages.SwitchDetail(user, clickyClack))(c)
-}
+} // }}}
 
 func DeleteImageLinkToList(c *fiber.Ctx) error {
 	timer := utils.StartTimer("Delete Image Link to list")
@@ -232,13 +296,21 @@ func DeleteImageLinkToList(c *fiber.Ctx) error {
 		if i == imageLinkIndex {
 			continue
 		}
+
+		idSting := c.FormValue(fmt.Sprintf("link-id-%d", i))
+		id, err := uuid.Parse(idSting)
 		linkAddress := c.FormValue(fmt.Sprintf("link-address-%d", i))
 		altText := c.FormValue(fmt.Sprintf("link-alt-text-%d", i))
 
-		imageLinks = append(imageLinks, &models.ImageLink{
+		imageLink := &models.ImageLink{
 			LinkAddress: linkAddress,
 			AltText:     altText,
-		})
+		}
+		if err == nil {
+			imageLink.ID = id
+		}
+
+		imageLinks = append(imageLinks, imageLink)
 	}
 
 	return Render(components.ImageLinksForm(imageLinks))(c)
@@ -259,13 +331,20 @@ func GetImageLinkToList(c *fiber.Ctx) error {
 
 	var imageLinks []*models.ImageLink
 	for i := 0; i <= linkCount; i++ {
+		idSting := c.FormValue(fmt.Sprintf("link-id-%d", i))
+		id, err := uuid.Parse(idSting)
 		linkAddress := c.FormValue(fmt.Sprintf("link-address-%d", i))
 		altText := c.FormValue(fmt.Sprintf("link-alt-text-%d", i))
 
-		imageLinks = append(imageLinks, &models.ImageLink{
+		imageLink := &models.ImageLink{
 			LinkAddress: linkAddress,
 			AltText:     altText,
-		})
+		}
+		if err == nil {
+			imageLink.ID = id
+		}
+
+		imageLinks = append(imageLinks, imageLink)
 	}
 
 	return Render(components.ImageLinksForm(imageLinks))(c)
