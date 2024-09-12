@@ -64,9 +64,12 @@
 }
 
 .rating-container {
+  container-type: inline-size;
+  width: 100%;
   .ratings-wrapper {
     display: flex;
     flex-direction: row;
+    justify-content: center;
     align-items: center;
     gap: 5px;
     svg {
@@ -82,6 +85,9 @@
         fill: var(--rating-color);
       }
     }
+    .rating-count {
+      display: none;
+    }
   }
   .rating-average {
     display: flex;
@@ -93,6 +99,17 @@
     svg {
       height: 18px;
       fill: var(--rating-color);
+    }
+  }
+}
+
+@container (min-width: 300px) {
+  .rating-container {
+    .ratings-wrapper {
+      justify-content: flex-start;
+      .rating-count {
+        display: block;
+      }
     }
   }
 }

@@ -198,7 +198,8 @@ func GetSwitchList(c *fiber.Ctx) error {
 	clickyClackQuery := database.DB.
 		Preload("ImageLinks").
 		Preload("Brand").
-		Preload("SwitchType")
+		Preload("SwitchType").
+		Preload("Ratings")
 
 	if len(request.SwitchTypeIDs) > 0 {
 		clickyClackQuery.Where("switch_type_id IN (?)", request.SwitchTypeIDs)
@@ -247,6 +248,12 @@ func GetSwitchList(c *fiber.Ctx) error {
 	if err != nil {
 		log.Error().Err(err).Msg("Error getting the switches")
 		return c.Status(fiber.StatusBadRequest).Next()
+	}
+
+	if user.ID != uuid.Nil {
+		for _, clickyClack := range clickyClacks {
+			clickyClack.GetUserRating(user.ID)
+		}
 	}
 	timer.LogTime("Get Switches")
 
