@@ -1,0 +1,31 @@
+package components
+
+import (
+	"fmt"
+	"switches/models"
+	"switches/templates/components/icons"
+)
+
+templ Ratings(clickyClack models.Switch) {
+	<div class="ratings-wrapper">
+		<div
+			class="ratings"
+			hx-put={ fmt.Sprintf("/switches/%s/ratings", clickyClack.ID) }
+			hx-target="this"
+		>
+			for i := 0; i < 5; i++ {
+				if clickyClack.AverageRating >= float64(i) + 0.5 {
+					@icons.StarFilled()
+				} else if clickyClack.AverageRating > float64(i) {
+					@icons.StarHalf()
+				} else {
+					@icons.StarOutlined()
+				}
+			}
+			<span class="rating-average">
+				{ fmt.Sprintf("%.1f", clickyClack.AverageRating) }@icons.StarFilled()
+			</span>
+			<span class="rating-count">{ fmt.Sprintf("(%d reviews)", clickyClack.RatingsCount) }</span>
+		</div>
+	</div>
+}

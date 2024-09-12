@@ -69,6 +69,9 @@ templ SwitchDetail(user models.User, clickyClack models.Switch) {
 						</a>
 					</span>
 				</div>
+				<div class="rating-container">
+					@components.Ratings(clickyClack)
+				</div>
 				<div id="description" class="info">
 					<h2>Description</h2>
 					<p>{ clickyClack.ShortDescription }</p>
