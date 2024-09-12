@@ -8,26 +8,52 @@ import (
 
 templ Ratings(clickyClack models.Switch) {
 	<div class="ratings-wrapper">
-		<span>{ fmt.Sprintf("User Value %d", clickyClack.UserRating.Rating) }</span>
-		for i := 0; i < 5; i++ {
-			<div
-				class="ratings"
-				hx-put={ fmt.Sprintf("/switches/%s/ratings/%d", clickyClack.ID.String(), i) }
-				hx-target=".ratings-wrapper"
-				hx-swap="outerHTML"
-			>
-				if clickyClack.AverageRating >= float64(i) + 0.5 {
-					@icons.StarFilled()
-				} else if clickyClack.AverageRating > float64(i) {
-					@icons.StarHalf()
-				} else {
-					@icons.StarOutlined()
-				}
-			</div>
+		if clickyClack.UserRating.Rating == 0 {
+			@GeneralRatings(clickyClack.AverageRating, clickyClack.ID.String())
+		} else {
+			@UserRatings(clickyClack.UserRating.Rating, clickyClack.ID.String())
 		}
 		<span class="rating-average">
 			{ fmt.Sprintf("%.1f", clickyClack.AverageRating) }@icons.StarFilled()
 		</span>
 		<span class="rating-count">{ fmt.Sprintf("(%d reviews)", clickyClack.RatingsCount) }</span>
 	</div>
+}
+
+templ UserRatings(rating int, id string) {
+	for i := 0; i < 5; i++ {
+		<div
+			class="ratings"
+			hx-put={ fmt.Sprintf("/switches/%s/ratings/%d", id, i) }
+			hx-target=".ratings-wrapper"
+			hx-swap="outerHTML"
+		>
+			if rating >= i + 1 {
+				<span class="user-ratings">
+					@icons.StarFilled()
+				</span>
+			} else {
+				@icons.StarOutlined()
+			}
+		</div>
+	}
+}
+
+templ GeneralRatings(rating float64, id string) {
+	for i := 0; i < 5; i++ {
+		<div
+			class="ratings"
+			hx-put={ fmt.Sprintf("/switches/%s/ratings/%d", id, i) }
+			hx-target=".ratings-wrapper"
+			hx-swap="outerHTML"
+		>
+			if rating >= float64(i+1) {
+				@icons.StarFilled()
+			} else if rating >= float64(i) + 0.5 {
+				@icons.StarHalf()
+			} else {
+				@icons.StarOutlined()
+			}
+		</div>
+	}
 }

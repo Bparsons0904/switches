@@ -69,6 +69,19 @@
     flex-direction: row;
     align-items: center;
     gap: 5px;
+    svg {
+      transition: all 300ms ease-in-out;
+      &:hover {
+        cursor: pointer;
+        fill: var(--rating-color);
+        scale: 1.2;
+      }
+    }
+    .user-ratings {
+      svg {
+        fill: var(--rating-color);
+      }
+    }
   }
   .rating-average {
     display: flex;
