@@ -13,7 +13,79 @@ import (
 	"github.com/gofiber/fiber/v2"
 	"github.com/google/uuid"
 	"github.com/rs/zerolog/log"
+	"gorm.io/gorm"
 )
+
+func PutUserSwitch(c *fiber.Ctx) error {
+	timer := utils.StartTimer("Put User Switch")
+	defer timer.LogTotalTime()
+
+	userID := c.Locals("UserID").(uuid.UUID)
+	if userID == uuid.Nil {
+		log.Warn().Msg("User not logged in")
+		c.Set("HX-Redirect", "/auth/login")
+		return c.SendStatus(fiber.StatusUnauthorized)
+	}
+	switchID, err := uuid.Parse(c.Params("switchID"))
+	if err != nil {
+		log.Error().Err(err).Msg("Error parsing the switch id")
+		return c.Status(fiber.StatusBadRequest).Next()
+	}
+	rating, err := c.ParamsInt("rating")
+	if err != nil {
+		log.Error().Err(err).Msg("Error parsing the rating")
+		return c.Status(fiber.StatusBadRequest).Next()
+	}
+
+	tx := database.DB.Begin()
+	var userRating models.Rating
+	err = tx.
+		Where(models.Rating{
+			UserID:   userID,
+			SwitchID: switchID,
+		}).
+		Attrs(models.Rating{
+			Rating: rating + 1,
+		}).
+		FirstOrCreate(&userRating).Error
+	if err != nil && err != gorm.ErrRecordNotFound {
+		tx.Rollback()
+		log.Error().Err(err).Msg("Error creating the rating")
+		return c.Status(fiber.StatusBadRequest).Next()
+	} else {
+		userRating.Rating = rating + 1
+		if err := tx.Save(&userRating).Error; err != nil {
+			tx.Rollback()
+			log.Error().Err(err).Msg("Error saving the rating")
+			return c.Status(fiber.StatusBadRequest).Next()
+		}
+	}
+
+	var clickyClack models.Switch
+	if err := tx.
+		Preload("Ratings").
+		First(&clickyClack, switchID).Error; err != nil {
+		log.Error().Err(err).Msg("Error getting the switch")
+		tx.Rollback()
+		return c.Status(fiber.StatusBadRequest).Next()
+	}
+	clickyClack.GetUserRating(userID)
+
+	totalRating := 0
+	for _, rating := range clickyClack.Ratings {
+		totalRating += rating.Rating
+	}
+	clickyClack.RatingsCount = len(clickyClack.Ratings)
+	clickyClack.AverageRating = float64(totalRating) / float64(clickyClack.RatingsCount)
+	if err := tx.Save(&clickyClack).Error; err != nil {
+		log.Error().Err(err).Msg("Error saving the switch")
+		tx.Rollback()
+		return c.Status(fiber.StatusBadRequest).Next()
+	}
+
+	tx.Commit()
+	return Render(components.Ratings(clickyClack))(c)
+}
 
 func GetSwitchPage(c *fiber.Ctx) error {
 	timer := utils.StartTimer("Get Switch Page")
@@ -91,10 +163,12 @@ func GetSwitchDetailPage(c *fiber.Ctx) error {
 		Preload("ImageLinks").
 		Preload("Brand").
 		Preload("SwitchType").
+		Preload("Ratings").
 		First(&clickyClack, switchID).Error; err != nil {
 		log.Error().Err(err).Msg("Error getting the switch")
 		return c.Status(fiber.StatusBadRequest).Next()
 	}
+	clickyClack.GetUserRating(userID)
 	timer.LogTime("Get Switch")
 
 	return Render(pages.SwitchDetail(user, clickyClack))(c)

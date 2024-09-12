@@ -18,4 +18,5 @@ func SwitchRoutes(app *fiber.App) {
 	switches.Delete("/:switchID/owned", controllers.DeleteUserOwnedSwitch)
 	switches.Post("/:switchID/liked", controllers.CreateUserLikedSwitch)
 	switches.Delete("/:switchID/liked", controllers.DeleteUserLikedSwitch)
+	switches.Put("/:switchID/ratings/:rating", controllers.PutUserSwitch)
 }

@@ -8,12 +8,14 @@ import (
 
 templ Ratings(clickyClack models.Switch) {
 	<div class="ratings-wrapper">
-		<div
-			class="ratings"
-			hx-put={ fmt.Sprintf("/switches/%s/ratings", clickyClack.ID) }
-			hx-target="this"
-		>
-			for i := 0; i < 5; i++ {
+		<span>{ fmt.Sprintf("User Value %d", clickyClack.UserRating.Rating) }</span>
+		for i := 0; i < 5; i++ {
+			<div
+				class="ratings"
+				hx-put={ fmt.Sprintf("/switches/%s/ratings/%d", clickyClack.ID.String(), i) }
+				hx-target=".ratings-wrapper"
+				hx-swap="outerHTML"
+			>
 				if clickyClack.AverageRating >= float64(i) + 0.5 {
 					@icons.StarFilled()
 				} else if clickyClack.AverageRating > float64(i) {
@@ -21,11 +23,11 @@ templ Ratings(clickyClack models.Switch) {
 				} else {
 					@icons.StarOutlined()
 				}
-			}
-			<span class="rating-average">
-				{ fmt.Sprintf("%.1f", clickyClack.AverageRating) }@icons.StarFilled()
-			</span>
-			<span class="rating-count">{ fmt.Sprintf("(%d reviews)", clickyClack.RatingsCount) }</span>
-		</div>
+			</div>
+		}
+		<span class="rating-average">
+			{ fmt.Sprintf("%.1f", clickyClack.AverageRating) }@icons.StarFilled()
+		</span>
+		<span class="rating-count">{ fmt.Sprintf("(%d reviews)", clickyClack.RatingsCount) }</span>
 	</div>
 }

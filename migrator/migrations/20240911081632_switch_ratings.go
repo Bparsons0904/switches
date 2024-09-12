@@ -101,19 +101,15 @@ func addRating(tx *gorm.DB) error {
 		ID uuid.UUID `gorm:"type:uuid;default:uuid_generate_v7();primaryKey" json:"id"`
 	}
 	type Rating struct {
-		ID          uuid.UUID `gorm:"type:uuid;default:uuid_generate_v7();primaryKey"        json:"id"`
-		Rating      int       `gorm:"type:int;not null"                                      json:"rating"`
-		Comment     string    `gorm:"type:text"                                              json:"comment"`
-		UserID      uuid.UUID `gorm:"type:uuid;uniqueIndex:idx_user_switch"                  json:"userId"`
-		User        User      `gorm:"foreignKey:UserID;references:ID"                        json:"user,omitempty"`
-		SwitchID    uuid.UUID `gorm:"type:uuid;uniqueIndex:idx_user_switch;index:idx_switch" json:"switchId"`
-		Switch      Switch    `gorm:"foreignKey:SwitchID;references:ID"                      json:"switch,omitempty"`
-		CreatedAt   time.Time `gorm:"autoCreateTime"                                         json:"createdAt"`
-		UpdatedAt   time.Time `gorm:"autoUpdateTime"                                         json:"updatedAt"`
-		CreatedByID uuid.UUID `gorm:"type:uuid"                                              json:"createdById"`
-		CreatedBy   User      `gorm:"foreignKey:CreatedByID;references:ID"                   json:"createdBy,omitempty"`
-		UpdatedByID uuid.UUID `gorm:"type:uuid"                                              json:"updatedById"`
-		UpdatedBy   User      `gorm:"foreignKey:UpdatedByID;references:ID"                   json:"updatedBy,omitempty"`
+		ID        uuid.UUID `gorm:"type:uuid;default:uuid_generate_v7();primaryKey"        json:"id"`
+		Rating    int       `gorm:"type:int;not null"                                      json:"rating"`
+		Comment   string    `gorm:"type:text"                                              json:"comment"`
+		UserID    uuid.UUID `gorm:"type:uuid;uniqueIndex:idx_user_switch"                  json:"userId"`
+		User      User      `gorm:"foreignKey:UserID;references:ID"                        json:"user,omitempty"`
+		SwitchID  uuid.UUID `gorm:"type:uuid;uniqueIndex:idx_user_switch;index:idx_switch" json:"switchId"`
+		Switch    Switch    `gorm:"foreignKey:SwitchID;references:ID"                      json:"switch,omitempty"`
+		CreatedAt time.Time `gorm:"autoCreateTime"                                         json:"createdAt"`
+		UpdatedAt time.Time `gorm:"autoUpdateTime"                                         json:"updatedAt"`
 	}
 
 	err := tx.Migrator().CreateTable(&Rating{})
@@ -126,7 +122,14 @@ func updatedSwitch(tx *gorm.DB) error {
 		ID uuid.UUID `gorm:"type:uuid;default:uuid_generate_v7();primaryKey" json:"id"`
 	}
 	type Rating struct {
-		ID uuid.UUID `gorm:"type:uuid;default:uuid_generate_v7();primaryKey" json:"id"`
+		ID        uuid.UUID `gorm:"type:uuid;default:uuid_generate_v7();primaryKey"        json:"id"`
+		Rating    int       `gorm:"type:int;not null"                                      json:"rating"`
+		Comment   string    `gorm:"type:text"                                              json:"comment"`
+		UserID    uuid.UUID `gorm:"type:uuid;uniqueIndex:idx_user_switch"                  json:"userId"`
+		User      User      `gorm:"foreignKey:UserID;references:ID"                        json:"user,omitempty"`
+		SwitchID  uuid.UUID `gorm:"type:uuid;uniqueIndex:idx_user_switch;index:idx_switch" json:"switchId"`
+		CreatedAt time.Time `gorm:"autoCreateTime"                                         json:"createdAt"`
+		UpdatedAt time.Time `gorm:"autoUpdateTime"                                         json:"updatedAt"`
 	}
 	type Type struct {
 		ID int `gorm:"primaryKey;autoIncrement" json:"id"`
@@ -146,10 +149,6 @@ func updatedSwitch(tx *gorm.DB) error {
 		CreatedAt   time.Time      `gorm:"autoCreateTime"                                  json:"createdAt"`
 		UpdatedAt   time.Time      `gorm:"autoUpdateTime"                                  json:"updatedAt"`
 		DeletedAt   gorm.DeletedAt `gorm:""                                                json:"deletedAt"`
-		CreatedByID uuid.UUID      `gorm:"type:uuid"                                       json:"createdById"`
-		CreatedBy   User           `gorm:"foreignKey:CreatedByID;references:ID"            json:"createdBy,omitempty"`
-		UpdatedByID uuid.UUID      `gorm:"type:uuid"                                       json:"updatedById"`
-		UpdatedBy   User           `gorm:"foreignKey:UpdatedByID;references:ID"            json:"updatedBy,omitempty"`
 	}
 	type Switch struct {
 		ID               uuid.UUID      `gorm:"type:uuid;default:uuid_generate_v7();primaryKey"                                         json:"id"`
@@ -174,11 +173,11 @@ func updatedSwitch(tx *gorm.DB) error {
 		UpdatedByID      uuid.UUID      `gorm:"type:uuid"                                                                               json:"updatedById"`
 		UpdatedBy        User           `gorm:"foreignKey:UpdatedByID;references:ID"                                                    json:"updatedBy,omitempty"`
 		ImageLinks       []ImageLink    `gorm:"polymorphic:Owner;polymorphicValue:switch;constraint:OnUpdate:CASCADE,OnDelete:CASCADE;" json:"imageLinks,omitempty"`
-		Ratings          []Rating       `gorm:"foreignKey:ID;constraint:OnUpdate:CASCADE,OnDelete:CASCADE;"                             json:"ratings,omitempty"`
+		Ratings          []Rating       `gorm:"foreignKey:SwitchID;references:ID;constraint:OnUpdate:CASCADE,OnDelete:CASCADE;"         json:"ratings,omitempty"`
 		AverageRating    float64        `gorm:"type:decimal(3,2);default:0"                                                             json:"averageRating"`
 		RatingsCount     int            `gorm:"type:int;default:0"                                                                      json:"ratingsCount"`
 	}
 
-	err := tx.Migrator().AutoMigrate(&ImageLink{}, &Switch{})
+	err := tx.Migrator().AutoMigrate(&ImageLink{}, &Rating{}, &Switch{})
 	return err
 }

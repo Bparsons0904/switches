@@ -30,7 +30,19 @@ type Switch struct {
 	UpdatedByID      uuid.UUID      `gorm:"type:uuid"                                                                               json:"updatedById"`
 	UpdatedBy        User           `gorm:"foreignKey:UpdatedByID;references:ID"                                                    json:"updatedBy,omitempty"`
 	ImageLinks       []ImageLink    `gorm:"polymorphic:Owner;polymorphicValue:switch;constraint:OnUpdate:CASCADE,OnDelete:CASCADE;" json:"imageLinks,omitempty"`
-	Ratings          []Rating       `gorm:"foreignKey:ID;constraint:OnUpdate:CASCADE,OnDelete:CASCADE;"                             json:"ratings,omitempty"`
+	Ratings          []Rating       `gorm:"foreignKey:SwitchID;references:ID;constraint:OnUpdate:CASCADE,OnDelete:CASCADE;"         json:"ratings,omitempty"`
 	AverageRating    float64        `gorm:"type:decimal(3,2);default:0"                                                             json:"averageRating"`
 	RatingsCount     int            `gorm:"type:int;default:0"                                                                      json:"ratingsCount"`
+	UserRating       *Rating        `gorm:"-"                                                                                       json:"userRating,omitempty"`
+}
+
+func (s *Switch) GetUserRating(userID uuid.UUID) {
+	for _, rating := range s.Ratings {
+		if rating.UserID == userID {
+			s.UserRating = &rating
+			return
+		}
+	}
+
+	s.UserRating = &Rating{}
 }

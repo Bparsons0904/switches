@@ -63,16 +63,20 @@
   }
 }
 
-.ratings {
-  display: flex;
-  gap: 5px;
-  align-items: center;
+.rating-container {
+  .ratings-wrapper {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 5px;
+  }
   .rating-average {
     display: flex;
     flex-direction: row;
     align-items: center;
     font-weight: 600;
     font-size: 1.4rem;
+    margin-left: 10px;
     svg {
       height: 18px;
       fill: var(--rating-color);
