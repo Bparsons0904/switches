@@ -56,7 +56,7 @@ func PutUserSwitch(c *fiber.Ctx) error {
 		userRating.Rating = rating + 1
 		if err := tx.Save(&userRating).Error; err != nil {
 			tx.Rollback()
-			log.Error().Err(err).Msg("Error saving the rating")
+			log.Error().Err(err).Msg("Error saving the rating with new user value")
 			return c.Status(fiber.StatusBadRequest).Next()
 		}
 	}
@@ -75,10 +75,13 @@ func PutUserSwitch(c *fiber.Ctx) error {
 	for _, rating := range clickyClack.Ratings {
 		totalRating += rating.Rating
 	}
-	clickyClack.RatingsCount = len(clickyClack.Ratings)
-	clickyClack.AverageRating = float64(totalRating) / float64(clickyClack.RatingsCount)
-	if err := tx.Save(&clickyClack).Error; err != nil {
-		log.Error().Err(err).Msg("Error saving the switch")
+	ratingsCount := len(clickyClack.Ratings)
+	averageRating := float64(totalRating) / float64(ratingsCount)
+	if err := tx.Model(&models.Switch{}).Where("id = ?", clickyClack.ID).Updates(models.Switch{
+		RatingsCount:  ratingsCount,
+		AverageRating: averageRating,
+	}).Error; err != nil {
+		log.Error().Err(err).Msg("Error saving the switch after ratings update")
 		tx.Rollback()
 		return c.Status(fiber.StatusBadRequest).Next()
 	}

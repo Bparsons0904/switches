@@ -25,8 +25,8 @@ templ UserRatings(rating int, id string) {
 		<div
 			class="ratings"
 			hx-put={ fmt.Sprintf("/switches/%s/ratings/%d", id, i) }
-			hx-target=".ratings-wrapper"
-			hx-swap="outerHTML"
+			hx-target="closest .ratings-wrapper"
+			hx-on:click="event.stopPropagation()"
 		>
 			if rating >= i + 1 {
 				<span class="user-ratings">
@@ -44,8 +44,9 @@ templ GeneralRatings(rating float64, id string) {
 		<div
 			class="ratings"
 			hx-put={ fmt.Sprintf("/switches/%s/ratings/%d", id, i) }
-			hx-target=".ratings-wrapper"
+			hx-target="closest .ratings-wrapper"
 			hx-swap="outerHTML"
+			hx-on:click="event.stopPropagation()"
 		>
 			if rating >= float64(i+1) {
 				@icons.StarFilled()
