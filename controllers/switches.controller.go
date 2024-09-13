@@ -2,6 +2,7 @@ package controllers
 
 import (
 	"fmt"
+	"log/slog"
 	"switches/database"
 	"switches/models"
 	"switches/templates/components"
@@ -15,6 +16,19 @@ import (
 	"github.com/rs/zerolog/log"
 	"gorm.io/gorm"
 )
+
+func GetReviewForm(c *fiber.Ctx) error {
+	switchID := c.Query("switch-id")
+	ratingID := c.Query("rating-id")
+	slog.Info("values", "switchID", switchID, "ratingID", ratingID)
+
+	postPath := fmt.Sprintf("/switches/%s/ratings/%s/review", switchID, ratingID)
+	return Render(components.UserReviewForm(postPath))(c)
+}
+
+func PostUserSwitchReview(c *fiber.Ctx) error {
+	return Render(components.UserReview())(c)
+}
 
 func PutUserSwitch(c *fiber.Ctx) error {
 	timer := utils.StartTimer("Put User Switch")

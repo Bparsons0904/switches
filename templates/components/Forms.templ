@@ -177,6 +177,7 @@ type Form struct {
 	Get        string
 	Post       string
 	Put        string
+	Swap       string
 	Include    string
 	ButtonText string
 	Target     string
@@ -195,6 +196,9 @@ templ FormContainer(input Form) {
 			}
 			if input.Put != "" {
 				hx-put={ input.Put }
+			}
+			if input.Swap != "" {
+				hx-swap={ input.Swap }
 			}
 			if input.Include != "" {
 				hx-include={ input.Include }

@@ -11,24 +11,59 @@ templ Ratings(clickyClack models.Switch) {
 		if clickyClack.UserRating == nil {
 			@GeneralRatings(clickyClack.AverageRating, clickyClack.ID.String())
 		} else {
-			@UserRatings(clickyClack.UserRating.Rating, clickyClack.ID.String())
+			@UserRatings(clickyClack)
 		}
 		<span class="rating-average">
 			{ fmt.Sprintf("%.1f", clickyClack.AverageRating) }@icons.StarFilled()
 		</span>
 		<span class="rating-count">{ fmt.Sprintf("(%d reviews)", clickyClack.RatingsCount) }</span>
 	</div>
+	<div id="user-comment">
+		if clickyClack.UserRating.Comment == "" {
+			<form id="hidden-rating" type="hidden">
+				<input type="hidden" name="switch-id" value={ clickyClack.ID.String() }/>
+				<input type="hidden" name="rating-id" value={ clickyClack.UserRating.ID.String() }/>
+			</form>
+			<button
+				type="button"
+				class="button"
+				style="margin-top: 10px;"
+				hx-get="/switches/reviews/form"
+				hx-target="#user-comment"
+				hx-include="#hidden-rating"
+			>Add Review</button>
+		}
+	</div>
 }
 
-templ UserRatings(rating int, id string) {
+templ UserReviewForm(path string) {
+	@FormContainer(
+		Form{
+			ID:     "user-comment-form",
+			Swap:   "outerHTML",
+			Target: "#user-comment",
+			Post:   path}) {
+		@AreaInput(Input{
+			ID:          "user-comment",
+			Name:        "user-comment",
+			Label:       "User Review",
+			Placeholder: "Enter Review",
+			Required:    true})
+	}
+}
+
+templ UserReview() {
+}
+
+templ UserRatings(clickyClack models.Switch) {
 	for i := 0; i < 5; i++ {
 		<div
 			class="ratings"
-			hx-put={ fmt.Sprintf("/switches/%s/ratings/%d", id, i) }
+			hx-put={ fmt.Sprintf("/switches/%s/ratings/%d", clickyClack.ID.String(), i) }
 			hx-target="closest .ratings-wrapper"
 			hx-on:click="event.stopPropagation()"
 		>
-			if rating >= i + 1 {
+			if clickyClack.UserRating.Rating >= i + 1 {
 				<span class="user-ratings">
 					@icons.StarFilled()
 				</span>
