@@ -2,7 +2,7 @@ package controllers
 
 import (
 	"fmt"
-	"strings"
+	"regexp"
 	"switches/database"
 	"switches/models"
 	"switches/templates/components"
@@ -116,12 +116,13 @@ func PutUserSwitch(c *fiber.Ctx) error {
 
 	tx.Commit()
 
-	showReviewButton := true
+	showReviewButton := false
 	currentURL := c.Get("Hx-Current-Url")
-	currentURL = currentURL[strings.LastIndex(currentURL, "/")+1:]
-	if currentURL == "switches" || strings.Contains(currentURL, "modal") {
-		showReviewButton = false
+	regex := `switches\/[a-f0-9]{8}-([a-f0-9]{4}-){3}[a-f0-9]{12}`
+	if matched, _ := regexp.MatchString(regex, currentURL); matched {
+		showReviewButton = true
 	}
+
 	return Render(components.Ratings(clickyClack, showReviewButton))(c)
 }
 

@@ -34,5 +34,8 @@ templ SwitchCardFeatured(clickyClack models.Switch) {
 			<h2>{ clickyClack.Name }</h2>
 			<p>{ clickyClack.SwitchType.Name }</p>
 		</div>
+		<div class="rating-container">
+			@Ratings(clickyClack, false)
+		</div>
 	</button>
 }
