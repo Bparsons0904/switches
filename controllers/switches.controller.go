@@ -2,7 +2,6 @@ package controllers
 
 import (
 	"fmt"
-	"log/slog"
 	"switches/database"
 	"switches/models"
 	"switches/templates/components"
@@ -15,19 +14,35 @@ import (
 	"github.com/google/uuid"
 	"github.com/rs/zerolog/log"
 	"gorm.io/gorm"
+	"gorm.io/gorm/clause"
 )
 
 func GetReviewForm(c *fiber.Ctx) error {
 	switchID := c.Query("switch-id")
 	ratingID := c.Query("rating-id")
-	slog.Info("values", "switchID", switchID, "ratingID", ratingID)
 
 	postPath := fmt.Sprintf("/switches/%s/ratings/%s/review", switchID, ratingID)
 	return Render(components.UserReviewForm(postPath))(c)
 }
 
 func PostUserSwitchReview(c *fiber.Ctx) error {
-	return Render(components.UserReview())(c)
+	ratingID := c.Params("ratingID")
+
+	var userRating models.Rating
+	if err := database.DB.
+		Model(&userRating).
+		Clauses(clause.Returning{}).
+		Where("id = ?", ratingID).
+		Updates(models.Rating{
+			Review: c.FormValue("user-review"),
+		}).Error; err != nil {
+		log.Error().Err(err).Msg("Error getting the user rating")
+		return c.Status(fiber.StatusBadRequest).Next()
+	}
+
+	log.Info().Str("review", userRating.Review).Msg("User review saved")
+
+	return Render(components.UserReview(userRating))(c)
 }
 
 func PutUserSwitch(c *fiber.Ctx) error {

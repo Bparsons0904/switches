@@ -8,7 +8,7 @@ import (
 
 templ Ratings(clickyClack models.Switch) {
 	<div class="ratings-wrapper">
-		if clickyClack.UserRating == nil {
+		if clickyClack.UserRating.Rating == 0 {
 			@GeneralRatings(clickyClack.AverageRating, clickyClack.ID.String())
 		} else {
 			@UserRatings(clickyClack)
@@ -18,8 +18,8 @@ templ Ratings(clickyClack models.Switch) {
 		</span>
 		<span class="rating-count">{ fmt.Sprintf("(%d reviews)", clickyClack.RatingsCount) }</span>
 	</div>
-	<div id="user-comment">
-		if clickyClack.UserRating.Comment == "" {
+	<div id="user-review">
+		if clickyClack.UserRating.Rating != 0 && clickyClack.UserRating.Review == "" {
 			<form id="hidden-rating" type="hidden">
 				<input type="hidden" name="switch-id" value={ clickyClack.ID.String() }/>
 				<input type="hidden" name="rating-id" value={ clickyClack.UserRating.ID.String() }/>
@@ -29,7 +29,7 @@ templ Ratings(clickyClack models.Switch) {
 				class="button"
 				style="margin-top: 10px;"
 				hx-get="/switches/reviews/form"
-				hx-target="#user-comment"
+				hx-target="#user-review"
 				hx-include="#hidden-rating"
 			>Add Review</button>
 		}
@@ -39,20 +39,21 @@ templ Ratings(clickyClack models.Switch) {
 templ UserReviewForm(path string) {
 	@FormContainer(
 		Form{
-			ID:     "user-comment-form",
+			ID:     "user-review-form",
 			Swap:   "outerHTML",
-			Target: "#user-comment",
+			Target: "#user-review",
 			Post:   path}) {
 		@AreaInput(Input{
-			ID:          "user-comment",
-			Name:        "user-comment",
+			ID:          "user-review",
+			Name:        "user-review",
 			Label:       "User Review",
 			Placeholder: "Enter Review",
 			Required:    true})
 	}
 }
 
-templ UserReview() {
+templ UserReview(rating models.Rating) {
+	<p>{ rating.Review }</p>
 }
 
 templ UserRatings(clickyClack models.Switch) {

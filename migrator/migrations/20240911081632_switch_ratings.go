@@ -103,7 +103,7 @@ func addRating(tx *gorm.DB) error {
 	type Rating struct {
 		ID        uuid.UUID `gorm:"type:uuid;default:uuid_generate_v7();primaryKey"        json:"id"`
 		Rating    int       `gorm:"type:int;not null"                                      json:"rating"`
-		Comment   string    `gorm:"type:text"                                              json:"comment"`
+		Review    string    `gorm:"type:text"                                              json:"review"`
 		UserID    uuid.UUID `gorm:"type:uuid;uniqueIndex:idx_user_switch"                  json:"userId"`
 		User      User      `gorm:"foreignKey:UserID;references:ID"                        json:"user,omitempty"`
 		SwitchID  uuid.UUID `gorm:"type:uuid;uniqueIndex:idx_user_switch;index:idx_switch" json:"switchId"`
@@ -124,7 +124,7 @@ func updatedSwitch(tx *gorm.DB) error {
 	type Rating struct {
 		ID        uuid.UUID `gorm:"type:uuid;default:uuid_generate_v7();primaryKey"        json:"id"`
 		Rating    int       `gorm:"type:int;not null"                                      json:"rating"`
-		Comment   string    `gorm:"type:text"                                              json:"comment"`
+		Review    string    `gorm:"type:text"                                              json:"review"`
 		UserID    uuid.UUID `gorm:"type:uuid;uniqueIndex:idx_user_switch"                  json:"userId"`
 		User      User      `gorm:"foreignKey:UserID;references:ID"                        json:"user,omitempty"`
 		SwitchID  uuid.UUID `gorm:"type:uuid;uniqueIndex:idx_user_switch;index:idx_switch" json:"switchId"`
