@@ -113,6 +113,12 @@
   .switch-selectors {
     justify-content: flex-start;
   }
+
+  .rating-container {
+    .ratings-wrapper {
+      justify-content: flex-start;
+    }
+  }
   .attributes {
     justify-content: flex-start;
     font-size: 1.1rem;

@@ -106,7 +106,6 @@
 @container (min-width: 300px) {
   .rating-container {
     .ratings-wrapper {
-      justify-content: flex-start;
       .rating-count {
         display: block;
       }
@@ -119,36 +118,99 @@
     opacity: 0;
   }
 }
-
 @keyframes fade-out {
   to {
     opacity: 0;
   }
 }
-
 @keyframes slide-from-right {
   from {
     transform: translateX(90px);
   }
 }
-
 @keyframes slide-to-left {
   to {
     transform: translateX(-90px);
   }
 }
-
 ::view-transition-old(slide-it) {
   animation:
-    180ms cubic-bezier(0.4, 0, 1, 1) both fade-out,
-    600ms cubic-bezier(0.4, 0, 0.2, 1) both slide-to-left;
+    250ms cubic-bezier(0.4, 0, 1, 1) both fade-out,
+    800ms cubic-bezier(0.4, 0, 0.2, 1) both slide-to-left;
 }
 ::view-transition-new(slide-it) {
   animation:
-    420ms cubic-bezier(0, 0, 0.2, 1) 90ms both fade-in,
-    600ms cubic-bezier(0.4, 0, 0.2, 1) both slide-from-right;
+    550ms cubic-bezier(0, 0, 0.2, 1) 120ms both fade-in,
+    800ms cubic-bezier(0.4, 0, 0.2, 1) both slide-from-right;
 }
-
 .slide-it {
   view-transition-name: slide-it;
+}
+
+@keyframes fade-in {
+  from {
+    opacity: 0;
+    transform: scale(0.8);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes fade-out {
+  from {
+    opacity: 1;
+    transform: scale(1);
+  }
+  to {
+    opacity: 0;
+    transform: scale(1.2);
+  }
+}
+
+::view-transition-old(fade-it) {
+  animation: 600ms cubic-bezier(0.4, 0, 1, 1) both fade-out;
+}
+
+::view-transition-new(fade-it) {
+  animation: 600ms cubic-bezier(0, 0, 0.2, 1) 300ms both fade-in;
+}
+
+.fade-it {
+  view-transition-name: fade-it;
+}
+
+@keyframes slide-down-in {
+  from {
+    opacity: 0;
+    transform: translateY(-100%);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes slide-down-out {
+  from {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  to {
+    opacity: 0;
+    transform: translateY(100%);
+  }
+}
+
+::view-transition-old(slide-down) {
+  animation: 400ms cubic-bezier(0.4, 0, 0.2, 1) both slide-down-out;
+}
+
+::view-transition-new(slide-down) {
+  animation: 400ms cubic-bezier(0.4, 0, 0.2, 1) both slide-down-in;
+}
+
+.slide-down {
+  view-transition-name: slide-down;
 }
