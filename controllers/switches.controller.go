@@ -75,11 +75,11 @@ func PutUserSwitch(c *fiber.Ctx) error {
 	for _, rating := range clickyClack.Ratings {
 		totalRating += rating.Rating
 	}
-	ratingsCount := len(clickyClack.Ratings)
-	averageRating := float64(totalRating) / float64(ratingsCount)
+	clickyClack.RatingsCount = len(clickyClack.Ratings)
+	clickyClack.AverageRating = float64(totalRating) / float64(clickyClack.RatingsCount)
 	if err := tx.Model(&models.Switch{}).Where("id = ?", clickyClack.ID).Updates(models.Switch{
-		RatingsCount:  ratingsCount,
-		AverageRating: averageRating,
+		RatingsCount:  clickyClack.RatingsCount,
+		AverageRating: clickyClack.AverageRating,
 	}).Error; err != nil {
 		log.Error().Err(err).Msg("Error saving the switch after ratings update")
 		tx.Rollback()
@@ -254,8 +254,9 @@ func GetSwitchList(c *fiber.Ctx) error {
 	}
 
 	if user.ID != uuid.Nil {
-		for _, clickyClack := range clickyClacks {
+		for i, clickyClack := range clickyClacks {
 			clickyClack.GetUserRating(user.ID)
+			clickyClacks[i] = clickyClack
 		}
 	}
 	timer.LogTime("Get Switches")
