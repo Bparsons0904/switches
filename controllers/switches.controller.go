@@ -116,11 +116,11 @@ func PutUserSwitch(c *fiber.Ctx) error {
 
 	tx.Commit()
 
-	showReviewButton := false
+	showReviewButton := true
 	currentURL := c.Get("Hx-Current-Url")
 	currentURL = currentURL[strings.LastIndex(currentURL, "/")+1:]
-	if currentURL != "switches" {
-		showReviewButton = true
+	if currentURL == "switches" || strings.Contains(currentURL, "modal") {
+		showReviewButton = false
 	}
 	return Render(components.Ratings(clickyClack, showReviewButton))(c)
 }
@@ -303,16 +303,26 @@ func GetSwitchList(c *fiber.Ctx) error {
 func GetFeaturedSwitches(c *fiber.Ctx) error {
 	timer := utils.StartTimer("Get Featured Switches")
 	defer timer.LogTotalTime()
+	userID := c.Locals("UserID").(uuid.UUID)
 
 	var clickyClacks []models.Switch
 	database.DB.
 		Joins("INNER JOIN image_links ON image_links.owner_id = switches.id").
 		Preload("ImageLinks").
 		Preload("SwitchType").
+		Preload("Ratings").
 		Limit(4).
 		Order("RANDOM()").
 		Find(&clickyClacks)
 	timer.LogTime("Get Switches")
+
+	if userID != uuid.Nil {
+		for i, clickyClack := range clickyClacks {
+			log.Info().Msgf("Getting user rating for %s", clickyClack.Name)
+			clickyClack.GetUserRating(userID)
+			clickyClacks[i] = clickyClack
+		}
+	}
 
 	component := components.FeaturedSwitches(clickyClacks)
 	return Render(component)(c)
@@ -333,8 +343,10 @@ func GetSwitchDetailCard(c *fiber.Ctx) error {
 		Preload("ImageLinks").
 		Preload("Brand").
 		Preload("SwitchType").
+		Preload("Ratings").
 		First(&clickyClack, switchID)
 
+	clickyClack.GetUserRating(user.ID)
 	component := components.SwitchDetailCard(user, clickyClack)
 	return Render(component)(c)
 }

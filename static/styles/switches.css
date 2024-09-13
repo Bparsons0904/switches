@@ -39,6 +39,11 @@
         padding: 0px 15px;
       }
     }
+    .rating-container {
+      .ratings-wrapper {
+        justify-content: flex-end;
+      }
+    }
   }
 }
 
