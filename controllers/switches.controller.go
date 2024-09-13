@@ -2,6 +2,7 @@ package controllers
 
 import (
 	"fmt"
+	"strings"
 	"switches/database"
 	"switches/models"
 	"switches/templates/components"
@@ -39,8 +40,6 @@ func PostUserSwitchReview(c *fiber.Ctx) error {
 		log.Error().Err(err).Msg("Error getting the user rating")
 		return c.Status(fiber.StatusBadRequest).Next()
 	}
-
-	log.Info().Str("review", userRating.Review).Msg("User review saved")
 
 	return Render(components.UserReview(userRating))(c)
 }
@@ -116,7 +115,14 @@ func PutUserSwitch(c *fiber.Ctx) error {
 	}
 
 	tx.Commit()
-	return Render(components.Ratings(clickyClack))(c)
+
+	showReviewButton := false
+	currentURL := c.Get("Hx-Current-Url")
+	currentURL = currentURL[strings.LastIndex(currentURL, "/")+1:]
+	if currentURL != "switches" {
+		showReviewButton = true
+	}
+	return Render(components.Ratings(clickyClack, showReviewButton))(c)
 }
 
 func GetSwitchPage(c *fiber.Ctx) error {

@@ -6,7 +6,7 @@ import (
 	"switches/templates/components/icons"
 )
 
-templ Ratings(clickyClack models.Switch) {
+templ Ratings(clickyClack models.Switch, showReview bool) {
 	<div class="ratings-wrapper">
 		if clickyClack.UserRating.Rating == 0 {
 			@GeneralRatings(clickyClack.AverageRating, clickyClack.ID.String())
@@ -18,22 +18,24 @@ templ Ratings(clickyClack models.Switch) {
 		</span>
 		<span class="rating-count">{ fmt.Sprintf("(%d reviews)", clickyClack.RatingsCount) }</span>
 	</div>
-	<div id="user-review">
-		if clickyClack.UserRating.Rating != 0 && clickyClack.UserRating.Review == "" {
-			<form id="hidden-rating" type="hidden">
-				<input type="hidden" name="switch-id" value={ clickyClack.ID.String() }/>
-				<input type="hidden" name="rating-id" value={ clickyClack.UserRating.ID.String() }/>
-			</form>
-			<button
-				type="button"
-				class="button"
-				style="margin-top: 10px;"
-				hx-get="/switches/reviews/form"
-				hx-target="#user-review"
-				hx-include="#hidden-rating"
-			>Add Review</button>
-		}
-	</div>
+	if showReview == true {
+		<div id="user-review">
+			if clickyClack.UserRating.Rating != 0 && clickyClack.UserRating.Review == "" {
+				<form id="hidden-rating" type="hidden">
+					<input type="hidden" name="switch-id" value={ clickyClack.ID.String() }/>
+					<input type="hidden" name="rating-id" value={ clickyClack.UserRating.ID.String() }/>
+				</form>
+				<button
+					type="button"
+					class="button"
+					style="margin-top: 10px;"
+					hx-get="/switches/reviews/form"
+					hx-target="#user-review"
+					hx-include="#hidden-rating"
+				>Add Review</button>
+			}
+		</div>
+	}
 }
 
 templ UserReviewForm(path string) {
