@@ -8,7 +8,7 @@ import (
 
 templ Ratings(clickyClack models.Switch, showReview bool) {
 	<div class="ratings-wrapper">
-		if clickyClack.UserRating == nil || clickyClack.UserRating.Rating == 0 {
+		if clickyClack.UserRating.Rating == 0 {
 			@GeneralRatings(clickyClack.AverageRating, clickyClack.ID.String())
 		} else {
 			@UserRatings(clickyClack)
@@ -111,7 +111,15 @@ templ SwitchReviews(clickyClack models.Switch) {
 
 templ SwitchReviewsView(clickyClack models.Switch, ratingData RatingData) {
 	<div class="switch-reviews">
-		<h2>Reviews</h2>
+		<div class="title-container">
+			<h2>Reviews</h2>
+			<div class="title-wrapper">
+				<span class="rating-average">
+					{ fmt.Sprintf("%.1f", clickyClack.AverageRating) }@icons.StarFilled()
+				</span>
+				<a href="#reviews"><span class="rating-count">{ fmt.Sprintf("(%d reviews)", clickyClack.RatingsCount) }</span></a>
+			</div>
+		</div>
 		<div class="rating-breakdown">
 			for i := 5; i > 0; i-- {
 				@RatingBar(i, ratingData.RatingCounts[i], ratingData.RatingsCount, ratingData.RatingWidth[i])

@@ -40,6 +40,7 @@ func (s *Switch) GetUserRating(userID uuid.UUID) {
 	for _, rating := range s.Ratings {
 		if rating.UserID == userID {
 			s.UserRating = &rating
+			return
 		}
 	}
 

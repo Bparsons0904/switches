@@ -7,7 +7,15 @@ import (
 )
 
 templ SwitchEdit(input components.SwitchInput) {
-	<section id="switch-create-form">
+	<style type="text/css">
+    #switch-edit-form {
+      margin-top: 2rem;
+    }
+    .form-container {
+      margin: 0 auto;
+    }
+  </style>
+	<section id="switch-edit-form">
 		@components.FormContainer(
 			components.Form{
 				ID:  "switch-edit-form",

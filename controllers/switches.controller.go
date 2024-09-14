@@ -202,7 +202,7 @@ func GetSwitchDetailPage(c *fiber.Ctx) error {
 		Preload("ImageLinks").
 		Preload("Brand").
 		Preload("SwitchType").
-		Preload("Ratings.User").
+		Preload("Ratings").
 		First(&clickyClack, switchID).Error; err != nil {
 		log.Error().Err(err).Msg("Error getting the switch")
 		return c.Status(fiber.StatusBadRequest).Next()

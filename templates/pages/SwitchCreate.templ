@@ -3,6 +3,14 @@ package pages
 import "switches/templates/components"
 
 templ SwitchCreate(input components.SwitchInput) {
+	<style type="text/css">
+    #switch-create-form {
+      margin-top: 2rem;
+    }
+    .form-container {
+      margin: 0 auto;
+    }
+  </style>
 	<section id="switch-create-form">
 		@components.FormContainer(
 			components.Form{

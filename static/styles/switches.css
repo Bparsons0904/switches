@@ -422,8 +422,25 @@
   max-width: 800px;
   margin: 0 auto;
   padding: 20px;
-  h2 {
-    margin-bottom: 16px;
+  .title-container {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    margin-bottom: 10px;
+    .title-wrapper {
+      display: flex;
+      flex-direction: row;
+      gap: 10px;
+      font-weight: 600;
+      align-items: center;
+      .rating-average {
+        display: flex;
+        align-items: center;
+        svg {
+          height: 20px;
+        }
+      }
+    }
   }
   .rating-breakdown {
     margin-bottom: 30px;
