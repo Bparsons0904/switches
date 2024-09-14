@@ -16,7 +16,7 @@ templ Ratings(clickyClack models.Switch, showReview bool) {
 		<span class="rating-average">
 			{ fmt.Sprintf("%.1f", clickyClack.AverageRating) }@icons.StarFilled()
 		</span>
-		<span class="rating-count">{ fmt.Sprintf("(%d reviews)", clickyClack.RatingsCount) }</span>
+		<a href="#reviews"><span class="rating-count">{ fmt.Sprintf("(%d reviews)", clickyClack.RatingsCount) }</span></a>
 	</div>
 	if showReview == true {
 		<div id="user-review">
@@ -104,7 +104,9 @@ type RatingData struct {
 }
 
 templ SwitchReviews(clickyClack models.Switch) {
-	@SwitchReviewsView(clickyClack, getRatingData(clickyClack))
+	<div id="reviews">
+		@SwitchReviewsView(clickyClack, getRatingData(clickyClack))
+	</div>
 }
 
 templ SwitchReviewsView(clickyClack models.Switch, ratingData RatingData) {
@@ -168,12 +170,12 @@ templ RatingBar(rating int, count int, total int, width int) {
 templ ReviewItem(rating models.Rating) {
 	<div class="review-item">
 		<div class="review-header">
-			<span class="user-name">{ rating.User.Name }</span>
 			<span class="rating">
 				for i := 0; i < rating.Rating; i++ {
 					@icons.StarFilled()
 				}
 			</span>
+			<span class="user-name">{ fmt.Sprintf("%s on %s", rating.User.Name , rating.CreatedAt.Format("Jan 02 2006")) }</span>
 		</div>
 		<p class="review-text">{ rating.Review }</p>
 	</div>
