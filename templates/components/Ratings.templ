@@ -144,6 +144,8 @@ func getRatingData(clickyClack models.Switch) RatingData {
 
 css ratingWidth(percent int) {
 	width: { fmt.Sprintf("%d%%", percent) };
+	background-color: #ffd700;
+	height: 100%;
 }
 
 templ RatingBar(rating int, count int, total int, width int) {
@@ -152,11 +154,12 @@ templ RatingBar(rating int, count int, total int, width int) {
 			for i := 0; i < rating; i++ {
 				@icons.StarFilled()
 			}
+			for i := 0; i < 5-rating; i++ {
+				@icons.StarOutlined()
+			}
 		</span>
 		<div class="bar-container">
-			<div class="bar">
-				<span class={ ratingWidth(width) }></span>
-			</div>
+			<div class={ ratingWidth(width) }></div>
 		</div>
 		<span class="count">{ fmt.Sprintf("%d", count) }</span>
 	</div>

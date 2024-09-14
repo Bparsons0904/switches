@@ -422,42 +422,38 @@
   max-width: 800px;
   margin: 0 auto;
   padding: 20px;
-  font-family: Arial, sans-serif;
-}
-
-.rating-breakdown {
-  margin-bottom: 30px;
-}
-
-.rating-bar {
-  display: flex;
-  align-items: center;
-  margin-bottom: 10px;
-}
-
-.stars {
-  width: 100px;
-  text-align: right;
-  margin-right: 10px;
-}
-
-.bar-container {
-  flex-grow: 1;
-  background-color: #f0f0f0;
-  height: 20px;
-  border-radius: 10px;
-  overflow: hidden;
-}
-
-.bar {
-  height: 100%;
-  background-color: #ffd700;
-}
-
-.count {
-  width: 50px;
-  text-align: right;
-  margin-left: 10px;
+  h2 {
+    margin-bottom: 16px;
+  }
+  .rating-breakdown {
+    margin-bottom: 30px;
+    .rating-bar {
+      display: flex;
+      align-items: center;
+      margin-bottom: 10px;
+      .stars {
+        display: flex;
+        flex-direction: row;
+        width: 100px;
+        text-align: right;
+        margin-right: 10px;
+      }
+      .bar-container {
+        flex-grow: 1;
+        background-color: #f0f0f0;
+        height: 20px;
+        border-radius: 10px;
+        overflow: hidden;
+        .bar {
+          height: 100%;
+        }
+      }
+      .count {
+        width: 20px;
+        margin-left: 10px;
+      }
+    }
+  }
 }
 
 .reviews-list {
