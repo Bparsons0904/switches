@@ -20,7 +20,7 @@ templ Ratings(clickyClack models.Switch, showReview bool) {
 	</div>
 	if showReview == true {
 		<div id="user-review">
-			if clickyClack.UserRating.Rating != 0 && clickyClack.UserRating.Review == "" {
+			if clickyClack.UserRating.Rating != -1 && clickyClack.UserRating.Review == "" {
 				<form id="hidden-rating" type="hidden">
 					<input type="hidden" name="switch-id" value={ clickyClack.ID.String() }/>
 					<input type="hidden" name="rating-id" value={ clickyClack.UserRating.ID.String() }/>
