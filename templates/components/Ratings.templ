@@ -8,7 +8,7 @@ import (
 
 templ Ratings(clickyClack models.Switch, showReview bool) {
 	<div class="ratings-wrapper">
-		if clickyClack.UserRating.Rating == 0 {
+		if clickyClack.UserRating != nil && clickyClack.UserRating.Rating == -1 {
 			@GeneralRatings(clickyClack.AverageRating, clickyClack.ID.String())
 		} else {
 			@UserRatings(clickyClack)
