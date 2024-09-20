@@ -38,11 +38,19 @@ type Switch struct {
 
 func (s *Switch) GetUserRating(userID uuid.UUID) {
 	for _, rating := range s.Ratings {
-		if rating.UserID == userID {
-			s.UserRating = &rating
-			return
+		if userID == uuid.Nil {
+			s.UserRating = &Rating{
+				Rating: -1,
+			}
+		} else {
+			if rating.UserID == userID {
+				s.UserRating = &rating
+				return
+			}
 		}
 	}
 
-	s.UserRating = &Rating{}
+	s.UserRating = &Rating{
+		Rating: -1,
+	}
 }

@@ -317,12 +317,10 @@ func GetFeaturedSwitches(c *fiber.Ctx) error {
 		Find(&clickyClacks)
 	timer.LogTime("Get Switches")
 
-	if userID != uuid.Nil {
-		for i, clickyClack := range clickyClacks {
-			log.Info().Msgf("Getting user rating for %s", clickyClack.Name)
-			clickyClack.GetUserRating(userID)
-			clickyClacks[i] = clickyClack
-		}
+	for i, clickyClack := range clickyClacks {
+		log.Info().Msgf("Getting user rating for %s", clickyClack.Name)
+		clickyClack.GetUserRating(userID)
+		clickyClacks[i] = clickyClack
 	}
 
 	component := components.FeaturedSwitches(clickyClacks)
