@@ -35,7 +35,8 @@ func PostUserSwitchReview(c *fiber.Ctx) error {
 		Clauses(clause.Returning{}).
 		Where("id = ?", ratingID).
 		Updates(models.Rating{
-			Review: c.FormValue("user-review"),
+			Review:         c.FormValue("user-review"),
+			OriginalReview: c.FormValue("user-review"),
 		}).Error; err != nil {
 		log.Error().Err(err).Msg("Error getting the user rating")
 		return c.Status(fiber.StatusBadRequest).Next()

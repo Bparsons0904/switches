@@ -7,6 +7,7 @@ import (
 	"sync"
 	"time"
 
+	goaway "github.com/TwiN/go-away"
 	"github.com/google/uuid"
 	"github.com/rs/zerolog/log"
 	"github.com/spf13/viper"
@@ -17,35 +18,45 @@ import (
 )
 
 type Rating struct {
-	ID                  uuid.UUID  `gorm:"type:uuid;default:uuid_generate_v7();primaryKey"        json:"id"`
-	Rating              int        `gorm:"type:int;not null"                                      json:"rating"`
-	Review              string     `gorm:"type:text"                                              json:"review"`
-	UserID              uuid.UUID  `gorm:"type:uuid;uniqueIndex:idx_user_switch"                  json:"userId"`
-	User                User       `gorm:"foreignKey:UserID;references:ID"                        json:"user,omitempty"`
-	SwitchID            uuid.UUID  `gorm:"type:uuid;uniqueIndex:idx_user_switch;index:idx_switch" json:"switchId"`
-	Switch              Switch     `gorm:"foreignKey:SwitchID;references:ID"                      json:"switch,omitempty"`
-	ToxicityScore       float64    `gorm:"type:float"                                             json:"toxicityScore"`
-	ProfanityScore      float64    `gorm:"type:float"                                             json:"profanityScore"`
-	SafeURLScore        float64    `gorm:"type:float"                                             json:"safeURLScore"`
-	RelavanceScore      float64    `gorm:"type:float"                                             json:"relavanceScore"`
-	AdminReviewRequired bool       `gorm:"type:bool;default:false"                                json:"adminReviewRequired"`
-	AdminReviewNotes    string     `gorm:"type:text"                                              json:"adminReviewNotes"`
-	AdminReviewedByID   *uuid.UUID `gorm:"type:uuid"                                              json:"adminReviewedById"`
-	AdminReviewedBy     *User      `gorm:"foreignKey:AdminReviewedByID;references:ID"             json:"adminReviewedBy,omitempty"`
-	CreatedAt           time.Time  `gorm:"autoCreateTime"                                         json:"createdAt"`
-	UpdatedAt           time.Time  `gorm:"autoUpdateTime"                                         json:"updatedAt"`
+	ID                  uuid.UUID      `gorm:"type:uuid;default:uuid_generate_v7();primaryKey"        json:"id"`
+	Rating              int            `gorm:"type:int;not null"                                      json:"rating"`
+	Review              string         `gorm:"type:text"                                              json:"review"`
+	OriginalReview      string         `gorm:"type:text"                                              json:"originalReview"`
+	UserID              uuid.UUID      `gorm:"type:uuid;uniqueIndex:idx_user_switch"                  json:"userId"`
+	User                User           `gorm:"foreignKey:UserID;references:ID"                        json:"user,omitempty"`
+	SwitchID            uuid.UUID      `gorm:"type:uuid;uniqueIndex:idx_user_switch;index:idx_switch" json:"switchId"`
+	Switch              Switch         `gorm:"foreignKey:SwitchID;references:ID"                      json:"switch,omitempty"`
+	ToxicityScore       float64        `gorm:"type:float"                                             json:"toxicityScore"`
+	ProfanityScore      float64        `gorm:"type:float"                                             json:"profanityScore"`
+	SafeURLScore        float64        `gorm:"type:float"                                             json:"safeURLScore"`
+	RelavanceScore      float64        `gorm:"type:float"                                             json:"relavanceScore"`
+	AdminReviewRequired bool           `gorm:"type:bool;default:false"                                json:"adminReviewRequired"`
+	AdminReviewNotes    string         `gorm:"type:text"                                              json:"adminReviewNotes"`
+	AdminReviewedByID   *uuid.UUID     `gorm:"type:uuid"                                              json:"adminReviewedById"`
+	AdminReviewedBy     *User          `gorm:"foreignKey:AdminReviewedByID;references:ID"             json:"adminReviewedBy,omitempty"`
+	CreatedAt           time.Time      `gorm:"autoCreateTime"                                         json:"createdAt"`
+	UpdatedAt           time.Time      `gorm:"autoUpdateTime"                                         json:"updatedAt"`
+	DeleteAt            gorm.DeletedAt `gorm:"index"                                                  json:"deleteAt"`
 }
 
-func (r *Rating) BeforeSave(tx *gorm.DB) (err error) {
-	if tx.Statement.Changed("Review") {
-		go RunQualityChecksAsync(*r)
-	}
+func (r *Rating) BeforeCreate(tx *gorm.DB) (err error) {
+	r.OriginalReview = r.Review
+	return
+}
+
+func (r *Rating) AfterUpdate(tx *gorm.DB) (err error) {
+	go RunQualityChecksAsync(*r)
 	return
 }
 
 func RunQualityChecksAsync(rating Rating) {
 	ctx, cancel := context.WithTimeout(context.Background(), 30*time.Second)
 	defer cancel()
+
+	if rating.Review == "" {
+		log.Warn().Msg("Review is empty, skipping quality checks")
+		return
+	}
 
 	var wg sync.WaitGroup
 	wg.Add(1)
@@ -55,9 +66,15 @@ func RunQualityChecksAsync(rating Rating) {
 
 	go func() {
 		defer wg.Done()
+
 		var err error
 		toxicityScore, profanityScore, err = performToxicityCheck(ctx, rating.Review)
-		if err != nil || toxicityScore > 0.7 {
+		if err != nil {
+			log.Error().Err(err).Msg("Failed to perform toxicity check")
+			adminReviewRequired = true
+			return
+		}
+		if toxicityScore > 0.7 {
 			adminReviewRequired = true
 		}
 	}()
@@ -66,17 +83,19 @@ func RunQualityChecksAsync(rating Rating) {
 	// relevanceScore := performRelevanceCheck(ctx, rating.Review)
 
 	wg.Wait()
-	if profanityScore > 0.7 {
-		filterProfanity(ctx, rating)
+	if profanityScore > 0.5 {
+		rating.Review = filterProfanity(rating.Review)
 	}
 
 	if err := database.DB.
+		Session(&gorm.Session{SkipHooks: true}).
 		Model(&Rating{}).
 		Where("id = ?", rating.ID).
 		Updates(Rating{
 			ToxicityScore:       toxicityScore,
 			ProfanityScore:      profanityScore,
 			AdminReviewRequired: adminReviewRequired,
+			Review:              rating.Review,
 		}).Error; err != nil {
 		log.Error().Err(err).Msg("Failed to update rating with quality check results")
 	}
@@ -114,7 +133,8 @@ type ResponseBody struct {
 	DetectedLanguages []string                  `json:"detectedLanguages"`
 }
 
-func filterProfanity(ctx context.Context, rating Rating) {
+func filterProfanity(review string) string {
+	return goaway.Censor(review)
 }
 
 func performToxicityCheck(ctx context.Context, review string) (float64, float64, error) {
@@ -144,10 +164,7 @@ func performToxicityCheck(ctx context.Context, review string) (float64, float64,
 	toxicityScore := response.AttributeScores["TOXICITY"].SummaryScore.Value
 	profanityScore := response.AttributeScores["PROFANITY"].SummaryScore.Value
 
-	log.Info().
-		Float64("toxicityScore", toxicityScore).
-		Float64("profanityScore", profanityScore).
-		Msg("Toxicity analysis completed")
-
 	return toxicityScore, profanityScore, nil
 }
+
+// this just might be the smoothest fucking switch I have ever owned. I love it. It's great and very happy I bought these bitches.
