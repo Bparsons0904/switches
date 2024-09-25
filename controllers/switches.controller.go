@@ -290,13 +290,10 @@ func GetSwitchList(c *fiber.Ctx) error {
 		return c.Status(fiber.StatusBadRequest).Next()
 	}
 
-	if user.ID != uuid.Nil {
-		for i, clickyClack := range clickyClacks {
-			clickyClack.GetUserRating(user.ID)
-			clickyClacks[i] = clickyClack
-		}
+	for i, clickyClack := range clickyClacks {
+		clickyClack.GetUserRating(user.ID)
+		clickyClacks[i] = clickyClack
 	}
-	timer.LogTime("Get Switches")
 
 	component := components.SwitchList(user, clickyClacks)
 	return Render(component)(c)
@@ -319,7 +316,6 @@ func GetFeaturedSwitches(c *fiber.Ctx) error {
 	timer.LogTime("Get Switches")
 
 	for i, clickyClack := range clickyClacks {
-		log.Info().Msgf("Getting user rating for %s", clickyClack.Name)
 		clickyClack.GetUserRating(userID)
 		clickyClacks[i] = clickyClack
 	}
