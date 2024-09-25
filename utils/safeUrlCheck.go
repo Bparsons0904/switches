@@ -140,11 +140,13 @@ func PerformURLSafetyCheck(ctx context.Context, review string) (float64, error) 
 		return 0.0, fmt.Errorf("failed to decode response: %w", err)
 	}
 
-	addThreatsToDatabase(safeBrowsingResp.Matches)
+	if len(safeBrowsingResp.Matches) > 0 {
+		addThreatsToDatabase(safeBrowsingResp.Matches)
+		log.Info().Any("SafeBrowsingResponse Matches", safeBrowsingResp.Matches)
+		return 10.0, nil
+	}
 
-	unsafeURLCount := len(safeBrowsingResp.Matches)
-	safetyScore := 1.0 - (float64(unsafeURLCount) / float64(len(urls)))
-	return safetyScore, nil
+	return 0.0, nil
 }
 
 func checkToIncludeURLCache(parsedURL *url.URL) bool {
