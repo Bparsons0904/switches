@@ -2,7 +2,13 @@ package models
 
 import (
 	"context"
+	"encoding/json"
 	"fmt"
+	"net/http"
+	"net/url"
+	"regexp"
+	"strconv"
+	"strings"
 	"switches/database"
 	"sync"
 	"time"
@@ -13,7 +19,6 @@ import (
 	"github.com/spf13/viper"
 	commentanalyzer "google.golang.org/api/commentanalyzer/v1alpha1"
 	"google.golang.org/api/option"
-
 	"gorm.io/gorm"
 )
 
@@ -59,10 +64,10 @@ func RunQualityChecksAsync(rating Rating) {
 	}
 
 	var wg sync.WaitGroup
-	wg.Add(1)
+	wg.Add(2)
 
 	adminReviewRequired := false
-	var toxicityScore, profanityScore float64
+	var toxicityScore, profanityScore, urlSafetyScore float64
 
 	go func() {
 		defer wg.Done()
@@ -79,7 +84,20 @@ func RunQualityChecksAsync(rating Rating) {
 		}
 	}()
 
-	// safeURLScore := performURLSafetyCheck(ctx, rating.Review)
+	go func() {
+		defer wg.Done()
+		var err error
+		urlSafetyScore, err = performURLSafetyCheck(ctx, rating.Review)
+		if err != nil {
+			log.Error().Err(err).Msg("Failed to perform URL safety check")
+			adminReviewRequired = true
+			return
+		}
+		if urlSafetyScore > 0.7 {
+			adminReviewRequired = true
+		}
+	}()
+
 	// relevanceScore := performRelevanceCheck(ctx, rating.Review)
 
 	wg.Wait()
@@ -94,10 +112,204 @@ func RunQualityChecksAsync(rating Rating) {
 		Updates(Rating{
 			ToxicityScore:       toxicityScore,
 			ProfanityScore:      profanityScore,
+			SafeURLScore:        urlSafetyScore,
 			AdminReviewRequired: adminReviewRequired,
 			Review:              rating.Review,
 		}).Error; err != nil {
 		log.Error().Err(err).Msg("Failed to update rating with quality check results")
+	}
+}
+
+type URLCheck struct {
+	ID        uuid.UUID `gorm:"type:uuid;default:uuid_generate_v7();primaryKey" json:"id"`
+	URL       string    `gorm:"type:text;uniqueIndex"                           json:"url"`
+	IsSafe    bool      `gorm:"type:boolean"                                    json:"isSafe"`
+	CheckedAt time.Time `gorm:"type:timestamp"                                  json:"checkedAt"`
+}
+
+type Client struct {
+	ClientID      string `json:"clientId"`
+	ClientVersion string `json:"clientVersion"`
+}
+
+type Threat struct {
+	URL string `json:"url"`
+}
+
+type ThreatInfo struct {
+	ThreatTypes      []string `json:"threatTypes"`
+	PlatformTypes    []string `json:"platformTypes"`
+	ThreatEntryTypes []string `json:"threatEntryTypes"`
+	ThreatEntries    []Threat `json:"threatEntries"`
+}
+
+type SafeBrowsingRequest struct {
+	Client     Client     `json:"client"`
+	ThreatInfo ThreatInfo `json:"threatInfo"`
+}
+
+type Entry struct {
+	Key   string `json:"key"`
+	Value string `json:"value"`
+}
+
+type Match struct {
+	ThreatType          string              `json:"threatType"`
+	PlatformType        string              `json:"platformType"`
+	ThreatEntryType     string              `json:"threatEntryType"`
+	Threat              Threat              `json:"threat"`
+	ThreatEntryMetadata ThreatEntryMetadata `json:"threatEntryMetadata"`
+	CacheDuration       string              `json:"cacheDuration"`
+}
+
+type SafeBrowsingResponse struct {
+	Matches []Match `json:"matches"`
+}
+
+func performURLSafetyCheck(ctx context.Context, review string) (float64, error) {
+	urls := extractURLs(review)
+	if len(urls) == 0 {
+		return 1.0, nil // All safe if no URLs
+	}
+
+	apiKey := viper.GetString("GCP_API_KEY")
+	apiURL := fmt.Sprintf(
+		"https://safebrowsing.googleapis.com/v4/threatMatches:find?key=%s",
+		apiKey,
+	)
+
+	req := &SafeBrowsingRequest{
+		Client: Client{
+			ClientID:      "waugze-dev",
+			ClientVersion: "1.5.2",
+		},
+		ThreatInfo: ThreatInfo{
+			ThreatTypes: []string{
+				"MALWARE",
+				"SOCIAL_ENGINEERING",
+				"UNWANTED_SOFTWARE",
+				"POTENTIALLY_HARMFUL_APPLICATION",
+			},
+			PlatformTypes: []string{
+				"WINDOWS",
+				"LINUX",
+				"ANDROID",
+				"OSX",
+				"IOS",
+				"ANY_PLATFORM",
+			},
+			ThreatEntryTypes: []string{"URL"},
+			ThreatEntries:    make([]Threat, len(urls)),
+		},
+	}
+
+	for i, u := range urls {
+		req.ThreatInfo.ThreatEntries[i] = Threat{URL: u}
+	}
+
+	jsonData, err := json.Marshal(req)
+	if err != nil {
+		return 0.0, fmt.Errorf("failed to marshal request: %w", err)
+	}
+
+	httpReq, err := http.NewRequestWithContext(
+		ctx,
+		"POST",
+		apiURL,
+		strings.NewReader(string(jsonData)),
+	)
+	if err != nil {
+		return 0.0, fmt.Errorf("failed to create request: %w", err)
+	}
+	httpReq.Header.Set("Content-Type", "application/json")
+
+	client := &http.Client{}
+	resp, err := client.Do(httpReq)
+	if err != nil {
+		return 0.0, fmt.Errorf("failed to send request: %w", err)
+	}
+	defer resp.Body.Close()
+
+	if resp.StatusCode != http.StatusOK {
+		return 0.0, fmt.Errorf("API request failed with status code: %d", resp.StatusCode)
+	}
+
+	var safeBrowsingResp SafeBrowsingResponse
+	if err := json.NewDecoder(resp.Body).Decode(&safeBrowsingResp); err != nil {
+		return 0.0, fmt.Errorf("failed to decode response: %w", err)
+	}
+
+	addThreatsToDatabase(safeBrowsingResp.Matches)
+
+	unsafeURLCount := len(safeBrowsingResp.Matches)
+	safetyScore := 1.0 - (float64(unsafeURLCount) / float64(len(urls)))
+	return safetyScore, nil
+}
+
+func checkToIncludeURLCache(parsedURL *url.URL) bool {
+	duration, err := database.GetJSONKeyDB[int64]("urlCache", parsedURL.String())
+	if err != nil {
+		return true
+	}
+
+	timeToExpire := time.Now().Add(time.Second * time.Duration(duration))
+	return time.Now().After(timeToExpire)
+}
+
+func extractURLs(text string) []string {
+	urlRegex := regexp.MustCompile(
+		`(?i)\b((?:https?://|www\d{0,3}[.]|[a-z0-9.\-]+[.][a-z]{2,4}/)(?:[^\s()<>]+|\(([^\s()<>]+|(\([^\s()<>]+\)))*\))+(?:\(([^\s()<>]+|(\([^\s()<>]+\)))*\)|[^\s` + "`" + `!()\[\]{};:'\".,<>?«»""'']))`,
+	)
+	matches := urlRegex.FindAllString(text, -1)
+	uniqueURLs := make(map[string]bool)
+	for _, match := range matches {
+		parsedURL, err := url.Parse(match)
+		if err == nil {
+			if checkToIncludeURLCache(parsedURL) {
+				uniqueURLs[parsedURL.String()] = true
+			}
+		}
+	}
+	urls := make([]string, 0, len(uniqueURLs))
+	for url := range uniqueURLs {
+		urls = append(urls, url)
+	}
+	return urls
+}
+
+type ThreatEntryMetadata struct {
+	Entries []Entry `json:"entries"`
+}
+
+func addThreatsToDatabase(matches []Match) {
+	uniqueThreats := make(map[string]Match)
+
+	for _, match := range matches {
+		threat := match.Threat.URL
+		if existingMatch, exists := uniqueThreats[threat]; !exists ||
+			match.CacheDuration > existingMatch.CacheDuration {
+			uniqueThreats[threat] = match
+		}
+	}
+
+	for threat, match := range uniqueThreats {
+		cacheDuration := strings.TrimSuffix(match.CacheDuration, "s")
+		cacheDurationSeconds, err := strconv.ParseFloat(cacheDuration, 64)
+		if err != nil {
+			log.Error().Err(err).Msg("Error parsing the duration")
+			continue
+		}
+
+		cacheDurationMilliseconds := int64(cacheDurationSeconds * 1000)
+
+		err = database.SetJSONKeyDB(
+			"urlCache",
+			threat,
+			cacheDurationMilliseconds,
+			time.Duration(cacheDurationSeconds)*time.Second)
+		if err != nil {
+			log.Error().Err(err).Msg("Error setting cache")
+		}
 	}
 }
 
@@ -138,7 +350,6 @@ func filterProfanity(review string) string {
 }
 
 func performToxicityCheck(ctx context.Context, review string) (float64, float64, error) {
-	log.Info().Msg("Performing toxicity analysis")
 	apiKey := viper.GetString("GCP_API_KEY")
 	service, err := commentanalyzer.NewService(ctx, option.WithAPIKey(apiKey))
 	if err != nil {
@@ -163,8 +374,5 @@ func performToxicityCheck(ctx context.Context, review string) (float64, float64,
 
 	toxicityScore := response.AttributeScores["TOXICITY"].SummaryScore.Value
 	profanityScore := response.AttributeScores["PROFANITY"].SummaryScore.Value
-
 	return toxicityScore, profanityScore, nil
 }
-
-// this just might be the smoothest fucking switch I have ever owned. I love it. It's great and very happy I bought these bitches.
