@@ -19,31 +19,36 @@ templ Ratings(clickyClack models.Switch, showReview bool) {
 		<a href="#reviews"><span class="rating-count">{ fmt.Sprintf("(%d reviews)", clickyClack.RatingsCount) }</span></a>
 	</div>
 	if showReview == true {
-		<div id="user-review">
-			if clickyClack.UserRating.Rating != -1 && clickyClack.UserRating.Review == "" {
-				<form id="hidden-rating" type="hidden">
-					<input type="hidden" name="switch-id" value={ clickyClack.ID.String() }/>
-					<input type="hidden" name="rating-id" value={ clickyClack.UserRating.ID.String() }/>
-				</form>
-				<button
-					type="button"
-					class="button"
-					style="margin-top: 10px;"
-					hx-get="/switches/reviews/form"
-					hx-target="#user-review"
-					hx-include="#hidden-rating"
-				>Add Review</button>
-			}
-		</div>
+		@addReviewButton(clickyClack)
 	}
+}
+
+templ addReviewButton(clickyClack models.Switch) {
+	<div id="user-review">
+		if clickyClack.UserRating.Rating != -1 && clickyClack.UserRating.Review == "" {
+			<form id="hidden-rating" type="hidden">
+				<input type="hidden" name="switch-id" value={ clickyClack.ID.String() }/>
+				<input type="hidden" name="rating-id" value={ clickyClack.UserRating.ID.String() }/>
+			</form>
+			<button
+				type="button"
+				class="button"
+				style="margin-top: 10px;"
+				hx-get="/switches/reviews/form"
+				hx-target="#review-form"
+				hx-swap="show:#review-form:top"
+				hx-include="#hidden-rating"
+			>Add Review</button>
+		}
+	</div>
 }
 
 templ UserReviewForm(path string) {
 	@FormContainer(
 		Form{
 			ID:     "user-review-form",
-			Swap:   "outerHTML",
-			Target: "#user-review",
+			Swap:   "innerHTML",
+			Target: "#main",
 			Post:   path}) {
 		@AreaInput(Input{
 			ID:          "user-review",
@@ -55,7 +60,8 @@ templ UserReviewForm(path string) {
 }
 
 templ UserReview(rating models.Rating) {
-	<p>{ rating.Review }</p>
+	<div></div>
+	<!-- <p>{ rating.Review }</p> -->
 }
 
 templ UserRatings(clickyClack models.Switch) {
@@ -124,6 +130,9 @@ templ SwitchReviewsView(clickyClack models.Switch, ratingData RatingData) {
 			for i := 5; i > 0; i-- {
 				@RatingBar(i, ratingData.RatingCounts[i], ratingData.RatingsCount, ratingData.RatingWidth[i])
 			}
+		</div>
+		<div id="review-form">
+			@addReviewButton(clickyClack)
 		</div>
 		<div class="reviews-list">
 			for _, review := range clickyClack.Ratings {

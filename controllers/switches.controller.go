@@ -26,6 +26,28 @@ func GetReviewForm(c *fiber.Ctx) error {
 	return Render(components.UserReviewForm(postPath))(c)
 }
 
+func getDetailPageData(c *fiber.Ctx) (models.User, models.Switch, error) {
+	user := c.Locals("User").(models.User)
+	switchID, err := GetSwitchIDParam(c)
+	if err != nil {
+		return models.User{}, models.Switch{}, err
+	}
+
+	var clickyClack models.Switch
+	if err := database.DB.
+		Preload("ImageLinks").
+		Preload("Brand").
+		Preload("SwitchType").
+		Preload("Ratings.User").
+		First(&clickyClack, switchID).Error; err != nil {
+		log.Error().Err(err).Msg("Error getting the switch")
+		return models.User{}, models.Switch{}, err
+	}
+	clickyClack.GetUserRating(user.ID)
+
+	return user, clickyClack, nil
+}
+
 func PostUserSwitchReview(c *fiber.Ctx) error {
 	ratingID := c.Params("ratingID")
 
@@ -42,7 +64,14 @@ func PostUserSwitchReview(c *fiber.Ctx) error {
 		return c.Status(fiber.StatusBadRequest).Next()
 	}
 
-	return Render(components.UserReview(userRating))(c)
+	user, clickyClack, err := getDetailPageData(c)
+	if err != nil {
+		log.Error().Err(err).Msg("Error getting the detail page data")
+		return c.Status(fiber.StatusBadRequest).Next()
+	}
+
+	return Render(pages.SwitchDetail(user, clickyClack))(c)
+	// return Render(components.UserReview(userRating))(c)
 }
 
 func PutUserSwitch(c *fiber.Ctx) error {
@@ -181,35 +210,11 @@ func GetSwitchDetailPage(c *fiber.Ctx) error {
 	timer := utils.StartTimer("getSwitchDetailPage")
 	defer timer.LogTotalTime()
 
-	user := c.Locals("User").(models.User)
-	switchID, err := GetSwitchIDParam(c)
+	user, clickyClack, err := getDetailPageData(c)
 	if err != nil {
-		return err
-	}
-
-	// var user models.User
-	// if userID != uuid.Nil {
-	// 	if err := database.DB.
-	// 		Preload("OwnedSwitches").
-	// 		Preload("LikedSwitches").
-	// 		First(&user, userID).Error; err != nil {
-	// 		return c.Status(fiber.StatusBadRequest).Next()
-	// 	}
-	// }
-	// timer.LogTime("Get User")
-
-	var clickyClack models.Switch
-	if err := database.DB.
-		Preload("ImageLinks").
-		Preload("Brand").
-		Preload("SwitchType").
-		Preload("Ratings").
-		First(&clickyClack, switchID).Error; err != nil {
-		log.Error().Err(err).Msg("Error getting the switch")
+		log.Error().Err(err).Msg("Error getting the detail page data")
 		return c.Status(fiber.StatusBadRequest).Next()
 	}
-	clickyClack.GetUserRating(user.ID)
-	timer.LogTime("Get Switch")
 
 	return Render(pages.SwitchDetail(user, clickyClack))(c)
 }
