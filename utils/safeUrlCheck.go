@@ -4,6 +4,7 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
+	"log/slog"
 	"net/http"
 	"net/url"
 	"regexp"
@@ -69,8 +70,9 @@ type SafeBrowsingResponse struct {
 
 func PerformURLSafetyCheck(ctx context.Context, review string) (float64, error) {
 	urls := extractURLs(review)
+	slog.Info("urls", "count", len(urls))
 	if len(urls) == 0 {
-		return 1.0, nil // All safe if no URLs
+		return 0.0, nil
 	}
 
 	apiKey := viper.GetString("GCP_API_KEY")
@@ -143,7 +145,7 @@ func PerformURLSafetyCheck(ctx context.Context, review string) (float64, error) 
 	if len(safeBrowsingResp.Matches) > 0 {
 		addThreatsToDatabase(safeBrowsingResp.Matches)
 		log.Info().Any("SafeBrowsingResponse Matches", safeBrowsingResp.Matches)
-		return 10.0, nil
+		return 1.0, nil
 	}
 
 	return 0.0, nil

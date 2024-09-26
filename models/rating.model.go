@@ -54,10 +54,10 @@ func runQualityChecksAsync(rating Rating) {
 	}
 
 	var wg sync.WaitGroup
-	wg.Add(2)
+	wg.Add(3)
 
 	adminReviewRequired := false
-	var toxicityScore, profanityScore, urlSafetyScore float64
+	var toxicityScore, profanityScore, urlSafetyScore, relavanceScore float64
 
 	go func() {
 		defer wg.Done()
@@ -83,12 +83,25 @@ func runQualityChecksAsync(rating Rating) {
 			adminReviewRequired = true
 			return
 		}
-		if urlSafetyScore > 0.7 {
+		if urlSafetyScore != 0.0 {
 			adminReviewRequired = true
 		}
 	}()
 
-	// relevanceScore := performRelevanceCheck(ctx, rating.Review)
+	go func() {
+		defer wg.Done()
+		var err error
+		relavanceScore, err = utils.CheckReviewRelavancy(rating.Review)
+		if err != nil {
+			log.Error().Err(err).Msg("Failed to perform Relavancy check")
+			adminReviewRequired = true
+			return
+		}
+
+		if relavanceScore < 3.0 {
+			adminReviewRequired = true
+		}
+	}()
 
 	wg.Wait()
 	if profanityScore > 0.5 {
@@ -103,6 +116,7 @@ func runQualityChecksAsync(rating Rating) {
 			ToxicityScore:       toxicityScore,
 			ProfanityScore:      profanityScore,
 			SafeURLScore:        urlSafetyScore,
+			RelavanceScore:      relavanceScore,
 			AdminReviewRequired: adminReviewRequired,
 			Review:              rating.Review,
 		}).Error; err != nil {

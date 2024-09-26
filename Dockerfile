@@ -8,7 +8,8 @@ RUN --mount=type=cache,target=/go/pkg/mod \
   go mod download
 
 # Stage for Templ generation
-FROM ghcr.io/a-h/templ:latest AS generate-stage
+FROM ghcr.io/a-h/templ:0.2.771 AS generate-stage
+# FROM ghcr.io/a-h/templ:latest AS generate-stage
 WORKDIR /app
 COPY --from=deps /app /app
 COPY . .

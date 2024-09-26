@@ -26,6 +26,7 @@ type Config struct {
 	AppendNumber  int64
 	GcpApiKey     string
 	GcpClientID   string
+	AiServer      string
 }
 
 func LoadConfig() (Config, error) {
@@ -63,6 +64,7 @@ func LoadConfig() (Config, error) {
 		"KEYDB_PASSWORD",
 		"GCP_API_KEY",
 		"GCP_CLIENT_ID",
+		"AI_SERVER",
 	}
 
 	if err := validateEnvVars(requiredEnvs); err != nil {
@@ -86,6 +88,7 @@ func LoadConfig() (Config, error) {
 		AppendNumber:  appendNumber,
 		GcpApiKey:     viper.GetString("GCP_API_KEY"),
 		GcpClientID:   viper.GetString("GCP_CLIENT_ID"),
+		AiServer:      viper.GetString("AI_SERVER"),
 	}
 
 	return config, nil
