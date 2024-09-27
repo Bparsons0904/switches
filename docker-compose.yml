@@ -23,7 +23,7 @@ services:
       - KEYDB_PASSWORD=${KEYDB_PASSWORD}
       - KEYDB_DB=${KEYDB_DB}
       - GCP_CLIENT_ID=${GCP_CLIENT_ID}
-      - GCP_CLIENT_ID=${GCP_API_KEY}
+      - GCP_API_KEY=${GCP_API_KEY}
       - AI_SERVER=${AI_SERVER}
       - ./static:/app/static
     restart: unless-stopped
