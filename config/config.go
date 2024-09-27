@@ -24,7 +24,9 @@ type Config struct {
 	KeyDBPassword string
 	KeyDB         int64
 	AppendNumber  int64
-	RandonString  string
+	GcpApiKey     string
+	GcpClientID   string
+	AiServer      string
 }
 
 func LoadConfig() (Config, error) {
@@ -60,6 +62,9 @@ func LoadConfig() (Config, error) {
 		"AUTH_URL",
 		"KEYDB_HOST",
 		"KEYDB_PASSWORD",
+		"GCP_API_KEY",
+		"GCP_CLIENT_ID",
+		"AI_SERVER",
 	}
 
 	if err := validateEnvVars(requiredEnvs); err != nil {
@@ -80,8 +85,10 @@ func LoadConfig() (Config, error) {
 		KeyDBHost:     viper.GetString("KEYDB_HOST"),
 		KeyDBPassword: viper.GetString("KEYDB_PASSWORD"),
 		KeyDB:         viper.GetInt64("KEYDB_DB"),
-		RandonString:  "7pdme2QREQqq15JZ",
 		AppendNumber:  appendNumber,
+		GcpApiKey:     viper.GetString("GCP_API_KEY"),
+		GcpClientID:   viper.GetString("GCP_CLIENT_ID"),
+		AiServer:      viper.GetString("AI_SERVER"),
 	}
 
 	return config, nil

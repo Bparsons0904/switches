@@ -39,6 +39,11 @@
         padding: 0px 15px;
       }
     }
+    .rating-container {
+      .ratings-wrapper {
+        justify-content: flex-end;
+      }
+    }
   }
 }
 
@@ -112,6 +117,12 @@
   }
   .switch-selectors {
     justify-content: flex-start;
+  }
+
+  .rating-container {
+    .ratings-wrapper {
+      justify-content: flex-start;
+    }
   }
   .attributes {
     justify-content: flex-start;
@@ -404,4 +415,88 @@
   .switch-card-preview {
     width: 300px;
   }
+}
+
+/* Placeholder CSS for the Switch Reviews page */
+.switch-reviews {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 20px;
+  .title-container {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    margin-bottom: 10px;
+    .title-wrapper {
+      display: flex;
+      flex-direction: row;
+      gap: 10px;
+      font-weight: 600;
+      align-items: center;
+      .rating-average {
+        display: flex;
+        align-items: center;
+        svg {
+          height: 20px;
+        }
+      }
+    }
+  }
+  .rating-breakdown {
+    margin-bottom: 30px;
+    .rating-bar {
+      display: flex;
+      align-items: center;
+      margin-bottom: 10px;
+      .stars {
+        display: flex;
+        flex-direction: row;
+        width: 100px;
+        text-align: right;
+        margin-right: 10px;
+      }
+      .bar-container {
+        flex-grow: 1;
+        background-color: #f0f0f0;
+        height: 20px;
+        border-radius: 10px;
+        overflow: hidden;
+        .bar {
+          height: 100%;
+        }
+      }
+      .count {
+        width: 20px;
+        margin-left: 10px;
+      }
+    }
+  }
+  .reviews-list {
+    border-top: 1px solid #e0e0e0;
+    padding-top: 20px;
+    .review-item {
+      margin-bottom: 20px;
+      padding-bottom: 20px;
+      border-bottom: 1px solid #e0e0e0;
+      .review-header {
+        display: flex;
+        margin-bottom: 10px;
+        justify-content: space-between;
+        .user-name {
+          font-weight: 500;
+        }
+        .rating {
+          display: flex;
+          flex-direction: row;
+        }
+      }
+      .review-text {
+        line-height: 1.6;
+      }
+    }
+  }
+}
+
+#review-form {
+  margin-bottom: 1rem;
 }

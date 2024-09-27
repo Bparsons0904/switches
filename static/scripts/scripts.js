@@ -66,14 +66,6 @@ async function shareSwitch(event) {
   }
 }
 
-// function updateQueryParam(switchId) {
-//   // const switchId = event.currentTarget.getAttribute("data-switch-id");
-//   const url = new URL(window.location);
-//   url.searchParams.set("modal", switchId);
-//   window.history.pushState({}, "", url);
-//   loadModalForSwitchId(switchId);
-// }
-
 function getSwitchIdFromUrl() {
   const urlParams = new URLSearchParams(window.location.search);
   return urlParams.get("modal");
@@ -96,19 +88,3 @@ document.addEventListener("DOMContentLoaded", function () {
     setTimeout(() => loadModalForSwitchId(switchId), 100);
   }
 });
-
-// document.body.addEventListener("htmx:beforeSend", function (event) {
-//   if (event.detail.elt.classList.contains("switch-card")) {
-//     const switchId = event.detail.elt.getAttribute("data-switch-id");
-//     if (switchId) {
-//       const url = new URL(window.location);
-//       url.searchParams.set("modal", switchId);
-//       window.history.pushState({}, "", url);
-//       loadModalForSwitchId(switchId);
-//     }
-//   }
-//
-//   if (event.detail.elt.classList.contains("switch-card")) {
-//     closeDialog();
-//   }
-// });

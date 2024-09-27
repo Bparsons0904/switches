@@ -51,6 +51,12 @@ steps:
         from_secret: KEYDB_PASSWORD
       KEYDB_DB:
         from_secret: KEYDB_DB_STAGE
+      GCP_API_KEY:
+        from_secret: GCP_API_KEY_STAGE
+      GCP_CLIENT_ID:
+        from_secret: GCP_CLIENT_ID_STAGE
+      AI_SERVER:
+        from_secret: AI_SERVER
     commands:
       - go run ./migrator/migrator.go -up
     when:
@@ -95,6 +101,12 @@ steps:
         from_secret: KEYDB_PASSWORD
       KEYDB_DB:
         from_secret: KEYDB_DB_STAGE
+      GCP_API_KEY:
+        from_secret: GCP_API_KEY_STAGE
+      GCP_CLIENT_ID:
+        from_secret: GCP_CLIENT_ID_STAGE
+      AI_SERVER:
+        from_secret: AI_SERVER
     commands:
       - docker-compose up -d --build
       - docker-compose ps

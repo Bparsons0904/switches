@@ -1,0 +1,196 @@
+package components
+
+import (
+	"fmt"
+	"switches/models"
+	"switches/templates/components/icons"
+)
+
+templ Ratings(clickyClack models.Switch, showReview bool) {
+	<div class="ratings-wrapper">
+		if clickyClack.UserRating != nil && clickyClack.UserRating.Rating == -1 {
+			@GeneralRatings(clickyClack.AverageRating, clickyClack.ID.String())
+		} else {
+			@UserRatings(clickyClack)
+		}
+		<span class="rating-average">
+			{ fmt.Sprintf("%.1f", clickyClack.AverageRating) }@icons.StarFilled()
+		</span>
+		<a href="#reviews"><span class="rating-count">{ fmt.Sprintf("(%d reviews)", clickyClack.RatingsCount) }</span></a>
+	</div>
+	if showReview == true {
+		@addReviewButton(clickyClack)
+	}
+}
+
+templ addReviewButton(clickyClack models.Switch) {
+	<div id="user-review">
+		if clickyClack.UserRating.Rating != -1 && clickyClack.UserRating.Review == "" {
+			<form id="hidden-rating" type="hidden">
+				<input type="hidden" name="switch-id" value={ clickyClack.ID.String() }/>
+				<input type="hidden" name="rating-id" value={ clickyClack.UserRating.ID.String() }/>
+			</form>
+			<button
+				type="button"
+				class="button"
+				style="margin-top: 10px;"
+				hx-get="/switches/reviews/form"
+				hx-target="#review-form"
+				hx-swap="show:#review-form:top"
+				hx-include="#hidden-rating"
+			>Add Review</button>
+		}
+	</div>
+}
+
+templ UserReviewForm(path string) {
+	@FormContainer(
+		Form{
+			ID:     "user-review-form",
+			Swap:   "innerHTML",
+			Target: "#main",
+			Post:   path}) {
+		@AreaInput(Input{
+			ID:          "user-review",
+			Name:        "user-review",
+			Label:       "User Review",
+			Placeholder: "Enter Review",
+			Required:    true})
+	}
+}
+
+templ UserRatings(clickyClack models.Switch) {
+	for i := 0; i < 5; i++ {
+		<div
+			class="ratings"
+			hx-put={ fmt.Sprintf("/switches/%s/ratings/%d", clickyClack.ID.String(), i) }
+			hx-target="closest .ratings-wrapper"
+			hx-on:click="event.stopPropagation()"
+		>
+			if clickyClack.UserRating.Rating >= i + 1 {
+				<span class="user-ratings">
+					@icons.StarFilled()
+				</span>
+			} else {
+				@icons.StarOutlined()
+			}
+		</div>
+	}
+}
+
+templ GeneralRatings(rating float64, id string) {
+	for i := 0; i < 5; i++ {
+		<div
+			class="ratings"
+			hx-put={ fmt.Sprintf("/switches/%s/ratings/%d", id, i) }
+			hx-target="closest .ratings-wrapper"
+			hx-swap="outerHTML"
+			hx-on:click="event.stopPropagation()"
+		>
+			if rating >= float64(i+1) {
+				@icons.StarFilled()
+			} else if rating >= float64(i) + 0.5 {
+				@icons.StarHalf()
+			} else {
+				@icons.StarOutlined()
+			}
+		</div>
+	}
+}
+
+type RatingData struct {
+	RatingCounts map[int]int
+	RatingWidth  map[int]int
+	RatingsCount int
+}
+
+templ SwitchReviews(clickyClack models.Switch) {
+	<div id="reviews">
+		@SwitchReviewsView(clickyClack, getRatingData(clickyClack))
+	</div>
+}
+
+templ SwitchReviewsView(clickyClack models.Switch, ratingData RatingData) {
+	<div class="switch-reviews">
+		<div class="title-container">
+			<h2>Reviews</h2>
+			<div class="title-wrapper">
+				<span class="rating-average">
+					{ fmt.Sprintf("%.1f", clickyClack.AverageRating) }@icons.StarFilled()
+				</span>
+				<a href="#reviews"><span class="rating-count">{ fmt.Sprintf("(%d reviews)", clickyClack.RatingsCount) }</span></a>
+			</div>
+		</div>
+		<div class="rating-breakdown">
+			for i := 5; i > 0; i-- {
+				@RatingBar(i, ratingData.RatingCounts[i], ratingData.RatingsCount, ratingData.RatingWidth[i])
+			}
+		</div>
+		<div id="review-form">
+			@addReviewButton(clickyClack)
+		</div>
+		<div class="reviews-list">
+			for _, review := range clickyClack.Ratings {
+				<!-- if review.AdminReviewRequired != true { -->
+				@ReviewItem(review)
+				<!-- } -->
+			}
+		</div>
+	</div>
+}
+
+func getRatingData(clickyClack models.Switch) RatingData {
+	data := RatingData{
+		RatingCounts: make(map[int]int),
+		RatingWidth:  make(map[int]int),
+	}
+	for _, rating := range clickyClack.Ratings {
+		data.RatingCounts[rating.Rating]++
+		data.RatingsCount++
+	}
+	for i := 1; i <= 5; i++ {
+		if data.RatingsCount > 0 {
+			data.RatingWidth[i] = data.RatingCounts[i] * 100 / data.RatingsCount
+		} else {
+			data.RatingWidth[i] = 0
+		}
+	}
+	return data
+}
+
+css ratingWidth(percent int) {
+	width: { fmt.Sprintf("%d%%", percent) };
+	background-color: #ffd700;
+	height: 100%;
+}
+
+templ RatingBar(rating int, count int, total int, width int) {
+	<div class="rating-bar">
+		<span class="stars">
+			for i := 0; i < rating; i++ {
+				@icons.StarFilled()
+			}
+			for i := 0; i < 5-rating; i++ {
+				@icons.StarOutlined()
+			}
+		</span>
+		<div class="bar-container">
+			<div class={ ratingWidth(width) }></div>
+		</div>
+		<span class="count">{ fmt.Sprintf("%d", count) }</span>
+	</div>
+}
+
+templ ReviewItem(rating models.Rating) {
+	<div class="review-item">
+		<div class="review-header">
+			<span class="rating">
+				for i := 0; i < rating.Rating; i++ {
+					@icons.StarFilled()
+				}
+			</span>
+			<span class="user-name">{ fmt.Sprintf("%s on %s", rating.User.Name , rating.CreatedAt.Format("Jan 02 2006")) }</span>
+		</div>
+		<p class="review-text">{ rating.Review }</p>
+	</div>
+}

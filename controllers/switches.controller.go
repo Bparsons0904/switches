@@ -2,6 +2,7 @@ package controllers
 
 import (
 	"fmt"
+	"regexp"
 	"switches/database"
 	"switches/models"
 	"switches/templates/components"
@@ -13,7 +14,131 @@ import (
 	"github.com/gofiber/fiber/v2"
 	"github.com/google/uuid"
 	"github.com/rs/zerolog/log"
+	"gorm.io/gorm"
+	"gorm.io/gorm/clause"
 )
+
+func GetReviewForm(c *fiber.Ctx) error {
+	switchID := c.Query("switch-id")
+	ratingID := c.Query("rating-id")
+
+	postPath := fmt.Sprintf("/switches/%s/ratings/%s/review", switchID, ratingID)
+	return Render(components.UserReviewForm(postPath))(c)
+}
+
+func getDetailPageData(c *fiber.Ctx) (models.User, models.Switch, error) {
+	user := c.Locals("User").(models.User)
+	switchID, err := GetSwitchIDParam(c)
+	if err != nil {
+		return models.User{}, models.Switch{}, err
+	}
+
+	var clickyClack models.Switch
+	if err := database.DB.
+		Preload("ImageLinks").
+		Preload("Brand").
+		Preload("SwitchType").
+		Preload("Ratings", func(db *gorm.DB) *gorm.DB {
+			return db.Where("admin_review_required = false").Preload("User")
+		}).
+		First(&clickyClack, switchID).Error; err != nil {
+		log.Error().Err(err).Msg("Error getting the switch")
+		return models.User{}, models.Switch{}, err
+	}
+	clickyClack.GetUserRating(user.ID)
+
+	return user, clickyClack, nil
+}
+
+func PostUserSwitchReview(c *fiber.Ctx) error {
+	ratingID := c.Params("ratingID")
+
+	var userRating models.Rating
+	if err := database.DB.
+		Model(&userRating).
+		Clauses(clause.Returning{}).
+		Where("id = ?", ratingID).
+		Updates(models.Rating{
+			Review:         c.FormValue("user-review"),
+			OriginalReview: c.FormValue("user-review"),
+		}).Error; err != nil {
+		log.Error().Err(err).Msg("Error getting the user rating")
+		return c.Status(fiber.StatusBadRequest).Next()
+	}
+
+	user, clickyClack, err := getDetailPageData(c)
+	if err != nil {
+		log.Error().Err(err).Msg("Error getting the detail page data")
+		return c.Status(fiber.StatusBadRequest).Next()
+	}
+
+	return Render(pages.SwitchDetail(user, clickyClack))(c)
+}
+
+func PutUserSwitch(c *fiber.Ctx) error {
+	timer := utils.StartTimer("Put User Switch")
+	defer timer.LogTotalTime()
+
+	userID := c.Locals("UserID").(uuid.UUID)
+	if userID == uuid.Nil {
+		log.Warn().Msg("User not logged in")
+		c.Set("HX-Redirect", "/auth/login")
+		return c.SendStatus(fiber.StatusUnauthorized)
+	}
+	switchID, err := uuid.Parse(c.Params("switchID"))
+	if err != nil {
+		log.Error().Err(err).Msg("Error parsing the switch id")
+		return c.Status(fiber.StatusBadRequest).Next()
+	}
+	rating, err := c.ParamsInt("rating")
+	if err != nil {
+		log.Error().Err(err).Msg("Error parsing the rating")
+		return c.Status(fiber.StatusBadRequest).Next()
+	}
+
+	tx := database.DB.Begin()
+	var userRating models.Rating
+	err = tx.
+		Where(models.Rating{
+			UserID:   userID,
+			SwitchID: switchID,
+		}).
+		Attrs(models.Rating{
+			Rating: rating + 1,
+		}).
+		FirstOrCreate(&userRating).Error
+	if err != nil && err != gorm.ErrRecordNotFound {
+		tx.Rollback()
+		log.Error().Err(err).Msg("Error creating the rating")
+		return c.Status(fiber.StatusBadRequest).Next()
+	} else {
+		userRating.Rating = rating + 1
+		if err := tx.Save(&userRating).Error; err != nil {
+			tx.Rollback()
+			log.Error().Err(err).Msg("Error saving the rating with new user value")
+			return c.Status(fiber.StatusBadRequest).Next()
+		}
+	}
+	tx.Commit()
+
+	var clickyClack models.Switch
+	if err := database.DB.
+		Preload("Ratings.User").
+		First(&clickyClack, switchID).Error; err != nil {
+		log.Error().Err(err).Msg("Error getting the switch")
+		return c.Status(fiber.StatusBadRequest).Next()
+	}
+	clickyClack.GetUserRating(userID)
+
+	currentURL := c.Get("Hx-Current-Url")
+	regex := `switches\/[a-f0-9]{8}-([a-f0-9]{4}-){3}[a-f0-9]{12}`
+	matched, err := regexp.MatchString(regex, currentURL)
+	if err != nil {
+		log.Error().Err(err).Msg("Error trying to complete regex check on current url")
+	}
+
+	return Render(components.Ratings(clickyClack, matched))(c)
+}
 
 func GetSwitchPage(c *fiber.Ctx) error {
 	timer := utils.StartTimer("Get Switch Page")
@@ -69,33 +194,11 @@ func GetSwitchDetailPage(c *fiber.Ctx) error {
 	timer := utils.StartTimer("getSwitchDetailPage")
 	defer timer.LogTotalTime()
 
-	userID := c.Locals("UserID").(uuid.UUID)
-	switchID, err := GetSwitchIDParam(c)
+	user, clickyClack, err := getDetailPageData(c)
 	if err != nil {
-		return err
-	}
-
-	var user models.User
-	if userID != uuid.Nil {
-		if err := database.DB.
-			Preload("OwnedSwitches").
-			Preload("LikedSwitches").
-			First(&user, userID).Error; err != nil {
-			return c.Status(fiber.StatusBadRequest).Next()
-		}
-	}
-	timer.LogTime("Get User")
-
-	var clickyClack models.Switch
-	if err := database.DB.
-		Preload("ImageLinks").
-		Preload("Brand").
-		Preload("SwitchType").
-		First(&clickyClack, switchID).Error; err != nil {
-		log.Error().Err(err).Msg("Error getting the switch")
+		log.Error().Err(err).Msg("Error getting the detail page data")
 		return c.Status(fiber.StatusBadRequest).Next()
 	}
-	timer.LogTime("Get Switch")
 
 	return Render(pages.SwitchDetail(user, clickyClack))(c)
 }
@@ -124,7 +227,8 @@ func GetSwitchList(c *fiber.Ctx) error {
 	clickyClackQuery := database.DB.
 		Preload("ImageLinks").
 		Preload("Brand").
-		Preload("SwitchType")
+		Preload("SwitchType").
+		Preload("Ratings")
 
 	if len(request.SwitchTypeIDs) > 0 {
 		clickyClackQuery.Where("switch_type_id IN (?)", request.SwitchTypeIDs)
@@ -174,7 +278,11 @@ func GetSwitchList(c *fiber.Ctx) error {
 		log.Error().Err(err).Msg("Error getting the switches")
 		return c.Status(fiber.StatusBadRequest).Next()
 	}
-	timer.LogTime("Get Switches")
+
+	for i, clickyClack := range clickyClacks {
+		clickyClack.GetUserRating(user.ID)
+		clickyClacks[i] = clickyClack
+	}
 
 	component := components.SwitchList(user, clickyClacks)
 	return Render(component)(c)
@@ -183,16 +291,23 @@ func GetSwitchList(c *fiber.Ctx) error {
 func GetFeaturedSwitches(c *fiber.Ctx) error {
 	timer := utils.StartTimer("Get Featured Switches")
 	defer timer.LogTotalTime()
+	userID := c.Locals("UserID").(uuid.UUID)
 
 	var clickyClacks []models.Switch
 	database.DB.
 		Joins("INNER JOIN image_links ON image_links.owner_id = switches.id").
 		Preload("ImageLinks").
 		Preload("SwitchType").
+		Preload("Ratings").
 		Limit(4).
 		Order("RANDOM()").
 		Find(&clickyClacks)
 	timer.LogTime("Get Switches")
+
+	for i, clickyClack := range clickyClacks {
+		clickyClack.GetUserRating(userID)
+		clickyClacks[i] = clickyClack
+	}
 
 	component := components.FeaturedSwitches(clickyClacks)
 	return Render(component)(c)
@@ -213,8 +328,10 @@ func GetSwitchDetailCard(c *fiber.Ctx) error {
 		Preload("ImageLinks").
 		Preload("Brand").
 		Preload("SwitchType").
+		Preload("Ratings").
 		First(&clickyClack, switchID)
 
+	clickyClack.GetUserRating(user.ID)
 	component := components.SwitchDetailCard(user, clickyClack)
 	return Render(component)(c)
 }

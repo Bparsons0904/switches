@@ -21,6 +21,7 @@ templ SwitchCardPreview(user models.User, clickyClack models.Switch) {
 		hx-push-url={ fmt.Sprintf("/switches/%s", clickyClack.ID) }
 		hx-target="#main"
 		hx-disinherit="*"
+		hx-swap="show:top"
 	>
 		<div class="switch-image">
 			@GetSwitchImageLink(clickyClack)
@@ -51,6 +52,9 @@ templ SwitchCardPreview(user models.User, clickyClack models.Switch) {
 						@icons.Share()
 					</a>
 				</span>
+			</div>
+			<div class="rating-container">
+				@Ratings(clickyClack, false)
 			</div>
 		</div>
 	</div>

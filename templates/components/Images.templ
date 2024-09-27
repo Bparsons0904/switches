@@ -11,7 +11,7 @@ type ImageProps struct {
 	IsSquare bool
 }
 
-templ Thumbnail(imageLink *models.ImageLink) {
+templ Thumbnail(imageLink models.ImageLink) {
 	<img
 		if strings.Contains(imageLink.LinkAddress, "http") {
 			src={ imageLink.LinkAddress }

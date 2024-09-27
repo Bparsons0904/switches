@@ -208,7 +208,7 @@ func PostAdminSwitchCreate(c *fiber.Ctx) error {
 		})
 	}
 
-	var imageLinks []*models.ImageLink
+	var imageLinks []models.ImageLink
 	for i := 0; i < request.LinkCount; i++ {
 		linkAddress := c.FormValue(fmt.Sprintf("link-address-%d", i))
 		altText := c.FormValue(fmt.Sprintf("link-alt-text-%d", i))
@@ -217,7 +217,7 @@ func PostAdminSwitchCreate(c *fiber.Ctx) error {
 			continue
 		}
 
-		imageLinks = append(imageLinks, &models.ImageLink{
+		imageLinks = append(imageLinks, models.ImageLink{
 			LinkAddress: linkAddress,
 			AltText:     altText,
 			CreatedByID: user.ID,
@@ -291,7 +291,7 @@ func DeleteImageLinkToList(c *fiber.Ctx) error {
 		})
 	}
 
-	var imageLinks []*models.ImageLink
+	var imageLinks []models.ImageLink
 	for i := 0; i < linkCount; i++ {
 		if i == imageLinkIndex {
 			continue
@@ -302,7 +302,7 @@ func DeleteImageLinkToList(c *fiber.Ctx) error {
 		linkAddress := c.FormValue(fmt.Sprintf("link-address-%d", i))
 		altText := c.FormValue(fmt.Sprintf("link-alt-text-%d", i))
 
-		imageLink := &models.ImageLink{
+		imageLink := models.ImageLink{
 			LinkAddress: linkAddress,
 			AltText:     altText,
 		}
@@ -329,14 +329,14 @@ func GetImageLinkToList(c *fiber.Ctx) error {
 		})
 	}
 
-	var imageLinks []*models.ImageLink
+	var imageLinks []models.ImageLink
 	for i := 0; i <= linkCount; i++ {
 		idSting := c.FormValue(fmt.Sprintf("link-id-%d", i))
 		id, err := uuid.Parse(idSting)
 		linkAddress := c.FormValue(fmt.Sprintf("link-address-%d", i))
 		altText := c.FormValue(fmt.Sprintf("link-alt-text-%d", i))
 
-		imageLink := &models.ImageLink{
+		imageLink := models.ImageLink{
 			LinkAddress: linkAddress,
 			AltText:     altText,
 		}

@@ -1,6 +1,6 @@
 .form-container {
   max-width: 500px;
-  margin: 0 auto;
+  /* margin: 0 auto; */
   background-color: var(--color-light);
   padding: 20px;
   border-radius: 5px;

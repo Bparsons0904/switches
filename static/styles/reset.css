@@ -38,8 +38,11 @@ h6 {
   overflow-wrap: break-word;
 }
 a {
-  /* color: inherit; */
+  color: inherit;
   text-decoration: none;
+  &:visited {
+    color: inherit;
+  }
 }
 #root,
 #__next {

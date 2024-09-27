@@ -37,13 +37,17 @@ templ SwitchDetailCard(user models.User, clickyClack models.Switch) {
 						</span>
 					</h3>
 				</div>
-				<div class="switch-selectors">
-					@LikedSelector(user, clickyClack)
-					@OwnedSelector(user, clickyClack)
+				<div class="user-details">
+					<div class="switch-selectors">
+						@LikedSelector(user, clickyClack)
+						@OwnedSelector(user, clickyClack)
+					</div>
+					<div class="rating-container">
+						@Ratings(clickyClack, false)
+					</div>
 				</div>
 			</div>
 			<p>{ clickyClack.LongDescription }</p>
-			<div class="ratings"></div>
 		</div>
 	}
 }
