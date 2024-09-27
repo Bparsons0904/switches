@@ -59,11 +59,6 @@ templ UserReviewForm(path string) {
 	}
 }
 
-templ UserReview(rating models.Rating) {
-	<div></div>
-	<!-- <p>{ rating.Review }</p> -->
-}
-
 templ UserRatings(clickyClack models.Switch) {
 	for i := 0; i < 5; i++ {
 		<div
