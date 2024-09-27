@@ -38,7 +38,9 @@ func getDetailPageData(c *fiber.Ctx) (models.User, models.Switch, error) {
 		Preload("ImageLinks").
 		Preload("Brand").
 		Preload("SwitchType").
-		Preload("Ratings.User").
+		Preload("Ratings", func(db *gorm.DB) *gorm.DB {
+			return db.Where("admin_review_required = false").Preload("User")
+		}).
 		First(&clickyClack, switchID).Error; err != nil {
 		log.Error().Err(err).Msg("Error getting the switch")
 		return models.User{}, models.Switch{}, err
@@ -71,7 +73,6 @@ func PostUserSwitchReview(c *fiber.Ctx) error {
 	}
 
 	return Render(pages.SwitchDetail(user, clickyClack))(c)
-	// return Render(components.UserReview(userRating))(c)
 }
 
 func PutUserSwitch(c *fiber.Ctx) error {
@@ -118,42 +119,25 @@ func PutUserSwitch(c *fiber.Ctx) error {
 			return c.Status(fiber.StatusBadRequest).Next()
 		}
 	}
+	tx.Commit()
 
 	var clickyClack models.Switch
-	if err := tx.
-		Preload("Ratings").
+	if err := database.DB.
+		Preload("Ratings.User").
 		First(&clickyClack, switchID).Error; err != nil {
 		log.Error().Err(err).Msg("Error getting the switch")
-		tx.Rollback()
 		return c.Status(fiber.StatusBadRequest).Next()
 	}
 	clickyClack.GetUserRating(userID)
 
-	totalRating := 0
-	for _, rating := range clickyClack.Ratings {
-		totalRating += rating.Rating
-	}
-	clickyClack.RatingsCount = len(clickyClack.Ratings)
-	clickyClack.AverageRating = float64(totalRating) / float64(clickyClack.RatingsCount)
-	if err := tx.Model(&models.Switch{}).Where("id = ?", clickyClack.ID).Updates(models.Switch{
-		RatingsCount:  clickyClack.RatingsCount,
-		AverageRating: clickyClack.AverageRating,
-	}).Error; err != nil {
-		log.Error().Err(err).Msg("Error saving the switch after ratings update")
-		tx.Rollback()
-		return c.Status(fiber.StatusBadRequest).Next()
-	}
-
-	tx.Commit()
-
-	showReviewButton := false
 	currentURL := c.Get("Hx-Current-Url")
 	regex := `switches\/[a-f0-9]{8}-([a-f0-9]{4}-){3}[a-f0-9]{12}`
-	if matched, _ := regexp.MatchString(regex, currentURL); matched {
-		showReviewButton = true
+	matched, err := regexp.MatchString(regex, currentURL)
+	if err != nil {
+		log.Error().Err(err).Msg("Error trying to complete regex check on current url")
 	}
 
-	return Render(components.Ratings(clickyClack, showReviewButton))(c)
+	return Render(components.Ratings(clickyClack, matched))(c)
 }
 
 func GetSwitchPage(c *fiber.Ctx) error {

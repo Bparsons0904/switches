@@ -101,25 +101,25 @@ func addRating(tx *gorm.DB) error {
 		ID uuid.UUID `gorm:"type:uuid;default:uuid_generate_v7();primaryKey" json:"id"`
 	}
 	type Rating struct {
-		ID                  uuid.UUID      `gorm:"type:uuid;default:uuid_generate_v7();primaryKey"        json:"id"`
-		Rating              int            `gorm:"type:int;not null"                                      json:"rating"`
-		Review              string         `gorm:"type:text"                                              json:"review"`
-		OriginalReview      string         `gorm:"type:text"                                              json:"originalReview"`
-		UserID              uuid.UUID      `gorm:"type:uuid;uniqueIndex:idx_user_switch"                  json:"userId"`
-		User                User           `gorm:"foreignKey:UserID;references:ID"                        json:"user,omitempty"`
-		SwitchID            uuid.UUID      `gorm:"type:uuid;uniqueIndex:idx_user_switch;index:idx_switch" json:"switchId"`
-		Switch              Switch         `gorm:"foreignKey:SwitchID;references:ID"                      json:"switch,omitempty"`
-		ToxicityScore       float64        `gorm:"type:float"                                             json:"toxicityScore"`
-		ProfanityScore      float64        `gorm:"type:float"                                             json:"profanityScore"`
-		SafeURLScore        float64        `gorm:"type:float"                                             json:"safeURLScore"`
-		RelavanceScore      float64        `gorm:"type:float"                                             json:"relavanceScore"`
-		AdminReviewRequired bool           `gorm:"type:bool;default:false"                                json:"adminReviewRequired"`
-		AdminReviewNotes    string         `gorm:"type:text"                                              json:"adminReviewNotes"`
-		AdminReviewedByID   *uuid.UUID     `gorm:"type:uuid"                                              json:"adminReviewedById"`
-		AdminReviewedBy     *User          `gorm:"foreignKey:AdminReviewedByID;references:ID"             json:"adminReviewedBy,omitempty"`
-		CreatedAt           time.Time      `gorm:"autoCreateTime"                                         json:"createdAt"`
-		UpdatedAt           time.Time      `gorm:"autoUpdateTime"                                         json:"updatedAt"`
-		DeleteAt            gorm.DeletedAt `gorm:"index"                                                  json:"deleteAt"`
+		ID                  uuid.UUID      `gorm:"type:uuid;default:uuid_generate_v7();primaryKey"                               json:"id"`
+		Rating              int            `gorm:"type:int;not null"                                                             json:"rating"`
+		Review              string         `gorm:"type:text"                                                                     json:"review"`
+		OriginalReview      string         `gorm:"type:text"                                                                     json:"originalReview"`
+		UserID              uuid.UUID      `gorm:"type:uuid;uniqueIndex:idx_user_switch"                                         json:"userId"`
+		User                User           `gorm:"foreignKey:UserID;references:ID"                                               json:"user,omitempty"`
+		SwitchID            uuid.UUID      `gorm:"type:uuid;uniqueIndex:idx_user_switch;index:idx_switch;index:idx_switch_admin" json:"switchId"`
+		Switch              Switch         `gorm:"foreignKey:SwitchID;references:ID"                                             json:"switch,omitempty"`
+		ToxicityScore       float64        `gorm:"type:float"                                                                    json:"toxicityScore"`
+		ProfanityScore      float64        `gorm:"type:float"                                                                    json:"profanityScore"`
+		SafeURLScore        float64        `gorm:"type:float"                                                                    json:"safeURLScore"`
+		RelavanceScore      float64        `gorm:"type:float"                                                                    json:"relavanceScore"`
+		AdminReviewRequired bool           `gorm:"type:bool;default:false;index:idx_switch_admin"                                json:"adminReviewRequired"`
+		AdminReviewNotes    string         `gorm:"type:text"                                                                     json:"adminReviewNotes"`
+		AdminReviewedByID   *uuid.UUID     `gorm:"type:uuid"                                                                     json:"adminReviewedById"`
+		AdminReviewedBy     *User          `gorm:"foreignKey:AdminReviewedByID;references:ID"                                    json:"adminReviewedBy,omitempty"`
+		CreatedAt           time.Time      `gorm:"autoCreateTime"                                                                json:"createdAt"`
+		UpdatedAt           time.Time      `gorm:"autoUpdateTime"                                                                json:"updatedAt"`
+		DeleteAt            gorm.DeletedAt `gorm:"index"                                                                         json:"deleteAt"`
 	}
 
 	err := tx.Migrator().CreateTable(&Rating{})
@@ -132,24 +132,24 @@ func updatedSwitch(tx *gorm.DB) error {
 		ID uuid.UUID `gorm:"type:uuid;default:uuid_generate_v7();primaryKey" json:"id"`
 	}
 	type Rating struct {
-		ID                  uuid.UUID      `gorm:"type:uuid;default:uuid_generate_v7();primaryKey"        json:"id"`
-		Rating              int            `gorm:"type:int;not null"                                      json:"rating"`
-		Review              string         `gorm:"type:text"                                              json:"review"`
-		OriginalReview      string         `gorm:"type:text"                                              json:"originalReview"`
-		UserID              uuid.UUID      `gorm:"type:uuid;uniqueIndex:idx_user_switch"                  json:"userId"`
-		User                User           `gorm:"foreignKey:UserID;references:ID"                        json:"user,omitempty"`
-		SwitchID            uuid.UUID      `gorm:"type:uuid;uniqueIndex:idx_user_switch;index:idx_switch" json:"switchId"`
-		ToxicityScore       float64        `gorm:"type:float"                                             json:"toxicityScore"`
-		ProfanityScore      float64        `gorm:"type:float"                                             json:"profanityScore"`
-		SafeURLScore        float64        `gorm:"type:float"                                             json:"safeURLScore"`
-		RelavanceScore      float64        `gorm:"type:float"                                             json:"relavanceScore"`
-		AdminReviewRequired bool           `gorm:"type:bool;default:false"                                json:"adminReviewRequired"`
-		AdminReviewNotes    string         `gorm:"type:text"                                              json:"adminReviewNotes"`
-		AdminReviewedByID   *uuid.UUID     `gorm:"type:uuid"                                              json:"adminReviewedById"`
-		AdminReviewedBy     *User          `gorm:"foreignKey:AdminReviewedByID;references:ID"             json:"adminReviewedBy,omitempty"`
-		CreatedAt           time.Time      `gorm:"autoCreateTime"                                         json:"createdAt"`
-		UpdatedAt           time.Time      `gorm:"autoUpdateTime"                                         json:"updatedAt"`
-		DeleteAt            gorm.DeletedAt `gorm:"index"                                                  json:"deleteAt"`
+		ID                  uuid.UUID      `gorm:"type:uuid;default:uuid_generate_v7();primaryKey"                               json:"id"`
+		Rating              int            `gorm:"type:int;not null"                                                             json:"rating"`
+		Review              string         `gorm:"type:text"                                                                     json:"review"`
+		OriginalReview      string         `gorm:"type:text"                                                                     json:"originalReview"`
+		UserID              uuid.UUID      `gorm:"type:uuid;uniqueIndex:idx_user_switch"                                         json:"userId"`
+		User                User           `gorm:"foreignKey:UserID;references:ID"                                               json:"user,omitempty"`
+		SwitchID            uuid.UUID      `gorm:"type:uuid;uniqueIndex:idx_user_switch;index:idx_switch;index:idx_switch_admin" json:"switchId"`
+		ToxicityScore       float64        `gorm:"type:float"                                                                    json:"toxicityScore"`
+		ProfanityScore      float64        `gorm:"type:float"                                                                    json:"profanityScore"`
+		SafeURLScore        float64        `gorm:"type:float"                                                                    json:"safeURLScore"`
+		RelavanceScore      float64        `gorm:"type:float"                                                                    json:"relavanceScore"`
+		AdminReviewRequired bool           `gorm:"type:bool;default:false;index:idx_switch_admin"                                json:"adminReviewRequired"`
+		AdminReviewNotes    string         `gorm:"type:text"                                                                     json:"adminReviewNotes"`
+		AdminReviewedByID   *uuid.UUID     `gorm:"type:uuid"                                                                     json:"adminReviewedById"`
+		AdminReviewedBy     *User          `gorm:"foreignKey:AdminReviewedByID;references:ID"                                    json:"adminReviewedBy,omitempty"`
+		CreatedAt           time.Time      `gorm:"autoCreateTime"                                                                json:"createdAt"`
+		UpdatedAt           time.Time      `gorm:"autoUpdateTime"                                                                json:"updatedAt"`
+		DeleteAt            gorm.DeletedAt `gorm:"index"                                                                         json:"deleteAt"`
 	}
 	type Type struct {
 		ID int `gorm:"primaryKey;autoIncrement" json:"id"`

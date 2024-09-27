@@ -131,9 +131,9 @@ templ SwitchReviewsView(clickyClack models.Switch, ratingData RatingData) {
 		</div>
 		<div class="reviews-list">
 			for _, review := range clickyClack.Ratings {
-				if review.AdminReviewRequired == false {
-					@ReviewItem(review)
-				}
+				<!-- if review.AdminReviewRequired != true { -->
+				@ReviewItem(review)
+				<!-- } -->
 			}
 		</div>
 	</div>
