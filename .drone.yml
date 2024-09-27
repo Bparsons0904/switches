@@ -52,9 +52,9 @@ steps:
       KEYDB_DB:
         from_secret: KEYDB_DB_STAGE
       GCP_API_KEY:
-        from_secret: GCP_API_KEY
+        from_secret: GCP_API_KEY_STAGE
       GCP_CLIENT_ID:
-        from_secret: GCP_CLIENT_ID
+        from_secret: GCP_CLIENT_ID_STAGE
       AI_SERVER:
         from_secret: AI_SERVER
     commands:
@@ -102,9 +102,9 @@ steps:
       KEYDB_DB:
         from_secret: KEYDB_DB_STAGE
       GCP_API_KEY:
-        from_secret: GCP_API_KEY
+        from_secret: GCP_API_KEY_STAGE
       GCP_CLIENT_ID:
-        from_secret: GCP_CLIENT_ID
+        from_secret: GCP_CLIENT_ID_STAGE
       AI_SERVER:
         from_secret: AI_SERVER
     commands:
