@@ -14,7 +14,9 @@ templ Ratings(clickyClack models.Switch, showReview bool) {
 			@UserRatings(clickyClack)
 		}
 		<span class="rating-average">
-			{ fmt.Sprintf("%.1f", clickyClack.AverageRating) }@icons.StarFilled()
+			if clickyClack.RatingsCount > 0 {
+				{ fmt.Sprintf("%.1f", clickyClack.AverageRating) }@icons.StarFilled()
+			}
 		</span>
 		<a href="#reviews"><span class="rating-count">{ fmt.Sprintf("(%d reviews)", clickyClack.RatingsCount) }</span></a>
 	</div>
@@ -116,7 +118,9 @@ templ SwitchReviewsView(clickyClack models.Switch, ratingData RatingData) {
 			<h2>Reviews</h2>
 			<div class="title-wrapper">
 				<span class="rating-average">
-					{ fmt.Sprintf("%.1f", clickyClack.AverageRating) }@icons.StarFilled()
+					if clickyClack.RatingsCount > 0 {
+						{ fmt.Sprintf("%.1f", clickyClack.AverageRating) }@icons.StarFilled()
+					}
 				</span>
 				<a href="#reviews"><span class="rating-count">{ fmt.Sprintf("(%d reviews)", clickyClack.RatingsCount) }</span></a>
 			</div>

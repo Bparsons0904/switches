@@ -14,7 +14,6 @@ import (
 
 func AuthenticateUser(config config.Config) fiber.Handler {
 	return func(c *fiber.Ctx) error {
-		log.Info().Msg("Authenticate User started")
 		sessionID := c.Cookies("sessionID")
 		var user models.User
 		if sessionID != "" {

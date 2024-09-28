@@ -55,6 +55,5 @@ func CheckReviewRelavancy(review string) (float64, error) {
 		return 0.0, err
 	}
 
-	fmt.Printf("Relevance Score: %.2f\n", response.RelevanceScore)
 	return response.RelevanceScore, nil
 }
