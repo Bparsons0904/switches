@@ -225,10 +225,21 @@ func GetSwitchList(c *fiber.Ctx) error {
 
 	var clickyClacks []models.Switch
 	clickyClackQuery := database.DB.
-		Preload("ImageLinks").
-		Preload("Brand").
-		Preload("SwitchType").
-		Preload("Ratings")
+		Select(
+			"id, name, short_description, price_point, average_rating, ratings_count, switch_type_id, brand_id",
+		).
+		Preload("ImageLinks", func(db *gorm.DB) *gorm.DB {
+			return db.Select("id, owner_id, owner_type, link_address, alt_text ")
+		}).
+		Preload("Brand", func(db *gorm.DB) *gorm.DB {
+			return db.Select("id, name")
+		}).
+		Preload("SwitchType", func(db *gorm.DB) *gorm.DB {
+			return db.Select("id, name")
+		}).
+		Preload("Ratings", func(db *gorm.DB) *gorm.DB {
+			return db.Select("id, review, rating, switch_id, admin_review_required")
+		})
 
 	if len(request.SwitchTypeIDs) > 0 {
 		clickyClackQuery.Where("switch_type_id IN (?)", request.SwitchTypeIDs)
