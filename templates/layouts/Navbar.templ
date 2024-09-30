@@ -3,6 +3,7 @@ package layouts
 import (
 	"github.com/google/uuid"
 	"switches/models"
+	"switches/templates/components/icons"
 )
 
 templ Navbar(user models.User) {
@@ -18,7 +19,7 @@ templ Navbar(user models.User) {
 			</div>
 			<h1 class="text-light">Waugze</h1>
 		</a>
-		<div class="menu-items">
+		<div id="menu-desktop">
 			if user.ID != uuid.Nil {
 				<div class="logged-in">
 					Hello, { user.Name }
@@ -28,7 +29,43 @@ templ Navbar(user models.User) {
 				@LoginButton()
 			}
 		</div>
+		<div id="menu-mobile">
+			@icons.Menu()
+		</div>
+		@SideNav(user)
 	</header>
+}
+
+templ SideNav(user models.User) {
+	<div id="sidenav">
+		<div class="header">
+			<h1 class="text-dark">Waugze</h1>
+			<div id="close">
+				@icons.Close()
+			</div>
+		</div>
+		if user.ID != uuid.Nil {
+			<div class="logged-in">
+				Hello, { user.Name }
+			</div>
+		}
+		<div class="menu-items">
+			if user.ID == uuid.Nil {
+				@MobileItem("Login", "/auth/login")
+			}
+			@MobileItem("Home", "/")
+			@MobileItem("View Switches", "/switches")
+			if user.ID != uuid.Nil {
+				<div class="logged-in">
+					@MobileItem("Logout", "/auth/logout")
+				</div>
+			}
+		</div>
+	</div>
+}
+
+templ MobileItem(title string, path string) {
+	<a href={ templ.SafeURL(path) }>{ title }</a>
 }
 
 templ LoginButton() {

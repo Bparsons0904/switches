@@ -88,3 +88,20 @@ document.addEventListener("DOMContentLoaded", function () {
     setTimeout(() => loadModalForSwitchId(switchId), 100);
   }
 });
+
+document.addEventListener("DOMContentLoaded", function () {
+  const menuButton = document.getElementById("menu-mobile");
+  menuButton.addEventListener("click", function () {
+    openMobileMenu();
+  });
+});
+
+function openMobileMenu() {
+  const sidenav = document.getElementById("sidenav");
+  sidenav.classList.add("open");
+
+  const closeMenuButton = document.getElementById("sidenav");
+  closeMenuButton.addEventListener("click", function () {
+    sidenav.classList.remove("open");
+  });
+}

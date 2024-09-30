@@ -1,4 +1,5 @@
 #navbar {
+  position: relative;
   background-color: var(--background-dark);
   width: 100%;
   padding: 10px 20px;
@@ -22,33 +23,99 @@
       height: 50px;
     }
   }
-  .menu-items {
+}
+
+#menu-desktop {
+  display: none;
+  place-items: center;
+  .logged-in {
     display: flex;
     place-items: center;
-    .logged-in {
-      display: flex;
-      place-items: center;
-      gap: 20px;
-    }
-    .menu-button {
-      transition: 0.3s;
-      &:hover {
-        background-color: var(--background-dark);
-        color: var(--text-color-light);
-        cursor: pointer;
-      }
-    }
-    .btn-inverted {
+    gap: 20px;
+  }
+  .menu-button {
+    transition: 0.3s;
+    &:hover {
       background-color: var(--background-dark);
       color: var(--text-color-light);
-      border: 0.5px solid var(--text-color-light);
-      transition: 0.3s;
-      &:hover {
-        background-color: var(--background-light);
-        color: var(--text-color-dark);
-        cursor: pointer;
+      cursor: pointer;
+    }
+  }
+  .btn-inverted {
+    background-color: var(--background-dark);
+    color: var(--text-color-light);
+    border: 0.5px solid var(--text-color-light);
+    transition: 0.3s;
+    &:hover {
+      background-color: var(--background-light);
+      color: var(--text-color-dark);
+      cursor: pointer;
+    }
+  }
+}
+
+#menu-mobile {
+  display: flex;
+  place-items: center;
+  cursor: pointer;
+  svg {
+    height: 30px;
+    width: 30px;
+    fill: white;
+  }
+}
+
+#sidenav {
+  position: absolute;
+  top: 0;
+  right: 0;
+  right: -80vw;
+  width: 80vw;
+  height: 100vh;
+  background-color: white;
+  transition: all 300ms ease-in-out;
+  opacity: 0.95;
+  z-index: 1000;
+  padding: 12px;
+  color: var(--text-color-dark);
+  &.open {
+    right: 0;
+  }
+  .header {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    width: 100%;
+    #close {
+      svg {
+        height: 35px;
+        width: 35px;
       }
     }
+  }
+  .logged-in {
+  }
+  .menu-items {
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    font-size: 1.5rem;
+    font-weight: 700;
+    width: 100%;
+    justify-content: flex-end;
+    &:hover {
+      cursor: pointer;
+    }
+  }
+}
+
+@media (min-width: 480px) {
+  #menu-mobile {
+    display: none;
+  }
+  #menu-desktop {
+    display: flex;
   }
 }
 
