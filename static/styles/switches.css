@@ -199,6 +199,9 @@
 }
 
 #switches {
+  h1 {
+    padding: 10px 10px 0 10px;
+  }
   #filters {
     .filter {
       display: flex;

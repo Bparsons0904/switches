@@ -203,12 +203,34 @@ func GetSwitchDetailPage(c *fiber.Ctx) error {
 	return Render(pages.SwitchDetail(user, clickyClack))(c)
 }
 
-func GetSwitchList(c *fiber.Ctx) error {
-	timer := utils.StartTimer("Get Switch List")
+func GetSwitchListMore(c *fiber.Ctx) error {
+	timer := utils.StartTimer("Get More Switch List")
 	defer timer.LogTotalTime()
 
 	user := c.Locals("User").(models.User)
 
+	query, err := getListQuery(c, user)
+	if err != nil {
+		return c.Status(fiber.StatusBadRequest).Next()
+	}
+
+	var clickyClacks []models.Switch
+	err = query.Offset(20).Find(&clickyClacks).Error
+	if err != nil {
+		log.Error().Err(err).Msg("Error getting the switches")
+		return c.Status(fiber.StatusBadRequest).Next()
+	}
+
+	for i, clickyClack := range clickyClacks {
+		clickyClack.GetUserRating(user.ID)
+		clickyClacks[i] = clickyClack
+	}
+
+	component := components.SwitchListMore(user, clickyClacks)
+	return Render(component)(c)
+}
+
+func getListQuery(c *fiber.Ctx, user models.User) (*gorm.DB, error) {
 	type SwitchQueryParams struct {
 		SwitchTypeIDs   []int  `json:"switchTypeIDs"`
 		BrandIDs        []int  `json:"brandIDs"`
@@ -220,10 +242,10 @@ func GetSwitchList(c *fiber.Ctx) error {
 	request := new(SwitchQueryParams)
 
 	if err := c.QueryParser(request); err != nil {
-		log.Warn().Err(err).Msg("Error parsing query params")
+		log.Error().Err(err).Msg("Error parsing query params")
+		return &gorm.DB{}, err
 	}
 
-	var clickyClacks []models.Switch
 	clickyClackQuery := database.DB.
 		Select(
 			"id, name, short_description, price_point, average_rating, ratings_count, switch_type_id, brand_id",
@@ -265,7 +287,7 @@ func GetSwitchList(c *fiber.Ctx) error {
 				Where("user_id = ?", user.ID).
 				Pluck("switch_id", &userOwnedSwitches).Error; err != nil {
 				log.Error().Err(err).Msg("Error getting the user owned switches")
-				return c.Status(fiber.StatusBadRequest).Next()
+				return &gorm.DB{}, err
 			}
 			idsToInclude = append(idsToInclude, userOwnedSwitches...)
 		}
@@ -276,7 +298,7 @@ func GetSwitchList(c *fiber.Ctx) error {
 				Where("user_id = ?", user.ID).
 				Pluck("switch_id", &userLikedSwitches).Error; err != nil {
 				log.Error().Err(err).Msg("Error getting the user liked switches")
-				return c.Status(fiber.StatusBadRequest).Next()
+				return &gorm.DB{}, err
 			}
 			idsToInclude = append(idsToInclude, userLikedSwitches...)
 		}
@@ -284,7 +306,21 @@ func GetSwitchList(c *fiber.Ctx) error {
 		clickyClackQuery.Where("id IN (?)", idsToInclude)
 	}
 
-	err := clickyClackQuery.Find(&clickyClacks).Error
+	return clickyClackQuery, nil
+}
+
+func GetSwitchList(c *fiber.Ctx) error {
+	timer := utils.StartTimer("Get Switch List")
+	defer timer.LogTotalTime()
+	user := c.Locals("User").(models.User)
+
+	query, err := getListQuery(c, user)
+	if err != nil {
+		return c.Status(fiber.StatusBadRequest).Next()
+	}
+
+	var clickyClacks []models.Switch
+	err = query.Limit(20).Find(&clickyClacks).Error
 	if err != nil {
 		log.Error().Err(err).Msg("Error getting the switches")
 		return c.Status(fiber.StatusBadRequest).Next()
