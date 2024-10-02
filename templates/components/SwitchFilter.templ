@@ -1,0 +1,149 @@
+
+package components
+
+import (
+	"fmt"
+	"github.com/google/uuid"
+	"strconv"
+	"switches/models"
+	"switches/templates/components/icons"
+	"switches/templates/layouts"
+)
+
+type SwitchesFilterProps struct {
+	ClickyClacks []models.Switch
+	SwitchTypes  []models.Type
+	SwitchBrands []models.Producer
+	User         models.User
+	Params       SwitchQueryParams
+}
+
+type SwitchQueryParams struct {
+	SwitchTypeIDs   []int  `json:"switchTypeIDs"`
+	BrandIDs        []int  `json:"brandIDs"`
+	Pricepoints     []int  `json:"pricepoints"`
+	Search          string `json:"search"`
+	SwitchFavorites bool   `json:"switchFavorites"`
+	SwitchOwned     bool   `json:"switchOwned"`
+}
+
+templ SwitchFilter(props SwitchesFilterProps) {
+	<section id="filter">
+		@layouts.Card() {
+			<section id="search">
+				<form id="search-form">
+					<div id="search">
+						<div class="search">
+							<label>
+								<input
+									type="search"
+									name="search"
+									placeholder="Search switches..."
+									hx-trigger="keyup changed delay:500ms, search"
+									hx-get="/switches/list"
+									hx-target="#switch-list"
+									hx-include="#filter-form"
+									value={ props.Params.Search }
+								/>
+							</label>
+						</div>
+					</div>
+				</form>
+			</section>
+			<h1>Filters</h1>
+			<div id="filters">
+				<form id="filter-form" hx-trigger="change" hx-get="/switches/list" hx-target="#switch-list" hx-include="#search-form">
+					<div id="switch-linked" class="filter">
+						if props.User.ID != uuid.Nil {
+							<h3>Owned and Favorite</h3>
+							<div id="favorite" class="checkboxes">
+								<label class="checkbox-label">
+									Favorite 
+									<input type="checkbox" name="switchFavorites"/>
+									<span class="checkmark"></span>
+								</label>
+								<label class="checkbox-label">
+									Owned 
+									<input type="checkbox" name="switchOwned"/>
+									<span class="checkmark"></span>
+								</label>
+							</div>
+						}
+					</div>
+					<div id="switch-type" class="filter">
+						<h3>Switch Type</h3>
+						<div class="checkboxes">
+							for _, switchType := range props.SwitchTypes {
+								<label class="checkbox-label">
+									{ getSwitchLabel(switchType, props.ClickyClacks) }
+									<input type="checkbox" name="switchTypeIDs" value={ strconv.Itoa(switchType.ID) }/>
+									<span class="checkmark"></span>
+								</label>
+							}
+						</div>
+					</div>
+					<div id="brand-type" class="filter">
+						<h3>Switch Brands</h3>
+						<div class="checkboxes">
+							for _, brand := range props.SwitchBrands {
+								<label class="checkbox-label">
+									{ getBrandLabel(brand, props.ClickyClacks) }
+									<input type="checkbox" name="brandIDs" value={ strconv.Itoa(brand.ID) }/>
+									<span class="checkmark"></span>
+								</label>
+							}
+						</div>
+					</div>
+					<div id="cost" class="filter">
+						<h3>Switch Cost</h3>
+						<div class="cost-wrapper">
+							<label class="selectable-label">
+								<input type="checkbox" name="pricePoints" value="1"/>
+								<span>
+									@icons.Dollar()
+								</span>
+							</label>
+							<label class="selectable-label">
+								<input type="checkbox" name="pricePoints" value="2"/>
+								<span class="cost">
+									@icons.Dollar()
+									@icons.Dollar()
+								</span>
+							</label>
+							<label class="selectable-label">
+								<input type="checkbox" name="pricePoints" value="3"/>
+								<span class="cost">
+									@icons.Dollar()
+									@icons.Dollar()
+									@icons.Dollar()
+								</span>
+							</label>
+						</div>
+					</div>
+				</form>
+			</div>
+		}
+	</section>
+}
+
+func getSwitchLabel(switchType models.Type, clickyClacks []models.Switch) string {
+	switchCount := 0
+	for _, clickyClack := range clickyClacks {
+		if switchType.ID == clickyClack.SwitchTypeID {
+			switchCount++
+		}
+
+	}
+	return fmt.Sprintf("%s (%d)", switchType.Name, switchCount)
+}
+
+func getBrandLabel(brand models.Producer, clickyClacks []models.Switch) string {
+	brandCount := 0
+	for _, clickyClack := range clickyClacks {
+		if brand.ID == *clickyClack.BrandID {
+			brandCount++
+		}
+
+	}
+	return fmt.Sprintf("%s (%d)", brand.Name, brandCount)
+}

@@ -6,10 +6,22 @@ import (
 	"switches/templates/components/icons"
 )
 
-templ SwitchListMore(user models.User, clickyClacks []models.Switch) {
-	for _, clickyClack := range clickyClacks {
-		@SwitchCardPreview(user, clickyClack)
+templ SwitchListMore(props SwitchesFilterProps) {
+	for _, clickyClack := range props.ClickyClacks {
+		@SwitchCardPreview(props.User, clickyClack)
 	}
+	<div id="filter" hx-swap-oob="true">
+		@SwitchFilter(props)
+	</div>
+}
+
+func getFilterData(user models.User, clickyClacks []models.Switch) templ.Component {
+
+	props := SwitchesFilterProps{
+		User:         user,
+		ClickyClacks: clickyClacks,
+	}
+	return SwitchFilter(props)
 }
 
 templ SwitchList(user models.User, clickyClacks []models.Switch) {

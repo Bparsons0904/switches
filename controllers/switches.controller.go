@@ -18,15 +18,15 @@ import (
 	"gorm.io/gorm/clause"
 )
 
-func GetReviewForm(c *fiber.Ctx) error {
+func GetReviewForm(c *fiber.Ctx) error { // {{{
 	switchID := c.Query("switch-id")
 	ratingID := c.Query("rating-id")
 
 	postPath := fmt.Sprintf("/switches/%s/ratings/%s/review", switchID, ratingID)
 	return Render(components.UserReviewForm(postPath))(c)
-}
+} // }}}
 
-func getDetailPageData(c *fiber.Ctx) (models.User, models.Switch, error) {
+func getDetailPageData(c *fiber.Ctx) (models.User, models.Switch, error) { // {{{
 	user := c.Locals("User").(models.User)
 	switchID, err := GetSwitchIDParam(c)
 	if err != nil {
@@ -48,9 +48,9 @@ func getDetailPageData(c *fiber.Ctx) (models.User, models.Switch, error) {
 	clickyClack.GetUserRating(user.ID)
 
 	return user, clickyClack, nil
-}
+} // }}}
 
-func PostUserSwitchReview(c *fiber.Ctx) error {
+func PostUserSwitchReview(c *fiber.Ctx) error { // {{{
 	ratingID := c.Params("ratingID")
 
 	var userRating models.Rating
@@ -73,9 +73,9 @@ func PostUserSwitchReview(c *fiber.Ctx) error {
 	}
 
 	return Render(pages.SwitchDetail(user, clickyClack))(c)
-}
+} // }}}
 
-func PutUserSwitch(c *fiber.Ctx) error {
+func PutUserSwitch(c *fiber.Ctx) error { // {{{
 	timer := utils.StartTimer("Put User Switch")
 	defer timer.LogTotalTime()
 
@@ -138,7 +138,7 @@ func PutUserSwitch(c *fiber.Ctx) error {
 	}
 
 	return Render(components.Ratings(clickyClack, matched))(c)
-}
+} // }}}
 
 func GetSwitchPage(c *fiber.Ctx) error {
 	timer := utils.StartTimer("Get Switch Page")
@@ -146,9 +146,6 @@ func GetSwitchPage(c *fiber.Ctx) error {
 
 	var clickyClacks []models.Switch
 	err := database.DB.
-		Preload("ImageLinks").
-		Preload("Brand").
-		Preload("SwitchType").
 		Find(&clickyClacks).Error
 	if err != nil {
 		log.Error().Err(err).Msg("Error getting the switches")
@@ -176,11 +173,19 @@ func GetSwitchPage(c *fiber.Ctx) error {
 	}
 	timer.LogTime("Get Switch Brands")
 
-	props := pages.SwitchesPageProps{
+	props := components.SwitchesFilterProps{
 		ClickyClacks: clickyClacks,
 		SwitchTypes:  switchTypes,
 		SwitchBrands: switchBrands,
 		User:         c.Locals("User").(models.User),
+		Params: components.SwitchQueryParams{
+			SwitchTypeIDs:   []int{},
+			BrandIDs:        []int{},
+			Pricepoints:     []int{},
+			Search:          "",
+			SwitchFavorites: false,
+			SwitchOwned:     false,
+		},
 	}
 
 	return Render(
@@ -226,20 +231,45 @@ func GetSwitchListMore(c *fiber.Ctx) error {
 		clickyClacks[i] = clickyClack
 	}
 
-	component := components.SwitchListMore(user, clickyClacks)
+	request := new(components.SwitchQueryParams)
+
+	if err := c.QueryParser(request); err != nil {
+		log.Error().Err(err).Msg("Error parsing query params")
+		// return &gorm.DB{}, err
+	}
+
+	var switchTypes []models.Type
+	err = database.DB.
+		Select("id", "name").
+		Order("id").
+		Where("category = ?", "switch_type").
+		Find(&switchTypes).Error
+	if err != nil {
+		log.Error().Err(err).Msg("Error getting the switch types")
+		return c.Status(fiber.StatusBadRequest).Next()
+	}
+	timer.LogTime("Get Switch Types")
+
+	var switchBrands []models.Producer
+	if err := database.DB.
+		Find(&switchBrands).Error; err != nil {
+		log.Error().Err(err).Msg("Error getting the switch brands")
+		return c.Status(fiber.StatusBadRequest).Next()
+	}
+
+	props := components.SwitchesFilterProps{
+		User:         user,
+		ClickyClacks: clickyClacks,
+		SwitchTypes:  []models.Type{},
+		SwitchBrands: []models.Producer{},
+		Params:       *request,
+	}
+	component := components.SwitchListMore(props)
 	return Render(component)(c)
 }
 
 func getListQuery(c *fiber.Ctx, user models.User) (*gorm.DB, error) {
-	type SwitchQueryParams struct {
-		SwitchTypeIDs   []int  `json:"switchTypeIDs"`
-		BrandIDs        []int  `json:"brandIDs"`
-		Pricepoints     []int  `json:"pricepoints"`
-		Search          string `json:"search"`
-		SwitchFavorites bool   `json:"switchFavorites"`
-		SwitchOwned     bool   `json:"switchOwned"`
-	}
-	request := new(SwitchQueryParams)
+	request := new(components.SwitchQueryParams)
 
 	if err := c.QueryParser(request); err != nil {
 		log.Error().Err(err).Msg("Error parsing query params")
@@ -335,7 +365,7 @@ func GetSwitchList(c *fiber.Ctx) error {
 	return Render(component)(c)
 }
 
-func GetFeaturedSwitches(c *fiber.Ctx) error {
+func GetFeaturedSwitches(c *fiber.Ctx) error { // {{{
 	timer := utils.StartTimer("Get Featured Switches")
 	defer timer.LogTotalTime()
 	userID := c.Locals("UserID").(uuid.UUID)
@@ -358,9 +388,9 @@ func GetFeaturedSwitches(c *fiber.Ctx) error {
 
 	component := components.FeaturedSwitches(clickyClacks)
 	return Render(component)(c)
-}
+} // }}}
 
-func GetSwitchDetailCard(c *fiber.Ctx) error {
+func GetSwitchDetailCard(c *fiber.Ctx) error { // {{{
 	timer := utils.StartTimer("getSwitchModal")
 	defer timer.LogTotalTime()
 
@@ -381,7 +411,7 @@ func GetSwitchDetailCard(c *fiber.Ctx) error {
 	clickyClack.GetUserRating(user.ID)
 	component := components.SwitchDetailCard(user, clickyClack)
 	return Render(component)(c)
-}
+} // }}}
 
 func getParams(c *fiber.Ctx) (models.User, uuid.UUID, error) {
 	user := c.Locals("User").(models.User)
