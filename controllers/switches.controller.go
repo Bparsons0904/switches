@@ -188,11 +188,7 @@ func GetSwitchPage(c *fiber.Ctx) error {
 		},
 	}
 
-	return Render(
-		pages.Switches(props),
-	)(
-		c,
-	)
+	return Render(pages.Switches(props))(c)
 }
 
 func GetSwitchDetailPage(c *fiber.Ctx) error {
@@ -214,28 +210,21 @@ func GetSwitchListMore(c *fiber.Ctx) error {
 
 	user := c.Locals("User").(models.User)
 
-	query, err := getListQuery(c, user)
+	_, filteredQuery, request, err := getListQuery(c, user)
 	if err != nil {
 		return c.Status(fiber.StatusBadRequest).Next()
 	}
 
-	var clickyClacks []models.Switch
-	err = query.Offset(20).Find(&clickyClacks).Error
+	var filteredClickyClacks []models.Switch
+	err = filteredQuery.Offset(20).Find(&filteredClickyClacks).Error
 	if err != nil {
 		log.Error().Err(err).Msg("Error getting the switches")
 		return c.Status(fiber.StatusBadRequest).Next()
 	}
 
-	for i, clickyClack := range clickyClacks {
+	for i, clickyClack := range filteredClickyClacks {
 		clickyClack.GetUserRating(user.ID)
-		clickyClacks[i] = clickyClack
-	}
-
-	request := new(components.SwitchQueryParams)
-
-	if err := c.QueryParser(request); err != nil {
-		log.Error().Err(err).Msg("Error parsing query params")
-		// return &gorm.DB{}, err
+		filteredClickyClacks[i] = clickyClack
 	}
 
 	var switchTypes []models.Type
@@ -248,7 +237,6 @@ func GetSwitchListMore(c *fiber.Ctx) error {
 		log.Error().Err(err).Msg("Error getting the switch types")
 		return c.Status(fiber.StatusBadRequest).Next()
 	}
-	timer.LogTime("Get Switch Types")
 
 	var switchBrands []models.Producer
 	if err := database.DB.
@@ -258,25 +246,32 @@ func GetSwitchListMore(c *fiber.Ctx) error {
 	}
 
 	props := components.SwitchesFilterProps{
-		User:         user,
-		ClickyClacks: clickyClacks,
-		SwitchTypes:  []models.Type{},
-		SwitchBrands: []models.Producer{},
-		Params:       *request,
+		User:                 user,
+		FilteredClickyClacks: filteredClickyClacks,
+		ClickyClacks:         []models.Switch{},
+		SwitchTypes:          switchTypes,
+		SwitchBrands:         switchBrands,
+		Params:               *request,
 	}
 	component := components.SwitchListMore(props)
 	return Render(component)(c)
 }
 
-func getListQuery(c *fiber.Ctx, user models.User) (*gorm.DB, error) {
+func getListQuery(
+	c *fiber.Ctx,
+	user models.User,
+) (*gorm.DB, *gorm.DB, *components.SwitchQueryParams, error) {
 	request := new(components.SwitchQueryParams)
 
 	if err := c.QueryParser(request); err != nil {
 		log.Error().Err(err).Msg("Error parsing query params")
-		return &gorm.DB{}, err
+		return &gorm.DB{}, &gorm.DB{}, request, err
 	}
 
 	clickyClackQuery := database.DB.
+		Select("id, name, short_description, price_point, switch_type_id, brand_id")
+
+	filteredClickyClackQuery := database.DB.
 		Select(
 			"id, name, short_description, price_point, average_rating, ratings_count, switch_type_id, brand_id",
 		).
@@ -294,18 +289,26 @@ func getListQuery(c *fiber.Ctx, user models.User) (*gorm.DB, error) {
 		})
 
 	if len(request.SwitchTypeIDs) > 0 {
-		clickyClackQuery.Where("switch_type_id IN (?)", request.SwitchTypeIDs)
+		filteredClickyClackQuery.Where("switch_type_id IN (?)", request.SwitchTypeIDs)
 	}
 
 	if len(request.Search) > 2 {
-		clickyClackQuery.Where("LOWER(name) LIKE LOWER(?)", fmt.Sprintf("%%%s%%", request.Search))
+		filteredClickyClackQuery.Where(
+			"LOWER(name) LIKE LOWER(?)",
+			fmt.Sprintf("%%%s%%", request.Search),
+		)
+		clickyClackQuery.Where(
+			"LOWER(name) LIKE LOWER(?)",
+			fmt.Sprintf("%%%s%%", request.Search),
+		)
 	}
 
 	if len(request.BrandIDs) > 0 {
-		clickyClackQuery.Where("brand_id IN (?)", request.BrandIDs)
+		filteredClickyClackQuery.Where("brand_id IN (?)", request.BrandIDs)
 	}
 
 	if len(request.Pricepoints) > 0 {
+		filteredClickyClackQuery.Where("price_point IN (?)", request.Pricepoints)
 		clickyClackQuery.Where("price_point IN (?)", request.Pricepoints)
 	}
 
@@ -317,7 +320,7 @@ func getListQuery(c *fiber.Ctx, user models.User) (*gorm.DB, error) {
 				Where("user_id = ?", user.ID).
 				Pluck("switch_id", &userOwnedSwitches).Error; err != nil {
 				log.Error().Err(err).Msg("Error getting the user owned switches")
-				return &gorm.DB{}, err
+				return &gorm.DB{}, &gorm.DB{}, request, err
 			}
 			idsToInclude = append(idsToInclude, userOwnedSwitches...)
 		}
@@ -328,15 +331,16 @@ func getListQuery(c *fiber.Ctx, user models.User) (*gorm.DB, error) {
 				Where("user_id = ?", user.ID).
 				Pluck("switch_id", &userLikedSwitches).Error; err != nil {
 				log.Error().Err(err).Msg("Error getting the user liked switches")
-				return &gorm.DB{}, err
+				return &gorm.DB{}, &gorm.DB{}, request, err
 			}
 			idsToInclude = append(idsToInclude, userLikedSwitches...)
 		}
 
 		clickyClackQuery.Where("id IN (?)", idsToInclude)
+		filteredClickyClackQuery.Where("id IN (?)", idsToInclude)
 	}
 
-	return clickyClackQuery, nil
+	return clickyClackQuery, filteredClickyClackQuery, request, nil
 }
 
 func GetSwitchList(c *fiber.Ctx) error {
@@ -344,24 +348,58 @@ func GetSwitchList(c *fiber.Ctx) error {
 	defer timer.LogTotalTime()
 	user := c.Locals("User").(models.User)
 
-	query, err := getListQuery(c, user)
+	query, filteredQuery, request, err := getListQuery(c, user)
 	if err != nil {
 		return c.Status(fiber.StatusBadRequest).Next()
 	}
 
 	var clickyClacks []models.Switch
-	err = query.Limit(20).Find(&clickyClacks).Error
+	err = query.Find(&clickyClacks).Error
 	if err != nil {
 		log.Error().Err(err).Msg("Error getting the switches")
 		return c.Status(fiber.StatusBadRequest).Next()
 	}
 
-	for i, clickyClack := range clickyClacks {
-		clickyClack.GetUserRating(user.ID)
-		clickyClacks[i] = clickyClack
+	var filteredClickyClacks []models.Switch
+	err = filteredQuery.Limit(20).Find(&filteredClickyClacks).Error
+	if err != nil {
+		log.Error().Err(err).Msg("Error getting the filtered switches")
+		return c.Status(fiber.StatusBadRequest).Next()
 	}
 
-	component := components.SwitchList(user, clickyClacks)
+	for i, clickyClack := range filteredClickyClacks {
+		clickyClack.GetUserRating(user.ID)
+		filteredClickyClacks[i] = clickyClack
+	}
+
+	var switchTypes []models.Type
+	err = database.DB.
+		Select("id", "name").
+		Order("id").
+		Where("category = ?", "switch_type").
+		Find(&switchTypes).Error
+	if err != nil {
+		log.Error().Err(err).Msg("Error getting the switch types")
+		return c.Status(fiber.StatusBadRequest).Next()
+	}
+
+	var switchBrands []models.Producer
+	if err := database.DB.
+		Find(&switchBrands).Error; err != nil {
+		log.Error().Err(err).Msg("Error getting the switch brands")
+		return c.Status(fiber.StatusBadRequest).Next()
+	}
+
+	props := components.SwitchesFilterProps{
+		User:                 user,
+		FilteredClickyClacks: filteredClickyClacks,
+		ClickyClacks:         clickyClacks,
+		SwitchTypes:          switchTypes,
+		SwitchBrands:         switchBrands,
+		Params:               *request,
+	}
+
+	component := components.SwitchList(props)
 	return Render(component)(c)
 }
 

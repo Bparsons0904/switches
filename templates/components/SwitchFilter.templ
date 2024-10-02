@@ -4,18 +4,21 @@ package components
 import (
 	"fmt"
 	"github.com/google/uuid"
+	"slices"
 	"strconv"
+	"strings"
 	"switches/models"
 	"switches/templates/components/icons"
 	"switches/templates/layouts"
 )
 
 type SwitchesFilterProps struct {
-	ClickyClacks []models.Switch
-	SwitchTypes  []models.Type
-	SwitchBrands []models.Producer
-	User         models.User
-	Params       SwitchQueryParams
+	ClickyClacks         []models.Switch
+	FilteredClickyClacks []models.Switch
+	SwitchTypes          []models.Type
+	SwitchBrands         []models.Producer
+	User                 models.User
+	Params               SwitchQueryParams
 }
 
 type SwitchQueryParams struct {
@@ -58,13 +61,25 @@ templ SwitchFilter(props SwitchesFilterProps) {
 							<h3>Owned and Favorite</h3>
 							<div id="favorite" class="checkboxes">
 								<label class="checkbox-label">
-									Favorite 
-									<input type="checkbox" name="switchFavorites"/>
+									{ getFavoritesLabel(props) }
+									<input
+										type="checkbox"
+										if props.Params.SwitchFavorites {
+											checked
+										}
+										name="switchFavorites"
+									/>
 									<span class="checkmark"></span>
 								</label>
 								<label class="checkbox-label">
-									Owned 
-									<input type="checkbox" name="switchOwned"/>
+									{ getOwndedLabel(props) }
+									<input
+										type="checkbox"
+										if props.Params.SwitchOwned {
+											checked
+										}
+										name="switchOwned"
+									/>
 									<span class="checkmark"></span>
 								</label>
 							</div>
@@ -75,8 +90,15 @@ templ SwitchFilter(props SwitchesFilterProps) {
 						<div class="checkboxes">
 							for _, switchType := range props.SwitchTypes {
 								<label class="checkbox-label">
-									{ getSwitchLabel(switchType, props.ClickyClacks) }
-									<input type="checkbox" name="switchTypeIDs" value={ strconv.Itoa(switchType.ID) }/>
+									{ getSwitchLabel(props, switchType) }
+									<input
+										type="checkbox"
+										name="switchTypeIDs"
+										if slices.Contains(props.Params.SwitchTypeIDs, switchType.ID) {
+											checked
+										}
+										value={ strconv.Itoa(switchType.ID) }
+									/>
 									<span class="checkmark"></span>
 								</label>
 							}
@@ -87,8 +109,15 @@ templ SwitchFilter(props SwitchesFilterProps) {
 						<div class="checkboxes">
 							for _, brand := range props.SwitchBrands {
 								<label class="checkbox-label">
-									{ getBrandLabel(brand, props.ClickyClacks) }
-									<input type="checkbox" name="brandIDs" value={ strconv.Itoa(brand.ID) }/>
+									{ getBrandLabel(props,brand) }
+									<input
+										type="checkbox"
+										name="brandIDs"
+										value={ strconv.Itoa(brand.ID) }
+										if slices.Contains(props.Params.BrandIDs, brand.ID) {
+											checked
+										}
+									/>
 									<span class="checkmark"></span>
 								</label>
 							}
@@ -98,20 +127,41 @@ templ SwitchFilter(props SwitchesFilterProps) {
 						<h3>Switch Cost</h3>
 						<div class="cost-wrapper">
 							<label class="selectable-label">
-								<input type="checkbox" name="pricePoints" value="1"/>
+								<input
+									type="checkbox"
+									name="pricePoints"
+									if slices.Contains(props.Params.Pricepoints, 1) {
+										checked
+									}
+									value="1"
+								/>
 								<span>
 									@icons.Dollar()
 								</span>
 							</label>
 							<label class="selectable-label">
-								<input type="checkbox" name="pricePoints" value="2"/>
+								<input
+									type="checkbox"
+									name="pricePoints"
+									if slices.Contains(props.Params.Pricepoints, 2) {
+										checked
+									}
+									value="2"
+								/>
 								<span class="cost">
 									@icons.Dollar()
 									@icons.Dollar()
 								</span>
 							</label>
 							<label class="selectable-label">
-								<input type="checkbox" name="pricePoints" value="3"/>
+								<input
+									type="checkbox"
+									name="pricePoints"
+									if slices.Contains(props.Params.Pricepoints, 3) {
+										checked
+									}
+									value="3"
+								/>
 								<span class="cost">
 									@icons.Dollar()
 									@icons.Dollar()
@@ -126,10 +176,37 @@ templ SwitchFilter(props SwitchesFilterProps) {
 	</section>
 }
 
-func getSwitchLabel(switchType models.Type, clickyClacks []models.Switch) string {
+func getFavoritesLabel(props SwitchesFilterProps) string {
+	likedCount := 0
+	for _, likedSwitch := range props.User.LikedSwitches {
+		if strings.Contains(likedSwitch.Name, props.Params.Search) &&
+			(len(props.Params.BrandIDs) == 0 || slices.Contains(props.Params.BrandIDs, *likedSwitch.BrandID)) &&
+			(len(props.Params.SwitchTypeIDs) == 0 || slices.Contains(props.Params.SwitchTypeIDs, likedSwitch.SwitchTypeID)) &&
+			(len(props.Params.Pricepoints) == 0 || slices.Contains(props.Params.Pricepoints, likedSwitch.PricePoint)) {
+			likedCount++
+		}
+	}
+	return fmt.Sprintf("Favorite (%d)", likedCount)
+}
+
+func getOwndedLabel(props SwitchesFilterProps) string {
+	ownedCount := 0
+	for _, ownedSwitch := range props.User.OwnedSwitches {
+		if strings.Contains(ownedSwitch.Name, props.Params.Search) &&
+			(len(props.Params.BrandIDs) == 0 || slices.Contains(props.Params.BrandIDs, *ownedSwitch.BrandID)) &&
+			(len(props.Params.SwitchTypeIDs) == 0 || slices.Contains(props.Params.SwitchTypeIDs, ownedSwitch.SwitchTypeID)) &&
+			(len(props.Params.Pricepoints) == 0 || slices.Contains(props.Params.Pricepoints, ownedSwitch.PricePoint)) {
+			ownedCount++
+		}
+	}
+	return fmt.Sprintf("Owned (%d)", ownedCount)
+}
+
+func getSwitchLabel(props SwitchesFilterProps, switchType models.Type) string {
 	switchCount := 0
-	for _, clickyClack := range clickyClacks {
-		if switchType.ID == clickyClack.SwitchTypeID {
+	for _, clickyClack := range props.ClickyClacks {
+		if switchType.ID == clickyClack.SwitchTypeID &&
+			(len(props.Params.BrandIDs) == 0 || slices.Contains(props.Params.BrandIDs, *clickyClack.BrandID)) {
 			switchCount++
 		}
 
@@ -137,10 +214,11 @@ func getSwitchLabel(switchType models.Type, clickyClacks []models.Switch) string
 	return fmt.Sprintf("%s (%d)", switchType.Name, switchCount)
 }
 
-func getBrandLabel(brand models.Producer, clickyClacks []models.Switch) string {
+func getBrandLabel(props SwitchesFilterProps, brand models.Producer) string {
 	brandCount := 0
-	for _, clickyClack := range clickyClacks {
-		if brand.ID == *clickyClack.BrandID {
+	for _, clickyClack := range props.ClickyClacks {
+		if brand.ID == *clickyClack.BrandID &&
+			(len(props.Params.SwitchTypeIDs) == 0 || slices.Contains(props.Params.SwitchTypeIDs, clickyClack.SwitchTypeID)) {
 			brandCount++
 		}
 
