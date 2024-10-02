@@ -42,7 +42,7 @@ templ SwitchFilter(props SwitchesFilterProps) {
 									type="search"
 									name="search"
 									placeholder="Search switches..."
-									hx-trigger="keyup changed delay:500ms, search"
+									hx-trigger="keyup changed delay:750ms, search"
 									hx-get="/switches/list"
 									hx-target="#switch-list"
 									hx-include="#filter-form"
@@ -179,7 +179,7 @@ templ SwitchFilter(props SwitchesFilterProps) {
 func getFavoritesLabel(props SwitchesFilterProps) string {
 	likedCount := 0
 	for _, likedSwitch := range props.User.LikedSwitches {
-		if strings.Contains(likedSwitch.Name, props.Params.Search) &&
+		if (props.Params.Search == "" || strings.Contains(strings.ToLower(likedSwitch.Name), strings.ToLower(props.Params.Search))) &&
 			(len(props.Params.BrandIDs) == 0 || slices.Contains(props.Params.BrandIDs, *likedSwitch.BrandID)) &&
 			(len(props.Params.SwitchTypeIDs) == 0 || slices.Contains(props.Params.SwitchTypeIDs, likedSwitch.SwitchTypeID)) &&
 			(len(props.Params.Pricepoints) == 0 || slices.Contains(props.Params.Pricepoints, likedSwitch.PricePoint)) {
@@ -192,7 +192,7 @@ func getFavoritesLabel(props SwitchesFilterProps) string {
 func getOwndedLabel(props SwitchesFilterProps) string {
 	ownedCount := 0
 	for _, ownedSwitch := range props.User.OwnedSwitches {
-		if strings.Contains(ownedSwitch.Name, props.Params.Search) &&
+		if (props.Params.Search == "" || strings.Contains(strings.ToLower(ownedSwitch.Name), strings.ToLower(props.Params.Search))) &&
 			(len(props.Params.BrandIDs) == 0 || slices.Contains(props.Params.BrandIDs, *ownedSwitch.BrandID)) &&
 			(len(props.Params.SwitchTypeIDs) == 0 || slices.Contains(props.Params.SwitchTypeIDs, ownedSwitch.SwitchTypeID)) &&
 			(len(props.Params.Pricepoints) == 0 || slices.Contains(props.Params.Pricepoints, ownedSwitch.PricePoint)) {
