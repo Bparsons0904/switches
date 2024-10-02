@@ -13,12 +13,12 @@ templ Ratings(clickyClack models.Switch, showReview bool) {
 		} else {
 			@UserRatings(clickyClack)
 		}
-		<span class="rating-average">
-			if clickyClack.RatingsCount > 0 {
+		if clickyClack.RatingsCount > 0 {
+			<span class="rating-average">
 				{ fmt.Sprintf("%.1f", clickyClack.AverageRating) }@icons.StarFilled()
-			}
-		</span>
-		<a href="#reviews"><span class="rating-count">{ fmt.Sprintf("(%d reviews)", clickyClack.RatingsCount) }</span></a>
+			</span>
+			<a href="#reviews"><span class="rating-count">{ fmt.Sprintf("(%d reviews)", clickyClack.RatingsCount) }</span></a>
+		}
 	</div>
 	if showReview == true {
 		@addReviewButton(clickyClack)

@@ -291,6 +291,7 @@
         flex-direction: row;
         flex-wrap: wrap;
         justify-content: space-between;
+        align-content: flex-start;
         gap: 20px;
         padding: 20px;
       }
@@ -381,6 +382,7 @@
   border: none;
   outline: none;
   width: 100%;
+  max-height: fit-content;
   h2 {
     font-size: 1.1rem;
     text-wrap: wrap;

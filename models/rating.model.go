@@ -25,7 +25,7 @@ type Rating struct {
 	ProfanityScore      float64        `gorm:"type:float"                                                                    json:"profanityScore"`
 	SafeURLScore        float64        `gorm:"type:float"                                                                    json:"safeURLScore"`
 	RelavanceScore      float64        `gorm:"type:float"                                                                    json:"relavanceScore"`
-	AdminReviewRequired bool           `gorm:"type:bool;default:true;index:idx_switch_admin"                                 json:"adminReviewRequired"`
+	AdminReviewRequired bool           `gorm:"type:bool;default:false;index:idx_switch_admin"                                json:"adminReviewRequired"`
 	AdminReviewNotes    string         `gorm:"type:text"                                                                     json:"adminReviewNotes"`
 	AdminReviewedByID   *uuid.UUID     `gorm:"type:uuid"                                                                     json:"adminReviewedById"`
 	AdminReviewedBy     *User          `gorm:"foreignKey:AdminReviewedByID;references:ID"                                    json:"adminReviewedBy,omitempty"`
@@ -34,16 +34,14 @@ type Rating struct {
 	DeleteAt            gorm.DeletedAt `gorm:"index"                                                                         json:"deleteAt"`
 }
 
-func (r *Rating) BeforeCreate(tx *gorm.DB) (err error) {
-	r.OriginalReview = r.Review
-	r.AdminReviewRequired = true
-	return
-}
-
 func (r *Rating) AfterUpdate(tx *gorm.DB) (err error) {
 	if r.Review != "" {
 		go runQualityChecksAsync(*r)
+		if r.OriginalReview == "" {
+			r.OriginalReview = r.Review
+		}
 	}
+
 	return
 }
 

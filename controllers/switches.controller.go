@@ -98,7 +98,7 @@ func PutUserSwitch(c *fiber.Ctx) error { // {{{
 
 	tx := database.DB.Begin()
 	var userRating models.Rating
-	err = tx.
+	err = tx.Debug().
 		Where(models.Rating{
 			UserID:   userID,
 			SwitchID: switchID,
@@ -174,10 +174,11 @@ func GetSwitchPage(c *fiber.Ctx) error {
 	timer.LogTime("Get Switch Brands")
 
 	props := components.SwitchesFilterProps{
-		ClickyClacks: clickyClacks,
-		SwitchTypes:  switchTypes,
-		SwitchBrands: switchBrands,
-		User:         c.Locals("User").(models.User),
+		ClickyClacks:         []models.Switch{},
+		FilteredClickyClacks: clickyClacks,
+		SwitchTypes:          switchTypes,
+		SwitchBrands:         switchBrands,
+		User:                 c.Locals("User").(models.User),
 		Params: components.SwitchQueryParams{
 			SwitchTypeIDs:   []int{},
 			BrandIDs:        []int{},
@@ -285,7 +286,7 @@ func getListQuery(
 			return db.Select("id, name")
 		}).
 		Preload("Ratings", func(db *gorm.DB) *gorm.DB {
-			return db.Select("id, review, rating, switch_id, admin_review_required")
+			return db.Select("id, review, rating, switch_id, admin_review_required, user_id")
 		})
 
 	if len(request.SwitchTypeIDs) > 0 {
