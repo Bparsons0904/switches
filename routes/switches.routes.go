@@ -12,6 +12,7 @@ func SwitchRoutes(app *fiber.App) {
 	switches.Get("/", controllers.GetSwitchPage)
 	switches.Get("/featured", controllers.GetFeaturedSwitches)
 	switches.Get("/list", controllers.GetSwitchList)
+	switches.Get("/list/more", controllers.GetSwitchListMore)
 	switches.Get("/reviews/form", controllers.GetReviewForm)
 	switches.Get("/:switchID", controllers.GetSwitchDetailPage)
 	switches.Get("/:switchID/modal", controllers.GetSwitchDetailCard)

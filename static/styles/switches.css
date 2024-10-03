@@ -199,6 +199,9 @@
 }
 
 #switches {
+  h1 {
+    padding: 10px 10px 0 10px;
+  }
   #filters {
     .filter {
       display: flex;
@@ -288,6 +291,7 @@
         flex-direction: row;
         flex-wrap: wrap;
         justify-content: space-between;
+        align-content: flex-start;
         gap: 20px;
         padding: 20px;
       }
@@ -298,7 +302,7 @@
 @media (min-width: 1024px) {
   #switch-container {
     display: grid;
-    grid-template-columns: 35% 1fr;
+    grid-template-columns: 40% 1fr;
   }
   #filters {
     #filter-form {
@@ -378,6 +382,7 @@
   border: none;
   outline: none;
   width: 100%;
+  max-height: fit-content;
   h2 {
     font-size: 1.1rem;
     text-wrap: wrap;

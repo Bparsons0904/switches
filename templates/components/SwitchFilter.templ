@@ -1,0 +1,231 @@
+
+package components
+
+import (
+	"fmt"
+	"github.com/google/uuid"
+	"slices"
+	"strconv"
+	"strings"
+	"switches/models"
+	"switches/templates/components/icons"
+	"switches/templates/layouts"
+)
+
+type SwitchesFilterProps struct {
+	ClickyClacks         []models.Switch
+	FilteredClickyClacks []models.Switch
+	SwitchTypes          []models.Type
+	SwitchBrands         []models.Producer
+	User                 models.User
+	Params               SwitchQueryParams
+}
+
+type SwitchQueryParams struct {
+	SwitchTypeIDs   []int  `json:"switchTypeIDs"`
+	BrandIDs        []int  `json:"brandIDs"`
+	Pricepoints     []int  `json:"pricepoints"`
+	Search          string `json:"search"`
+	SwitchFavorites bool   `json:"switchFavorites"`
+	SwitchOwned     bool   `json:"switchOwned"`
+}
+
+templ SwitchFilter(props SwitchesFilterProps) {
+	<section id="filter">
+		@layouts.Card() {
+			<section id="search">
+				<form id="search-form">
+					<div class="search">
+						<label>
+							<input
+								type="search"
+								name="search"
+								placeholder="Search switches..."
+								hx-trigger="keyup changed delay:750ms, search"
+								hx-get="/switches/list"
+								hx-target="#switch-list"
+								hx-include="#filter-form"
+								value={ props.Params.Search }
+							/>
+						</label>
+					</div>
+				</form>
+			</section>
+			<h1>Filters</h1>
+			<div id="filters">
+				<form
+					id="filter-form"
+					hx-trigger="change"
+					hx-get="/switches/list"
+					hx-target="#switch-list"
+					hx-include="#search-form"
+				>
+					<div id="switch-linked" class="filter">
+						if props.User.ID != uuid.Nil {
+							<h3>Owned and Favorite</h3>
+							<div id="favorite" class="checkboxes">
+								<label class="checkbox-label">
+									{ getFavoritesLabel(props) }
+									<input
+										type="checkbox"
+										if props.Params.SwitchFavorites {
+											checked
+										}
+										name="switchFavorites"
+									/>
+									<span class="checkmark"></span>
+								</label>
+								<label class="checkbox-label">
+									{ getOwndedLabel(props) }
+									<input
+										type="checkbox"
+										if props.Params.SwitchOwned {
+											checked
+										}
+										name="switchOwned"
+									/>
+									<span class="checkmark"></span>
+								</label>
+							</div>
+						}
+					</div>
+					<div id="switch-type" class="filter">
+						<h3>Switch Type</h3>
+						<div class="checkboxes">
+							for _, switchType := range props.SwitchTypes {
+								<label class="checkbox-label">
+									{ getSwitchLabel(props, switchType) }
+									<input
+										type="checkbox"
+										name="switchTypeIDs"
+										if slices.Contains(props.Params.SwitchTypeIDs, switchType.ID) {
+											checked
+										}
+										value={ strconv.Itoa(switchType.ID) }
+									/>
+									<span class="checkmark"></span>
+								</label>
+							}
+						</div>
+					</div>
+					<div id="brand-type" class="filter">
+						<h3>Switch Brands</h3>
+						<div class="checkboxes">
+							for _, brand := range props.SwitchBrands {
+								<label class="checkbox-label">
+									{ getBrandLabel(props,brand) }
+									<input
+										type="checkbox"
+										name="brandIDs"
+										value={ strconv.Itoa(brand.ID) }
+										if slices.Contains(props.Params.BrandIDs, brand.ID) {
+											checked
+										}
+									/>
+									<span class="checkmark"></span>
+								</label>
+							}
+						</div>
+					</div>
+					<div id="cost" class="filter">
+						<h3>Switch Cost</h3>
+						<div class="cost-wrapper">
+							<label class="selectable-label">
+								<input
+									type="checkbox"
+									name="pricePoints"
+									if slices.Contains(props.Params.Pricepoints, 1) {
+										checked
+									}
+									value="1"
+								/>
+								<span>
+									@icons.Dollar()
+								</span>
+							</label>
+							<label class="selectable-label">
+								<input
+									type="checkbox"
+									name="pricePoints"
+									if slices.Contains(props.Params.Pricepoints, 2) {
+										checked
+									}
+									value="2"
+								/>
+								<span class="cost">
+									@icons.Dollar()
+									@icons.Dollar()
+								</span>
+							</label>
+							<label class="selectable-label">
+								<input
+									type="checkbox"
+									name="pricePoints"
+									if slices.Contains(props.Params.Pricepoints, 3) {
+										checked
+									}
+									value="3"
+								/>
+								<span class="cost">
+									@icons.Dollar()
+									@icons.Dollar()
+									@icons.Dollar()
+								</span>
+							</label>
+						</div>
+					</div>
+				</form>
+			</div>
+		}
+	</section>
+}
+
+func getFavoritesLabel(props SwitchesFilterProps) string {
+	likedCount := 0
+	for _, likedSwitch := range props.User.LikedSwitches {
+		if (props.Params.Search == "" || strings.Contains(strings.ToLower(likedSwitch.Name), strings.ToLower(props.Params.Search))) &&
+			(len(props.Params.BrandIDs) == 0 || slices.Contains(props.Params.BrandIDs, *likedSwitch.BrandID)) &&
+			(len(props.Params.SwitchTypeIDs) == 0 || slices.Contains(props.Params.SwitchTypeIDs, likedSwitch.SwitchTypeID)) &&
+			(len(props.Params.Pricepoints) == 0 || slices.Contains(props.Params.Pricepoints, likedSwitch.PricePoint)) {
+			likedCount++
+		}
+	}
+	return fmt.Sprintf("Favorite (%d)", likedCount)
+}
+
+func getOwndedLabel(props SwitchesFilterProps) string {
+	ownedCount := 0
+	for _, ownedSwitch := range props.User.OwnedSwitches {
+		if (props.Params.Search == "" || strings.Contains(strings.ToLower(ownedSwitch.Name), strings.ToLower(props.Params.Search))) &&
+			(len(props.Params.BrandIDs) == 0 || slices.Contains(props.Params.BrandIDs, *ownedSwitch.BrandID)) &&
+			(len(props.Params.SwitchTypeIDs) == 0 || slices.Contains(props.Params.SwitchTypeIDs, ownedSwitch.SwitchTypeID)) &&
+			(len(props.Params.Pricepoints) == 0 || slices.Contains(props.Params.Pricepoints, ownedSwitch.PricePoint)) {
+			ownedCount++
+		}
+	}
+	return fmt.Sprintf("Owned (%d)", ownedCount)
+}
+
+func getSwitchLabel(props SwitchesFilterProps, switchType models.Type) string {
+	switchCount := 0
+	for _, clickyClack := range props.ClickyClacks {
+		if switchType.ID == clickyClack.SwitchTypeID &&
+			(len(props.Params.BrandIDs) == 0 || slices.Contains(props.Params.BrandIDs, *clickyClack.BrandID)) {
+			switchCount++
+		}
+
+	}
+	return fmt.Sprintf("%s (%d)", switchType.Name, switchCount)
+}
+
+func getBrandLabel(props SwitchesFilterProps, brand models.Producer) string {
+	brandCount := 0
+	for _, clickyClack := range props.ClickyClacks {
+		if brand.ID == *clickyClack.BrandID &&
+			(len(props.Params.SwitchTypeIDs) == 0 || slices.Contains(props.Params.SwitchTypeIDs, clickyClack.SwitchTypeID)) {
+			brandCount++
+		}
+
+	}
+	return fmt.Sprintf("%s (%d)", brand.Name, brandCount)
+}

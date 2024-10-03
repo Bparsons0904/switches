@@ -6,10 +6,28 @@ import (
 	"switches/templates/components/icons"
 )
 
-templ SwitchList(user models.User, clickyClacks []models.Switch) {
-	for _, clickyClack := range clickyClacks {
-		@SwitchCardPreview(user, clickyClack)
+templ SwitchListMore(props SwitchesFilterProps) {
+	for _, clickyClack := range props.FilteredClickyClacks {
+		@SwitchCardPreview(props.User, clickyClack)
 	}
+}
+
+templ SwitchList(props SwitchesFilterProps) {
+	for _, clickyClack := range props.FilteredClickyClacks {
+		@SwitchCardPreview(props.User, clickyClack)
+	}
+	if len(props.FilteredClickyClacks) >= 20 {
+		<section
+			id="switch-more"
+			hx-get="/switches/list/more"
+			hx-trigger="load"
+			hx-swap="outerHTML"
+			hx-include="#filter-form, #search-form"
+		></section>
+	}
+	<div id="filter" hx-swap-oob="true">
+		@SwitchFilter(props)
+	</div>
 }
 
 templ SwitchCardPreview(user models.User, clickyClack models.Switch) {

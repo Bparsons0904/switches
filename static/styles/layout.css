@@ -66,10 +66,10 @@
 }
 
 #sidenav {
-  position: absolute;
+  position: fixed;
   top: 0;
   right: 0;
-  right: -80vw;
+  right: -90vw;
   width: 80vw;
   height: 100vh;
   background-color: white;
@@ -78,8 +78,9 @@
   z-index: 1000;
   padding: 12px;
   color: var(--text-color-dark);
+  overflow: no-scroll;
   &.open {
-    right: 0;
+    right: 10px;
   }
   .header {
     display: flex;
@@ -92,8 +93,6 @@
         width: 35px;
       }
     }
-  }
-  .logged-in {
   }
   .menu-items {
     padding: 20px;
@@ -187,11 +186,5 @@
   place-items: center;
 }
 
-/* .img-wrapper { */
-/*   width: 100%; */
-/*   height: auto; */
-/*   img { */
-/*     width: 100%; */
-/*     height: auto; */
-/*   } */
-/* } */
+.pagination {
+}

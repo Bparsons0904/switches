@@ -1,9 +1,11 @@
 package models
 
 import (
+	"switches/database"
 	"time"
 
 	"github.com/google/uuid"
+	"github.com/rs/zerolog/log"
 	"gorm.io/gorm"
 )
 
@@ -34,6 +36,41 @@ type Switch struct {
 	AverageRating    float64        `gorm:"type:float;default:0.0"                                                                  json:"averageRating,omitempty"`
 	RatingsCount     int            `gorm:"type:int;default:0"                                                                      json:"ratingsCount,omitempty"`
 	UserRating       *Rating        `gorm:"-"                                                                                       json:"userRating,omitempty"`
+}
+
+func UpdateSwitchRating(switchID uuid.UUID, tx *gorm.DB) error {
+	type RatingQuery struct {
+		AverageRating float64 `gorm:"column:average_rating"`
+		RatingsCount  int     `gorm:"column:ratings_count"`
+	}
+
+	query := `
+		SELECT
+			ROUND(COALESCE(AVG(ratings.rating), 0), 1) AS average_rating,
+			COUNT(ratings.id) AS ratings_count
+		FROM ratings
+		WHERE switch_id = ?
+		 AND admin_review_required = false
+	`
+
+	var ratingQuery RatingQuery
+	if err := database.DB.Raw(query, switchID).Scan(&ratingQuery).Error; err != nil {
+		log.Error().Err(err).Msg("Error getting the ratings from the after find")
+		return err
+	}
+
+	if err := database.DB.
+		Model(&Switch{}).
+		Where("id = ?", switchID).
+		Updates(&Switch{
+			AverageRating: ratingQuery.AverageRating,
+			RatingsCount:  ratingQuery.RatingsCount,
+		}).Error; err != nil {
+		log.Error().Err(err).Msg("Error trying to update the switch")
+		return err
+	}
+
+	return nil
 }
 
 // func (s *Switch) AfterFind(tx *gorm.DB) error {
