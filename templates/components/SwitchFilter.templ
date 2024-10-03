@@ -35,27 +35,31 @@ templ SwitchFilter(props SwitchesFilterProps) {
 		@layouts.Card() {
 			<section id="search">
 				<form id="search-form">
-					<div id="search">
-						<div class="search">
-							<label>
-								<input
-									type="search"
-									name="search"
-									placeholder="Search switches..."
-									hx-trigger="keyup changed delay:750ms, search"
-									hx-get="/switches/list"
-									hx-target="#switch-list"
-									hx-include="#filter-form"
-									value={ props.Params.Search }
-								/>
-							</label>
-						</div>
+					<div class="search">
+						<label>
+							<input
+								type="search"
+								name="search"
+								placeholder="Search switches..."
+								hx-trigger="keyup changed delay:750ms, search"
+								hx-get="/switches/list"
+								hx-target="#switch-list"
+								hx-include="#filter-form"
+								value={ props.Params.Search }
+							/>
+						</label>
 					</div>
 				</form>
 			</section>
 			<h1>Filters</h1>
 			<div id="filters">
-				<form id="filter-form" hx-trigger="change" hx-get="/switches/list" hx-target="#switch-list" hx-include="#search-form">
+				<form
+					id="filter-form"
+					hx-trigger="change"
+					hx-get="/switches/list"
+					hx-target="#switch-list"
+					hx-include="#search-form"
+				>
 					<div id="switch-linked" class="filter">
 						if props.User.ID != uuid.Nil {
 							<h3>Owned and Favorite</h3>

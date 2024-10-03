@@ -125,36 +125,6 @@ func runQualityChecksAsync(rating Rating) {
 	}
 
 	if adminReviewRequired {
-		return
-	}
-
-	type RatingQuery struct {
-		AverageRating float64 `gorm:"column:average_rating"`
-		RatingsCount  int     `gorm:"column:ratings_count"`
-	}
-
-	query := `
-		SELECT
-			ROUND(COALESCE(AVG(ratings.rating), 0), 1) AS average_rating,
-			COUNT(ratings.id) AS ratings_count
-		FROM ratings
-		WHERE switch_id = ?
-		 AND admin_review_required = false
-	`
-
-	var ratingQuery RatingQuery
-	if err := database.DB.Raw(query, rating.SwitchID).Scan(&ratingQuery).Error; err != nil {
-		log.Error().Err(err).Msg("Error getting the ratings from the after find")
-		return
-	}
-
-	if err := database.DB.Debug().
-		Model(&Switch{}).
-		Where("id = ?", rating.SwitchID).
-		Updates(&Switch{
-			AverageRating: ratingQuery.AverageRating,
-			RatingsCount:  ratingQuery.RatingsCount,
-		}).Error; err != nil {
-		log.Error().Err(err).Msg("Error trying to update the switch")
+		_ = UpdateSwitchRating(rating.SwitchID, database.DB)
 	}
 }

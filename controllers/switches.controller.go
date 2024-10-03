@@ -98,7 +98,7 @@ func PutUserSwitch(c *fiber.Ctx) error { // {{{
 
 	tx := database.DB.Begin()
 	var userRating models.Rating
-	err = tx.Debug().
+	err = tx.
 		Where(models.Rating{
 			UserID:   userID,
 			SwitchID: switchID,
@@ -119,6 +119,13 @@ func PutUserSwitch(c *fiber.Ctx) error { // {{{
 			return c.Status(fiber.StatusBadRequest).Next()
 		}
 	}
+
+	if err := models.UpdateSwitchRating(switchID, tx); err != nil {
+		tx.Rollback()
+		log.Error().Err(err).Msg("Error updating the switch rating on update")
+		return c.Status(fiber.StatusBadRequest).Next()
+	}
+
 	tx.Commit()
 
 	var clickyClack models.Switch
