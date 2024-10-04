@@ -5,6 +5,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"io"
+	"log/slog"
 	"net/http"
 
 	"github.com/rs/zerolog/log"
@@ -32,6 +33,15 @@ func CheckReviewRelavancy(review string) (float64, error) {
 	req.Header.Set("Content-Type", "application/json")
 	client := &http.Client{}
 	resp, err := client.Do(req)
+	slog.Info(
+		"Sending the request to the server",
+		"error",
+		err,
+		"Responsd from error;",
+		resp,
+		"review",
+		review,
+	)
 	if err != nil {
 		log.Error().Err(err).Msg("Error making the request")
 		return 0.0, err

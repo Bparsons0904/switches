@@ -93,6 +93,7 @@ func runQualityChecksAsync(rating Rating) {
 		defer wg.Done()
 		var err error
 		relavanceScore, err = utils.CheckReviewRelavancy(rating.Review)
+		log.Info().Any("Relavancy Score", relavanceScore).Msg("Relavancy Score")
 		if err != nil {
 			log.Error().Err(err).Msg("Failed to perform Relavancy check")
 			adminReviewRequired = true
@@ -117,6 +118,7 @@ func runQualityChecksAsync(rating Rating) {
 			"toxicity_score":        toxicityScore,
 			"profanity_score":       profanityScore,
 			"safe_url_score":        urlSafetyScore,
+			"relavance_score":       relavanceScore,
 			"admin_review_required": adminReviewRequired,
 			"review":                rating.Review,
 		}).Error; err != nil {

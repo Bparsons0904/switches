@@ -147,7 +147,7 @@ func PutUserSwitch(c *fiber.Ctx) error { // {{{
 	return Render(components.Ratings(clickyClack, matched))(c)
 } // }}}
 
-func GetSwitchPage(c *fiber.Ctx) error {
+func GetSwitchPage(c *fiber.Ctx) error { // {{{
 	timer := utils.StartTimer("Get Switch Page")
 	defer timer.LogTotalTime()
 
@@ -197,9 +197,9 @@ func GetSwitchPage(c *fiber.Ctx) error {
 	}
 
 	return Render(pages.Switches(props))(c)
-}
+} // }}}
 
-func GetSwitchDetailPage(c *fiber.Ctx) error {
+func GetSwitchDetailPage(c *fiber.Ctx) error { // {{{
 	timer := utils.StartTimer("getSwitchDetailPage")
 	defer timer.LogTotalTime()
 
@@ -210,9 +210,9 @@ func GetSwitchDetailPage(c *fiber.Ctx) error {
 	}
 
 	return Render(pages.SwitchDetail(user, clickyClack))(c)
-}
+} // }}}
 
-func GetSwitchListMore(c *fiber.Ctx) error {
+func GetSwitchListMore(c *fiber.Ctx) error { // {{{
 	timer := utils.StartTimer("Get More Switch List")
 	defer timer.LogTotalTime()
 
@@ -263,9 +263,9 @@ func GetSwitchListMore(c *fiber.Ctx) error {
 	}
 	component := components.SwitchListMore(props)
 	return Render(component)(c)
-}
+} // }}}
 
-func getListQuery(
+func getListQuery( // {{{
 	c *fiber.Ctx,
 	user models.User,
 ) (*gorm.DB, *gorm.DB, *components.SwitchQueryParams, error) {
@@ -349,9 +349,9 @@ func getListQuery(
 	}
 
 	return clickyClackQuery, filteredClickyClackQuery, request, nil
-}
+} // }}}
 
-func GetSwitchList(c *fiber.Ctx) error {
+func GetSwitchList(c *fiber.Ctx) error { // {{{
 	timer := utils.StartTimer("Get Switch List")
 	defer timer.LogTotalTime()
 	user := c.Locals("User").(models.User)
@@ -409,7 +409,7 @@ func GetSwitchList(c *fiber.Ctx) error {
 
 	component := components.SwitchList(props)
 	return Render(component)(c)
-}
+} // }}}
 
 func GetFeaturedSwitches(c *fiber.Ctx) error { // {{{
 	timer := utils.StartTimer("Get Featured Switches")
@@ -459,7 +459,7 @@ func GetSwitchDetailCard(c *fiber.Ctx) error { // {{{
 	return Render(component)(c)
 } // }}}
 
-func getParams(c *fiber.Ctx) (models.User, uuid.UUID, error) {
+func getParams(c *fiber.Ctx) (models.User, uuid.UUID, error) { // {{{
 	user := c.Locals("User").(models.User)
 	switchID, err := GetSwitchIDParam(c)
 	if err != nil {
@@ -467,9 +467,9 @@ func getParams(c *fiber.Ctx) (models.User, uuid.UUID, error) {
 	}
 
 	return user, switchID, err
-}
+} // }}}
 
-func getSwitches(switchID uuid.UUID, timer *utils.Timer) (models.Switch, error) {
+func getSwitches(switchID uuid.UUID, timer *utils.Timer) (models.Switch, error) { // {{{
 	var clickyClack models.Switch
 	if err := database.DB.First(&clickyClack, switchID).Error; err != nil {
 		return models.Switch{}, err
@@ -477,9 +477,13 @@ func getSwitches(switchID uuid.UUID, timer *utils.Timer) (models.Switch, error) 
 	timer.LogTime("Get Switch")
 
 	return clickyClack, nil
-}
+} // }}}
 
-func getUpdatedUser(user models.User, timer *utils.Timer, c *fiber.Ctx) (models.User, error) {
+func getUpdatedUser( // {{{
+	user models.User,
+	timer *utils.Timer,
+	c *fiber.Ctx,
+) (models.User, error) {
 	var updatedUser models.User
 	if err := database.DB.
 		Preload("OwnedSwitches").
@@ -499,9 +503,9 @@ func getUpdatedUser(user models.User, timer *utils.Timer, c *fiber.Ctx) (models.
 	timer.LogTime("Set User in KeyDB")
 
 	return updatedUser, nil
-}
+} // }}}
 
-func processUserSwitch(
+func processUserSwitch( // {{{
 	c *fiber.Ctx,
 	create bool,
 	table interface{},
@@ -549,9 +553,9 @@ func processUserSwitch(
 
 	component := selectorFunc(updatedUser, clickyClack)
 	return Render(component)(c)
-}
+} // }}}
 
-func CreateUserOwnedSwitch(c *fiber.Ctx) error {
+func CreateUserOwnedSwitch(c *fiber.Ctx) error { // {{{
 	timer := utils.StartTimer("Create User Owned Switch")
 	defer timer.LogTotalTime()
 
@@ -562,9 +566,9 @@ func CreateUserOwnedSwitch(c *fiber.Ctx) error {
 		components.OwnedSelector,
 		&timer,
 	)
-}
+} // }}}
 
-func DeleteUserOwnedSwitch(c *fiber.Ctx) error {
+func DeleteUserOwnedSwitch(c *fiber.Ctx) error { // {{{
 	timer := utils.StartTimer("Delete User Owned Switch")
 	defer timer.LogTotalTime()
 
@@ -575,9 +579,9 @@ func DeleteUserOwnedSwitch(c *fiber.Ctx) error {
 		components.OwnedSelector,
 		&timer,
 	)
-}
+} // }}}
 
-func CreateUserLikedSwitch(c *fiber.Ctx) error {
+func CreateUserLikedSwitch(c *fiber.Ctx) error { // {{{
 	timer := utils.StartTimer("Create User Liked Switch")
 	defer timer.LogTotalTime()
 
@@ -588,9 +592,9 @@ func CreateUserLikedSwitch(c *fiber.Ctx) error {
 		components.LikedSelector,
 		&timer,
 	)
-}
+} // }}}
 
-func DeleteUserLikedSwitch(c *fiber.Ctx) error {
+func DeleteUserLikedSwitch(c *fiber.Ctx) error { // {{{
 	timer := utils.StartTimer("Delete User Liked Switch")
 	defer timer.LogTotalTime()
 
@@ -601,4 +605,4 @@ func DeleteUserLikedSwitch(c *fiber.Ctx) error {
 		components.LikedSelector,
 		&timer,
 	)
-}
+} // }}}

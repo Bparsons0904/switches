@@ -4,7 +4,6 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
-	"log/slog"
 	"net/http"
 	"net/url"
 	"regexp"
@@ -70,7 +69,6 @@ type SafeBrowsingResponse struct {
 
 func PerformURLSafetyCheck(ctx context.Context, review string) (float64, error) {
 	urls := extractURLs(review)
-	slog.Info("urls", "count", len(urls))
 	if len(urls) == 0 {
 		return 0.0, nil
 	}
