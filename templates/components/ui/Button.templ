@@ -1,0 +1,32 @@
+package ui
+
+type ButtonProp struct {
+	ButtonText string
+	Get        string
+	Post       string
+	Put        string
+	Swap       string
+	Target     string
+	Include    string
+}
+
+templ Button(props ButtonProp) {
+	<button
+		type="button"
+		class="button"
+		if props.Get != "" {
+			hx-get={ props.Get }
+		}
+		if props.Post != "" {
+			hx-post={ props.Post }
+		}
+		if props.Put != "" {
+			hx-put={ props.Put }
+		}
+		if props.Target != "" {
+			hx-target={ props.Target }
+		}
+	>
+		{ props.ButtonText }
+	</button>
+}

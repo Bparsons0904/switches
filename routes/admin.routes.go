@@ -18,6 +18,8 @@ func AdminRoutes(app *fiber.App) {
 	adminApi.Delete("/images/:imageLinkIndex", controllers.DeleteImageLinkToList)
 	adminApi.Get("/switches/:switchID/edit", controllers.GetAdminSwitchEdit)
 	adminApi.Put("/switches/:switchID/edit", controllers.PutSwitch)
+
+	adminApi.Post("/switches/seed", controllers.PostSeedSwitches)
 }
 
 func AdminPlaceHolder(c *fiber.Ctx) error {

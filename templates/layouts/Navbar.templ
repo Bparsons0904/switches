@@ -4,6 +4,7 @@ import (
 	"github.com/google/uuid"
 	"switches/models"
 	"switches/templates/components/icons"
+	"switches/templates/components/ui"
 )
 
 templ Navbar(user models.User) {
@@ -20,11 +21,13 @@ templ Navbar(user models.User) {
 			<h1 class="text-light">Waugze</h1>
 		</a>
 		<div id="menu-desktop">
-			if user.ID != uuid.Nil {
+			if user.ID != uuid.Nil && !user.IsAdmin {
 				<div class="logged-in">
 					Hello, { user.Name }
 					@LogoutButton()
 				</div>
+			} else if user.IsAdmin {
+				@ui.Button(ui.ButtonProp{ButtonText: "Console", Get: "/admin", Target: "#main"})
 			} else {
 				@LoginButton()
 			}
