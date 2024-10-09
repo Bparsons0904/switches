@@ -16,7 +16,8 @@ import (
 )
 
 func PostSeedSwitches(c *fiber.Ctx) error {
-	return c.Status(fiber.StatusOK).Next()
+	user := c.Locals("User").(models.User)
+	return Render(pages.Admin(user))(c)
 }
 
 func GetAdminHome(c *fiber.Ctx) error {

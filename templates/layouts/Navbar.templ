@@ -27,7 +27,7 @@ templ Navbar(user models.User) {
 					@LogoutButton()
 				</div>
 			} else if user.IsAdmin {
-				@ui.Button(ui.ButtonProp{ButtonText: "Console", Get: "/admin", Target: "#main"})
+				@ui.Button(ui.ButtonProp{ButtonText: "Console", Get: "/admin", Target: "#main", PushUrl: "/admin"})
 			} else {
 				@LoginButton()
 			}

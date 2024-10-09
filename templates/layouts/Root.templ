@@ -23,6 +23,7 @@ templ Root(user models.User) {
 		<link rel="stylesheet" href={ fmt.Sprintf("/assets/pages_%d.min.css", viper.GetInt64("appendNumber")) }/>
 		<link rel="stylesheet" href={ fmt.Sprintf("/assets/switches_%d.min.css", viper.GetInt64("appendNumber")) }/>
 		<link rel="stylesheet" href={ fmt.Sprintf("/assets/forms_%d.min.css", viper.GetInt64("appendNumber")) }/>
+		<link rel="stylesheet" href={ fmt.Sprintf("/assets/admin_%d.min.css", viper.GetInt64("appendNumber")) }/>
 		<head>
 			<title>Waugze</title>
 		</head>

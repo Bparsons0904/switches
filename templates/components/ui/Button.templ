@@ -7,7 +7,7 @@ type ButtonProp struct {
 	Put        string
 	Swap       string
 	Target     string
-	Include    string
+	PushUrl    string
 }
 
 templ Button(props ButtonProp) {
@@ -25,6 +25,12 @@ templ Button(props ButtonProp) {
 		}
 		if props.Target != "" {
 			hx-target={ props.Target }
+		}
+		if props.Swap != "" {
+			hx-swap={ props.Swap }
+		}
+		if props.PushUrl != "" {
+			hx-push-url={ props.PushUrl }
 		}
 	>
 		{ props.ButtonText }
