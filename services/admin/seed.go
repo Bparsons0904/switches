@@ -5,6 +5,7 @@ import (
 	"gorm.io/gorm"
 )
 
-func SeedDatabase(db *gorm.DB) {
+func SeedDatabase(db *gorm.DB) error {
 	log.Info().Msg("Seeding database")
+	return nil
 }

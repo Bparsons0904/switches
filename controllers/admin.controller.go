@@ -5,6 +5,7 @@ import (
 	"strconv"
 	"switches/database"
 	"switches/models"
+	"switches/services/admin"
 	"switches/templates/components"
 	"switches/templates/pages"
 	"switches/utils"
@@ -16,10 +17,20 @@ import (
 )
 
 func PostSeedSwitches(c *fiber.Ctx) error {
-	return Render(components.ToastNotification(components.ToastNotificationProps{
+	err := admin.SeedDatabase(database.DB)
+	component := components.ToastNotification(components.ToastNotificationProps{
 		Title: "Seeded Switches",
 		Type:  "success",
-	}))(c)
+	})
+	if err != nil {
+		log.Error().Err(err).Msg("Error seeing the database")
+		component = components.ToastNotification(components.ToastNotificationProps{
+			Title: "Failed to Seed Database",
+			Type:  "error",
+		})
+	}
+
+	return Render(component)(c)
 }
 
 func GetAdminHome(c *fiber.Ctx) error {
