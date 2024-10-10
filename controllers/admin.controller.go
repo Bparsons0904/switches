@@ -16,8 +16,10 @@ import (
 )
 
 func PostSeedSwitches(c *fiber.Ctx) error {
-	user := c.Locals("User").(models.User)
-	return Render(pages.Admin(user))(c)
+	return Render(components.ToastNotification(components.ToastNotificationProps{
+		Title: "Seeded Switches",
+		Type:  "success",
+	}))(c)
 }
 
 func GetAdminHome(c *fiber.Ctx) error {

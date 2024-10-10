@@ -10,18 +10,24 @@ function closeDialog() {
 }
 
 document.body.addEventListener("htmx:afterSwap", function (event) {
+  const regexPattern =
+    "^/switches/[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}/modal$";
+  const regex = new RegExp(regexPattern);
+  const path = event.detail.pathInfo.requestPath;
+
+  if (!regex.test(path)) return;
   const portal = document.getElementById("portal");
   if (event.detail.target.id === "portal") {
     document.body.classList.add("body-no-scroll");
     portal.style.display = "flex";
     portal.addEventListener("click", (event) => {
       const dialog = document.getElementById("dialog");
+      if (!dialog) return;
       const rect = dialog.getBoundingClientRect();
       if (
         event.clientX < rect.left ||
         event.clientX > rect.right ||
-        event.clientY < rect.top ||
-        event.clientY > rect.bottom
+        (event.clientY < rect.top) | (event.clientY > rect.bottom)
       ) {
         closeDialog();
       }
@@ -104,4 +110,9 @@ function openMobileMenu() {
   closeMenuButton.addEventListener("click", function () {
     sidenav.classList.remove("open");
   });
+}
+
+function closeToastNotification() {
+  const notification = document.getElementById("notification");
+  notification.classList.add("closing");
 }

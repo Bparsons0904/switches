@@ -34,6 +34,7 @@ templ Root(user models.User) {
 			</div>
 			<div id="modal-loader"></div>
 			<div id="portal"></div>
+			<div id="notifications"></div>
 		</body>
 		<script src={ fmt.Sprintf("/assets/htmx_%d.min.js", viper.GetInt64("appendNumber")) }></script>
 		<script src={ fmt.Sprintf("/assets/scripts_%d.min.js", viper.GetInt64("appendNumber")) }></script>

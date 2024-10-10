@@ -1,0 +1,24 @@
+package components
+
+import "switches/templates/icons"
+
+type ToastNotificationProps struct {
+	Title    string
+	SubTitle string
+	Type     string // "success" or "error"
+}
+
+templ ToastNotification(props ToastNotificationProps) {
+	<div id="notification" class={ "toast-notification", props.Type }>
+		<div class="content">
+			<p class="title">{ props.Title }</p>
+			if props.SubTitle != "" {
+				<p class="sub-title">{ props.SubTitle }</p>
+			}
+		</div>
+		<button class="close-btn" onclick="closeToastNotification()">
+			@icons.Close()
+		</button>
+		<div class="timer-bar"></div>
+	</div>
+}

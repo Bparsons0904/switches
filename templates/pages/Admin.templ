@@ -18,9 +18,8 @@ templ Admin(user models.User) {
 		@ui.Button(ui.ButtonProp{
 			ButtonText: "Seed Switches",
 			Post:       "/admin/switches/seed",
-			Target:     "#main",
+			Target:     "#notifications",
 			Swap:       "innerHTML",
-			PushUrl:    "/admin/switches",
 		})
 	</section>
 }

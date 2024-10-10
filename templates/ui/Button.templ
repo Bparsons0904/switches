@@ -7,13 +7,15 @@ type ButtonProp struct {
 	Put        string
 	Swap       string
 	Target     string
+	Trigger    string
 	PushUrl    string
 }
 
 templ Button(props ButtonProp) {
 	<button
-		type="button"
 		class="button"
+		hx-boost="true"
+		hx-preserve="true"
 		if props.Get != "" {
 			hx-get={ props.Get }
 		}
@@ -29,6 +31,7 @@ templ Button(props ButtonProp) {
 		if props.Swap != "" {
 			hx-swap={ props.Swap }
 		}
+		hx-trigger="click"
 		if props.PushUrl != "" {
 			hx-push-url={ props.PushUrl }
 		}
