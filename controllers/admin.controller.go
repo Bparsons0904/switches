@@ -18,6 +18,7 @@ import (
 
 func PostSeedSwitches(c *fiber.Ctx) error {
 	err := admin.SeedDatabase(database.DB)
+	log.Info().Msg("Seeded Database")
 	component := components.ToastNotification(components.ToastNotificationProps{
 		Title: "Seeded Switches",
 		Type:  "success",

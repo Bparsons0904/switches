@@ -1,30 +1,37 @@
 package admin
 
 import (
+	"switches/utils"
 	"time"
 
-	"github.com/rs/zerolog/log"
 	"gorm.io/gorm"
 )
 
 func SeedDatabase(db *gorm.DB) error {
-	log.Info().Msg("Seeding database")
+	timer := utils.StartTimer("Seeding Database")
+	defer timer.LogTotalTime()
 
 	tx := db.Begin()
+	defer tx.Commit()
+
 	if err := deleteTables(tx); err != nil {
 		tx.Rollback()
 		return err
 	}
+	timer.LogTime("Deleted tables")
 
 	if err := seedTypes(tx); err != nil {
 		tx.Rollback()
 		return err
 	}
+	timer.LogTime("Seed Types")
 
 	if err := seedProducers(tx); err != nil {
 		tx.Rollback()
 		return err
 	}
+
+	timer.LogTime("Seed Producers")
 	return nil
 }
 
@@ -33,6 +40,9 @@ func deleteTables(tx *gorm.DB) error {
 		"types",
 		"producers",
 		"image_links",
+		"switches",
+		"ratings",
+		"details",
 	}
 
 	for _, table := range tables {
