@@ -36,6 +36,7 @@ type Switch struct {
 	AverageRating    float64        `gorm:"type:float;default:0.0"                                                                  json:"averageRating,omitempty"`
 	RatingsCount     int            `gorm:"type:int;default:0"                                                                      json:"ratingsCount,omitempty"`
 	UserRating       *Rating        `gorm:"-"                                                                                       json:"userRating,omitempty"`
+	Details          Details        `gorm:"foreignKey:SwitchID;references:ID"                                                       json:"details,omitempty"`
 }
 
 func UpdateSwitchRating(switchID uuid.UUID, tx *gorm.DB) error {

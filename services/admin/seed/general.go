@@ -1,57 +1,10 @@
-package admin
+package seed
 
 import (
-	"switches/utils"
 	"time"
 
 	"gorm.io/gorm"
 )
-
-func SeedDatabase(db *gorm.DB) error {
-	timer := utils.StartTimer("Seeding Database")
-	defer timer.LogTotalTime()
-
-	tx := db.Begin()
-	defer tx.Commit()
-
-	if err := deleteTables(tx); err != nil {
-		tx.Rollback()
-		return err
-	}
-	timer.LogTime("Deleted tables")
-
-	if err := seedTypes(tx); err != nil {
-		tx.Rollback()
-		return err
-	}
-	timer.LogTime("Seed Types")
-
-	if err := seedProducers(tx); err != nil {
-		tx.Rollback()
-		return err
-	}
-
-	timer.LogTime("Seed Producers")
-	return nil
-}
-
-func deleteTables(tx *gorm.DB) error {
-	tables := []string{
-		"types",
-		"producers",
-		"image_links",
-		"switches",
-		"ratings",
-		"details",
-	}
-
-	for _, table := range tables {
-		if err := tx.Raw("DELETE FROM ?", table).Error; err != nil {
-			return err
-		}
-	}
-	return nil
-}
 
 func seedTypes(tx *gorm.DB) error { // {{{
 	type Type struct {
