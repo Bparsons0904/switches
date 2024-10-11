@@ -11,3 +11,5 @@ node_modules/
 /assets/
 *_templ.go
 *_templ.txt
+
+.swp
