@@ -1,4 +1,4 @@
-package migrations
+package migrations_old
 
 import (
 	"time"
@@ -401,26 +401,7 @@ func init() {
 			return err
 		},
 		Rollback: func(tx *gorm.DB) error {
-			err := tx.Transaction(func(tx *gorm.DB) error {
-				if err := tx.Migrator().DropTable("switches"); err != nil {
-					return err
-				}
-				if err := tx.Migrator().DropTable("producers"); err != nil {
-					return err
-				}
-				if err := tx.Migrator().DropTable("details"); err != nil {
-					return err
-				}
-				if err := tx.Migrator().DropTable("types"); err != nil {
-					return err
-				}
-				if err := tx.Migrator().DropTable("image_links"); err != nil {
-					return err
-				}
-
-				return nil
-			})
-			return err
+			return nil
 		},
 	})
 }

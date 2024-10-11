@@ -1,4 +1,4 @@
-package migrations
+package migrations_old
 
 import (
 	"time"
