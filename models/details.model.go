@@ -25,6 +25,7 @@ type Details struct {
 	TotalTravel           *float32  `gorm:"type:real"                                       json:"totalTravel,omitempty"`
 	InitialForce          *float32  `gorm:"type:real"                                       json:"initialForce,omitempty"`
 	ActuationPoint        *float32  `gorm:"type:real"                                       json:"actuationPoint,omitempty"`
+	ActuationForce        *float32  `gorm:"type:real"                                       json:"actuationForce,omitempty"`
 	ResetPoint            *float32  `gorm:"type:real"                                       json:"resetPoint,omitempty"`
 	BottomOutForcePoint   *float32  `gorm:"type:real"                                       json:"bottomOutForcePoint,omitempty"`
 	BottomOutForce        *float32  `gorm:"type:real"                                       json:"bottomOutForce,omitempty"`

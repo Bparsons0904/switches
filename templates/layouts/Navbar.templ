@@ -26,10 +26,11 @@ templ Navbar(user models.User) {
 					Hello, { user.Name }
 					@LogoutButton()
 				</div>
-			} else if user.IsAdmin {
-				@ui.Button(ui.ButtonProp{ButtonText: "Console", Get: "/admin", Target: "#main", PushUrl: "/admin"})
 			} else {
 				@LoginButton()
+			}
+			if user.IsAdmin {
+				@ui.Button(ui.ButtonProp{ButtonText: "Console", Get: "/admin", Target: "#main", PushUrl: "/admin"})
 			}
 		</div>
 		<div id="menu-mobile">

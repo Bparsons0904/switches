@@ -67,14 +67,14 @@ func init() {
 
 				type Switch struct {
 					ID               uuid.UUID      `gorm:"type:uuid;default:uuid_generate_v7();primaryKey"                                         json:"id"`
-					Name             string         `gorm:"type:varchar(50);not null;index:idx_name;uniqueIndex:idx_name_manufacturer_type"         json:"name"`
+					Name             string         `gorm:"type:varchar(50);not null;"                                                              json:"name"`
 					ShortDescription string         `gorm:"type:varchar(255);not null"                                                              json:"shortDescription"`
 					LongDescription  string         `gorm:"type:text;not null"                                                                      json:"longDescription"`
-					ManufacturerID   *int           `gorm:"type:int;index;uniqueIndex:idx_name_manufacturer_type"                                   json:"manufacturerId,omitempty"`
+					ManufacturerID   *int           `gorm:"type:int;index;"                                                                         json:"manufacturerId,omitempty"`
 					Manufacturer     *Producer      `gorm:"foreignKey:ManufacturerID"                                                               json:"manufacturer,omitempty"`
 					BrandID          *int           `gorm:"type:int;index"                                                                          json:"brandId,omitempty"`
 					Brand            *Producer      `gorm:"foreignKey:BrandID"                                                                      json:"brand,omitempty"`
-					SwitchTypeID     int            `gorm:"type:int;not null;index;uniqueIndex:idx_name_manufacturer_type"                          json:"switchTypeId"`
+					SwitchTypeID     int            `gorm:"type:int;not null;index"                                                                 json:"switchTypeId"`
 					SwitchType       *Type          `gorm:"foreignKey:SwitchTypeID"                                                                 json:"switchType,omitempty"`
 					ReleaseDate      *time.Time     `gorm:"type:date"                                                                               json:"releaseDate,omitempty"`
 					Available        bool           `gorm:"type:boolean;default:true"                                                               json:"available"`
@@ -111,6 +111,7 @@ func init() {
 					TotalTravel           *float32  `gorm:"type:real"                                       json:"totalTravel,omitempty"`
 					InitialForce          *float32  `gorm:"type:real"                                       json:"initialForce,omitempty"`
 					ActuationPoint        *float32  `gorm:"type:real"                                       json:"actuationPoint,omitempty"`
+					ActuationForce        *float32  `gorm:"type:real"                                       json:"actuationForce,omitempty"`
 					ResetPoint            *float32  `gorm:"type:real"                                       json:"resetPoint,omitempty"`
 					BottomOutForcePoint   *float32  `gorm:"type:real"                                       json:"bottomOutForcePoint,omitempty"`
 					BottomOutForce        *float32  `gorm:"type:real"                                       json:"bottomOutForce,omitempty"`
@@ -246,7 +247,7 @@ func init() {
 				if err := tx.Migrator().DropTable("user_liked_switches"); err != nil {
 					return err
 				}
-				if err := tx.Migrator().DropTable("user"); err != nil {
+				if err := tx.Migrator().DropTable("users"); err != nil {
 					return err
 				}
 
@@ -307,16 +308,82 @@ func finalizeSwitch(tx *gorm.DB) error {
 		UpdatedByID uuid.UUID      `gorm:"type:uuid"                                       json:"updatedById"`
 		UpdatedBy   User           `gorm:"foreignKey:UpdatedByID;references:ID"            json:"updatedBy,omitempty"`
 	}
+	type Details struct {
+		ID                    uuid.UUID `gorm:"type:uuid;default:uuid_generate_v7();primaryKey" json:"id"`
+		SwitchID              uuid.UUID `gorm:"type:uuid;not null;index"                        json:"switchId"`
+		Version               *int      `gorm:"type:int"                                        json:"version,omitempty"`
+		SpringTypeID          *int      `gorm:"type:int"                                        json:"springTypeId,omitempty"`
+		SpringForce           *float32  `gorm:"type:real"                                       json:"springForce,omitempty"`
+		SpringMaterialTypeID  *int      `gorm:"type:int"                                        json:"springMaterialTypeId,omitempty"`
+		SpringMaterialType    *Type     `gorm:"foreignKey:SpringMaterialTypeID"                 json:"springMaterialType,omitempty"`
+		TopHousingMaterialID  *int      `gorm:"type:int"                                        json:"topHousingMaterialId,omitempty"`
+		TopHousingMaterial    *Type     `gorm:"foreignKey:TopHousingMaterialID"                 json:"topHousingMaterial,omitempty"`
+		BaseHousingMaterialID *int      `gorm:"type:int"                                        json:"baseHousingMaterialId,omitempty"`
+		BaseHousingMaterial   *Type     `gorm:"foreignKey:BaseHousingMaterialID"                json:"baseHousingMaterial,omitempty"`
+		StemMaterialID        *int      `gorm:"type:int"                                        json:"stemMaterialId,omitempty"`
+		StemMaterial          *Type     `gorm:"foreignKey:StemMaterialID"                       json:"stemMaterial,omitempty"`
+		HasShineThrough       *bool     `gorm:"type:boolean"                                    json:"hasShineThrough,omitempty"`
+		PreTravel             *float32  `gorm:"type:real"                                       json:"preTravel,omitempty"`
+		TotalTravel           *float32  `gorm:"type:real"                                       json:"totalTravel,omitempty"`
+		InitialForce          *float32  `gorm:"type:real"                                       json:"initialForce,omitempty"`
+		ActuationPoint        *float32  `gorm:"type:real"                                       json:"actuationPoint,omitempty"`
+		ActuationForce        *float32  `gorm:"type:real"                                       json:"actuationForce,omitempty"`
+		ResetPoint            *float32  `gorm:"type:real"                                       json:"resetPoint,omitempty"`
+		BottomOutForcePoint   *float32  `gorm:"type:real"                                       json:"bottomOutForcePoint,omitempty"`
+		BottomOutForce        *float32  `gorm:"type:real"                                       json:"bottomOutForce,omitempty"`
+		SoundLevelID          *int      `gorm:"type:int"                                        json:"soundLevelId,omitempty"`
+		SoundLevel            *Type     `gorm:"foreignKey:SoundLevelID"                         json:"soundLevel,omitempty"`
+		SoundTypeID           *int      `gorm:"type:int"                                        json:"soundTypeId,omitempty"`
+		SoundType             *Type     `gorm:"foreignKey:SoundTypeID"                          json:"soundType,omitempty"`
+		TactilityTypeID       *int      `gorm:"type:int"                                        json:"tactilityTypeId,omitempty"`
+		TactilityType         *Type     `gorm:"foreignKey:TactilityTypeID"                      json:"tactilityType,omitempty"`
+		BumpPosition          *float32  `gorm:"type:real"                                       json:"bumpPosition,omitempty"`
+		BumpForce             *float32  `gorm:"type:real"                                       json:"bumpForce,omitempty"`
+		TactilityFeedbackID   *int      `gorm:"type:int"                                        json:"tactilityFeedbackId,omitempty"`
+		TactilityFeedback     *Type     `gorm:"foreignKey:TactilityFeedbackID"                  json:"tactilityFeedback,omitempty"`
+		FactoryLubed          bool      `gorm:"type:boolean;default:false"                      json:"factoryLubed"`
+		StemColorID           *int      `gorm:"type:int"                                        json:"stemColorId,omitempty"`
+		StemColor             *Type     `gorm:"foreignKey:StemColorID"                          json:"stemColor,omitempty"`
+		TopHousingColorID     *int      `gorm:"type:int"                                        json:"topHousingColorId,omitempty"`
+		TopHousingColor       *Type     `gorm:"foreignKey:TopHousingColorID"                    json:"topHousingColor,omitempty"`
+		BottomHousingColorID  *int      `gorm:"type:int"                                        json:"bottomHousingColorId,omitempty"`
+		BottomHousingColor    *Type     `gorm:"foreignKey:BottomHousingColorID"                 json:"bottomHousingColor,omitempty"`
+		PinConfigurationID    *int      `gorm:"type:int"                                        json:"pinConfigurationId,omitempty"`
+		PinConfiguration      *Type     `gorm:"foreignKey:PinConfigurationID"                   json:"pinConfiguration,omitempty"`
+		CreatedAt             time.Time `gorm:"type:timestamp;autoCreateTime"                   json:"createdAt"`
+		UpdatedAt             time.Time `gorm:"type:timestamp;autoUpdateTime"                   json:"updatedAt"`
+	}
+	type Rating struct {
+		ID                  uuid.UUID      `gorm:"type:uuid;default:uuid_generate_v7();primaryKey"                               json:"id"`
+		Rating              int            `gorm:"type:int;not null"                                                             json:"rating"`
+		Review              string         `gorm:"type:text"                                                                     json:"review"`
+		OriginalReview      string         `gorm:"type:text"                                                                     json:"originalReview"`
+		UserID              uuid.UUID      `gorm:"type:uuid;uniqueIndex:idx_user_switch"                                         json:"userId"`
+		User                User           `gorm:"foreignKey:UserID;references:ID"                                               json:"user,omitempty"`
+		SwitchID            uuid.UUID      `gorm:"type:uuid;uniqueIndex:idx_user_switch;index:idx_switch;index:idx_switch_admin" json:"switchId"`
+		ToxicityScore       float64        `gorm:"type:float"                                                                    json:"toxicityScore"`
+		ProfanityScore      float64        `gorm:"type:float"                                                                    json:"profanityScore"`
+		SafeURLScore        float64        `gorm:"type:float"                                                                    json:"safeURLScore"`
+		RelavanceScore      float64        `gorm:"type:float"                                                                    json:"relavanceScore"`
+		AdminReviewRequired bool           `gorm:"type:bool;default:false;index:idx_switch_admin"                                json:"adminReviewRequired"`
+		AdminReviewNotes    string         `gorm:"type:text"                                                                     json:"adminReviewNotes"`
+		AdminReviewedByID   *uuid.UUID     `gorm:"type:uuid"                                                                     json:"adminReviewedById"`
+		AdminReviewedBy     *User          `gorm:"foreignKey:AdminReviewedByID;references:ID"                                    json:"adminReviewedBy,omitempty"`
+		CreatedAt           time.Time      `gorm:"autoCreateTime"                                                                json:"createdAt"`
+		UpdatedAt           time.Time      `gorm:"autoUpdateTime"                                                                json:"updatedAt"`
+		DeleteAt            gorm.DeletedAt `gorm:"index"                                                                         json:"deleteAt"`
+	}
+
 	type Switch struct {
 		ID               uuid.UUID      `gorm:"type:uuid;default:uuid_generate_v7();primaryKey"                                         json:"id"`
-		Name             string         `gorm:"type:varchar(50);not null;index:idx_name;uniqueIndex:idx_name_manufacturer_type"         json:"name"`
+		Name             string         `gorm:"type:varchar(50);not null;"                                                              json:"name"`
 		ShortDescription string         `gorm:"type:varchar(255);not null"                                                              json:"shortDescription"`
 		LongDescription  string         `gorm:"type:text;not null"                                                                      json:"longDescription"`
-		ManufacturerID   *int           `gorm:"type:int;index;uniqueIndex:idx_name_manufacturer_type"                                   json:"manufacturerId,omitempty"`
+		ManufacturerID   *int           `gorm:"type:int;index;"                                                                         json:"manufacturerId,omitempty"`
 		Manufacturer     *Producer      `gorm:"foreignKey:ManufacturerID"                                                               json:"manufacturer,omitempty"`
 		BrandID          *int           `gorm:"type:int;index"                                                                          json:"brandId,omitempty"`
 		Brand            *Producer      `gorm:"foreignKey:BrandID"                                                                      json:"brand,omitempty"`
-		SwitchTypeID     int            `gorm:"type:int;not null;index;uniqueIndex:idx_name_manufacturer_type"                          json:"switchTypeId"`
+		SwitchTypeID     int            `gorm:"type:int;not null;index"                                                                 json:"switchTypeId"`
 		SwitchType       *Type          `gorm:"foreignKey:SwitchTypeID"                                                                 json:"switchType,omitempty"`
 		ReleaseDate      *time.Time     `gorm:"type:date"                                                                               json:"releaseDate,omitempty"`
 		Available        bool           `gorm:"type:boolean;default:true"                                                               json:"available"`
@@ -330,8 +397,11 @@ func finalizeSwitch(tx *gorm.DB) error {
 		UpdatedByID      uuid.UUID      `gorm:"type:uuid"                                                                               json:"updatedById"`
 		UpdatedBy        User           `gorm:"foreignKey:UpdatedByID;references:ID"                                                    json:"updatedBy,omitempty"`
 		ImageLinks       []ImageLink    `gorm:"polymorphic:Owner;polymorphicValue:switch;constraint:OnUpdate:CASCADE,OnDelete:CASCADE;" json:"imageLinks,omitempty"`
+		Ratings          []Rating       `gorm:"foreignKey:SwitchID;references:ID;constraint:OnUpdate:CASCADE,OnDelete:CASCADE;"         json:"ratings,omitempty"`
 		AverageRating    float64        `gorm:"type:float;default:0.0"                                                                  json:"averageRating,omitempty"`
 		RatingsCount     int            `gorm:"type:int;default:0"                                                                      json:"ratingsCount,omitempty"`
+		UserRating       *Rating        `gorm:"-"                                                                                       json:"userRating,omitempty"`
+		Details          Details        `gorm:"foreignKey:SwitchID;references:ID"                                                       json:"details,omitempty"`
 	}
 
 	return tx.AutoMigrate(Switch{})
@@ -339,24 +409,7 @@ func finalizeSwitch(tx *gorm.DB) error {
 
 func finalizeUser(tx *gorm.DB) error { // {{{
 	type Switch struct {
-		ID               uuid.UUID      `gorm:"type:uuid;default:uuid_generate_v7();primaryKey"                                 json:"id"`
-		Name             string         `gorm:"type:varchar(50);not null;index:idx_name;uniqueIndex:idx_name_manufacturer_type" json:"name"`
-		ShortDescription string         `gorm:"type:varchar(255);not null"                                                      json:"shortDescription"`
-		LongDescription  string         `gorm:"type:text;not null"                                                              json:"longDescription"`
-		ManufacturerID   *int           `gorm:"type:int;index;uniqueIndex:idx_name_manufacturer_type"                           json:"manufacturerId,omitempty"`
-		BrandID          *int           `gorm:"type:int;index"                                                                  json:"brandId,omitempty"`
-		SwitchTypeID     int            `gorm:"type:int;not null;index;uniqueIndex:idx_name_manufacturer_type"                  json:"switchTypeId"`
-		ReleaseDate      *time.Time     `gorm:"type:date"                                                                       json:"releaseDate,omitempty"`
-		Available        bool           `gorm:"type:boolean;default:true"                                                       json:"available"`
-		PricePoint       int            `gorm:"type:int;not null"                                                               json:"pricePoint"`
-		SiteURL          string         `gorm:"type:varchar(255)"                                                               json:"siteURL,omitempty"`
-		CreatedAt        time.Time      `gorm:"autoCreateTime"                                                                  json:"createdAt"`
-		UpdatedAt        time.Time      `gorm:"autoUpdateTime"                                                                  json:"updatedAt"`
-		DeletedAt        gorm.DeletedAt `gorm:"index"                                                                           json:"deletedAt"`
-		CreatedByID      uuid.UUID      `gorm:"type:uuid"                                                                       json:"createdById"`
-		UpdatedByID      uuid.UUID      `gorm:"type:uuid"                                                                       json:"updatedById"`
-		AverageRating    float64        `gorm:"type:float;default:0.0"                                                          json:"averageRating,omitempty"`
-		RatingsCount     int            `gorm:"type:int;default:0"                                                              json:"ratingsCount,omitempty"`
+		ID uuid.UUID `gorm:"type:uuid;default:uuid_generate_v7();primaryKey" json:"id"`
 	}
 
 	type User struct {

@@ -118,6 +118,7 @@ type Details struct {
 	TotalTravel           *float32  `gorm:"type:real"                                       json:"totalTravel,omitempty"`
 	InitialForce          *float32  `gorm:"type:real"                                       json:"initialForce,omitempty"`
 	ActuationPoint        *float32  `gorm:"type:real"                                       json:"actuationPoint,omitempty"`
+	ActuationForce        *float32  `gorm:"type:real"                                       json:"actuationForce,omitempty"`
 	ResetPoint            *float32  `gorm:"type:real"                                       json:"resetPoint,omitempty"`
 	BottomOutForcePoint   *float32  `gorm:"type:real"                                       json:"bottomOutForcePoint,omitempty"`
 	BottomOutForce        *float32  `gorm:"type:real"                                       json:"bottomOutForce,omitempty"`
@@ -433,3 +434,9 @@ Producers Data
 
 ]
 ```
+
+For each switch provided:
+
+1. Ensure that the switch is a real switch, if it is not, just stat that and do no further operations
+2. Add as much details as possible, if features are not know, skip.
+3. For each switch, provide is its own entry {}
