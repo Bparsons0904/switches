@@ -39,6 +39,7 @@ func seedCherry(tx *gorm.DB, admin models.User) error {
 			Details: models.Details{
 				SpringForce:           ptr(float32(45)),
 				ActuationPoint:        ptr(float32(2.0)),
+				ActuationForce:        ptr(float32(45)),
 				BottomOutForce:        ptr(float32(60)),
 				BottomOutForcePoint:   ptr(float32(4.0)),
 				TotalTravel:           ptr(float32(4.0)),
@@ -58,37 +59,6 @@ func seedCherry(tx *gorm.DB, admin models.User) error {
 			},
 		},
 		{
-			Name:             "Gateron Brown",
-			ShortDescription: "Tactile switch with a light bump for feedback.",
-			LongDescription:  "Gateron Brown switches offer a tactile typing experience with a subtle bump, similar to Cherry MX Browns but often described as slightly smoother. With an actuation force of 55 grams, they provide a balance between typing comfort and tactile feedback. These switches are popular among users who want a tactile response without the loud click of Blue switches, making them suitable for both office environments and home use.",
-			ManufacturerID:   ptr(2),                  // Gateron
-			BrandID:          ptr(2),                  // Gateron
-			SwitchTypeID:     2,                       // Tactile
-			ReleaseDate:      parseDate("2015-01-01"), // Approximate
-			Available:        true,
-			PricePoint:       1, // Value
-			SiteURL:          "https://www.gateron.com/products/gateron-cap-brown-switch-set",
-			Details: models.Details{
-				SpringForce:           ptr(float32(55)),
-				ActuationPoint:        ptr(float32(2.0)),
-				BottomOutForce:        ptr(float32(60)),
-				BottomOutForcePoint:   ptr(float32(4.0)),
-				TotalTravel:           ptr(float32(4.0)),
-				PreTravel:             ptr(float32(2.0)),
-				FactoryLubed:          false,
-				StemMaterialID:        ptr(22), // ABS
-				TopHousingMaterialID:  ptr(26), // Polycarbonate
-				BaseHousingMaterialID: ptr(24), // Nylon
-				SpringMaterialTypeID:  ptr(17), // Steel
-				StemColorID:           ptr(48), // Brown
-				TopHousingColorID:     ptr(49), // Clear
-				BottomHousingColorID:  ptr(45), // Red (often milky color)
-				PinConfigurationID:    ptr(74), // 3-Pin
-				TactilityTypeID:       ptr(38), // Leaf Spring
-				TactilityFeedbackID:   ptr(42), // Rounded
-			},
-		},
-		{
 			Name:             "MX Silent Red",
 			ShortDescription: "Silent linear switch with a light actuation force.",
 			LongDescription:  "Cherry MX Silent Red switches are designed to offer the smooth, linear feel of MX Red switches while significantly reducing noise during actuation. These switches incorporate built-in dampeners that minimize the sound of both the key press and release, making them an excellent choice for quiet environments like offices or shared spaces. With an actuation force of 45 grams, they maintain a light, responsive feel, ideal for fast typing or gaming without the auditory distraction.",
@@ -102,6 +72,7 @@ func seedCherry(tx *gorm.DB, admin models.User) error {
 			Details: models.Details{
 				SpringForce:           ptr(float32(45)),
 				ActuationPoint:        ptr(float32(2.0)),
+				ActuationForce:        ptr(float32(45)),
 				BottomOutForce:        ptr(float32(60)),
 				BottomOutForcePoint:   ptr(float32(4.0)),
 				TotalTravel:           ptr(float32(4.0)),
@@ -145,6 +116,7 @@ func seedCherry(tx *gorm.DB, admin models.User) error {
 			Details: models.Details{
 				SpringForce:           ptr(float32(60)),
 				ActuationPoint:        ptr(float32(2.0)),
+				ActuationForce:        ptr(float32(60)),
 				BottomOutForce:        ptr(float32(80)),
 				BottomOutForcePoint:   ptr(float32(4.0)),
 				TotalTravel:           ptr(float32(4.0)),
@@ -190,6 +162,7 @@ func seedCherry(tx *gorm.DB, admin models.User) error {
 			Details: models.Details{
 				SpringForce:           ptr(float32(55)),
 				ActuationPoint:        ptr(float32(2.0)),
+				ActuationForce:        ptr(float32(55)),
 				BottomOutForce:        ptr(float32(65)),
 				BottomOutForcePoint:   ptr(float32(4.0)),
 				TotalTravel:           ptr(float32(4.0)),
@@ -246,6 +219,7 @@ func seedCherry(tx *gorm.DB, admin models.User) error {
 			Details: models.Details{
 				SpringForce:           ptr(float32(45)),
 				ActuationPoint:        ptr(float32(2.0)),
+				ActuationForce:        ptr(float32(45)),
 				BottomOutForce:        ptr(float32(60)),
 				BottomOutForcePoint:   ptr(float32(4.0)),
 				TotalTravel:           ptr(float32(4.0)),
@@ -300,6 +274,7 @@ func seedCherry(tx *gorm.DB, admin models.User) error {
 			Details: models.Details{
 				SpringForce:           ptr(float32(45)),
 				ActuationPoint:        ptr(float32(1.2)),
+				ActuationForce:        ptr(float32(45)),
 				BottomOutForce:        ptr(float32(60)),
 				BottomOutForcePoint:   ptr(float32(3.4)),
 				TotalTravel:           ptr(float32(3.4)),
@@ -354,6 +329,7 @@ func seedCherry(tx *gorm.DB, admin models.User) error {
 			Details: models.Details{
 				SpringForce:           ptr(float32(60)),
 				ActuationPoint:        ptr(float32(2.0)),
+				ActuationForce:        ptr(float32(60)),
 				BottomOutForce:        ptr(float32(80)),
 				BottomOutForcePoint:   ptr(float32(4.0)),
 				TotalTravel:           ptr(float32(4.0)),
@@ -398,6 +374,7 @@ func seedCherry(tx *gorm.DB, admin models.User) error {
 			Details: models.Details{
 				SpringForce:           ptr(float32(65)),
 				ActuationPoint:        ptr(float32(2.0)),
+				ActuationForce:        ptr(float32(65)),
 				BottomOutForce:        ptr(float32(80)),
 				BottomOutForcePoint:   ptr(float32(4.0)),
 				TotalTravel:           ptr(float32(4.0)),
@@ -449,6 +426,7 @@ func seedCherry(tx *gorm.DB, admin models.User) error {
 			Details: models.Details{
 				SpringForce:           ptr(float32(80)),
 				ActuationPoint:        ptr(float32(2.0)),
+				ActuationForce:        ptr(float32(80)),
 				BottomOutForce:        ptr(float32(95)),
 				BottomOutForcePoint:   ptr(float32(4.0)),
 				TotalTravel:           ptr(float32(4.0)),
@@ -495,6 +473,7 @@ func seedCherry(tx *gorm.DB, admin models.User) error {
 			Details: models.Details{
 				SpringForce:           ptr(float32(45)),
 				ActuationPoint:        ptr(float32(2.0)),
+				ActuationForce:        ptr(float32(45)),
 				BottomOutForce:        ptr(float32(60)),
 				BottomOutForcePoint:   ptr(float32(4.0)),
 				TotalTravel:           ptr(float32(4.0)),
@@ -539,6 +518,7 @@ func seedCherry(tx *gorm.DB, admin models.User) error {
 			Details: models.Details{
 				SpringForce:           ptr(float32(65)),
 				ActuationPoint:        ptr(float32(2.0)),
+				ActuationForce:        ptr(float32(65)),
 				BottomOutForce:        ptr(float32(80)),
 				BottomOutForcePoint:   ptr(float32(4.0)),
 				TotalTravel:           ptr(float32(4.0)),
@@ -585,6 +565,7 @@ func seedCherry(tx *gorm.DB, admin models.User) error {
 			Details: models.Details{
 				SpringForce:           ptr(float32(50)),
 				ActuationPoint:        ptr(float32(2.2)),
+				ActuationForce:        ptr(float32(50)),
 				BottomOutForce:        ptr(float32(60)),
 				BottomOutForcePoint:   ptr(float32(4.0)),
 				TotalTravel:           ptr(float32(4.0)),
@@ -619,6 +600,7 @@ func seedCherry(tx *gorm.DB, admin models.User) error {
 			Details: models.Details{
 				SpringForce:           ptr(float32(50)),
 				ActuationPoint:        ptr(float32(2.2)),
+				ActuationForce:        ptr(float32(50)),
 				BottomOutForce:        ptr(float32(60)),
 				BottomOutForcePoint:   ptr(float32(4.0)),
 				TotalTravel:           ptr(float32(4.0)),
@@ -653,6 +635,7 @@ func seedCherry(tx *gorm.DB, admin models.User) error {
 			Details: models.Details{
 				SpringForce:           ptr(float32(55)),
 				ActuationPoint:        ptr(float32(2.0)),
+				ActuationForce:        ptr(float32(55)),
 				BottomOutForce:        ptr(float32(65)),
 				BottomOutForcePoint:   ptr(float32(4.0)),
 				TotalTravel:           ptr(float32(4.0)),
@@ -687,38 +670,7 @@ func seedCherry(tx *gorm.DB, admin models.User) error {
 			Details: models.Details{
 				SpringForce:           ptr(float32(60)),
 				ActuationPoint:        ptr(float32(2.0)),
-				BottomOutForce:        ptr(float32(80)),
-				BottomOutForcePoint:   ptr(float32(4.0)),
-				TotalTravel:           ptr(float32(4.0)),
-				PreTravel:             ptr(float32(2.0)),
-				FactoryLubed:          false,
-				StemMaterialID:        ptr(23), // POM
-				TopHousingMaterialID:  ptr(22), // ABS
-				BaseHousingMaterialID: ptr(22), // ABS
-				SpringMaterialTypeID:  ptr(17), // Steel
-				StemColorID:           ptr(46), // Black
-				TopHousingColorID:     ptr(46), // Black
-				BottomHousingColorID:  ptr(46), // Black
-				PinConfigurationID:    ptr(74), // 3-Pin
-				SoundTypeID:           ptr(34), // Thocky
-				SoundLevelID:          ptr(30), // Medium
-				HasShineThrough:       ptr(false),
-			},
-		},
-		{
-			Name:             "MX Black",
-			ShortDescription: "Linear switch with a heavier actuation force.",
-			LongDescription:  "Cherry MX Black switches offer a smooth linear actuation similar to MX Red switches but with a heavier actuation force of 60 grams. This increased resistance makes them ideal for users who prefer a more deliberate keystroke, reducing the chance of accidental presses. MX Black switches are often favored by those who type heavily or for gaming environments where controlled inputs are critical. The absence of tactile bumps or clicks also ensures a quieter, more focused typing experience.",
-			ManufacturerID:   ptr(1), // Cherry
-			BrandID:          ptr(1), // Cherry
-			SwitchTypeID:     1,      // Linear
-			ReleaseDate:      parseDate("1984-01-01"),
-			Available:        false,
-			PricePoint:       2,
-			SiteURL:          "https://www.cherry-world.com/mx-black.html",
-			Details: models.Details{
-				SpringForce:           ptr(float32(60)),
-				ActuationPoint:        ptr(float32(2.0)),
+				ActuationForce:        ptr(float32(60)),
 				BottomOutForce:        ptr(float32(80)),
 				BottomOutForcePoint:   ptr(float32(4.0)),
 				TotalTravel:           ptr(float32(4.0)),
@@ -751,6 +703,7 @@ func seedCherry(tx *gorm.DB, admin models.User) error {
 			Details: models.Details{
 				SpringForce:           ptr(float32(65)),
 				ActuationPoint:        ptr(float32(2.0)),
+				ActuationForce:        ptr(float32(65)),
 				BottomOutForce:        ptr(float32(95)),
 				BottomOutForcePoint:   ptr(float32(4.0)),
 				TotalTravel:           ptr(float32(4.0)),
@@ -785,6 +738,7 @@ func seedCherry(tx *gorm.DB, admin models.User) error {
 			Details: models.Details{
 				SpringForce:           ptr(float32(80)),
 				ActuationPoint:        ptr(float32(2.0)),
+				ActuationForce:        ptr(float32(80)),
 				BottomOutForce:        ptr(float32(105)),
 				BottomOutForcePoint:   ptr(float32(4.0)),
 				TotalTravel:           ptr(float32(4.0)),
@@ -819,6 +773,7 @@ func seedCherry(tx *gorm.DB, admin models.User) error {
 			Details: models.Details{
 				SpringForce:           ptr(float32(45)),
 				ActuationPoint:        ptr(float32(1.2)),
+				ActuationForce:        ptr(float32(45)),
 				BottomOutForce:        ptr(float32(75)),
 				BottomOutForcePoint:   ptr(float32(3.4)),
 				TotalTravel:           ptr(float32(3.4)),
@@ -851,6 +806,7 @@ func seedCherry(tx *gorm.DB, admin models.User) error {
 			Details: models.Details{
 				SpringForce:           ptr(float32(55)),
 				ActuationPoint:        ptr(float32(2.0)),
+				ActuationForce:        ptr(float32(55)),
 				BottomOutForce:        ptr(float32(75)),
 				BottomOutForcePoint:   ptr(float32(4.0)),
 				TotalTravel:           ptr(float32(4.0)),
@@ -883,6 +839,7 @@ func seedCherry(tx *gorm.DB, admin models.User) error {
 			Details: models.Details{
 				SpringForce:           ptr(float32(45)),
 				ActuationPoint:        ptr(float32(2.0)),
+				ActuationForce:        ptr(float32(45)),
 				BottomOutForce:        ptr(float32(60)),
 				BottomOutForcePoint:   ptr(float32(4.0)),
 				TotalTravel:           ptr(float32(4.0)),
@@ -917,6 +874,7 @@ func seedCherry(tx *gorm.DB, admin models.User) error {
 			Details: models.Details{
 				SpringForce:           ptr(float32(55)),
 				ActuationPoint:        ptr(float32(2.2)),
+				ActuationForce:        ptr(float32(55)),
 				BottomOutForce:        ptr(float32(70)),
 				BottomOutForcePoint:   ptr(float32(4.0)),
 				TotalTravel:           ptr(float32(4.0)),
@@ -951,6 +909,7 @@ func seedCherry(tx *gorm.DB, admin models.User) error {
 			Details: models.Details{
 				SpringForce:           ptr(float32(80)),
 				ActuationPoint:        ptr(float32(2.0)),
+				ActuationForce:        ptr(float32(80)),
 				BottomOutForce:        ptr(float32(110)),
 				BottomOutForcePoint:   ptr(float32(4.0)),
 				TotalTravel:           ptr(float32(4.0)),
@@ -985,6 +944,7 @@ func seedCherry(tx *gorm.DB, admin models.User) error {
 			Details: models.Details{
 				SpringForce:           ptr(float32(150)),
 				ActuationPoint:        ptr(float32(2.0)),
+				ActuationForce:        ptr(float32(150)),
 				BottomOutForce:        ptr(float32(180)),
 				BottomOutForcePoint:   ptr(float32(4.0)),
 				TotalTravel:           ptr(float32(4.0)),
@@ -1017,6 +977,7 @@ func seedCherry(tx *gorm.DB, admin models.User) error {
 			Details: models.Details{
 				SpringForce:           ptr(float32(45)),
 				ActuationPoint:        ptr(float32(2.0)),
+				ActuationForce:        ptr(float32(45)),
 				BottomOutForce:        ptr(float32(60)),
 				BottomOutForcePoint:   ptr(float32(4.0)),
 				TotalTravel:           ptr(float32(4.0)),
