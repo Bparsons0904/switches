@@ -48,6 +48,11 @@ func SeedDatabase(db *gorm.DB) error {
 		return err
 	}
 
+	if err := seedKailh(tx, admin); err != nil {
+		tx.Rollback()
+		return err
+	}
+
 	tx.Commit()
 	return nil
 }

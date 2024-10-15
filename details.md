@@ -27,9 +27,8 @@ Below I have included the base to use for building the switch data, which please
 Here is an example output thats expected.
 
 ```go
-cherry := []models.Switch{
     {
-        Name:             "Cherry MX2A Silent Red",
+        Name:             "MX2A Silent Red",
         ShortDescription: "Silent linear switch with RGB support and a smooth feel.",
         LongDescription:  "The Cherry MX2A Silent Red Linear switch features a quiet and smooth keystroke, making it perfect for quiet environments such as offices or shared spaces. With an actuation force of 45 grams, this switch ensures a light touch while minimizing noise through built-in dampeners. The RGB lighting adds a customizable visual element, making it an excellent choice for those who want both a serene typing experience and a vibrant keyboard.",
         ManufacturerID:   ptr(1), // Cherry
@@ -47,10 +46,26 @@ cherry := []models.Switch{
             },
         },
         Details: models.Details{
-
-        }
+            SpringForce:           ptr(float32(45)),
+            ActuationPoint:        ptr(float32(2.0)),
+            BottomOutForce:        ptr(float32(60)),
+            BottomOutForcePoint:   ptr(float32(4.0)),
+            TotalTravel:           ptr(float32(4.0)),
+            PreTravel:             ptr(float32(2.0)),
+            FactoryLubed:          true,
+            StemMaterialID:        ptr(23), // POM
+            TopHousingMaterialID:  ptr(26), // Polycarbonate
+            BaseHousingMaterialID: ptr(24), // Nylon
+            SpringMaterialTypeID:  ptr(17), // Steel
+            StemColorID:           ptr(45), // Red
+            TopHousingColorID:     ptr(49), // Clear
+            BottomHousingColorID:  ptr(49), // Clear
+            PinConfigurationID:    ptr(74), // 3-Pin
+            SoundTypeID:           ptr(35), // Quiet
+            SoundLevelID:          ptr(28), // Very Low
+            HasShineThrough:       ptr(true),
+        },
     },
-}
 ```
 
 Here are the helper functions for reference, they do not need to be included in results:
