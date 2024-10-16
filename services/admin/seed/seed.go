@@ -69,6 +69,36 @@ func SeedDatabase(db *gorm.DB) error {
 	}
 	timer.LogTime("Seed TTC")
 
+	if err := seedDurock(tx, admin); err != nil {
+		tx.Rollback()
+		return err
+	}
+	timer.LogTime("Seed Durock")
+
+	if err := seedDrop(tx, admin); err != nil {
+		tx.Rollback()
+		return err
+	}
+	timer.LogTime("Seed Drop")
+
+	if err := seedCannonkeys(tx, admin); err != nil {
+		tx.Rollback()
+		return err
+	}
+	timer.LogTime("Seed Cannon Keys")
+
+	if err := seedGlorious(tx, admin); err != nil {
+		tx.Rollback()
+		return err
+	}
+	timer.LogTime("Seed Glorious")
+
+	if err := seedNovelkey(tx, admin); err != nil {
+		tx.Rollback()
+		return err
+	}
+	timer.LogTime("Seed Novelkey")
+
 	tx.Commit()
 	return nil
 }
