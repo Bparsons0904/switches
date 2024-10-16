@@ -99,6 +99,24 @@ func SeedDatabase(db *gorm.DB) error {
 	}
 	timer.LogTime("Seed Novelkey")
 
+	if err := seedZealPC(tx, admin); err != nil {
+		tx.Rollback()
+		return err
+	}
+	timer.LogTime("Seed ZealPC")
+
+	if err := seedAkko(tx, admin); err != nil {
+		tx.Rollback()
+		return err
+	}
+	timer.LogTime("Seed Akko")
+
+	if err := seedCommonSwitches(tx, admin); err != nil {
+		tx.Rollback()
+		return err
+	}
+	timer.LogTime("Seed Common Switches")
+
 	tx.Commit()
 	return nil
 }
