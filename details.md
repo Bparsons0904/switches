@@ -48,6 +48,7 @@ Here is an example output thats expected.
         Details: models.Details{
             SpringForce:           ptr(float32(45)),
             ActuationPoint:        ptr(float32(2.0)),
+            ActuationForce:        ptr(float32(45)),
             BottomOutForce:        ptr(float32(60)),
             BottomOutForcePoint:   ptr(float32(4.0)),
             TotalTravel:           ptr(float32(4.0)),
@@ -455,3 +456,27 @@ For each switch provided:
 1. Ensure that the switch is a real switch, if it is not, just stat that and do no further operations
 2. Add as much details as possible, if features are not know, skip.
 3. For each switch, provide is its own entry {}
+
+```go
+Details: models.Details{
+    SpringForce:           ptr(float32(45)),
+    ActuationPoint:        ptr(float32(2.0)),
+    ActuationForce:        ptr(float32(45)),
+    BottomOutForce:        ptr(float32(60)),
+    BottomOutForcePoint:   ptr(float32(4.0)),
+    TotalTravel:           ptr(float32(4.0)),
+    PreTravel:             ptr(float32(2.0)),
+    FactoryLubed:          true,
+    StemMaterialID:        ptr(23), // POM
+    TopHousingMaterialID:  ptr(26), // Polycarbonate
+    BaseHousingMaterialID: ptr(24), // Nylon
+    SpringMaterialTypeID:  ptr(17), // Steel
+    StemColorID:           ptr(45), // Red
+    TopHousingColorID:     ptr(49), // Clear
+    BottomHousingColorID:  ptr(49), // Clear
+    PinConfigurationID:    ptr(74), // 3-Pin
+    SoundTypeID:           ptr(35), // Quiet
+    SoundLevelID:          ptr(28), // Very Low
+    HasShineThrough:       ptr(true),
+}
+```
