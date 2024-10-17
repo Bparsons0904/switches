@@ -9,7 +9,7 @@ import (
 func seedCannonkeys(tx *gorm.DB, admin models.User) error {
 	cannonKeys := []models.Switch{
 		{
-			Name:             "CannonKeys Lavenders",
+			Name:             "Lavenders",
 			ShortDescription: "Smooth linear switch with a unique lavender color.",
 			LongDescription:  "CannonKeys Lavenders are linear switches celebrated for their smooth, consistent feel and light actuation force. The lavender-colored housing and stem add a unique visual flair to any keyboard, making them a favorite among enthusiasts who prioritize both aesthetics and performance.",
 			ManufacturerID:   ptr(22), // JWK
@@ -40,7 +40,7 @@ func seedCannonkeys(tx *gorm.DB, admin models.User) error {
 			},
 		},
 		{
-			Name:             "CannonKeys Anubis",
+			Name:             "Anubis",
 			ShortDescription: "Tactile switch with a medium actuation force.",
 			LongDescription:  "The CannonKeys Anubis switch is a tactile switch that delivers a satisfying medium actuation force combined with a prominent tactile bump. Known for its smooth operation and deep sound profile, the Anubis switch is highly regarded among tactile switch enthusiasts who seek a rich typing experience.",
 			ManufacturerID:   ptr(23), // Tecsee
@@ -73,7 +73,7 @@ func seedCannonkeys(tx *gorm.DB, admin models.User) error {
 			},
 		},
 		{
-			Name:             "CannonKeys Dragonfruit",
+			Name:             "Dragonfruit",
 			ShortDescription: "Tactile switch with a heavy bump and unique aesthetics.",
 			LongDescription:  "Dragonfruit switches from CannonKeys offer a distinct tactile bump and a vibrant color inspired by the exotic dragon fruit. These tactile switches provide a delightful typing experience with a balance of responsiveness and feedback, making them a standout choice for those who appreciate unique aesthetics and performance.",
 			ManufacturerID:   ptr(23), // Tecsee
@@ -106,7 +106,7 @@ func seedCannonkeys(tx *gorm.DB, admin models.User) error {
 			},
 		},
 		{
-			Name:             "CannonKeys Banana Split",
+			Name:             "Banana Split",
 			ShortDescription: "Linear switch with a colorful and smooth experience.",
 			LongDescription:  "CannonKeys Banana Split switches are designed for those who enjoy a vibrant, playful aesthetic paired with ultra-smooth linear action. These switches offer a delightful typing experience with minimal resistance, making them a popular choice for both gaming and typing enthusiasts.",
 			ManufacturerID:   ptr(23), // Tecsee
@@ -137,7 +137,7 @@ func seedCannonkeys(tx *gorm.DB, admin models.User) error {
 			},
 		},
 		{
-			Name:             "CannonKeys Durock POM",
+			Name:             "Durock POM",
 			ShortDescription: "Linear switch with a solid POM housing.",
 			LongDescription:  "The CannonKeys Durock POM switch is a premium linear switch featuring a POM (polyoxymethylene) housing that ensures a smooth and consistent typing experience. Known for its durability and minimal scratchiness, this switch is ideal for heavy typists seeking a reliable and satisfying linear feel.",
 			ManufacturerID:   ptr(7),  // Durock
@@ -168,7 +168,7 @@ func seedCannonkeys(tx *gorm.DB, admin models.User) error {
 			},
 		},
 		{
-			Name:             "CannonKeys Blueberry",
+			Name:             "Blueberry",
 			ShortDescription: "Clicky switch with a tactile bump and crisp sound.",
 			LongDescription:  "The CannonKeys Blueberry switch is a clicky switch designed to deliver a strong tactile bump accompanied by a crisp, satisfying sound. It offers a distinctive typing experience that combines tactile feedback with a sharp auditory click, making it a favorite for those who enjoy pronounced feedback.",
 			ManufacturerID:   ptr(23), // Tecsee
@@ -201,7 +201,7 @@ func seedCannonkeys(tx *gorm.DB, admin models.User) error {
 			},
 		},
 		{
-			Name:             "CannonKeys Orange Pies",
+			Name:             "Orange Pies",
 			ShortDescription: "Clicky switch with a strong tactile feel and sharp sound.",
 			LongDescription:  "CannonKeys Orange Pies switches offer a strong tactile bump with a sharp, clicky sound. These switches are perfect for typists who prefer a pronounced tactile feedback paired with a distinct auditory experience, making each keystroke satisfying and engaging.",
 			ManufacturerID:   ptr(23), // Tecsee
@@ -234,7 +234,7 @@ func seedCannonkeys(tx *gorm.DB, admin models.User) error {
 			},
 		},
 		{
-			Name:             "CannonKeys Matcha Latte",
+			Name:             "Matcha Latte",
 			ShortDescription: "Linear switch with a creamy smoothness and light actuation.",
 			LongDescription:  "CannonKeys Matcha Latte switches provide a smooth linear action with a light actuation force, making them ideal for typists who prefer a gentle, effortless keystroke. The matcha-colored housing adds a unique and aesthetically pleasing touch to any keyboard.",
 			ManufacturerID:   ptr(23), // Tecsee
@@ -265,7 +265,7 @@ func seedCannonkeys(tx *gorm.DB, admin models.User) error {
 			},
 		},
 		{
-			Name:             "CannonKeys Taro Balls",
+			Name:             "Taro Balls",
 			ShortDescription: "Linear switch with a medium weight and quiet operation.",
 			LongDescription:  "CannonKeys Taro Balls switches offer a medium actuation force with a quiet and smooth linear action. Inspired by the purple taro root, these switches provide a unique look and a satisfying typing experience, perfect for those who appreciate both performance and aesthetics.",
 			ManufacturerID:   ptr(23), // Tecsee
@@ -296,7 +296,7 @@ func seedCannonkeys(tx *gorm.DB, admin models.User) error {
 			},
 		},
 		{
-			Name:             "CannonKeys Crystal",
+			Name:             "Crystal",
 			ShortDescription: "Linear switch with a transparent housing and smooth feel.",
 			LongDescription:  "CannonKeys Crystal switches feature a transparent housing that beautifully showcases RGB lighting while delivering a smooth linear action. These switches are designed for users who seek both performance and visual appeal, offering a clean and consistent typing experience.",
 			ManufacturerID:   ptr(23), // Tecsee
@@ -327,7 +327,7 @@ func seedCannonkeys(tx *gorm.DB, admin models.User) error {
 			},
 		},
 		{
-			Name:             "CannonKeys Silent Alpaca V2",
+			Name:             "Silent Alpaca V2",
 			ShortDescription: "Silent linear switch with a smooth feel and muted sound.",
 			LongDescription:  "CannonKeys Silent Alpaca V2 switches are designed to provide a silent typing experience without compromising on smoothness. The switch's unique construction minimizes noise, making it ideal for environments where quiet operation is essential, while still offering the smooth feel Alpacas are known for.",
 			ManufacturerID:   ptr(22), // JWK
@@ -358,7 +358,7 @@ func seedCannonkeys(tx *gorm.DB, admin models.User) error {
 			},
 		},
 		{
-			Name:             "CannonKeys Mint Chocolate",
+			Name:             "Mint Chocolate",
 			ShortDescription: "Specialty switch with a mint-themed color and smooth action.",
 			LongDescription:  "The CannonKeys Mint Chocolate switch is a specialty linear switch that combines a mint-themed colorway with a smooth, consistent action. Its unique design and pleasant typing feel make it a popular choice for custom keyboard enthusiasts looking for both style and performance.",
 			ManufacturerID:   ptr(23), // Tecsee
@@ -389,7 +389,7 @@ func seedCannonkeys(tx *gorm.DB, admin models.User) error {
 			},
 		},
 		{
-			Name:             "CannonKeys Snow Globe",
+			Name:             "Snow Globe",
 			ShortDescription: "Specialty linear switch with frosted housing and smooth action.",
 			LongDescription:  "The CannonKeys Snow Globe switch is a specialty linear switch featuring a frosted housing that complements its smooth typing action. With its winter-themed design, this switch provides both a unique aesthetic and a satisfying, smooth keystroke, perfect for custom builds.",
 			ManufacturerID:   ptr(22), // JWK
@@ -420,7 +420,7 @@ func seedCannonkeys(tx *gorm.DB, admin models.User) error {
 			},
 		},
 		{
-			Name:             "CannonKeys Milkshake",
+			Name:             "Milkshake",
 			ShortDescription: "Specialty linear switch with a milky smooth feel.",
 			LongDescription:  "CannonKeys Milkshake switches deliver a milky smooth linear action with a focus on consistency and a satisfying keystroke. Ideal for those who prefer a straightforward and enjoyable typing experience, these switches combine smoothness with a unique, playful aesthetic.",
 			ManufacturerID:   ptr(23), // Tecsee

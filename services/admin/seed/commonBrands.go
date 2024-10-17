@@ -9,7 +9,7 @@ import (
 func seedCommonSwitches(tx *gorm.DB, admin models.User) error {
 	commonSwitches := []models.Switch{
 		{
-			Name:             "Keychron K Pro Red",
+			Name:             "K Pro Red",
 			ShortDescription: "Linear switch with smooth keypresses.",
 			LongDescription:  "The Keychron K Pro Red switch is a linear switch designed to deliver smooth and consistent keypresses, making it ideal for fast typists who require minimal resistance and swift actuation. Its quiet operation and reliable performance make it a versatile choice for both work and play.",
 			ManufacturerID:   ptr(12), // Keychron
@@ -40,7 +40,7 @@ func seedCommonSwitches(tx *gorm.DB, admin models.User) error {
 			},
 		},
 		{
-			Name:             "Keychron K Pro Brown",
+			Name:             "K Pro Brown",
 			ShortDescription: "Tactile switch for a responsive typing experience.",
 			LongDescription:  "The Keychron K Pro Brown switch offers a tactile bump that provides a responsive and satisfying typing experience, making it well-suited for both typing and gaming. The balanced feedback and moderate actuation force offer a comfortable and efficient keystroke.",
 			ManufacturerID:   ptr(12), // Keychron
@@ -71,7 +71,7 @@ func seedCommonSwitches(tx *gorm.DB, admin models.User) error {
 			},
 		},
 		{
-			Name:             "Keychron K Pro Blue",
+			Name:             "K Pro Blue",
 			ShortDescription: "Clicky switch with an audible click sound.",
 			LongDescription:  "The Keychron K Pro Blue switch is known for its distinctive clicky sound and tactile feedback, making it a favorite for typists who enjoy a traditional mechanical keyboard feel. Its audible click and precise actuation deliver a satisfying and engaging typing experience.",
 			ManufacturerID:   ptr(12), // Keychron
@@ -102,7 +102,7 @@ func seedCommonSwitches(tx *gorm.DB, admin models.User) error {
 			},
 		},
 		{
-			Name:             "Epomaker Flamingo",
+			Name:             "Flamingo",
 			ShortDescription: "Linear switch with smooth actuation.",
 			LongDescription:  "The Epomaker Flamingo switch is a linear switch celebrated for its exceptionally smooth actuation and consistent keystroke. Its premium build and satisfying feel make it a favorite choice among mechanical keyboard enthusiasts looking for a high-quality linear experience.",
 			ManufacturerID:   ptr(13), // Epomaker
@@ -133,7 +133,7 @@ func seedCommonSwitches(tx *gorm.DB, admin models.User) error {
 			},
 		},
 		{
-			Name:             "Epomaker Budgerigar",
+			Name:             "Budgerigar",
 			ShortDescription: "Tactile switch with a unique feel.",
 			LongDescription:  "The Epomaker Budgerigar switch offers a distinct tactile bump that delivers a unique and pronounced feedback. Ideal for users who prefer a more tactile typing experience, this switch combines reliability with a satisfying keystroke.",
 			ManufacturerID:   ptr(13), // Epomaker
@@ -164,7 +164,7 @@ func seedCommonSwitches(tx *gorm.DB, admin models.User) error {
 			},
 		},
 		{
-			Name:             "Epomaker Ice Candy",
+			Name:             "Ice Candy",
 			ShortDescription: "Smooth linear switch with a distinct color.",
 			LongDescription:  "Epomaker Ice Candy switches provide a smooth linear typing experience complemented by a visually striking design. These switches are perfect for users who want both aesthetic appeal and consistent performance in their keyboard builds.",
 			ManufacturerID:   ptr(13), // Epomaker
@@ -195,7 +195,7 @@ func seedCommonSwitches(tx *gorm.DB, admin models.User) error {
 			},
 		},
 		{
-			Name:             "Epomaker Blue Ice",
+			Name:             "Blue Ice",
 			ShortDescription: "Linear switch with smooth keypresses.",
 			LongDescription:  "The Epomaker Blue Ice switch is a linear switch designed for fast typists, offering a smooth and consistent keypress. Its crisp actuation and unique color make it a popular choice for both gamers and typists who value performance and style.",
 			ManufacturerID:   ptr(13), // Epomaker
@@ -226,7 +226,7 @@ func seedCommonSwitches(tx *gorm.DB, admin models.User) error {
 			},
 		},
 		{
-			Name:             "Razer Green",
+			Name:             "Green",
 			ShortDescription: "Clicky switch with tactile feedback.",
 			LongDescription:  "The Razer Green switch is a clicky switch that provides a distinct tactile bump along with an audible click, making it perfect for gamers and typists who enjoy a highly responsive and clicky typing experience. Its satisfying feedback is designed to enhance both gaming precision and typing accuracy.",
 			ManufacturerID:   ptr(14), // Razer
@@ -257,7 +257,7 @@ func seedCommonSwitches(tx *gorm.DB, admin models.User) error {
 			},
 		},
 		{
-			Name:             "Razer Yellow",
+			Name:             "Yellow",
 			ShortDescription: "Smooth linear switch with fast actuation.",
 			LongDescription:  "The Razer Yellow switch is a linear switch engineered for ultra-fast actuation and smooth keypresses, making it ideal for competitive gaming. Its quiet operation and low actuation force allow for rapid key presses with minimal resistance, providing a seamless gaming experience.",
 			ManufacturerID:   ptr(14), // Razer
@@ -288,7 +288,7 @@ func seedCommonSwitches(tx *gorm.DB, admin models.User) error {
 			},
 		},
 		{
-			Name:             "Razer Orange",
+			Name:             "Orange",
 			ShortDescription: "Tactile switch with silent actuation.",
 			LongDescription:  "The Razer Orange switch offers tactile feedback without the accompanying click noise, providing a silent yet responsive typing experience. This switch is ideal for users who prefer the feel of a tactile bump but require quieter operation, making it suitable for both work and gaming environments.",
 			ManufacturerID:   ptr(14), // Razer
@@ -319,7 +319,7 @@ func seedCommonSwitches(tx *gorm.DB, admin models.User) error {
 			},
 		},
 		{
-			Name:             "Logitech GX Blue",
+			Name:             "GX Blue",
 			ShortDescription: "Clicky switch with tactile feedback.",
 			LongDescription:  "The Logitech GX Blue switch is a clicky switch that provides a distinctive tactile bump and audible click, delivering a satisfying typing experience for those who enjoy pronounced feedback. It's designed for users who appreciate both the sound and feel of a traditional mechanical keyboard.",
 			ManufacturerID:   ptr(15), // Logitech
@@ -350,7 +350,7 @@ func seedCommonSwitches(tx *gorm.DB, admin models.User) error {
 			},
 		},
 		{
-			Name:             "Logitech GX Brown",
+			Name:             "GX Brown",
 			ShortDescription: "Tactile switch with a quieter operation.",
 			LongDescription:  "The Logitech GX Brown switch offers a tactile bump without the loud click, providing a more subtle yet responsive typing experience. Its quieter operation makes it suitable for both gaming and office use, striking a balance between feedback and noise control.",
 			ManufacturerID:   ptr(15), // Logitech
@@ -381,7 +381,7 @@ func seedCommonSwitches(tx *gorm.DB, admin models.User) error {
 			},
 		},
 		{
-			Name:             "Logitech GX Red",
+			Name:             "GX Red",
 			ShortDescription: "Linear switch for smooth keypresses.",
 			LongDescription:  "The Logitech GX Red switch is a linear switch that delivers smooth and consistent keypresses, making it ideal for fast-paced gaming. Its low actuation force and quiet operation provide a seamless experience for gamers who prioritize speed and precision.",
 			ManufacturerID:   ptr(15), // Logitech
@@ -412,7 +412,7 @@ func seedCommonSwitches(tx *gorm.DB, admin models.User) error {
 			},
 		},
 		{
-			Name:             "Roccat Titan Switch Tactile",
+			Name:             "Titan Switch Tactile",
 			ShortDescription: "Tactile switch with a crisp feel.",
 			LongDescription:  "The Roccat Titan Switch Tactile is designed to deliver a crisp and responsive tactile feedback with each keystroke. This switch enhances typing precision and offers a satisfying bump, making it a great choice for both gaming and typing where accuracy is essential.",
 			ManufacturerID:   ptr(19), // Roccat
@@ -443,7 +443,7 @@ func seedCommonSwitches(tx *gorm.DB, admin models.User) error {
 			},
 		},
 		{
-			Name:             "Roccat Titan Switch Linear",
+			Name:             "Titan Switch Linear",
 			ShortDescription: "Smooth linear switch for fast response.",
 			LongDescription:  "The Roccat Titan Switch Linear offers smooth, consistent keystrokes with a fast response time, making it ideal for gamers who require seamless performance. Its low actuation force and quiet operation ensure a fluid typing experience, perfect for fast-paced gaming sessions.",
 			ManufacturerID:   ptr(19), // Roccat
@@ -474,7 +474,7 @@ func seedCommonSwitches(tx *gorm.DB, admin models.User) error {
 			},
 		},
 		{
-			Name:             "Cooler Master Green",
+			Name:             "Green",
 			ShortDescription: "Clicky switch with a tactile feel.",
 			LongDescription:  "The Cooler Master Green switch is a clicky switch that provides a tactile bump with each keystroke. It offers an audible and tactile typing experience, making it a great choice for users who enjoy the traditional clicky feel and sound.",
 			ManufacturerID:   ptr(20), // Cooler Master
@@ -505,7 +505,7 @@ func seedCommonSwitches(tx *gorm.DB, admin models.User) error {
 			},
 		},
 		{
-			Name:             "Cooler Master Brown",
+			Name:             "Brown",
 			ShortDescription: "Tactile switch with a quieter operation.",
 			LongDescription:  "Cooler Master Brown switches provide a tactile bump with quieter operation, offering a balanced typing experience suitable for both work and play. These switches are ideal for users who prefer a tactile response without the loud click.",
 			ManufacturerID:   ptr(20), // Cooler Master
@@ -536,7 +536,7 @@ func seedCommonSwitches(tx *gorm.DB, admin models.User) error {
 			},
 		},
 		{
-			Name:             "Cooler Master Red",
+			Name:             "Red",
 			ShortDescription: "Linear switch for fast keystrokes.",
 			LongDescription:  "Cooler Master Red switches are linear switches designed for fast keystrokes and smooth typing, making them an excellent choice for gamers who require quick response times and a seamless typing experience.",
 			ManufacturerID:   ptr(20), // Cooler Master
@@ -567,7 +567,7 @@ func seedCommonSwitches(tx *gorm.DB, admin models.User) error {
 			},
 		},
 		{
-			Name:             "Cooler Master Purple",
+			Name:             "Purple",
 			ShortDescription: "Tactile switch with a pronounced bump.",
 			LongDescription:  "Cooler Master Purple switches offer a tactile experience with a more pronounced bump compared to typical brown switches. These switches provide a stronger tactile feedback, making them well-suited for typing enthusiasts who prefer more noticeable keystrokes.",
 			ManufacturerID:   ptr(20),                 // Cooler Master
@@ -598,7 +598,7 @@ func seedCommonSwitches(tx *gorm.DB, admin models.User) error {
 			},
 		},
 		{
-			Name:             "Cooler Master Blue",
+			Name:             "Blue",
 			ShortDescription: "Clicky switch with tactile and audible feedback.",
 			LongDescription:  "The Cooler Master Blue switch is known for providing both tactile and audible feedback with every keystroke. It delivers a satisfying click sound alongside a tactile bump, making it a favorite for those who enjoy a more interactive typing experience.",
 			ManufacturerID:   ptr(20),                 // Cooler Master
@@ -629,7 +629,7 @@ func seedCommonSwitches(tx *gorm.DB, admin models.User) error {
 			},
 		},
 		{
-			Name:             "JWK Black",
+			Name:             "Black",
 			ShortDescription: "Smooth linear switch with deep sound.",
 			LongDescription:  "JWK Black switches offer a premium linear experience with a smooth keystroke and deep, satisfying sound. These switches are ideal for enthusiasts who seek both performance and acoustics in their keyboard setup.",
 			ManufacturerID:   ptr(22), // JWK
@@ -660,7 +660,7 @@ func seedCommonSwitches(tx *gorm.DB, admin models.User) error {
 			},
 		},
 		{
-			Name:             "JWK Red",
+			Name:             "Red",
 			ShortDescription: "Smooth linear switch with light actuation.",
 			LongDescription:  "JWK Red switches are linear switches known for their smooth actuation and light feel. These switches are perfect for fast typists who prefer a lighter keystroke for quick, responsive typing.",
 			ManufacturerID:   ptr(22), // JWK
@@ -691,7 +691,7 @@ func seedCommonSwitches(tx *gorm.DB, admin models.User) error {
 			},
 		},
 		{
-			Name:             "JWK Lavender",
+			Name:             "Lavender",
 			ShortDescription: "Linear switch with a unique color and smooth feel.",
 			LongDescription:  "JWK Lavender switches offer a smooth linear typing experience with a distinctive lavender color. These switches are popular for their consistent feel and unique aesthetic appeal.",
 			ManufacturerID:   ptr(22),                 // JWK
@@ -722,7 +722,7 @@ func seedCommonSwitches(tx *gorm.DB, admin models.User) error {
 			},
 		},
 		{
-			Name:             "JWK Alpaca",
+			Name:             "Alpaca",
 			ShortDescription: "Smooth linear switch with a light touch.",
 			LongDescription:  "JWK Alpaca switches are renowned for their smooth linear action and light touch. These switches are favored by both gamers and typists for their fluid keystrokes and consistent performance.",
 			ManufacturerID:   ptr(22),                 // JWK
@@ -753,7 +753,7 @@ func seedCommonSwitches(tx *gorm.DB, admin models.User) error {
 			},
 		},
 		{
-			Name:             "JWK Moss",
+			Name:             "Moss",
 			ShortDescription: "Tactile switch with a rounded bump.",
 			LongDescription:  "JWK Moss switches offer a tactile typing experience with a rounded bump that provides satisfying feedback without being overly sharp. These switches are great for users who prefer a more subtle tactile response.",
 			ManufacturerID:   ptr(22),                 // JWK
@@ -784,7 +784,7 @@ func seedCommonSwitches(tx *gorm.DB, admin models.User) error {
 			},
 		},
 		{
-			Name:             "JWK Marshmallow",
+			Name:             "Marshmallow",
 			ShortDescription: "Smooth linear switch with a unique color.",
 			LongDescription:  "JWK Marshmallow switches are known for their smooth linear feel and soft, marshmallow-inspired color. These switches are perfect for those who appreciate both performance and aesthetics in their keyboard setup.",
 			ManufacturerID:   ptr(22),                 // JWK
@@ -815,7 +815,7 @@ func seedCommonSwitches(tx *gorm.DB, admin models.User) error {
 			},
 		},
 		{
-			Name:             "Tecsee Carrot",
+			Name:             "Carrot",
 			ShortDescription: "Tactile switch with a unique feel.",
 			LongDescription:  "Tecsee Carrot switches offer a distinctive tactile experience with a crisp bump, providing a satisfying keystroke for those who enjoy pronounced tactile feedback.",
 			ManufacturerID:   ptr(23), // Tecsee
@@ -846,7 +846,7 @@ func seedCommonSwitches(tx *gorm.DB, admin models.User) error {
 			},
 		},
 		{
-			Name:             "Tecsee Purple Panda",
+			Name:             "Purple Panda",
 			ShortDescription: "Tactile switch with a satisfying bump.",
 			LongDescription:  "Tecsee Purple Panda switches provide a tactile experience with a satisfying and consistent bump, making them ideal for typists who appreciate a more pronounced feedback.",
 			ManufacturerID:   ptr(23), // Tecsee
@@ -877,7 +877,7 @@ func seedCommonSwitches(tx *gorm.DB, admin models.User) error {
 			},
 		},
 		{
-			Name:             "Everglide Aqua King",
+			Name:             "Aqua King",
 			ShortDescription: "Smooth linear switch with a unique design.",
 			LongDescription:  "Everglide Aqua King switches are known for their ultra-smooth linear action and unique transparent design, making them an excellent choice for both performance and aesthetics in custom keyboard builds.",
 			ManufacturerID:   ptr(24), // Everglide
@@ -908,7 +908,7 @@ func seedCommonSwitches(tx *gorm.DB, admin models.User) error {
 			},
 		},
 		{
-			Name:             "Everglide Coral Red",
+			Name:             "Coral Red",
 			ShortDescription: "Linear switch with a smooth feel.",
 			LongDescription:  "Everglide Coral Red switches provide a smooth and consistent linear action with a striking red color, ideal for users seeking both performance and style.",
 			ManufacturerID:   ptr(24), // Everglide
@@ -939,7 +939,7 @@ func seedCommonSwitches(tx *gorm.DB, admin models.User) error {
 			},
 		},
 		{
-			Name:             "SP-Star Purple",
+			Name:             "Purple",
 			ShortDescription: "Tactile switch with a unique sound profile.",
 			LongDescription:  "SP-Star Purple switches offer a distinct tactile feel combined with a unique sound profile, making them a favorite among enthusiasts looking for a different typing experience.",
 			ManufacturerID:   ptr(25), // SP-Star
@@ -970,7 +970,7 @@ func seedCommonSwitches(tx *gorm.DB, admin models.User) error {
 			},
 		},
 		{
-			Name:             "SP-Star Yellow",
+			Name:             "Yellow",
 			ShortDescription: "Linear switch with smooth actuation.",
 			LongDescription:  "SP-Star Yellow switches provide smooth linear actuation, making them an excellent choice for gamers and typists who prefer a seamless keystroke experience.",
 			ManufacturerID:   ptr(25), // SP-Star
@@ -1001,7 +1001,7 @@ func seedCommonSwitches(tx *gorm.DB, admin models.User) error {
 			},
 		},
 		{
-			Name:             "Gazzew Boba U4",
+			Name:             "Boba U4",
 			ShortDescription: "Silent tactile switch with a unique feel.",
 			LongDescription:  "Gazzew Boba U4 switches are silent tactile switches that offer a smooth and quiet typing experience with a pronounced tactile bump, ideal for office use or shared spaces.",
 			ManufacturerID:   ptr(26), // Gazzew
@@ -1032,7 +1032,7 @@ func seedCommonSwitches(tx *gorm.DB, admin models.User) error {
 			},
 		},
 		{
-			Name:             "Gazzew Boba U4T",
+			Name:             "Boba U4T",
 			ShortDescription: "Tactile switch with a unique feel.",
 			LongDescription:  "Gazzew Boba U4T switches provide a sharp and crisp tactile bump, offering a unique and satisfying typing experience for those who prefer tactile feedback with a distinct feel.",
 			ManufacturerID:   ptr(26), // Gazzew
@@ -1063,7 +1063,7 @@ func seedCommonSwitches(tx *gorm.DB, admin models.User) error {
 			},
 		},
 		{
-			Name:             "HMX Blue",
+			Name:             "Blue",
 			ShortDescription: "Clicky switch with tactile feedback.",
 			LongDescription:  "HMX Blue switches provide a clicky feel with tactile feedback, perfect for users who enjoy an audible typing experience.",
 			ManufacturerID:   ptr(30), // HMX
@@ -1094,7 +1094,7 @@ func seedCommonSwitches(tx *gorm.DB, admin models.User) error {
 			},
 		},
 		{
-			Name:             "HMX Red",
+			Name:             "Red",
 			ShortDescription: "Linear switch for smooth keypresses.",
 			LongDescription:  "HMX Red is a linear switch offering smooth keypresses and fast response times, suitable for both gaming and typing.",
 			ManufacturerID:   ptr(30), // HMX
@@ -1125,7 +1125,7 @@ func seedCommonSwitches(tx *gorm.DB, admin models.User) error {
 			},
 		},
 		{
-			Name:             "HMX Brown",
+			Name:             "Brown",
 			ShortDescription: "Tactile switch with a subtle bump.",
 			LongDescription:  "HMX Brown switches offer a tactile bump with quieter operation, ideal for users who prefer a balance between tactile feedback and noise.",
 			ManufacturerID:   ptr(30), // HMX
@@ -1156,7 +1156,7 @@ func seedCommonSwitches(tx *gorm.DB, admin models.User) error {
 			},
 		},
 		{
-			Name:             "HMX Silent Red",
+			Name:             "Silent Red",
 			ShortDescription: "Silent linear switch with smooth actuation.",
 			LongDescription:  "HMX Silent Red switches provide a smooth linear experience without the noise, perfect for quiet environments.",
 			ManufacturerID:   ptr(30), // HMX
@@ -1187,7 +1187,7 @@ func seedCommonSwitches(tx *gorm.DB, admin models.User) error {
 			},
 		},
 		{
-			Name:             "HMX Black",
+			Name:             "Black",
 			ShortDescription: "Heavy linear switch with deep actuation.",
 			LongDescription:  "HMX Black switches offer a heavy linear feel with deep actuation, suitable for typists who prefer a more substantial keystroke.",
 			ManufacturerID:   ptr(30), // HMX
@@ -1218,7 +1218,7 @@ func seedCommonSwitches(tx *gorm.DB, admin models.User) error {
 			},
 		},
 		{
-			Name:             "HMX Silent Black",
+			Name:             "Silent Black",
 			ShortDescription: "Silent heavy linear switch.",
 			LongDescription:  "HMX Silent Black switches provide a heavy linear feel with silent actuation, ideal for those who prefer a quiet typing experience with substantial feedback.",
 			ManufacturerID:   ptr(30), // HMX
@@ -1249,7 +1249,7 @@ func seedCommonSwitches(tx *gorm.DB, admin models.User) error {
 			},
 		},
 		{
-			Name:             "HMX Green",
+			Name:             "Green",
 			ShortDescription: "Clicky switch with strong tactile feedback.",
 			LongDescription:  "HMX Green switches offer a strong clicky feel with pronounced tactile feedback, perfect for those who enjoy a loud typing experience.",
 			ManufacturerID:   ptr(30), // HMX
@@ -1280,7 +1280,7 @@ func seedCommonSwitches(tx *gorm.DB, admin models.User) error {
 			},
 		},
 		{
-			Name:             "HMX Clear",
+			Name:             "Clear",
 			ShortDescription: "Tactile switch with medium resistance.",
 			LongDescription:  "HMX Clear switches offer medium resistance with tactile feedback, ideal for those who prefer a balanced typing feel.",
 			ManufacturerID:   ptr(30), // HMX
@@ -1311,7 +1311,7 @@ func seedCommonSwitches(tx *gorm.DB, admin models.User) error {
 			},
 		},
 		{
-			Name:             "HMX Speed Silver",
+			Name:             "Speed Silver",
 			ShortDescription: "Fast linear switch for quick typing.",
 			LongDescription:  "HMX Speed Silver switches are designed for fast actuation and quick typing, making them ideal for gamers seeking speed and efficiency.",
 			ManufacturerID:   ptr(30), // HMX
@@ -1342,7 +1342,7 @@ func seedCommonSwitches(tx *gorm.DB, admin models.User) error {
 			},
 		},
 		{
-			Name:             "HMX Pink",
+			Name:             "Pink",
 			ShortDescription: "Linear switch with a soft touch.",
 			LongDescription:  "HMX Pink switches offer a linear feel with a soft touch, suitable for those who prefer a gentle typing experience.",
 			ManufacturerID:   ptr(30), // HMX
@@ -1373,7 +1373,7 @@ func seedCommonSwitches(tx *gorm.DB, admin models.User) error {
 			},
 		},
 		{
-			Name:             "HMX Xinhai",
+			Name:             "Xinhai",
 			ShortDescription: "Tactile switch with a soft bump.",
 			LongDescription:  "HMX Xinhai switches provide a soft tactile bump with smooth actuation, offering a pleasant typing experience for both gaming and typing.",
 			ManufacturerID:   ptr(30), // HMX
@@ -1404,7 +1404,7 @@ func seedCommonSwitches(tx *gorm.DB, admin models.User) error {
 			},
 		},
 		{
-			Name:             "HMX Purple Dawn",
+			Name:             "Purple Dawn",
 			ShortDescription: "Silent tactile switch with unique feedback.",
 			LongDescription:  "HMX Purple Dawn switches offer silent tactile feedback with a unique actuation profile, perfect for those who enjoy a quiet yet tactile experience.",
 			ManufacturerID:   ptr(30), // HMX
@@ -1435,7 +1435,7 @@ func seedCommonSwitches(tx *gorm.DB, admin models.User) error {
 			},
 		},
 		{
-			Name:             "HMX Cloud White",
+			Name:             "Cloud White",
 			ShortDescription: "Linear switch with a soft feel.",
 			LongDescription:  "HMX Cloud White switches provide a smooth linear feel with a soft actuation, offering a gentle and pleasant typing experience.",
 			ManufacturerID:   ptr(30), // HMX
@@ -1466,7 +1466,7 @@ func seedCommonSwitches(tx *gorm.DB, admin models.User) error {
 			},
 		},
 		{
-			Name:             "HMX Coral",
+			Name:             "Coral",
 			ShortDescription: "Tactile switch with a colorful design.",
 			LongDescription:  "HMX Coral switches offer a tactile experience with a visually striking design, making them a great choice for custom keyboard builds.",
 			ManufacturerID:   ptr(30), // HMX
@@ -1497,7 +1497,7 @@ func seedCommonSwitches(tx *gorm.DB, admin models.User) error {
 			},
 		},
 		{
-			Name:             "HMX Gold",
+			Name:             "Gold",
 			ShortDescription: "Clicky switch with a premium feel.",
 			LongDescription:  "HMX Gold switches provide a clicky feel with premium materials, offering a luxurious typing experience with audible feedback.",
 			ManufacturerID:   ptr(30), // HMX

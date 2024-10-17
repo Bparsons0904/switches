@@ -9,7 +9,7 @@ import (
 func seedGateron(tx *gorm.DB, admin models.User) error {
 	gateron := []models.Switch{
 		{
-			Name:             "Gateron G Pro Red",
+			Name:             "G Pro Red",
 			ShortDescription: "Linear switch with factory lubrication for smoother keystrokes.",
 			LongDescription:  "Gateron G Pro Red switches are enhanced linear switches featuring factory lubrication for smoother keystrokes and improved performance. With an actuation force of 45 grams, these switches provide a light and responsive typing experience, making them ideal for fast typists and gamers. The G Pro Red switches are designed to offer minimal resistance and friction, ensuring a consistent and satisfying keystroke.",
 			ManufacturerID:   ptr(2), // Gateron
@@ -48,7 +48,7 @@ func seedGateron(tx *gorm.DB, admin models.User) error {
 			},
 		},
 		{
-			Name:             "Gateron G Pro Yellow",
+			Name:             "G Pro Yellow",
 			ShortDescription: "Linear switch with a medium actuation force and improved smoothness.",
 			LongDescription:  "Gateron G Pro Yellow switches offer a medium actuation force of 50 grams and are factory lubricated to provide a smooth and responsive typing experience. These linear switches are perfect for users who want a balanced feel that works well for both gaming and typing. The G Pro Yellow switches are known for their reliability and smoothness, making them a popular choice among enthusiasts.",
 			ManufacturerID:   ptr(2), // Gateron
@@ -87,7 +87,7 @@ func seedGateron(tx *gorm.DB, admin models.User) error {
 			},
 		},
 		{
-			Name:             "Gateron G Pro Black",
+			Name:             "G Pro Black",
 			ShortDescription: "Linear switch with a heavier actuation force for more resistance.",
 			LongDescription:  "Gateron G Pro Black switches are linear switches designed for users who prefer a heavier actuation force of 60 grams. These switches provide a firm and controlled typing experience, ideal for those who enjoy more resistance in their keystrokes. Factory lubrication ensures smooth operation, making the G Pro Black switches a reliable option for both gaming and long typing sessions.",
 			ManufacturerID:   ptr(2), // Gateron
@@ -126,7 +126,7 @@ func seedGateron(tx *gorm.DB, admin models.User) error {
 			},
 		},
 		{
-			Name:             "Gateron G Pro Brown",
+			Name:             "G Pro Brown",
 			ShortDescription: "Tactile switch with factory lubrication and a gentle bump.",
 			LongDescription:  "Gateron G Pro Brown switches feature a gentle tactile bump with factory lubrication, offering a smooth and quiet typing experience. With an actuation force of 55 grams, these tactile switches provide a satisfying feedback without the click sound, making them suitable for both gaming and typing. The G Pro Brown switches are designed to offer a balanced tactile feel, appealing to users who prefer moderate resistance in their typing.",
 			ManufacturerID:   ptr(2), // Gateron
@@ -173,7 +173,7 @@ func seedGateron(tx *gorm.DB, admin models.User) error {
 			},
 		},
 		{
-			Name:             "Gateron G Pro Green",
+			Name:             "G Pro Green",
 			ShortDescription: "Clicky switch with a strong tactile bump and audible click.",
 			LongDescription:  "Gateron G Pro Green switches provide a strong tactile bump with an audible click, ideal for users who enjoy feedback and sound in their typing. With an actuation force of 80 grams, these clicky switches offer a pronounced and satisfying typing experience. Factory lubrication ensures smooth keystrokes, making the G Pro Green switches a reliable choice for enthusiasts who value both tactile feedback and auditory satisfaction.",
 			ManufacturerID:   ptr(2), // Gateron
@@ -214,7 +214,7 @@ func seedGateron(tx *gorm.DB, admin models.User) error {
 			},
 		},
 		{
-			Name:             "Gateron G Pro Blue",
+			Name:             "G Pro Blue",
 			ShortDescription: "Clicky switch with an audible click and tactile feedback.",
 			LongDescription:  "Gateron G Pro Blue switches are clicky switches designed for users who appreciate tactile feedback paired with an audible click. With an actuation force of 60 grams, these switches offer a satisfying typing experience with a distinct click sound. The G Pro Blue switches are ideal for users who prefer a more traditional mechanical keyboard feel with pronounced feedback and sound.",
 			ManufacturerID:   ptr(2), // Gateron
@@ -254,7 +254,7 @@ func seedGateron(tx *gorm.DB, admin models.User) error {
 			},
 		},
 		{
-			Name:             "Gateron Pro 2.0 Red",
+			Name:             "Pro 2.0 Red",
 			ShortDescription: "Linear switch with upgraded smoothness and factory lubrication.",
 			LongDescription:  "Gateron Pro 2.0 Red switches are enhanced linear switches designed for a smooth typing experience. With an actuation force of 45 grams, these switches are factory lubricated to provide a more refined and responsive keystroke. The Pro 2.0 Red switches offer a light and effortless typing experience, making them ideal for fast-paced gaming and everyday typing tasks.",
 			ManufacturerID:   ptr(2), // Gateron
@@ -292,7 +292,7 @@ func seedGateron(tx *gorm.DB, admin models.User) error {
 			},
 		},
 		{
-			Name:             "Gateron Pro 2.0 Yellow",
+			Name:             "Pro 2.0 Yellow",
 			ShortDescription: "Linear switch with a medium actuation force and improved smoothness.",
 			LongDescription:  "Gateron Pro 2.0 Yellow switches feature an upgraded linear design with a medium actuation force of 50 grams. These switches are factory lubricated, offering a smooth and responsive typing experience. The Pro 2.0 Yellow switches are perfect for users who prefer a balanced feel that works well for both gaming and typing.",
 			ManufacturerID:   ptr(2), // Gateron
@@ -331,7 +331,7 @@ func seedGateron(tx *gorm.DB, admin models.User) error {
 			},
 		},
 		{
-			Name:             "Gateron Pro 2.0 Black",
+			Name:             "Pro 2.0 Black",
 			ShortDescription: "Linear switch with a heavier actuation force and factory lubrication.",
 			LongDescription:  "Gateron Pro 2.0 Black switches are designed for users who prefer a heavier actuation force of 60 grams. These switches provide a firm and controlled typing experience, with factory lubrication ensuring smooth operation. The Pro 2.0 Black switches are ideal for those who enjoy more resistance in their keystrokes, offering a reliable option for both gaming and long typing sessions.",
 			ManufacturerID:   ptr(2), // Gateron
@@ -370,7 +370,7 @@ func seedGateron(tx *gorm.DB, admin models.User) error {
 			},
 		},
 		{
-			Name:             "Gateron Pro 2.0 Brown",
+			Name:             "Pro 2.0 Brown",
 			ShortDescription: "Tactile switch with a gentle bump and improved stability.",
 			LongDescription:  "Gateron Pro 2.0 Brown switches offer a tactile typing experience with a gentle bump and an actuation force of 55 grams. These switches are factory lubricated, providing a smooth and quiet typing experience. The Pro 2.0 Brown switches are designed to offer balanced tactile feedback, making them suitable for both gaming and typing.",
 			ManufacturerID:   ptr(2), // Gateron
@@ -411,7 +411,7 @@ func seedGateron(tx *gorm.DB, admin models.User) error {
 			},
 		},
 		{
-			Name:             "Gateron Pro 2.0 Blue",
+			Name:             "Pro 2.0 Blue",
 			ShortDescription: "Clicky switch with an audible click and refined feedback.",
 			LongDescription:  "Gateron Pro 2.0 Blue switches are clicky switches designed for users who appreciate tactile feedback paired with an audible click. With an actuation force of 60 grams, these switches offer a satisfying typing experience with a distinct click sound. The Pro 2.0 Blue switches are ideal for users who prefer a more traditional mechanical keyboard feel with pronounced feedback and sound.",
 			ManufacturerID:   ptr(2), // Gateron
@@ -452,7 +452,7 @@ func seedGateron(tx *gorm.DB, admin models.User) error {
 			},
 		},
 		{
-			Name:             "Gateron Pro 3.0 Red",
+			Name:             "Pro 3.0 Red",
 			ShortDescription: "Linear switch with enhanced smoothness and stability.",
 			LongDescription:  "Gateron Pro 3.0 Red switches represent the latest in Gateron's linear switch technology, featuring enhanced smoothness and stability. With an actuation force of 45 grams, these switches are designed for users who demand a light and effortless typing experience. The Pro 3.0 Red switches come factory lubricated, ensuring consistent and smooth keystrokes with minimal friction, making them ideal for both gaming and typing.",
 			ManufacturerID:   ptr(2), // Gateron
@@ -491,7 +491,7 @@ func seedGateron(tx *gorm.DB, admin models.User) error {
 			},
 		},
 		{
-			Name:             "Gateron Pro 3.0 Yellow",
+			Name:             "Pro 3.0 Yellow",
 			ShortDescription: "Linear switch with medium actuation force and advanced performance.",
 			LongDescription:  "Gateron Pro 3.0 Yellow switches are linear switches designed for users seeking a medium actuation force of 50 grams. These switches offer advanced performance with factory lubrication for ultra-smooth keystrokes. The Pro 3.0 Yellow switches are ideal for users who need a balanced typing experience that is suitable for both gaming and long typing sessions.",
 			ManufacturerID:   ptr(2), // Gateron
@@ -530,7 +530,7 @@ func seedGateron(tx *gorm.DB, admin models.User) error {
 			},
 		},
 		{
-			Name:             "Gateron Pro 3.0 Black",
+			Name:             "Pro 3.0 Black",
 			ShortDescription: "Linear switch with a heavier actuation force and enhanced durability.",
 			LongDescription:  "Gateron Pro 3.0 Black switches are the pinnacle of Gateron's linear switch lineup, offering a heavier actuation force of 60 grams. These switches provide a firm and controlled typing experience, making them ideal for users who prefer more resistance in their keystrokes. Factory lubrication and enhanced durability make the Pro 3.0 Black switches a reliable choice for both gaming and extended typing sessions.",
 			ManufacturerID:   ptr(2), // Gateron
@@ -569,7 +569,7 @@ func seedGateron(tx *gorm.DB, admin models.User) error {
 			},
 		},
 		{
-			Name:             "Gateron Pro 3.0 Brown",
+			Name:             "Pro 3.0 Brown",
 			ShortDescription: "Tactile switch with a refined bump and improved smoothness.",
 			LongDescription:  "Gateron Pro 3.0 Brown switches offer a refined tactile typing experience with a gentle bump and an actuation force of 55 grams. These switches are factory lubricated to provide a smooth and quiet operation, making them suitable for both gaming and typing. The Pro 3.0 Brown switches are designed to offer a balanced tactile feel with improved stability and consistency.",
 			ManufacturerID:   ptr(2), // Gateron
@@ -610,7 +610,7 @@ func seedGateron(tx *gorm.DB, admin models.User) error {
 			},
 		},
 		{
-			Name:             "Gateron Pro 3.0 Blue",
+			Name:             "Pro 3.0 Blue",
 			ShortDescription: "Clicky switch with an audible click and premium feedback.",
 			LongDescription:  "Gateron Pro 3.0 Blue switches are clicky switches designed for users who appreciate tactile feedback paired with an audible click. With an actuation force of 60 grams, these switches offer a satisfying typing experience with a distinct click sound. The Pro 3.0 Blue switches are ideal for users who prefer a more traditional mechanical keyboard feel with pronounced feedback and sound.",
 			ManufacturerID:   ptr(2), // Gateron
@@ -651,7 +651,7 @@ func seedGateron(tx *gorm.DB, admin models.User) error {
 			},
 		},
 		{
-			Name:             "Gateron Ink V2 Red",
+			Name:             "Ink V2 Red",
 			ShortDescription: "Linear switch with improved smoothness and unique housing.",
 			LongDescription:  "Gateron Ink V2 Red switches are designed for users who seek a smooth and responsive linear typing experience. With an actuation force of 45 grams, these switches offer light and effortless keystrokes, perfect for fast typists and gamers. The Ink V2 Red switches feature Gateron's distinctive Ink housing, which provides enhanced stability and durability, ensuring consistent performance over time.",
 			ManufacturerID:   ptr(2), // Gateron
@@ -690,7 +690,7 @@ func seedGateron(tx *gorm.DB, admin models.User) error {
 			},
 		},
 		{
-			Name:             "Gateron Ink V2 Black",
+			Name:             "Ink V2 Black",
 			ShortDescription: "Linear switch with a heavier actuation force and improved design.",
 			LongDescription:  "Gateron Ink V2 Black switches are premium linear switches known for their smooth actuation and distinct housing design. With a heavier actuation force of 60 grams, these switches provide a firm and controlled typing experience, making them ideal for users who prefer a stronger keystroke. The unique Ink housing not only enhances the switch's aesthetics but also contributes to its exceptional durability and stability.",
 			ManufacturerID:   ptr(2), // Gateron
@@ -729,7 +729,7 @@ func seedGateron(tx *gorm.DB, admin models.User) error {
 			},
 		},
 		{
-			Name:             "Gateron Ink V2 Yellow",
+			Name:             "Ink V2 Yellow",
 			ShortDescription: "Linear switch with mid-range actuation and unique housing.",
 			LongDescription:  "Gateron Ink V2 Yellow switches provide a smooth linear feel with a mid-range actuation force of 50 grams. These switches are part of Gateron's premium Ink series, known for their exceptional build quality and unique housing design. The Ink V2 Yellow switches are ideal for users who want a responsive and consistent typing experience with just the right amount of resistance for both gaming and typing.",
 			ManufacturerID:   ptr(2), // Gateron
@@ -768,7 +768,7 @@ func seedGateron(tx *gorm.DB, admin models.User) error {
 			},
 		},
 		{
-			Name:             "Gateron Ink V2 Blue",
+			Name:             "Ink V2 Blue",
 			ShortDescription: "Clicky switch with unique housing for enhanced sound and feel.",
 			LongDescription:  "Gateron Ink V2 Blue switches are clicky switches designed for users who appreciate tactile feedback paired with an audible click. With an actuation force of 55 grams, these switches offer a satisfying typing experience with a distinct click sound. The unique Ink housing adds to the switch's durability and enhances the overall feel, making the Ink V2 Blue a popular choice among enthusiasts who enjoy clicky switches with a premium build.",
 			ManufacturerID:   ptr(2), // Gateron
@@ -810,7 +810,7 @@ func seedGateron(tx *gorm.DB, admin models.User) error {
 		},
 
 		{
-			Name:             "Gateron Oil King",
+			Name:             "Oil King",
 			ShortDescription: "Linear switch with smooth actuation and unique black housing.",
 			LongDescription:  "Gateron Oil King switches are linear switches celebrated for their ultra-smooth keystrokes and unique black housing. With an actuation force of 55 grams, these switches are designed to offer a premium typing experience with minimal friction, making them ideal for both gaming and long typing sessions. The Oil King switches are part of Gateron's top-tier lineup, providing a balance of smoothness and durability that appeals to enthusiasts and professionals alike.",
 			ManufacturerID:   ptr(2), // Gateron
@@ -850,7 +850,7 @@ func seedGateron(tx *gorm.DB, admin models.User) error {
 		},
 
 		{
-			Name:             "Gateron Baby Kangaroo",
+			Name:             "Baby Kangaroo",
 			ShortDescription: "Linear switch with a unique spring design.",
 			LongDescription:  "Gateron Baby Kangaroo switches offer a distinctive actuation feel, featuring a unique spring design for a novel linear experience.",
 			ManufacturerID:   ptr(2), // Gateron
@@ -893,7 +893,7 @@ func seedGateron(tx *gorm.DB, admin models.User) error {
 			},
 		},
 		{
-			Name:             "Gateron Cap V2 Brown",
+			Name:             "Cap V2 Brown",
 			ShortDescription: "Upgraded tactile switch with a moderate actuation force.",
 			LongDescription:  "Gateron Cap V2 Brown switches feature an upgraded tactile experience with enhanced sound dampening, offering a more refined tactile feel. With a moderate actuation force of 55 grams, these switches provide a satisfying bump with reduced noise, making them ideal for users who appreciate tactile feedback without the audible distraction. The Cap V2 series is designed for users seeking both performance and a quieter typing experience.",
 			ManufacturerID:   ptr(2), // Gateron
@@ -934,7 +934,7 @@ func seedGateron(tx *gorm.DB, admin models.User) error {
 			},
 		},
 		{
-			Name:             "Gateron Cap V2 Blue",
+			Name:             "Cap V2 Blue",
 			ShortDescription: "Upgraded clicky switch with a tactile bump.",
 			LongDescription:  "Gateron Cap V2 Blue switches feature an upgraded clicky experience with enhanced sound and tactile feedback, providing a satisfying typing feel.",
 			ManufacturerID:   ptr(2), // Gateron
@@ -977,7 +977,7 @@ func seedGateron(tx *gorm.DB, admin models.User) error {
 			},
 		},
 		{
-			Name:             "Gateron Cap V2 Yellow",
+			Name:             "Cap V2 Yellow",
 			ShortDescription: "Upgraded linear switch with a smooth feel and factory lubrication.",
 			LongDescription:  "Gateron Cap V2 Yellow switches provide an enhanced linear typing experience with factory lubrication for smoother keystrokes.",
 			ManufacturerID:   ptr(2), // Gateron
@@ -1018,7 +1018,7 @@ func seedGateron(tx *gorm.DB, admin models.User) error {
 			},
 		},
 		{
-			Name:             "Gateron Red",
+			Name:             "Red",
 			ShortDescription: "Linear switch with a light actuation force.",
 			LongDescription:  "Gateron Red switches are favored for their smooth linear action and light actuation force of 45 grams, making them ideal for gaming and typing. These switches provide a consistent and uninterrupted keystroke, offering a responsive and fast typing experience. They are a popular choice among users who prefer a softer and quieter switch without tactile feedback or audible click, providing an overall smooth and fluid typing experience.",
 			ManufacturerID:   ptr(2), // Gateron
@@ -1049,7 +1049,7 @@ func seedGateron(tx *gorm.DB, admin models.User) error {
 			},
 		},
 		{
-			Name:             "Gateron Blue",
+			Name:             "Blue",
 			ShortDescription: "Clicky switch with a tactile bump.",
 			LongDescription:  "Gateron Blue switches are known for their clicky and tactile typing experience, offering an audible click sound and a distinct tactile bump with each key press. With an actuation force of 55 grams, these switches are popular among typists who appreciate auditory feedback and a satisfying tactile response. The crisp click sound makes them less ideal for quiet environments but highly favored for their satisfying and precise keystrokes.",
 			ManufacturerID:   ptr(2), // Gateron
@@ -1082,7 +1082,7 @@ func seedGateron(tx *gorm.DB, admin models.User) error {
 			},
 		},
 		{
-			Name:             "Gateron Brown",
+			Name:             "Brown",
 			ShortDescription: "Tactile switch with a moderate actuation force.",
 			LongDescription:  "Gateron Brown switches provide a balanced typing experience with a tactile bump and moderate actuation force of 55 grams. These switches are ideal for users who want tactile feedback without the loud click associated with Blue switches. Gateron Browns are versatile and well-suited for both typing and gaming, offering a satisfying yet quiet keystroke, making them a favorite among users who seek a middle ground between linear and clicky switches.",
 			ManufacturerID:   ptr(2), // Gateron
@@ -1115,7 +1115,7 @@ func seedGateron(tx *gorm.DB, admin models.User) error {
 			},
 		},
 		{
-			Name:             "Gateron Black",
+			Name:             "Black",
 			ShortDescription: "Linear switch with a heavier actuation force.",
 			LongDescription:  "Gateron Black switches offer a smooth linear action with a heavier actuation force of 60 grams, providing a firmer typing experience. These switches are ideal for users who prefer more resistance in their keystrokes, reducing the likelihood of accidental key presses. The Gateron Black switch is often chosen by gamers and heavy typists who want a consistent and controlled key press, making it a popular choice for those who appreciate a stiffer feel without tactile feedback.",
 			ManufacturerID:   ptr(2), // Gateron
@@ -1146,7 +1146,7 @@ func seedGateron(tx *gorm.DB, admin models.User) error {
 			},
 		},
 		{
-			Name:             "Gateron Yellow",
+			Name:             "Yellow",
 			ShortDescription: "Linear switch with a medium actuation force.",
 			LongDescription:  "Gateron Yellow switches are known for their smooth linear feel and medium actuation force of 50 grams, offering a balanced experience suitable for both gaming and typing. These switches provide a consistent keystroke with just the right amount of resistance, making them a favorite among users who want a switch that is not too light or too heavy. The Gateron Yellow switch is praised for its responsiveness and smoothness, making it a versatile choice for various applications.",
 			ManufacturerID:   ptr(2), // Gateron
@@ -1177,7 +1177,7 @@ func seedGateron(tx *gorm.DB, admin models.User) error {
 			},
 		},
 		{
-			Name:             "Gateron Green",
+			Name:             "Green",
 			ShortDescription: "Clicky switch with a heavy actuation force.",
 			LongDescription:  "Gateron Green switches are a heavier variant of the Gateron Blue, offering a more pronounced tactile bump and a louder click with each key press. With an actuation force of 80 grams, these switches provide a firm and satisfying clicky typing experience, ideal for users who enjoy strong tactile feedback and audible keystrokes. Gateron Greens are often chosen by enthusiasts who want a more deliberate and forceful typing experience.",
 			ManufacturerID:   ptr(2), // Gateron
@@ -1210,7 +1210,7 @@ func seedGateron(tx *gorm.DB, admin models.User) error {
 			},
 		},
 		{
-			Name:             "Gateron Clear",
+			Name:             "Clear",
 			ShortDescription: "Linear switch with an extremely light actuation force.",
 			LongDescription:  "Gateron Clear switches offer an ultra-light linear feel with an actuation force of only 35 grams, making them ideal for users who prefer minimal resistance during keystrokes. These switches are extremely smooth and require very little force to actuate, providing a quick and effortless typing experience. They are particularly well-suited for users who suffer from finger fatigue or those who prefer a feather-light typing touch.",
 			ManufacturerID:   ptr(2), // Gateron
@@ -1241,7 +1241,7 @@ func seedGateron(tx *gorm.DB, admin models.User) error {
 			},
 		},
 		{
-			Name:             "Gateron Silent Red",
+			Name:             "Silent Red",
 			ShortDescription: "Silent linear switch with a light actuation force.",
 			LongDescription:  "Gateron Silent Red switches are designed to offer the smooth, linear feel of Gateron Reds while significantly reducing noise during actuation. With an actuation force of 45 grams, these switches incorporate dampeners that minimize the sound of both key press and release, making them ideal for quiet environments like offices or shared spaces. Gateron Silent Reds provide a responsive and fluid typing experience without the auditory distraction.",
 			ManufacturerID:   ptr(2), // Gateron
@@ -1272,7 +1272,7 @@ func seedGateron(tx *gorm.DB, admin models.User) error {
 			},
 		},
 		{
-			Name:             "Gateron Silent Black",
+			Name:             "Silent Black",
 			ShortDescription: "Silent linear switch with a heavier actuation force.",
 			LongDescription:  "Gateron Silent Black switches offer a quiet and smooth linear typing experience with a heavier actuation force of 60 grams. These switches are ideal for users who prefer a more deliberate keystroke while maintaining a low-noise profile, thanks to the built-in dampeners that reduce the sound of both key press and release. Gateron Silent Blacks are perfect for those who require both performance and silence in their typing environments.",
 			ManufacturerID:   ptr(2), // Gateron
@@ -1303,7 +1303,7 @@ func seedGateron(tx *gorm.DB, admin models.User) error {
 			},
 		},
 		{
-			Name:             "Gateron Pro Yellow",
+			Name:             "Pro Yellow",
 			ShortDescription: "Enhanced linear switch with a medium actuation force.",
 			LongDescription:  "Gateron Pro Yellow switches are an upgraded version of the standard Gateron Yellows, featuring factory lubrication for an even smoother keystroke. With a medium actuation force of 50 grams, these linear switches offer a balance between lightness and resistance, making them highly versatile for both gaming and typing. The factory lubrication reduces friction, providing a more refined and satisfying typing experience.",
 			ManufacturerID:   ptr(2), // Gateron
@@ -1334,7 +1334,7 @@ func seedGateron(tx *gorm.DB, admin models.User) error {
 			},
 		},
 		{
-			Name:             "Gateron Aliaz Silent",
+			Name:             "Aliaz Silent",
 			ShortDescription: "Silent tactile switch with a gentle tactile bump.",
 			LongDescription:  "Gateron Aliaz Silent switches provided a quiet tactile experience with a smooth bump, popular among those who preferred stealthy typing.",
 			ManufacturerID:   ptr(2), // Gateron
@@ -1369,7 +1369,7 @@ func seedGateron(tx *gorm.DB, admin models.User) error {
 			},
 		},
 		{
-			Name:             "Gateron Orange",
+			Name:             "Orange",
 			ShortDescription: "Tactile switch with a moderate actuation force and unique orange color.",
 			LongDescription:  "Gateron Orange switches offer a noticeable tactile bump with a moderate actuation force, ideal for those seeking a distinct tactile feel with a pop of color.",
 			ManufacturerID:   ptr(2), // Gateron
@@ -1404,7 +1404,7 @@ func seedGateron(tx *gorm.DB, admin models.User) error {
 			},
 		},
 		{
-			Name:             "Gateron Brown Pro",
+			Name:             "Brown Pro",
 			ShortDescription: "Enhanced tactile switch with factory lubrication.",
 			LongDescription:  "Gateron Brown Pro switches provide a smoother tactile experience compared to standard Gateron Browns, featuring factory lubrication for improved performance.",
 			ManufacturerID:   ptr(2), // Gateron
@@ -1439,7 +1439,7 @@ func seedGateron(tx *gorm.DB, admin models.User) error {
 			},
 		},
 		{
-			Name:             "Gateron Purple",
+			Name:             "Purple",
 			ShortDescription: "Tactile switch with a light tactile bump and unique purple housing.",
 			LongDescription:  "Gateron Purple switches offer a light tactile bump with a distinct purple housing, providing a unique typing feel for those seeking a balance between tactile feedback and aesthetics.",
 			ManufacturerID:   ptr(2), // Gateron
@@ -1470,7 +1470,7 @@ func seedGateron(tx *gorm.DB, admin models.User) error {
 			},
 		},
 		{
-			Name:             "Gateron Zealios V2",
+			Name:             "Zealios V2",
 			ShortDescription: "Premium tactile switch with a refined tactile bump.",
 			LongDescription:  "A collaboration with ZealPC, Gateron Zealios V2 switches offer a highly refined tactile bump with premium components for a superior typing experience.",
 			ManufacturerID:   ptr(2), // Gateron
@@ -1503,7 +1503,7 @@ func seedGateron(tx *gorm.DB, admin models.User) error {
 			},
 		},
 		{
-			Name:             "Gateron Kangaroo",
+			Name:             "Kangaroo",
 			ShortDescription: "Tactile switch with a strong tactile bump.",
 			LongDescription:  "Gateron Kangaroo switches are known for their unique actuation profile and distinctive kangaroo-themed color, providing a strong tactile bump and responsive feedback.",
 			ManufacturerID:   ptr(2), // Gateron
@@ -1534,7 +1534,7 @@ func seedGateron(tx *gorm.DB, admin models.User) error {
 			},
 		},
 		{
-			Name:             "Gateron Yellow Tactile",
+			Name:             "Yellow Tactile",
 			ShortDescription: "Discontinued tactile switch with a unique yellow color.",
 			LongDescription:  "Gateron Yellow Tactile switches offered a distinct tactile bump with a unique yellow color, but are no longer in production.",
 			ManufacturerID:   ptr(2), // Gateron
@@ -1565,7 +1565,7 @@ func seedGateron(tx *gorm.DB, admin models.User) error {
 			},
 		},
 		{
-			Name:             "Gateron Sky",
+			Name:             "Sky",
 			ShortDescription: "Discontinued tactile switch developed with Akko.",
 			LongDescription:  "A tactile switch developed in collaboration with Akko, known for its sky-blue color and refined tactile bump, but now discontinued.",
 			ManufacturerID:   ptr(2), // Gateron
@@ -1596,7 +1596,7 @@ func seedGateron(tx *gorm.DB, admin models.User) error {
 			},
 		},
 		{
-			Name:             "Gateron Silver",
+			Name:             "Silver",
 			ShortDescription: "Linear switch with a shorter travel distance for faster actuation.",
 			LongDescription:  "Gateron Silver switches offer a linear feel with a reduced travel distance, making them ideal for rapid keystrokes and gaming.",
 			ManufacturerID:   ptr(2), // Gateron
@@ -1627,7 +1627,7 @@ func seedGateron(tx *gorm.DB, admin models.User) error {
 			},
 		},
 		{
-			Name:             "Gateron Pro Red",
+			Name:             "Pro Red",
 			ShortDescription: "Enhanced linear switch with factory lubrication.",
 			LongDescription:  "Gateron Pro Red switches offer a smoother keystroke compared to standard Gateron Red, thanks to factory lubrication and improved components.",
 			ManufacturerID:   ptr(2), // Gateron
@@ -1658,7 +1658,7 @@ func seedGateron(tx *gorm.DB, admin models.User) error {
 			},
 		},
 		{
-			Name:             "Gateron Raccoon",
+			Name:             "Raccoon",
 			ShortDescription: "Linear switch with a smooth actuation and unique design.",
 			LongDescription:  "Gateron Raccoon switches are designed for a smooth linear typing experience, featuring a unique spring design and distinctive raccoon-themed aesthetics.",
 			ManufacturerID:   ptr(2), // Gateron
@@ -1689,7 +1689,7 @@ func seedGateron(tx *gorm.DB, admin models.User) error {
 			},
 		},
 		{
-			Name:             "Gateron Milky Yellow",
+			Name:             "Milky Yellow",
 			ShortDescription: "Budget-friendly linear switch with a smooth feel.",
 			LongDescription:  "Gateron Cap Milky Yellow switches are known for their smooth linear feel and cost-effectiveness, featuring a milky housing that provides a distinct look and softer bottom-out feel. With an actuation force of 50 grams, these switches offer a balanced typing experience, making them ideal for both typing and gaming. The milky housing also contributes to a more muted sound profile, appealing to users who prefer a quieter switch.",
 			ManufacturerID:   ptr(2), // Gateron
@@ -1720,7 +1720,7 @@ func seedGateron(tx *gorm.DB, admin models.User) error {
 			},
 		},
 		{
-			Name:             "Gateron Crystal Pink",
+			Name:             "Crystal Pink",
 			ShortDescription: "Linear switch with a crystal-clear housing and pink stem.",
 			LongDescription:  "Gateron Crystal Pink switches provide a smooth linear typing experience with a unique crystal-clear housing and pink stem for an aesthetic touch.",
 			ManufacturerID:   ptr(2), // Gateron
@@ -1751,7 +1751,7 @@ func seedGateron(tx *gorm.DB, admin models.User) error {
 			},
 		},
 		{
-			Name:             "Gateron Ink Yellow",
+			Name:             "Ink Yellow",
 			ShortDescription: "Linear switch with smooth actuation and mid-range force.",
 			LongDescription:  "Gateron Box Ink Yellow switches combine the smooth linear feel of the Ink series with the added stability and durability of a box-style design. With a mid-range actuation force of 50 grams, these switches are perfect for users who want a responsive and consistent typing experience with added protection against dust and moisture. The Box Ink Yellow switches are ideal for both gaming and typing, offering the best of both worlds in performance and durability.",
 			ManufacturerID:   ptr(2), // Gateron
@@ -1782,7 +1782,7 @@ func seedGateron(tx *gorm.DB, admin models.User) error {
 			},
 		},
 		{
-			Name:             "Gateron Silent Yellow",
+			Name:             "Silent Yellow",
 			ShortDescription: "Silent linear switch with a smooth feel and reduced noise.",
 			LongDescription:  "Gateron Silent Yellow switches provide a smooth linear typing experience with reduced noise, making them ideal for quiet environments and office settings.",
 			ManufacturerID:   ptr(2), // Gateron
@@ -1813,7 +1813,7 @@ func seedGateron(tx *gorm.DB, admin models.User) error {
 			},
 		},
 		{
-			Name:             "Gateron Silent Brown",
+			Name:             "Silent Brown",
 			ShortDescription: "Silent tactile switch with a gentle bump and quiet operation.",
 			LongDescription:  "Gateron Silent Brown switches offer a tactile experience with a gentle bump and quiet operation, making them ideal for users who prefer stealthy typing without sacrificing feedback.",
 			ManufacturerID:   ptr(2), // Gateron
@@ -1844,7 +1844,7 @@ func seedGateron(tx *gorm.DB, admin models.User) error {
 			},
 		},
 		{
-			Name:             "Gateron Baby Kangaroo V2",
+			Name:             "Baby Kangaroo V2",
 			ShortDescription: "Enhanced tactile switch with a strong bump and smoother operation.",
 			LongDescription:  "The Gateron Kangaroo V2 switches are tactile switches known for their strong tactile bump and smooth operation. With an actuation force of 55 grams, these switches are perfect for users who enjoy a pronounced tactile feedback that is both responsive and satisfying. The Kangaroo V2 switches are designed for those who prefer a more noticeable bump during typing, making them ideal for heavy typists and those who value distinct feedback in every keystroke.",
 			ManufacturerID:   ptr(2), // Gateron
@@ -1875,7 +1875,7 @@ func seedGateron(tx *gorm.DB, admin models.User) error {
 			},
 		},
 		{
-			Name:             "Gateron Cap Red",
+			Name:             "Cap Red",
 			ShortDescription: "Linear switch with enhanced performance and sound dampening.",
 			LongDescription:  "Gateron Cap Red switches are linear switches designed to offer smooth keystrokes with a light actuation force of 45 grams. These switches come factory-lubricated, ensuring a quiet and responsive typing experience. The Cap Red switches are part of Gateron's premium line, providing users with a reliable and high-performance switch that is perfect for gaming and fast typing.",
 			ManufacturerID:   ptr(2), // Gateron
@@ -1906,7 +1906,7 @@ func seedGateron(tx *gorm.DB, admin models.User) error {
 			},
 		},
 		{
-			Name:             "Gateron Ink Red",
+			Name:             "Ink Red",
 			ShortDescription: "Premium linear switch with a smooth keystroke.",
 			LongDescription:  "The Gateron Box Ink Red switches are linear switches with a unique box-style design that enhances stability and offers protection against dust and moisture. With an actuation force of 45 grams, these switches provide a smooth and responsive keystroke, making them ideal for users who prioritize durability and performance. The Box Ink Red switches are part of Gateron's premium Ink series, known for their high-quality construction and reliable operation.",
 			ManufacturerID:   ptr(2), // Gateron
@@ -1937,7 +1937,7 @@ func seedGateron(tx *gorm.DB, admin models.User) error {
 			},
 		},
 		{
-			Name:             "Gateron Ink Black",
+			Name:             "Ink Black",
 			ShortDescription: "Premium linear switch with a heavier actuation force.",
 			LongDescription:  "Gateron Box Ink Black switches are designed for users who prefer a heavier linear feel with the added benefits of a box-style design. With an actuation force of 60 grams, these switches provide a firm and consistent keystroke while offering enhanced protection against dust and moisture. The Box Ink Black switches are a great choice for those seeking a durable switch that can withstand heavy use while maintaining a smooth typing experience.",
 			ManufacturerID:   ptr(2), // Gateron
@@ -1968,7 +1968,7 @@ func seedGateron(tx *gorm.DB, admin models.User) error {
 			},
 		},
 		{
-			Name:             "Gateron Ink Blue",
+			Name:             "Ink Blue",
 			ShortDescription: "Clicky switch with a distinct click and tactile feedback.",
 			LongDescription:  "Gateron Ink Blue switches provide a clicky typing experience with a distinct click and tactile feedback, offering premium quality in the Ink series.",
 			ManufacturerID:   ptr(2), // Gateron
@@ -1999,7 +1999,7 @@ func seedGateron(tx *gorm.DB, admin models.User) error {
 			},
 		},
 		{
-			Name:             "Gateron Box Ink Red",
+			Name:             "Box Ink Red",
 			ShortDescription: "Box-style linear switch with improved dust and moisture protection.",
 			LongDescription:  "Gateron Box Ink Red switches offer a linear typing experience with enhanced dust and moisture protection, providing durability and smooth keystrokes.",
 			ManufacturerID:   ptr(2), // Gateron
@@ -2030,7 +2030,7 @@ func seedGateron(tx *gorm.DB, admin models.User) error {
 			},
 		},
 		{
-			Name:             "Gateron Box Ink Black",
+			Name:             "Box Ink Black",
 			ShortDescription: "Box-style linear switch with a heavier actuation force.",
 			LongDescription:  "Gateron Box Ink Black switches provide a heavier actuation force with box-style protection, offering smooth keystrokes and enhanced durability.",
 			ManufacturerID:   ptr(2), // Gateron
@@ -2061,7 +2061,7 @@ func seedGateron(tx *gorm.DB, admin models.User) error {
 			},
 		},
 		{
-			Name:             "Gateron Box Ink Yellow",
+			Name:             "Box Ink Yellow",
 			ShortDescription: "Box-style linear switch with smooth actuation and mid-range force.",
 			LongDescription:  "Gateron Box Ink Yellow switches offer smooth actuation with mid-range force, featuring box-style protection for enhanced durability and performance.",
 			ManufacturerID:   ptr(2), // Gateron
@@ -2092,7 +2092,7 @@ func seedGateron(tx *gorm.DB, admin models.User) error {
 			},
 		},
 		{
-			Name:             "Gateron KS-3 Red",
+			Name:             "KS-3 Red",
 			ShortDescription: "Linear switch with a smooth feel and light actuation force.",
 			LongDescription:  "Gateron KS-3 Red switches offer a smooth linear feel with light actuation, providing an affordable and reliable option for linear enthusiasts.",
 			ManufacturerID:   ptr(2), // Gateron
@@ -2123,7 +2123,7 @@ func seedGateron(tx *gorm.DB, admin models.User) error {
 			},
 		},
 		{
-			Name:             "Gateron KS-3 Brown",
+			Name:             "KS-3 Brown",
 			ShortDescription: "Tactile switch with a moderate actuation force and gentle bump.",
 			LongDescription:  "Gateron KS-3 Brown switches provide a moderate actuation force with a gentle tactile bump, offering a balanced and affordable option for tactile enthusiasts.",
 			ManufacturerID:   ptr(2), // Gateron
@@ -2155,7 +2155,7 @@ func seedGateron(tx *gorm.DB, admin models.User) error {
 			},
 		},
 		{
-			Name:             "Gateron KS-3 Blue",
+			Name:             "KS-3 Blue",
 			ShortDescription: "Clicky switch with an audible click and tactile feedback.",
 			LongDescription:  "Gateron KS-3 Blue switches offer an audible click and tactile feedback, providing a clicky typing experience at an affordable price point.",
 			ManufacturerID:   ptr(2), // Gateron
@@ -2186,7 +2186,7 @@ func seedGateron(tx *gorm.DB, admin models.User) error {
 			},
 		},
 		{
-			Name:             "Gateron KS-3 Yellow",
+			Name:             "KS-3 Yellow",
 			ShortDescription: "Linear switch with a medium actuation force and smooth keystrokes.",
 			LongDescription:  "Gateron KS-3 Yellow switches offer smooth keystrokes with a medium actuation force, providing a versatile and cost-effective option for linear enthusiasts.",
 			ManufacturerID:   ptr(2), // Gateron
@@ -2217,7 +2217,7 @@ func seedGateron(tx *gorm.DB, admin models.User) error {
 			},
 		},
 		{
-			Name:             "Gateron KS-3 Black",
+			Name:             "KS-3 Black",
 			ShortDescription: "Linear switch with a heavier actuation force for added resistance.",
 			LongDescription:  "Gateron KS-3 Black switches offer a heavier actuation force with added resistance, providing a firm linear typing experience at a value price.",
 			ManufacturerID:   ptr(2), // Gateron
@@ -2248,7 +2248,7 @@ func seedGateron(tx *gorm.DB, admin models.User) error {
 			},
 		},
 		{
-			Name:             "Gateron KS-8 Red",
+			Name:             "KS-8 Red",
 			ShortDescription: "Linear switch with a light actuation force and smooth feel.",
 			LongDescription:  "Gateron KS-8 Red switches offer a light actuation force with smooth keystrokes, providing an enjoyable typing experience.",
 			ManufacturerID:   ptr(2), // Gateron
@@ -2279,7 +2279,7 @@ func seedGateron(tx *gorm.DB, admin models.User) error {
 			},
 		},
 		{
-			Name:             "Gateron KS-8 Brown",
+			Name:             "KS-8 Brown",
 			ShortDescription: "Tactile switch with a gentle bump and moderate actuation force.",
 			LongDescription:  "Gateron KS-8 Brown switches provide a gentle tactile bump with moderate force, offering a balanced typing experience.",
 			ManufacturerID:   ptr(2), // Gateron
@@ -2310,7 +2310,7 @@ func seedGateron(tx *gorm.DB, admin models.User) error {
 			},
 		},
 		{
-			Name:             "Gateron KS-8 Blue",
+			Name:             "KS-8 Blue",
 			ShortDescription: "Clicky switch with an audible click and tactile feedback.",
 			LongDescription:  "Gateron KS-8 Blue switches offer an audible click with tactile feedback, ideal for users who enjoy clicky typing.",
 			ManufacturerID:   ptr(2), // Gateron
@@ -2341,7 +2341,7 @@ func seedGateron(tx *gorm.DB, admin models.User) error {
 			},
 		},
 		{
-			Name:             "Gateron KS-8 Yellow",
+			Name:             "KS-8 Yellow",
 			ShortDescription: "Linear switch with a medium actuation force and enhanced smoothness.",
 			LongDescription:  "Gateron KS-8 Yellow switches offer a medium actuation force with enhanced smoothness, providing a satisfying typing experience.",
 			ManufacturerID:   ptr(2), // Gateron
@@ -2372,7 +2372,7 @@ func seedGateron(tx *gorm.DB, admin models.User) error {
 			},
 		},
 		{
-			Name:             "Gateron KS-8 Black",
+			Name:             "KS-8 Black",
 			ShortDescription: "Linear switch with a heavier actuation force for added resistance.",
 			LongDescription:  "Gateron KS-8 Black switches offer a heavier actuation force for users who prefer more resistance in their keystrokes, providing a firm typing experience.",
 			ManufacturerID:   ptr(2), // Gateron
@@ -2403,7 +2403,7 @@ func seedGateron(tx *gorm.DB, admin models.User) error {
 			},
 		},
 		{
-			Name:             "Gateron Luciola",
+			Name:             "Luciola",
 			ShortDescription: "Linear switch with a glow-in-the-dark housing and smooth keystrokes.",
 			LongDescription:  "The Gateron Luciola switch features a glow-in-the-dark housing with smooth keystrokes, offering a premium aesthetic and performance.",
 			ManufacturerID:   ptr(2), // Gateron
@@ -2434,7 +2434,7 @@ func seedGateron(tx *gorm.DB, admin models.User) error {
 			},
 		},
 		{
-			Name:             "Gateron North Pole V2 (43g)",
+			Name:             "North Pole V2 (43g)",
 			ShortDescription: "Light linear switch with transparent housing, optimized for RGB lighting.",
 			LongDescription:  "The Gateron North Pole V2 43g variant offers a light linear typing experience with a transparent housing designed for optimal RGB lighting. With a low actuation force of 43g, this switch provides effortless keystrokes, making it ideal for users who prefer a gentle touch or for extended typing sessions. The transparent housing not only enhances RGB effects but also contributes to a unique sound profile, balancing smoothness and acoustic feedback.",
 			ManufacturerID:   ptr(2), // Gateron
@@ -2466,7 +2466,7 @@ func seedGateron(tx *gorm.DB, admin models.User) error {
 			},
 		},
 		{
-			Name:             "Gateron North Pole V2 (55g)",
+			Name:             "North Pole V2 (55g)",
 			ShortDescription: "Balanced linear switch with transparent housing, optimized for RGB lighting.",
 			LongDescription:  "The Gateron North Pole V2 55g variant provides a balanced linear typing experience with a transparent housing designed for optimal RGB lighting. With a moderate actuation force of 55g, this switch offers a satisfying middle ground between light and heavy switches, suitable for both typing and gaming. The transparent housing not only enhances RGB effects but also contributes to a distinct sound profile, offering a blend of smoothness and auditory feedback.",
 			ManufacturerID:   ptr(2), // Gateron
@@ -2498,7 +2498,7 @@ func seedGateron(tx *gorm.DB, admin models.User) error {
 			},
 		},
 		{
-			Name:             "Gateron North Pole V2 (62g)",
+			Name:             "North Pole V2 (62g)",
 			ShortDescription: "Firm linear switch with transparent housing, optimized for RGB lighting.",
 			LongDescription:  "The Gateron North Pole V2 62g variant delivers a firm linear typing experience with a transparent housing designed for optimal RGB lighting. With a higher actuation force of 62g, this switch provides a more substantial feel, ideal for users who prefer a stronger push or for applications requiring precise key presses. The transparent housing not only enhances RGB effects but also contributes to a unique sound profile, balancing firmness with acoustic feedback.",
 			ManufacturerID:   ptr(2), // Gateron
@@ -2530,7 +2530,7 @@ func seedGateron(tx *gorm.DB, admin models.User) error {
 			},
 		},
 		{
-			Name:             "Gateron Phantom Red",
+			Name:             "Phantom Red",
 			ShortDescription: "Linear switch with a light actuation force and smooth keystrokes.",
 			LongDescription:  "Gateron Phantom Red switches offer smooth keystrokes with a light actuation force, providing a satisfying typing experience.",
 			ManufacturerID:   ptr(2), // Gateron
@@ -2561,7 +2561,7 @@ func seedGateron(tx *gorm.DB, admin models.User) error {
 			},
 		},
 		{
-			Name:             "Gateron Phantom Brown",
+			Name:             "Phantom Brown",
 			ShortDescription: "Tactile switch with a gentle bump and moderate actuation force.",
 			LongDescription:  "Gateron Phantom Brown switches provide a gentle tactile bump with moderate actuation force, offering a balanced typing experience.",
 			ManufacturerID:   ptr(2), // Gateron
@@ -2592,7 +2592,7 @@ func seedGateron(tx *gorm.DB, admin models.User) error {
 			},
 		},
 		{
-			Name:             "Gateron Phantom Blue",
+			Name:             "Phantom Blue",
 			ShortDescription: "Clicky switch with an audible click and tactile feedback.",
 			LongDescription:  "Gateron Phantom Blue switches offer a clicky typing experience with an audible click and tactile feedback, providing a satisfying typing experience.",
 			ManufacturerID:   ptr(2), // Gateron
@@ -2623,7 +2623,7 @@ func seedGateron(tx *gorm.DB, admin models.User) error {
 			},
 		},
 		{
-			Name:             "Gateron Melodic",
+			Name:             "Melodic",
 			ShortDescription: "Tactile switch with a musical sound profile and smooth operation.",
 			LongDescription:  "The Gateron Melodic switch is a tactile switch designed to provide a unique typing experience with a musical sound profile. With an actuation force of 55 grams, the Melodic switch offers a gentle tactile bump along with a distinctive sound that sets it apart from other switches. This switch is ideal for users who enjoy a tactile feedback with an added element of auditory satisfaction, making typing not only functional but also enjoyable.",
 			ManufacturerID:   ptr(2), // Gateron
@@ -2654,7 +2654,7 @@ func seedGateron(tx *gorm.DB, admin models.User) error {
 			},
 		},
 		{
-			Name:             "Gateron KS-9 Red",
+			Name:             "KS-9 Red",
 			ShortDescription: "Linear switch with improved smoothness and sound.",
 			LongDescription:  "Gateron KS-9 Red switches are enhanced linear switches known for their improved smoothness and sound. With a light actuation force of 45g, these switches offer a buttery smooth typing experience with minimal resistance. The KS-9 series features upgraded materials and manufacturing processes, resulting in reduced wobble and a more consistent feel compared to earlier Gateron switches. Ideal for both gaming and typing, KS-9 Red switches provide a quiet and effortless keystroke.",
 			ManufacturerID:   ptr(2), // Gateron
@@ -2685,7 +2685,7 @@ func seedGateron(tx *gorm.DB, admin models.User) error {
 			},
 		},
 		{
-			Name:             "Gateron KS-9 Brown",
+			Name:             "KS-9 Brown",
 			ShortDescription: "Tactile switch with a gentle bump and enhanced feel.",
 			LongDescription:  "Gateron KS-9 Brown switches offer a gentle tactile bump and enhanced feel. With an actuation force of 55g, these switches provide a noticeable but not overwhelming tactile feedback. The KS-9 series improvements result in a more refined tactile experience with reduced wobble and improved consistency. These switches strike a balance between typing comfort and tactile response, making them suitable for both work and play.",
 			ManufacturerID:   ptr(2), // Gateron
@@ -2716,7 +2716,7 @@ func seedGateron(tx *gorm.DB, admin models.User) error {
 			},
 		},
 		{
-			Name:             "Gateron KS-9 Blue",
+			Name:             "KS-9 Blue",
 			ShortDescription: "Clicky switch with an audible click and tactile feedback.",
 			LongDescription:  "Gateron KS-9 Blue switches offer an audible click with tactile feedback. With an actuation force of 60g, these switches provide a distinct clicking sound and a sharp tactile bump. The KS-9 series improvements result in a more consistent click and reduced wobble. These switches are perfect for typists who enjoy auditory feedback and a crisp typing experience.",
 			ManufacturerID:   ptr(2), // Gateron
@@ -2747,7 +2747,7 @@ func seedGateron(tx *gorm.DB, admin models.User) error {
 			},
 		},
 		{
-			Name:             "Gateron KS-9 Yellow",
+			Name:             "KS-9 Yellow",
 			ShortDescription: "Linear switch with a medium actuation force and smooth keystrokes.",
 			LongDescription:  "Gateron KS-9 Yellow switches offer a medium actuation force with smooth keystrokes. With an actuation force of 50g, these switches provide a balanced typing experience that's neither too light nor too heavy. The KS-9 series improvements result in enhanced smoothness and reduced wobble. These versatile switches are popular among both typists and gamers for their comfortable middle-ground characteristics.",
 			ManufacturerID:   ptr(2), // Gateron
@@ -2778,7 +2778,7 @@ func seedGateron(tx *gorm.DB, admin models.User) error {
 			},
 		},
 		{
-			Name:             "Gateron KS-9 Black",
+			Name:             "KS-9 Black",
 			ShortDescription: "Linear switch with a heavier actuation force for added resistance.",
 			LongDescription:  "Gateron KS-9 Black switches offer a heavier actuation force, providing a firm typing experience. With an actuation force of 60g, these switches are ideal for users who prefer more resistance in their keystrokes. The KS-9 series improvements result in enhanced smoothness and reduced wobble, even with the heavier spring. These switches are perfect for those who enjoy a more substantial feel and want to minimize accidental key presses.",
 			ManufacturerID:   ptr(2), // Gateron
@@ -2809,7 +2809,7 @@ func seedGateron(tx *gorm.DB, admin models.User) error {
 			},
 		},
 		{
-			Name:             "Gateron KS-9 Green",
+			Name:             "KS-9 Green",
 			ShortDescription: "Clicky switch with a strong tactile bump and audible click.",
 			LongDescription:  "Gateron KS-9 Green switches provide a strong tactile bump with an audible click. With a higher actuation force of 65g, these switches offer a more pronounced tactile and auditory feedback compared to Blue switches. The KS-9 series improvements result in a more consistent click and reduced wobble. These switches are ideal for users who enjoy a firm keystroke with a satisfying click, perfect for typing-intensive tasks.",
 			ManufacturerID:   ptr(2), // Gateron
@@ -2840,7 +2840,7 @@ func seedGateron(tx *gorm.DB, admin models.User) error {
 			},
 		},
 		{
-			Name:             "Gateron KS-9 Clear",
+			Name:             "KS-9 Clear",
 			ShortDescription: "Linear switch with a light actuation force and smooth feel.",
 			LongDescription:  "Gateron KS-9 Clear switches offer a light actuation force and smooth feel, ideal for users who prefer a softer typing experience. With an actuation force of 35g, these switches provide an ultra-light keystroke, making them perfect for extended typing sessions or for those with sensitive fingers. The KS-9 series improvements result in enhanced smoothness and reduced wobble, even with the lighter spring. These switches offer a unique typing experience that's both effortless and responsive.",
 			ManufacturerID:   ptr(2), // Gateron
@@ -2871,7 +2871,7 @@ func seedGateron(tx *gorm.DB, admin models.User) error {
 			},
 		},
 		{
-			Name:             "Gateron Milky Red",
+			Name:             "Milky Red",
 			ShortDescription: "Linear switch with a milky housing for a softer feel.",
 			LongDescription:  "Gateron Milky Red switches feature a milky housing that provides a softer feel and muted sound, offering a smooth linear experience. With an actuation force of 45 grams, these switches are designed for users who seek a light and responsive typing experience. The milky housing not only enhances the aesthetic appeal of the switch but also contributes to a quieter and softer bottom-out, making it suitable for a wide range of applications.",
 			ManufacturerID:   ptr(2), // Gateron
@@ -2902,7 +2902,7 @@ func seedGateron(tx *gorm.DB, admin models.User) error {
 			},
 		},
 		{
-			Name:             "Gateron Milky Brown",
+			Name:             "Milky Brown",
 			ShortDescription: "Tactile switch with a milky housing for a unique feel.",
 			LongDescription:  "Gateron Milky Brown switches provide a gentle tactile bump with a milky housing, offering a unique typing experience with a softer bottom-out feel. With an actuation force of 55 grams, these switches are ideal for users who prefer tactile feedback without the loud click. The milky housing also helps to produce a more subdued sound, making these switches a great choice for quieter environments.",
 			ManufacturerID:   ptr(2), // Gateron
@@ -2933,7 +2933,7 @@ func seedGateron(tx *gorm.DB, admin models.User) error {
 			},
 		},
 		{
-			Name:             "Gateron Milky Blue",
+			Name:             "Milky Blue",
 			ShortDescription: "Clicky switch with a milky housing for a softer sound.",
 			LongDescription:  "Gateron Milky Blue switches offer a clicky typing experience with a softer sound profile, thanks to the milky housing design. With an actuation force of 60 grams, these switches deliver a pronounced tactile bump and an audible click, providing a satisfying and responsive typing experience. The milky housing not only adds to the switch's aesthetic appeal but also dampens the sound slightly, making it a more subtle clicky option.",
 			ManufacturerID:   ptr(2), // Gateron
@@ -2964,7 +2964,7 @@ func seedGateron(tx *gorm.DB, admin models.User) error {
 			},
 		},
 		{
-			Name:             "Gateron Milky Black",
+			Name:             "Milky Black",
 			ShortDescription: "Linear switch with a heavier actuation force and milky housing.",
 			LongDescription:  "Gateron Milky Black switches provide a firm linear feel with a milky housing, offering a unique typing experience with added resistance. With an actuation force of 60 grams, these switches are designed for users who prefer a heavier keystroke. The milky housing contributes to a softer bottom-out and a more muted sound profile, making these switches ideal for those who want a quieter, yet still robust, linear switch.",
 			ManufacturerID:   ptr(2), // Gateron
@@ -2995,7 +2995,7 @@ func seedGateron(tx *gorm.DB, admin models.User) error {
 			},
 		},
 		{
-			Name:             "Gateron Milky Green",
+			Name:             "Milky Green",
 			ShortDescription: "Clicky switch with a strong tactile bump and milky housing.",
 			LongDescription:  "Gateron Milky Green switches offer a strong tactile bump with a milky housing, providing a unique clicky typing experience with a softer sound. With an actuation force of 80 grams, these switches are designed for users who prefer a heavier clicky switch with pronounced feedback. The milky housing not only enhances the switch's visual appeal but also helps to reduce the sharpness of the click sound, making it a more refined option for clicky switch enthusiasts.",
 			ManufacturerID:   ptr(2), // Gateron
@@ -3026,7 +3026,7 @@ func seedGateron(tx *gorm.DB, admin models.User) error {
 			},
 		},
 		{
-			Name:             "Gateron Milky Clear",
+			Name:             "Milky Clear",
 			ShortDescription: "Linear switch with a light actuation force and milky housing.",
 			LongDescription:  "Gateron Milky Clear switches offer a light actuation force and smooth keystrokes with a milky housing, providing a softer feel and quieter operation. With an actuation force of 35 grams, these switches are perfect for users who prefer a very light and effortless typing experience. The milky housing also contributes to a more subdued sound profile, making these switches ideal for those who value both performance and quietness in their typing setup.",
 			ManufacturerID:   ptr(2), // Gateron
@@ -3057,7 +3057,7 @@ func seedGateron(tx *gorm.DB, admin models.User) error {
 			},
 		},
 		{
-			Name:             "Gateron Box Red",
+			Name:             "Box Red",
 			ShortDescription: "Linear switch with box design for added stability.",
 			LongDescription:  "Gateron Box Red switches offer a smooth linear experience with a box design that enhances stability and protection against dust. With an actuation force of 45 grams, these switches provide a light and responsive feel. The box design not only improves the switch's durability but also contributes to a more consistent feel and reduced wobble. Ideal for both typing and gaming, Box Red switches deliver a premium linear experience with added reliability.",
 			ManufacturerID:   ptr(2), // Gateron
@@ -3088,7 +3088,7 @@ func seedGateron(tx *gorm.DB, admin models.User) error {
 			},
 		},
 		{
-			Name:             "Gateron Box Brown",
+			Name:             "Box Brown",
 			ShortDescription: "Tactile switch with box design for enhanced feel.",
 			LongDescription:  "Gateron Box Brown switches offer a gentle tactile bump with a box design, providing a stable typing experience and protection against dust. With an actuation force of 55 grams, these switches deliver a noticeable but not overwhelming tactile feedback. The box design enhances the switch's durability and contributes to a more consistent feel with reduced wobble. Box Brown switches are perfect for users who enjoy tactile feedback in a premium package.",
 			ManufacturerID:   ptr(2), // Gateron
@@ -3119,7 +3119,7 @@ func seedGateron(tx *gorm.DB, admin models.User) error {
 			},
 		},
 		{
-			Name:             "Gateron Box Blue",
+			Name:             "Box Blue",
 			ShortDescription: "Clicky switch with box design for a crisp click.",
 			LongDescription:  "Gateron Box Blue switches provide a clicky typing experience with a box design, enhancing the crispness of each click and offering stability. With an actuation force of 60 grams, these switches deliver a pronounced tactile bump and an audible click. The box design not only improves durability but also contributes to a more consistent feel and reduced wobble. Box Blue switches are ideal for users who enjoy a satisfying clicky feedback in a premium package.",
 			ManufacturerID:   ptr(2), // Gateron
@@ -3150,7 +3150,7 @@ func seedGateron(tx *gorm.DB, admin models.User) error {
 			},
 		},
 		{
-			Name:             "Gateron Box Black",
+			Name:             "Box Black",
 			ShortDescription: "Linear switch with a heavier feel and box design.",
 			LongDescription:  "Gateron Box Black switches offer a heavier linear feel with a box design, providing stability and protection against dust and debris. With an actuation force of 60 grams, these switches deliver a firmer typing experience that's ideal for users who prefer more resistance. The box design enhances durability and contributes to a more consistent feel with reduced wobble. Box Black switches are perfect for those seeking a premium heavy linear switch with added reliability.",
 			ManufacturerID:   ptr(2), // Gateron
@@ -3181,7 +3181,7 @@ func seedGateron(tx *gorm.DB, admin models.User) error {
 			},
 		},
 		{
-			Name:             "Gateron Silent Clear",
+			Name:             "Silent Clear",
 			ShortDescription: "Silent linear switch with a light actuation force.",
 			LongDescription:  "Gateron Silent Clear switches offer a quiet linear typing experience with a light actuation force, ideal for stealthy typing environments. With an actuation force of 35 grams, these switches provide an ultra-light keystroke while maintaining near-silent operation. The Silent Clear switches feature special dampeners to reduce both bottom-out and upstroke noise, making them perfect for office environments or late-night typing sessions where noise reduction is crucial.",
 			ManufacturerID:   ptr(2), // Gateron
@@ -3212,7 +3212,7 @@ func seedGateron(tx *gorm.DB, admin models.User) error {
 			},
 		},
 		{
-			Name:             "Gateron Milu",
+			Name:             "Milu",
 			ShortDescription: "Tactile switch designed for a unique typing experience.",
 			LongDescription:  "Gateron Milu switches are designed to offer a unique tactile typing experience, providing a satisfying tactile bump and smooth keystrokes. With an estimated actuation force of 55 grams, these switches deliver a pronounced tactile feedback without being overly heavy. The Milu switches are engineered to provide a balance between tactile response and typing comfort, making them ideal for enthusiasts who appreciate a distinct tactile sensation without the audible click of clicky switches.",
 			ManufacturerID:   ptr(2), // Gateron
@@ -3243,7 +3243,7 @@ func seedGateron(tx *gorm.DB, admin models.User) error {
 			},
 		},
 		{
-			Name:             "Gateron Hippo",
+			Name:             "Hippo",
 			ShortDescription: "Linear switch with a thocky sound profile.",
 			LongDescription:  "Gateron Hippo switches are linear switches renowned for their smooth keystrokes and distinctive thocky sound profile. With an actuation force of 50 grams, these switches are designed for users who appreciate a smooth and consistent typing experience with a deep, satisfying sound. The Hippo switches feature a unique combination of materials and design that contribute to their characteristic sound. They are a perfect choice for enthusiasts seeking a switch that combines performance with a unique auditory experience, ideal for those who enjoy a rich, low-pitched typing sound.",
 			ManufacturerID:   ptr(2), // Gateron
