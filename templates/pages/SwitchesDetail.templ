@@ -3,6 +3,8 @@ package pages
 
 import (
 	"fmt"
+	"log/slog"
+	"reflect"
 	"switches/models"
 	"switches/templates/components"
 	"switches/templates/icons"
@@ -79,10 +81,116 @@ templ SwitchDetail(user models.User, clickyClack models.Switch) {
 				</div>
 				<div id="technical" class="info">
 					<h2>Technical Specifications</h2>
-					<p>Actuation Force: <span>55</span>g</p>
-					<p>Travel Distance: <span>4</span>mm</p>
-					<p>Housing Material: <span>POM</span></p>
-					<p>Stem Material: <span>Polycarbonate</span></p>
+					@details(Details{
+						Name:   "Spring Force",
+						Value:  clickyClack.Details.SpringForce,
+						Suffix: "g",
+					})
+					@details(Details{
+						Name: "Spring Material Type",
+						Type: clickyClack.Details.SpringMaterialType,
+					})
+					@details(Details{
+						Name: "Top Material Housing",
+						Type: clickyClack.Details.TopHousingMaterial,
+					})
+					@details(Details{
+						Name: "Base Material Housing",
+						Type: clickyClack.Details.BaseHousingMaterial,
+					})
+					@details(Details{
+						Name: "Stem Material",
+						Type: clickyClack.Details.StemMaterial,
+					})
+					@details(Details{
+						Name:  "Has Shine Through",
+						Value: clickyClack.Details.HasShineThrough,
+					})
+					@details(Details{
+						Name:   "Pre-Travel",
+						Value:  clickyClack.Details.PreTravel,
+						Suffix: "mm",
+					})
+					@details(Details{
+						Name:   "Total Travel",
+						Value:  clickyClack.Details.TotalTravel,
+						Suffix: "mm",
+					})
+					@details(Details{
+						Name:   "Initial Force",
+						Value:  clickyClack.Details.InitialForce,
+						Suffix: "g",
+					})
+					@details(Details{
+						Name:   "Actuation Point",
+						Value:  clickyClack.Details.ActuationPoint,
+						Suffix: "mm",
+					})
+					@details(Details{
+						Name:   "Actuation Force",
+						Value:  clickyClack.Details.ActuationForce,
+						Suffix: "g",
+					})
+					@details(Details{
+						Name:   "Reset Point",
+						Value:  clickyClack.Details.ResetPoint,
+						Suffix: "mm",
+					})
+					@details(Details{
+						Name:   "Bottom Out Point",
+						Value:  clickyClack.Details.BottomOutForcePoint,
+						Suffix: "mm",
+					})
+					@details(Details{
+						Name:   "Bottom Out Force",
+						Value:  clickyClack.Details.BottomOutForce,
+						Suffix: "g",
+					})
+					@details(Details{
+						Name: "Sound Level",
+						Type: clickyClack.Details.SoundLevel,
+					})
+					@details(Details{
+						Name: "Sound Type",
+						Type: clickyClack.Details.SoundType,
+					})
+					@details(Details{
+						Name: "Tactility Type",
+						Type: clickyClack.Details.TactilityType,
+					})
+					@details(Details{
+						Name:  "Bump Position",
+						Value: clickyClack.Details.BumpPosition,
+					})
+					@details(Details{
+						Name:   "Bump Force",
+						Value:  clickyClack.Details.BumpForce,
+						Suffix: "g",
+					})
+					@details(Details{
+						Name: "Tactility Feedback",
+						Type: clickyClack.Details.TactilityFeedback,
+					})
+					@details(Details{
+						Name:  "Factory Lubed",
+						Value: clickyClack.Details.FactoryLubed,
+					})
+					@details(Details{
+						Name: "Stem Color",
+						Type: clickyClack.Details.StemColor,
+					})
+					@details(Details{
+						Name: "Top Housing Color",
+						Type: clickyClack.Details.TopHousingColor,
+					})
+					@details(Details{
+						Name: "Bottom Housing Color",
+						Type: clickyClack.Details.BottomHousingColor,
+					})
+					@details(Details{
+						Name: "Pin Configuration",
+						Type: clickyClack.Details.PinConfiguration,
+					})
 				</div>
 			</div>
 			<div id="switch-reviews">
@@ -91,6 +199,102 @@ templ SwitchDetail(user models.User, clickyClack models.Switch) {
 		</section>
 		<section id="switch-recommendations"></section>
 	</main>
+}
+
+type Details struct {
+	Name   string
+	Value  any
+	Suffix string
+	Type   *models.Type
+}
+
+templ empty() {
+}
+
+func details(details Details) templ.Component {
+	if details.Type != nil {
+		slog.Info("made it to type", "details", details)
+		return detailsSpan(DetailSpan{
+			Name:   details.Name,
+			Value:  details.Type.Name,
+			Suffix: details.Suffix,
+		})
+	}
+
+	if details.Value == nil {
+		return empty()
+	}
+
+	v := reflect.ValueOf(details.Value)
+	slog.Info("after details", "name", details.Name)
+	if v.Kind() != reflect.Ptr {
+		slog.Info("Made it to not ptr", "details", details)
+		return detailsSpan(DetailSpan{
+			Name:   details.Name,
+			Value:  details.Value,
+			Suffix: details.Suffix,
+		})
+	}
+
+	if v.IsNil() {
+		slog.Info("Made it to is Nil", "value", v)
+		return empty()
+	}
+
+	switch valueType := v.Elem().Kind(); valueType {
+	case reflect.Int:
+		slog.Info("Made it to Int")
+		return detailsSpan(DetailSpan{
+			Name:   details.Name,
+			Value:  v.Elem().Int(),
+			Suffix: details.Suffix,
+		})
+	case reflect.Float32, reflect.Float64:
+		slog.Info("Made it to Float32")
+		return detailsSpan(DetailSpan{
+			Name:   details.Name,
+			Value:  fmt.Sprintf("%.1f", v.Elem().Float()),
+			Suffix: details.Suffix,
+		})
+	case reflect.String:
+		slog.Info("Made it to Float64")
+		return detailsSpan(DetailSpan{
+			Name:   details.Name,
+			Value:  v.Elem().String(),
+			Suffix: details.Suffix,
+		})
+	case reflect.Bool:
+		slog.Info("Made it to Bool")
+		return detailsSpan(DetailSpan{
+			Name:   details.Name,
+			Value:  getBooleanString(v.Elem().Bool()),
+			Suffix: details.Suffix,
+		})
+	default:
+		slog.Info("Made it to default")
+		return empty()
+	}
+}
+
+func getBooleanString(value bool) string {
+	if value {
+		return "Yes"
+	}
+	return "No"
+}
+
+type DetailSpan struct {
+	Name   string
+	Value  any
+	Suffix string
+}
+
+templ detailsSpan(details DetailSpan) {
+	<p>{ details.Name }: <span>{ fmt.Sprintf("%s%s", details.Value, details.Suffix) }</span></p>
+}
+
+func ptr[T any](value T) *T {
+	return &value
 }
 
 templ SwitchDetailOld(user models.User, clickyClack models.Switch) {

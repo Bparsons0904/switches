@@ -42,8 +42,8 @@ func deleteTables(db *gorm.DB) error {
 	})
 }
 
-func ptr[T any](i T) *T {
-	return &i
+func ptr[T any](value T) *T {
+	return &value
 }
 
 func processSwitches(tx *gorm.DB, switches []models.Switch, admin models.User) error {
@@ -59,8 +59,8 @@ func processSwitches(tx *gorm.DB, switches []models.Switch, admin models.User) e
 		}
 
 		// Sleep for 5 sec to ensure unique timestamps
-		// time.Sleep(5 * time.Second)
-		time.Sleep(25 * time.Millisecond)
+		time.Sleep(5 * time.Second)
+		// time.Sleep(25 * time.Millisecond)
 	}
 
 	return nil

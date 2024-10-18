@@ -25,7 +25,7 @@ func seedOutemus(tx *gorm.DB, admin models.User) error {
 				BottomOutForce:        ptr(float32(65)),
 				TotalTravel:           ptr(float32(4.0)),
 				PreTravel:             ptr(float32(2.0)),
-				FactoryLubed:          false,
+				FactoryLubed:          ptr(false),
 				StemMaterialID:        ptr(22), // ABS
 				TopHousingMaterialID:  ptr(22), // ABS
 				BaseHousingMaterialID: ptr(22), // ABS
@@ -56,7 +56,7 @@ func seedOutemus(tx *gorm.DB, admin models.User) error {
 				BottomOutForce:        ptr(float32(65)),
 				TotalTravel:           ptr(float32(4.0)),
 				PreTravel:             ptr(float32(2.0)),
-				FactoryLubed:          false,
+				FactoryLubed:          ptr(false),
 				StemMaterialID:        ptr(22), // ABS
 				TopHousingMaterialID:  ptr(26), // Polycarbonate
 				BaseHousingMaterialID: ptr(26), // Polycarbonate
@@ -87,7 +87,7 @@ func seedOutemus(tx *gorm.DB, admin models.User) error {
 				BottomOutForce:        ptr(float32(70)),
 				TotalTravel:           ptr(float32(4.0)),
 				PreTravel:             ptr(float32(2.0)),
-				FactoryLubed:          false,
+				FactoryLubed:          ptr(false),
 				StemMaterialID:        ptr(22), // ABS
 				TopHousingMaterialID:  ptr(22), // ABS
 				BaseHousingMaterialID: ptr(22), // ABS
@@ -118,7 +118,7 @@ func seedOutemus(tx *gorm.DB, admin models.User) error {
 				BottomOutForce:        ptr(float32(70)),
 				TotalTravel:           ptr(float32(4.0)),
 				PreTravel:             ptr(float32(2.0)),
-				FactoryLubed:          false,
+				FactoryLubed:          ptr(false),
 				StemMaterialID:        ptr(22), // ABS
 				TopHousingMaterialID:  ptr(22), // ABS
 				BaseHousingMaterialID: ptr(22), // ABS
@@ -149,7 +149,7 @@ func seedOutemus(tx *gorm.DB, admin models.User) error {
 				BottomOutForce:        ptr(float32(95)),
 				TotalTravel:           ptr(float32(4.0)),
 				PreTravel:             ptr(float32(2.0)),
-				FactoryLubed:          false,
+				FactoryLubed:          ptr(false),
 				StemMaterialID:        ptr(22), // ABS
 				TopHousingMaterialID:  ptr(22), // ABS
 				BaseHousingMaterialID: ptr(22), // ABS
@@ -180,7 +180,7 @@ func seedOutemus(tx *gorm.DB, admin models.User) error {
 				BottomOutForce:        ptr(float32(65)),
 				TotalTravel:           ptr(float32(4.0)),
 				PreTravel:             ptr(float32(2.0)),
-				FactoryLubed:          false,
+				FactoryLubed:          ptr(false),
 				StemMaterialID:        ptr(22), // ABS
 				TopHousingMaterialID:  ptr(22), // ABS
 				BaseHousingMaterialID: ptr(22), // ABS
@@ -211,7 +211,7 @@ func seedOutemus(tx *gorm.DB, admin models.User) error {
 				BottomOutForce:        ptr(float32(70)),
 				TotalTravel:           ptr(float32(4.0)),
 				PreTravel:             ptr(float32(2.0)),
-				FactoryLubed:          false,
+				FactoryLubed:          ptr(false),
 				StemMaterialID:        ptr(22), // ABS
 				TopHousingMaterialID:  ptr(22), // ABS
 				BaseHousingMaterialID: ptr(22), // ABS
@@ -242,7 +242,7 @@ func seedOutemus(tx *gorm.DB, admin models.User) error {
 				BottomOutForce:        ptr(float32(60)),
 				TotalTravel:           ptr(float32(4.0)),
 				PreTravel:             ptr(float32(2.0)),
-				FactoryLubed:          false,
+				FactoryLubed:          ptr(false),
 				StemMaterialID:        ptr(22), // ABS
 				TopHousingMaterialID:  ptr(22), // ABS
 				BaseHousingMaterialID: ptr(22), // ABS
@@ -273,7 +273,7 @@ func seedOutemus(tx *gorm.DB, admin models.User) error {
 				BottomOutForce:        ptr(float32(75)),
 				TotalTravel:           ptr(float32(4.0)),
 				PreTravel:             ptr(float32(2.0)),
-				FactoryLubed:          false,
+				FactoryLubed:          ptr(false),
 				StemMaterialID:        ptr(22), // ABS
 				TopHousingMaterialID:  ptr(22), // ABS
 				BaseHousingMaterialID: ptr(22), // ABS
@@ -304,7 +304,7 @@ func seedOutemus(tx *gorm.DB, admin models.User) error {
 				BottomOutForce:        ptr(float32(60)),
 				TotalTravel:           ptr(float32(4.0)),
 				PreTravel:             ptr(float32(2.0)),
-				FactoryLubed:          false,
+				FactoryLubed:          ptr(false),
 				StemMaterialID:        ptr(22), // ABS
 				TopHousingMaterialID:  ptr(22), // ABS
 				BaseHousingMaterialID: ptr(22), // ABS
@@ -335,7 +335,7 @@ func seedOutemus(tx *gorm.DB, admin models.User) error {
 				BottomOutForce:        ptr(float32(60)),
 				TotalTravel:           ptr(float32(4.0)),
 				PreTravel:             ptr(float32(2.0)),
-				FactoryLubed:          false,
+				FactoryLubed:          ptr(false),
 				StemMaterialID:        ptr(22), // ABS
 				TopHousingMaterialID:  ptr(26), // Polycarbonate
 				BaseHousingMaterialID: ptr(26), // Polycarbonate
@@ -366,7 +366,7 @@ func seedOutemus(tx *gorm.DB, admin models.User) error {
 				BottomOutForce:        ptr(float32(65)),
 				TotalTravel:           ptr(float32(4.0)),
 				PreTravel:             ptr(float32(2.0)),
-				FactoryLubed:          false,
+				FactoryLubed:          ptr(false),
 				StemMaterialID:        ptr(22), // ABS
 				TopHousingMaterialID:  ptr(22), // ABS
 				BaseHousingMaterialID: ptr(22), // ABS
@@ -397,7 +397,7 @@ func seedOutemus(tx *gorm.DB, admin models.User) error {
 				BottomOutForce:        ptr(float32(65)),
 				TotalTravel:           ptr(float32(4.0)),
 				PreTravel:             ptr(float32(2.0)),
-				FactoryLubed:          false,
+				FactoryLubed:          ptr(false),
 				StemMaterialID:        ptr(22), // ABS
 				TopHousingMaterialID:  ptr(22), // ABS
 				BaseHousingMaterialID: ptr(22), // ABS
@@ -428,7 +428,7 @@ func seedOutemus(tx *gorm.DB, admin models.User) error {
 				BottomOutForce:        ptr(float32(70)),
 				TotalTravel:           ptr(float32(4.0)),
 				PreTravel:             ptr(float32(2.0)),
-				FactoryLubed:          false,
+				FactoryLubed:          ptr(false),
 				StemMaterialID:        ptr(22), // ABS
 				TopHousingMaterialID:  ptr(22), // ABS
 				BaseHousingMaterialID: ptr(22), // ABS
@@ -459,7 +459,7 @@ func seedOutemus(tx *gorm.DB, admin models.User) error {
 				BottomOutForce:        ptr(float32(60)),
 				TotalTravel:           ptr(float32(4.0)),
 				PreTravel:             ptr(float32(2.0)),
-				FactoryLubed:          false,
+				FactoryLubed:          ptr(false),
 				StemMaterialID:        ptr(22), // ABS
 				TopHousingMaterialID:  ptr(22), // ABS
 				BaseHousingMaterialID: ptr(22), // ABS
@@ -490,7 +490,7 @@ func seedOutemus(tx *gorm.DB, admin models.User) error {
 				BottomOutForce:        ptr(float32(65)),
 				TotalTravel:           ptr(float32(4.0)),
 				PreTravel:             ptr(float32(2.0)),
-				FactoryLubed:          false,
+				FactoryLubed:          ptr(false),
 				StemMaterialID:        ptr(22), // ABS
 				TopHousingMaterialID:  ptr(22), // ABS
 				BaseHousingMaterialID: ptr(22), // ABS
@@ -521,7 +521,7 @@ func seedOutemus(tx *gorm.DB, admin models.User) error {
 				BottomOutForce:        ptr(float32(75)),
 				TotalTravel:           ptr(float32(4.0)),
 				PreTravel:             ptr(float32(2.0)),
-				FactoryLubed:          false,
+				FactoryLubed:          ptr(false),
 				StemMaterialID:        ptr(22), // ABS
 				TopHousingMaterialID:  ptr(22), // ABS
 				BaseHousingMaterialID: ptr(22), // ABS
@@ -552,7 +552,7 @@ func seedOutemus(tx *gorm.DB, admin models.User) error {
 				BottomOutForce:        ptr(float32(75)),
 				TotalTravel:           ptr(float32(4.0)),
 				PreTravel:             ptr(float32(2.0)),
-				FactoryLubed:          false,
+				FactoryLubed:          ptr(false),
 				StemMaterialID:        ptr(22), // ABS
 				TopHousingMaterialID:  ptr(22), // ABS
 				BaseHousingMaterialID: ptr(22), // ABS
@@ -583,7 +583,7 @@ func seedOutemus(tx *gorm.DB, admin models.User) error {
 				BottomOutForce:        ptr(float32(75)),
 				TotalTravel:           ptr(float32(4.0)),
 				PreTravel:             ptr(float32(2.0)),
-				FactoryLubed:          false,
+				FactoryLubed:          ptr(false),
 				StemMaterialID:        ptr(22), // ABS
 				TopHousingMaterialID:  ptr(26), // Polycarbonate
 				BaseHousingMaterialID: ptr(26), // Polycarbonate
@@ -614,7 +614,7 @@ func seedOutemus(tx *gorm.DB, admin models.User) error {
 				BottomOutForce:        ptr(float32(65)),
 				TotalTravel:           ptr(float32(4.0)),
 				PreTravel:             ptr(float32(2.0)),
-				FactoryLubed:          false,
+				FactoryLubed:          ptr(false),
 				StemMaterialID:        ptr(22), // ABS
 				TopHousingMaterialID:  ptr(22), // ABS
 				BaseHousingMaterialID: ptr(22), // ABS
@@ -645,7 +645,7 @@ func seedOutemus(tx *gorm.DB, admin models.User) error {
 				BottomOutForce:        ptr(float32(60)),
 				TotalTravel:           ptr(float32(3.5)),
 				PreTravel:             ptr(float32(1.5)),
-				FactoryLubed:          false,
+				FactoryLubed:          ptr(false),
 				StemMaterialID:        ptr(22), // ABS
 				TopHousingMaterialID:  ptr(22), // ABS
 				BaseHousingMaterialID: ptr(22), // ABS
@@ -676,7 +676,7 @@ func seedOutemus(tx *gorm.DB, admin models.User) error {
 				BottomOutForce:        ptr(float32(60)),
 				TotalTravel:           ptr(float32(4.0)),
 				PreTravel:             ptr(float32(2.0)),
-				FactoryLubed:          false,
+				FactoryLubed:          ptr(false),
 				StemMaterialID:        ptr(22), // ABS
 				TopHousingMaterialID:  ptr(22), // ABS
 				BaseHousingMaterialID: ptr(22), // ABS
@@ -707,7 +707,7 @@ func seedOutemus(tx *gorm.DB, admin models.User) error {
 				BottomOutForce:        ptr(float32(60)),
 				TotalTravel:           ptr(float32(4.0)),
 				PreTravel:             ptr(float32(2.0)),
-				FactoryLubed:          false,
+				FactoryLubed:          ptr(false),
 				StemMaterialID:        ptr(22), // ABS
 				TopHousingMaterialID:  ptr(22), // ABS
 				BaseHousingMaterialID: ptr(22), // ABS
@@ -738,7 +738,7 @@ func seedOutemus(tx *gorm.DB, admin models.User) error {
 				BottomOutForce:        ptr(float32(65)),
 				TotalTravel:           ptr(float32(4.0)),
 				PreTravel:             ptr(float32(2.0)),
-				FactoryLubed:          false,
+				FactoryLubed:          ptr(false),
 				StemMaterialID:        ptr(22), // ABS
 				TopHousingMaterialID:  ptr(22), // ABS
 				BaseHousingMaterialID: ptr(22), // ABS
@@ -769,7 +769,7 @@ func seedOutemus(tx *gorm.DB, admin models.User) error {
 				BottomOutForce:        ptr(float32(60)),
 				TotalTravel:           ptr(float32(4.0)),
 				PreTravel:             ptr(float32(2.0)),
-				FactoryLubed:          true,
+				FactoryLubed:          ptr(true),
 				StemMaterialID:        ptr(22), // ABS
 				TopHousingMaterialID:  ptr(22), // ABS
 				BaseHousingMaterialID: ptr(22), // ABS
@@ -800,7 +800,7 @@ func seedOutemus(tx *gorm.DB, admin models.User) error {
 				BottomOutForce:        ptr(float32(65)),
 				TotalTravel:           ptr(float32(4.0)),
 				PreTravel:             ptr(float32(2.0)),
-				FactoryLubed:          false,
+				FactoryLubed:          ptr(false),
 				StemMaterialID:        ptr(22), // ABS
 				TopHousingMaterialID:  ptr(22), // ABS
 				BaseHousingMaterialID: ptr(22), // ABS
@@ -831,7 +831,7 @@ func seedOutemus(tx *gorm.DB, admin models.User) error {
 				BottomOutForce:        ptr(float32(60)),
 				TotalTravel:           ptr(float32(4.0)),
 				PreTravel:             ptr(float32(2.0)),
-				FactoryLubed:          false,
+				FactoryLubed:          ptr(false),
 				StemMaterialID:        ptr(22), // ABS
 				TopHousingMaterialID:  ptr(22), // ABS
 				BaseHousingMaterialID: ptr(22), // ABS
@@ -862,7 +862,7 @@ func seedOutemus(tx *gorm.DB, admin models.User) error {
 				BottomOutForce:        ptr(float32(60)),
 				TotalTravel:           ptr(float32(4.0)),
 				PreTravel:             ptr(float32(2.0)),
-				FactoryLubed:          true,
+				FactoryLubed:          ptr(true),
 				StemMaterialID:        ptr(22), // ABS
 				TopHousingMaterialID:  ptr(22), // ABS
 				BaseHousingMaterialID: ptr(22), // ABS
@@ -893,7 +893,7 @@ func seedOutemus(tx *gorm.DB, admin models.User) error {
 				BottomOutForce:        ptr(float32(60)),
 				TotalTravel:           ptr(float32(4.0)),
 				PreTravel:             ptr(float32(2.0)),
-				FactoryLubed:          true,
+				FactoryLubed:          ptr(true),
 				StemMaterialID:        ptr(22), // ABS
 				TopHousingMaterialID:  ptr(22), // ABS
 				BaseHousingMaterialID: ptr(22), // ABS
@@ -924,7 +924,7 @@ func seedOutemus(tx *gorm.DB, admin models.User) error {
 				BottomOutForce:        ptr(float32(75)),
 				TotalTravel:           ptr(float32(4.0)),
 				PreTravel:             ptr(float32(2.0)),
-				FactoryLubed:          true,
+				FactoryLubed:          ptr(true),
 				StemMaterialID:        ptr(22), // ABS
 				TopHousingMaterialID:  ptr(22), // ABS
 				BaseHousingMaterialID: ptr(22), // ABS
@@ -955,7 +955,7 @@ func seedOutemus(tx *gorm.DB, admin models.User) error {
 				BottomOutForce:        ptr(float32(65)),
 				TotalTravel:           ptr(float32(4.0)),
 				PreTravel:             ptr(float32(2.0)),
-				FactoryLubed:          false,
+				FactoryLubed:          ptr(false),
 				StemMaterialID:        ptr(22), // ABS
 				TopHousingMaterialID:  ptr(26), // Polycarbonate
 				BaseHousingMaterialID: ptr(26), // Polycarbonate
@@ -986,7 +986,7 @@ func seedOutemus(tx *gorm.DB, admin models.User) error {
 				BottomOutForce:        ptr(float32(65)),
 				TotalTravel:           ptr(float32(4.0)),
 				PreTravel:             ptr(float32(2.0)),
-				FactoryLubed:          false,
+				FactoryLubed:          ptr(false),
 				StemMaterialID:        ptr(22), // ABS
 				TopHousingMaterialID:  ptr(26), // Polycarbonate
 				BaseHousingMaterialID: ptr(26), // Polycarbonate
@@ -1017,7 +1017,7 @@ func seedOutemus(tx *gorm.DB, admin models.User) error {
 				BottomOutForce:        ptr(float32(60)),
 				TotalTravel:           ptr(float32(3.5)),
 				PreTravel:             ptr(float32(1.5)),
-				FactoryLubed:          false,
+				FactoryLubed:          ptr(false),
 				StemMaterialID:        ptr(22), // ABS
 				TopHousingMaterialID:  ptr(22), // ABS
 				BaseHousingMaterialID: ptr(22), // ABS
@@ -1048,7 +1048,7 @@ func seedOutemus(tx *gorm.DB, admin models.User) error {
 				BottomOutForce:        ptr(float32(65)),
 				TotalTravel:           ptr(float32(4.0)),
 				PreTravel:             ptr(float32(2.0)),
-				FactoryLubed:          true,
+				FactoryLubed:          ptr(true),
 				StemMaterialID:        ptr(22), // ABS
 				TopHousingMaterialID:  ptr(22), // ABS
 				BaseHousingMaterialID: ptr(22), // ABS
@@ -1079,7 +1079,7 @@ func seedOutemus(tx *gorm.DB, admin models.User) error {
 				BottomOutForce:        ptr(float32(65)),
 				TotalTravel:           ptr(float32(4.0)),
 				PreTravel:             ptr(float32(2.0)),
-				FactoryLubed:          false,
+				FactoryLubed:          ptr(false),
 				StemMaterialID:        ptr(26), // Polycarbonate
 				TopHousingMaterialID:  ptr(26), // Polycarbonate
 				BaseHousingMaterialID: ptr(26), // Polycarbonate
@@ -1110,7 +1110,7 @@ func seedOutemus(tx *gorm.DB, admin models.User) error {
 				BottomOutForce:        ptr(float32(65)),
 				TotalTravel:           ptr(float32(4.0)),
 				PreTravel:             ptr(float32(2.0)),
-				FactoryLubed:          false,
+				FactoryLubed:          ptr(false),
 				StemMaterialID:        ptr(22), // ABS
 				TopHousingMaterialID:  ptr(22), // ABS
 				BaseHousingMaterialID: ptr(22), // ABS
@@ -1141,7 +1141,7 @@ func seedOutemus(tx *gorm.DB, admin models.User) error {
 				BottomOutForce:        ptr(float32(60)),
 				TotalTravel:           ptr(float32(4.0)),
 				PreTravel:             ptr(float32(2.0)),
-				FactoryLubed:          true,
+				FactoryLubed:          ptr(true),
 				StemMaterialID:        ptr(22), // ABS
 				TopHousingMaterialID:  ptr(22), // ABS
 				BaseHousingMaterialID: ptr(22), // ABS
@@ -1172,7 +1172,7 @@ func seedOutemus(tx *gorm.DB, admin models.User) error {
 				BottomOutForce:        ptr(float32(60)),
 				TotalTravel:           ptr(float32(4.0)),
 				PreTravel:             ptr(float32(2.0)),
-				FactoryLubed:          false,
+				FactoryLubed:          ptr(false),
 				StemMaterialID:        ptr(22), // ABS
 				TopHousingMaterialID:  ptr(22), // ABS
 				BaseHousingMaterialID: ptr(22), // ABS
@@ -1203,7 +1203,7 @@ func seedOutemus(tx *gorm.DB, admin models.User) error {
 				BottomOutForce:        ptr(float32(60)),
 				TotalTravel:           ptr(float32(4.0)),
 				PreTravel:             ptr(float32(2.0)),
-				FactoryLubed:          false,
+				FactoryLubed:          ptr(false),
 				StemMaterialID:        ptr(22), // ABS
 				TopHousingMaterialID:  ptr(26), // Polycarbonate
 				BaseHousingMaterialID: ptr(26), // Polycarbonate
@@ -1234,7 +1234,7 @@ func seedOutemus(tx *gorm.DB, admin models.User) error {
 				BottomOutForce:        ptr(float32(60)),
 				TotalTravel:           ptr(float32(4.0)),
 				PreTravel:             ptr(float32(2.0)),
-				FactoryLubed:          false,
+				FactoryLubed:          ptr(false),
 				StemMaterialID:        ptr(22), // ABS
 				TopHousingMaterialID:  ptr(22), // ABS
 				BaseHousingMaterialID: ptr(22), // ABS

@@ -2,6 +2,7 @@ package controllers
 
 import (
 	"fmt"
+	"log/slog"
 	"regexp"
 	"switches/database"
 	"switches/models"
@@ -33,11 +34,24 @@ func getDetailPageData(c *fiber.Ctx) (models.User, models.Switch, error) { // {{
 		return models.User{}, models.Switch{}, err
 	}
 
+	timer := utils.StartTimer("Get Switch Details")
 	var clickyClack models.Switch
-	if err := database.DB.
+	if err := database.DB.Debug().
 		Preload("ImageLinks").
 		Preload("Brand").
 		Preload("SwitchType").
+		Preload("Details.SpringMaterialType").
+		Preload("Details.TopHousingMaterial").
+		Preload("Details.BaseHousingMaterial").
+		Preload("Details.StemMaterial").
+		Preload("Details.SoundLevel").
+		Preload("Details.SoundType").
+		Preload("Details.TactilityType").
+		Preload("Details.TactilityFeedback").
+		Preload("Details.StemColor").
+		Preload("Details.TopHousingColor").
+		Preload("Details.BottomHousingColor").
+		Preload("Details.PinConfiguration").
 		Preload("Ratings", func(db *gorm.DB) *gorm.DB {
 			return db.Where("admin_review_required = false").Preload("User")
 		}).
@@ -46,7 +60,9 @@ func getDetailPageData(c *fiber.Ctx) (models.User, models.Switch, error) { // {{
 		return models.User{}, models.Switch{}, err
 	}
 	clickyClack.GetUserRating(user.ID)
+	timer.LogTotalTime()
 
+	slog.Info("clickyClack", "Spring Material Type", clickyClack.Details.SpringMaterialType)
 	return user, clickyClack, nil
 } // }}}
 

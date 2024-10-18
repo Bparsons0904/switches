@@ -40,7 +40,7 @@ func seedGateron(tx *gorm.DB, admin models.User) error {
 				BottomOutForce:        ptr(float32(60)),  // Estimated
 				SoundLevelID:          ptr(29),           // Low
 				SoundTypeID:           ptr(36),           // Creamy (typical for lubed linears)
-				FactoryLubed:          true,
+				FactoryLubed:          ptr(true),
 				StemColorID:           ptr(45), // Red
 				TopHousingColorID:     ptr(52), // Transparent (common for G Pro series)
 				BottomHousingColorID:  ptr(52), // Transparent (common for G Pro series)
@@ -79,7 +79,7 @@ func seedGateron(tx *gorm.DB, admin models.User) error {
 				BottomOutForce:        ptr(float32(65)), // Estimated
 				SoundLevelID:          ptr(30),          // Medium
 				SoundTypeID:           ptr(36),          // Creamy
-				FactoryLubed:          true,
+				FactoryLubed:          ptr(true),
 				StemColorID:           ptr(50), // Yellow
 				TopHousingColorID:     ptr(52), // Transparent
 				BottomHousingColorID:  ptr(52), // Transparent
@@ -118,7 +118,7 @@ func seedGateron(tx *gorm.DB, admin models.User) error {
 				BottomOutForce:        ptr(float32(75)), // Estimated
 				SoundLevelID:          ptr(30),          // Medium
 				SoundTypeID:           ptr(34),          // Thocky (due to heavier spring)
-				FactoryLubed:          true,
+				FactoryLubed:          ptr(true),
 				StemColorID:           ptr(46), // Black
 				TopHousingColorID:     ptr(52), // Transparent
 				BottomHousingColorID:  ptr(52), // Transparent
@@ -165,7 +165,7 @@ func seedGateron(tx *gorm.DB, admin models.User) error {
 				TactilityFeedbackID: ptr(
 					42,
 				), // Rounded (Gateron Browns are known for a subtle bump)
-				FactoryLubed:         true,
+				FactoryLubed:         ptr(true),
 				StemColorID:          ptr(48), // Brown
 				TopHousingColorID:    ptr(52), // Transparent
 				BottomHousingColorID: ptr(52), // Transparent
@@ -206,7 +206,7 @@ func seedGateron(tx *gorm.DB, admin models.User) error {
 				SoundTypeID:           ptr(33),          // Clicky
 				TactilityTypeID:       ptr(40),          // Click Bar (typical for clicky switches)
 				TactilityFeedbackID:   ptr(41),          // Sharp (typical for clicky switches)
-				FactoryLubed:          true,
+				FactoryLubed:          ptr(true),
 				StemColorID:           ptr(54), // Green
 				TopHousingColorID:     ptr(52), // Transparent
 				BottomHousingColorID:  ptr(52), // Transparent
@@ -246,7 +246,7 @@ func seedGateron(tx *gorm.DB, admin models.User) error {
 				SoundTypeID:           ptr(33),          // Clicky
 				TactilityTypeID:       ptr(40),          // Click Bar
 				TactilityFeedbackID:   ptr(41),          // Sharp
-				FactoryLubed:          true,
+				FactoryLubed:          ptr(true),
 				StemColorID:           ptr(47), // Blue
 				TopHousingColorID:     ptr(52), // Transparent
 				BottomHousingColorID:  ptr(52), // Transparent
@@ -284,7 +284,7 @@ func seedGateron(tx *gorm.DB, admin models.User) error {
 				BottomOutForce:        ptr(float32(60)), // Estimated
 				SoundLevelID:          ptr(29),          // Low
 				SoundTypeID:           ptr(36),          // Creamy
-				FactoryLubed:          true,
+				FactoryLubed:          ptr(true),
 				StemColorID:           ptr(45), // Red
 				TopHousingColorID:     ptr(52), // Transparent
 				BottomHousingColorID:  ptr(52), // Transparent
@@ -323,7 +323,7 @@ func seedGateron(tx *gorm.DB, admin models.User) error {
 				BottomOutForce:        ptr(float32(65)), // Estimated
 				SoundLevelID:          ptr(30),          // Medium
 				SoundTypeID:           ptr(36),          // Creamy
-				FactoryLubed:          true,
+				FactoryLubed:          ptr(true),
 				StemColorID:           ptr(50), // Yellow
 				TopHousingColorID:     ptr(52), // Transparent
 				BottomHousingColorID:  ptr(52), // Transparent
@@ -362,7 +362,7 @@ func seedGateron(tx *gorm.DB, admin models.User) error {
 				BottomOutForce:        ptr(float32(75)), // Estimated
 				SoundLevelID:          ptr(30),          // Medium
 				SoundTypeID:           ptr(34),          // Thocky (due to heavier spring)
-				FactoryLubed:          true,
+				FactoryLubed:          ptr(true),
 				StemColorID:           ptr(46), // Black
 				TopHousingColorID:     ptr(52), // Transparent
 				BottomHousingColorID:  ptr(52), // Transparent
@@ -403,7 +403,7 @@ func seedGateron(tx *gorm.DB, admin models.User) error {
 				SoundTypeID:           ptr(36),          // Creamy
 				TactilityTypeID:       ptr(38),          // Leaf Spring
 				TactilityFeedbackID:   ptr(42),          // Rounded
-				FactoryLubed:          true,
+				FactoryLubed:          ptr(true),
 				StemColorID:           ptr(48), // Brown
 				TopHousingColorID:     ptr(52), // Transparent
 				BottomHousingColorID:  ptr(52), // Transparent
@@ -444,7 +444,7 @@ func seedGateron(tx *gorm.DB, admin models.User) error {
 				SoundTypeID:           ptr(33),          // Clicky
 				TactilityTypeID:       ptr(40),          // Click Bar
 				TactilityFeedbackID:   ptr(41),          // Sharp
-				FactoryLubed:          true,
+				FactoryLubed:          ptr(true),
 				StemColorID:           ptr(47), // Blue
 				TopHousingColorID:     ptr(52), // Transparent
 				BottomHousingColorID:  ptr(52), // Transparent
@@ -483,7 +483,7 @@ func seedGateron(tx *gorm.DB, admin models.User) error {
 				BottomOutForce:        ptr(float32(60)), // Estimated
 				SoundLevelID:          ptr(29),          // Low
 				SoundTypeID:           ptr(36),          // Creamy
-				FactoryLubed:          true,
+				FactoryLubed:          ptr(true),
 				StemColorID:           ptr(45), // Red
 				TopHousingColorID:     ptr(52), // Transparent
 				BottomHousingColorID:  ptr(52), // Transparent
@@ -522,7 +522,7 @@ func seedGateron(tx *gorm.DB, admin models.User) error {
 				BottomOutForce:        ptr(float32(65)), // Estimated
 				SoundLevelID:          ptr(30),          // Medium
 				SoundTypeID:           ptr(36),          // Creamy
-				FactoryLubed:          true,
+				FactoryLubed:          ptr(true),
 				StemColorID:           ptr(50), // Yellow
 				TopHousingColorID:     ptr(52), // Transparent
 				BottomHousingColorID:  ptr(52), // Transparent
@@ -561,7 +561,7 @@ func seedGateron(tx *gorm.DB, admin models.User) error {
 				BottomOutForce:        ptr(float32(75)), // Estimated
 				SoundLevelID:          ptr(30),          // Medium
 				SoundTypeID:           ptr(34),          // Thocky (due to heavier spring)
-				FactoryLubed:          true,
+				FactoryLubed:          ptr(true),
 				StemColorID:           ptr(46), // Black
 				TopHousingColorID:     ptr(52), // Transparent
 				BottomHousingColorID:  ptr(52), // Transparent
@@ -602,7 +602,7 @@ func seedGateron(tx *gorm.DB, admin models.User) error {
 				SoundTypeID:           ptr(36),          // Creamy
 				TactilityTypeID:       ptr(38),          // Leaf Spring
 				TactilityFeedbackID:   ptr(42),          // Rounded
-				FactoryLubed:          true,
+				FactoryLubed:          ptr(true),
 				StemColorID:           ptr(48), // Brown
 				TopHousingColorID:     ptr(52), // Transparent
 				BottomHousingColorID:  ptr(52), // Transparent
@@ -643,7 +643,7 @@ func seedGateron(tx *gorm.DB, admin models.User) error {
 				SoundTypeID:           ptr(33),          // Clicky
 				TactilityTypeID:       ptr(40),          // Click Bar
 				TactilityFeedbackID:   ptr(41),          // Sharp
-				FactoryLubed:          true,
+				FactoryLubed:          ptr(true),
 				StemColorID:           ptr(47), // Blue
 				TopHousingColorID:     ptr(52), // Transparent
 				BottomHousingColorID:  ptr(52), // Transparent
@@ -682,7 +682,7 @@ func seedGateron(tx *gorm.DB, admin models.User) error {
 				BottomOutForce:        ptr(float32(60)), // Estimated
 				SoundLevelID:          ptr(29),          // Low
 				SoundTypeID:           ptr(34),          // Thocky
-				FactoryLubed:          true,
+				FactoryLubed:          ptr(true),
 				StemColorID:           ptr(45), // Red
 				TopHousingColorID:     ptr(53), // Smokey
 				BottomHousingColorID:  ptr(53), // Smokey
@@ -721,7 +721,7 @@ func seedGateron(tx *gorm.DB, admin models.User) error {
 				BottomOutForce:        ptr(float32(75)), // Estimated
 				SoundLevelID:          ptr(30),          // Medium
 				SoundTypeID:           ptr(34),          // Thocky
-				FactoryLubed:          true,
+				FactoryLubed:          ptr(true),
 				StemColorID:           ptr(46), // Black
 				TopHousingColorID:     ptr(53), // Smokey
 				BottomHousingColorID:  ptr(53), // Smokey
@@ -760,7 +760,7 @@ func seedGateron(tx *gorm.DB, admin models.User) error {
 				BottomOutForce:        ptr(float32(65)), // Estimated
 				SoundLevelID:          ptr(30),          // Medium
 				SoundTypeID:           ptr(34),          // Thocky
-				FactoryLubed:          true,
+				FactoryLubed:          ptr(true),
 				StemColorID:           ptr(50), // Yellow
 				TopHousingColorID:     ptr(53), // Smokey
 				BottomHousingColorID:  ptr(53), // Smokey
@@ -801,7 +801,7 @@ func seedGateron(tx *gorm.DB, admin models.User) error {
 				SoundTypeID:           ptr(33),          // Clicky
 				TactilityTypeID:       ptr(40),          // Click Bar
 				TactilityFeedbackID:   ptr(41),          // Sharp
-				FactoryLubed:          true,
+				FactoryLubed:          ptr(true),
 				StemColorID:           ptr(47), // Blue
 				TopHousingColorID:     ptr(53), // Smokey
 				BottomHousingColorID:  ptr(53), // Smokey
@@ -841,7 +841,7 @@ func seedGateron(tx *gorm.DB, admin models.User) error {
 				BottomOutForce:        ptr(float32(70)), // Estimated
 				SoundLevelID:          ptr(30),          // Medium
 				SoundTypeID:           ptr(34),          // Thocky
-				FactoryLubed:          true,
+				FactoryLubed:          ptr(true),
 				StemColorID:           ptr(46), // Black
 				TopHousingColorID:     ptr(46), // Black
 				BottomHousingColorID:  ptr(46), // Black
@@ -883,7 +883,7 @@ func seedGateron(tx *gorm.DB, admin models.User) error {
 				BottomOutForce:        ptr(float32(60)), // Estimated
 				SoundLevelID:          ptr(30),          // Medium
 				SoundTypeID:           ptr(36),          // Creamy
-				FactoryLubed:          true,
+				FactoryLubed:          ptr(true),
 				StemColorID: ptr(
 					50,
 				), // Yellow (assuming based on typical Gateron color scheme)
@@ -926,7 +926,7 @@ func seedGateron(tx *gorm.DB, admin models.User) error {
 				SoundTypeID:           ptr(36),          // Creamy
 				TactilityTypeID:       ptr(38),          // Leaf Spring
 				TactilityFeedbackID:   ptr(42),          // Rounded
-				FactoryLubed:          true,
+				FactoryLubed:          ptr(true),
 				StemColorID:           ptr(48), // Brown
 				TopHousingColorID:     ptr(52), // Transparent
 				BottomHousingColorID:  ptr(60), // Gold (based on the "Golden Brown" description)
@@ -969,7 +969,7 @@ func seedGateron(tx *gorm.DB, admin models.User) error {
 				SoundTypeID:           ptr(33),          // Clicky
 				TactilityTypeID:       ptr(40),          // Click Bar
 				TactilityFeedbackID:   ptr(41),          // Sharp
-				FactoryLubed:          true,
+				FactoryLubed:          ptr(true),
 				StemColorID:           ptr(47), // Blue
 				TopHousingColorID:     ptr(52), // Transparent
 				BottomHousingColorID:  ptr(52), // Transparent
@@ -1010,7 +1010,7 @@ func seedGateron(tx *gorm.DB, admin models.User) error {
 				BottomOutForce:        ptr(float32(65)), // Estimated
 				SoundLevelID:          ptr(29),          // Low
 				SoundTypeID:           ptr(36),          // Creamy
-				FactoryLubed:          true,
+				FactoryLubed:          ptr(true),
 				StemColorID:           ptr(50), // Yellow
 				TopHousingColorID:     ptr(52), // Transparent
 				BottomHousingColorID:  ptr(60), // Gold (based on "Golden Yellow" description)
@@ -1041,7 +1041,7 @@ func seedGateron(tx *gorm.DB, admin models.User) error {
 				BottomOutForce:        ptr(float32(60)), // Estimated
 				SoundLevelID:          ptr(29),          // Low
 				SoundTypeID:           ptr(36),          // Creamy
-				FactoryLubed:          false,
+				FactoryLubed:          ptr(false),
 				StemColorID:           ptr(45), // Red
 				TopHousingColorID:     ptr(52), // Transparent
 				BottomHousingColorID:  ptr(46), // Black
@@ -1074,7 +1074,7 @@ func seedGateron(tx *gorm.DB, admin models.User) error {
 				SoundTypeID:           ptr(33),          // Clicky
 				TactilityTypeID:       ptr(40),          // Click Bar
 				TactilityFeedbackID:   ptr(41),          // Sharp
-				FactoryLubed:          false,
+				FactoryLubed:          ptr(false),
 				StemColorID:           ptr(47), // Blue
 				TopHousingColorID:     ptr(52), // Transparent
 				BottomHousingColorID:  ptr(46), // Black
@@ -1107,7 +1107,7 @@ func seedGateron(tx *gorm.DB, admin models.User) error {
 				SoundTypeID:           ptr(36),          // Creamy
 				TactilityTypeID:       ptr(38),          // Leaf Spring
 				TactilityFeedbackID:   ptr(42),          // Rounded
-				FactoryLubed:          false,
+				FactoryLubed:          ptr(false),
 				StemColorID:           ptr(48), // Brown
 				TopHousingColorID:     ptr(52), // Transparent
 				BottomHousingColorID:  ptr(46), // Black
@@ -1138,7 +1138,7 @@ func seedGateron(tx *gorm.DB, admin models.User) error {
 				BottomOutForce:        ptr(float32(75)), // Estimated
 				SoundLevelID:          ptr(30),          // Medium
 				SoundTypeID:           ptr(34),          // Thocky
-				FactoryLubed:          false,
+				FactoryLubed:          ptr(false),
 				StemColorID:           ptr(46), // Black
 				TopHousingColorID:     ptr(52), // Transparent
 				BottomHousingColorID:  ptr(46), // Black
@@ -1169,7 +1169,7 @@ func seedGateron(tx *gorm.DB, admin models.User) error {
 				BottomOutForce:        ptr(float32(65)), // Estimated
 				SoundLevelID:          ptr(30),          // Medium
 				SoundTypeID:           ptr(36),          // Creamy
-				FactoryLubed:          false,
+				FactoryLubed:          ptr(false),
 				StemColorID:           ptr(50), // Yellow
 				TopHousingColorID:     ptr(52), // Transparent
 				BottomHousingColorID:  ptr(46), // Black
@@ -1202,7 +1202,7 @@ func seedGateron(tx *gorm.DB, admin models.User) error {
 				SoundTypeID:           ptr(33),          // Clicky
 				TactilityTypeID:       ptr(40),          // Click Bar
 				TactilityFeedbackID:   ptr(41),          // Sharp
-				FactoryLubed:          false,
+				FactoryLubed:          ptr(false),
 				StemColorID:           ptr(54), // Green
 				TopHousingColorID:     ptr(52), // Transparent
 				BottomHousingColorID:  ptr(46), // Black
@@ -1233,7 +1233,7 @@ func seedGateron(tx *gorm.DB, admin models.User) error {
 				BottomOutForce:        ptr(float32(50)), // Estimated
 				SoundLevelID:          ptr(28),          // Very Low
 				SoundTypeID:           ptr(36),          // Creamy
-				FactoryLubed:          false,
+				FactoryLubed:          ptr(false),
 				StemColorID:           ptr(49), // Clear
 				TopHousingColorID:     ptr(52), // Transparent
 				BottomHousingColorID:  ptr(46), // Black
@@ -1264,7 +1264,7 @@ func seedGateron(tx *gorm.DB, admin models.User) error {
 				BottomOutForce:        ptr(float32(60)), // Estimated
 				SoundLevelID:          ptr(28),          // Very Low
 				SoundTypeID:           ptr(35),          // Quiet
-				FactoryLubed:          true,
+				FactoryLubed:          ptr(true),
 				StemColorID:           ptr(45), // Red
 				TopHousingColorID:     ptr(52), // Transparent
 				BottomHousingColorID:  ptr(46), // Black
@@ -1295,7 +1295,7 @@ func seedGateron(tx *gorm.DB, admin models.User) error {
 				BottomOutForce:        ptr(float32(75)), // Estimated
 				SoundLevelID:          ptr(28),          // Very Low
 				SoundTypeID:           ptr(35),          // Quiet
-				FactoryLubed:          true,
+				FactoryLubed:          ptr(true),
 				StemColorID:           ptr(46), // Black
 				TopHousingColorID:     ptr(52), // Transparent
 				BottomHousingColorID:  ptr(46), // Black
@@ -1326,7 +1326,7 @@ func seedGateron(tx *gorm.DB, admin models.User) error {
 				BottomOutForce:        ptr(float32(65)), // Estimated
 				SoundLevelID:          ptr(29),          // Low
 				SoundTypeID:           ptr(36),          // Creamy
-				FactoryLubed:          true,
+				FactoryLubed:          ptr(true),
 				StemColorID:           ptr(50), // Yellow
 				TopHousingColorID:     ptr(52), // Transparent
 				BottomHousingColorID:  ptr(52), // Transparent
@@ -1361,7 +1361,7 @@ func seedGateron(tx *gorm.DB, admin models.User) error {
 				SoundTypeID:           ptr(35),          // Quiet
 				TactilityTypeID:       ptr(38),          // Leaf Spring
 				TactilityFeedbackID:   ptr(42),          // Rounded
-				FactoryLubed:          true,
+				FactoryLubed:          ptr(true),
 				StemColorID:           ptr(52), // Transparent
 				TopHousingColorID:     ptr(52), // Transparent
 				BottomHousingColorID:  ptr(52), // Transparent
@@ -1396,7 +1396,7 @@ func seedGateron(tx *gorm.DB, admin models.User) error {
 				SoundTypeID:           ptr(36),          // Creamy
 				TactilityTypeID:       ptr(38),          // Leaf Spring
 				TactilityFeedbackID:   ptr(42),          // Rounded
-				FactoryLubed:          false,
+				FactoryLubed:          ptr(false),
 				StemColorID:           ptr(56), // Orange
 				TopHousingColorID:     ptr(52), // Transparent
 				BottomHousingColorID:  ptr(46), // Black
@@ -1427,7 +1427,7 @@ func seedGateron(tx *gorm.DB, admin models.User) error {
 					46,
 				), // Black (assuming it's similar to standard Browns)
 				PinConfigurationID:  ptr(75), // 5-pin
-				FactoryLubed:        true,
+				FactoryLubed:        ptr(true),
 				PreTravel:           ptr(float32(2.0)),
 				TotalTravel:         ptr(float32(4.0)),
 				ActuationForce:      ptr(float32(55.0)),
@@ -1458,7 +1458,7 @@ func seedGateron(tx *gorm.DB, admin models.User) error {
 				TopHousingColorID:     ptr(55), // Purple
 				BottomHousingColorID:  ptr(55), // Purple
 				PinConfigurationID:    ptr(75), // 5-pin
-				FactoryLubed:          false,
+				FactoryLubed:          ptr(false),
 				PreTravel:             ptr(float32(2.0)),
 				TotalTravel:           ptr(float32(4.0)),
 				ActuationForce:        ptr(float32(50.0)),
@@ -1491,7 +1491,7 @@ func seedGateron(tx *gorm.DB, admin models.User) error {
 				TopHousingColorID:     ptr(52), // Transparent
 				BottomHousingColorID:  ptr(52), // Transparent
 				PinConfigurationID:    ptr(75), // 5-pin
-				FactoryLubed:          true,
+				FactoryLubed:          ptr(true),
 				PreTravel:             ptr(float32(2.0)),
 				TotalTravel:           ptr(float32(4.0)),
 				ActuationForce:        ptr(float32(65.0)),
@@ -1522,7 +1522,7 @@ func seedGateron(tx *gorm.DB, admin models.User) error {
 				TopHousingColorID:     ptr(72), // Tan
 				BottomHousingColorID:  ptr(72), // Tan
 				PinConfigurationID:    ptr(75), // 5-pin
-				FactoryLubed:          false,
+				FactoryLubed:          ptr(false),
 				PreTravel:             ptr(float32(2.0)),
 				TotalTravel:           ptr(float32(3.5)),
 				ActuationForce:        ptr(float32(60.0)),
@@ -1553,7 +1553,7 @@ func seedGateron(tx *gorm.DB, admin models.User) error {
 				TopHousingColorID:     ptr(50), // Yellow
 				BottomHousingColorID:  ptr(50), // Yellow
 				PinConfigurationID:    ptr(74), // 3-pin (assuming standard Gateron configuration)
-				FactoryLubed:          false,
+				FactoryLubed:          ptr(false),
 				PreTravel:             ptr(float32(2.0)),
 				TotalTravel:           ptr(float32(4.0)),
 				ActuationForce:        ptr(float32(55.0)),
@@ -1584,7 +1584,7 @@ func seedGateron(tx *gorm.DB, admin models.User) error {
 				TopHousingColorID:     ptr(47), // Blue
 				BottomHousingColorID:  ptr(47), // Blue
 				PinConfigurationID:    ptr(75), // 5-pin (assuming premium configuration)
-				FactoryLubed:          false,
+				FactoryLubed:          ptr(false),
 				PreTravel:             ptr(float32(2.0)),
 				TotalTravel:           ptr(float32(4.0)),
 				ActuationForce:        ptr(float32(62.0)),
@@ -1615,7 +1615,7 @@ func seedGateron(tx *gorm.DB, admin models.User) error {
 				TopHousingColorID:     ptr(49), // Clear
 				BottomHousingColorID:  ptr(46), // Black
 				PinConfigurationID:    ptr(75), // 5-pin
-				FactoryLubed:          false,
+				FactoryLubed:          ptr(false),
 				PreTravel:             ptr(float32(1.2)),
 				TotalTravel:           ptr(float32(3.4)),
 				ActuationForce:        ptr(float32(45.0)),
@@ -1646,7 +1646,7 @@ func seedGateron(tx *gorm.DB, admin models.User) error {
 				TopHousingColorID:     ptr(49), // Clear
 				BottomHousingColorID:  ptr(46), // Black
 				PinConfigurationID:    ptr(75), // 5-pin
-				FactoryLubed:          true,
+				FactoryLubed:          ptr(true),
 				PreTravel:             ptr(float32(2.0)),
 				TotalTravel:           ptr(float32(4.0)),
 				ActuationForce:        ptr(float32(45.0)),
@@ -1677,7 +1677,7 @@ func seedGateron(tx *gorm.DB, admin models.User) error {
 				TopHousingColorID:     ptr(46), // Black
 				BottomHousingColorID:  ptr(46), // Black
 				PinConfigurationID:    ptr(75), // 5-pin
-				FactoryLubed:          true,
+				FactoryLubed:          ptr(true),
 				PreTravel:             ptr(float32(2.0)),
 				TotalTravel:           ptr(float32(4.0)),
 				ActuationForce:        ptr(float32(55.0)),
@@ -1708,7 +1708,7 @@ func seedGateron(tx *gorm.DB, admin models.User) error {
 				TopHousingColorID:     ptr(51), // White (milky)
 				BottomHousingColorID:  ptr(51), // White (milky)
 				PinConfigurationID:    ptr(74), // 3-pin
-				FactoryLubed:          false,
+				FactoryLubed:          ptr(false),
 				PreTravel:             ptr(float32(2.0)),
 				TotalTravel:           ptr(float32(4.0)),
 				ActuationForce:        ptr(float32(50.0)),
@@ -1739,7 +1739,7 @@ func seedGateron(tx *gorm.DB, admin models.User) error {
 				TopHousingColorID:     ptr(52), // Transparent
 				BottomHousingColorID:  ptr(52), // Transparent
 				PinConfigurationID:    ptr(75), // 5-pin
-				FactoryLubed:          false,
+				FactoryLubed:          ptr(false),
 				PreTravel:             ptr(float32(2.0)),
 				TotalTravel:           ptr(float32(4.0)),
 				ActuationForce:        ptr(float32(45.0)),
@@ -1770,7 +1770,7 @@ func seedGateron(tx *gorm.DB, admin models.User) error {
 				TopHousingColorID:     ptr(46), // Black (Ink housing)
 				BottomHousingColorID:  ptr(46), // Black (Ink housing)
 				PinConfigurationID:    ptr(75), // 5-pin
-				FactoryLubed:          true,
+				FactoryLubed:          ptr(true),
 				PreTravel:             ptr(float32(2.0)),
 				TotalTravel:           ptr(float32(4.0)),
 				ActuationForce:        ptr(float32(50.0)),
@@ -1801,7 +1801,7 @@ func seedGateron(tx *gorm.DB, admin models.User) error {
 				TopHousingColorID:     ptr(49), // Clear
 				BottomHousingColorID:  ptr(46), // Black
 				PinConfigurationID:    ptr(75), // 5-pin
-				FactoryLubed:          true,
+				FactoryLubed:          ptr(true),
 				PreTravel:             ptr(float32(2.0)),
 				TotalTravel:           ptr(float32(3.8)), // Slightly shorter due to dampeners
 				ActuationForce:        ptr(float32(50.0)),
@@ -1832,7 +1832,7 @@ func seedGateron(tx *gorm.DB, admin models.User) error {
 				TopHousingColorID:     ptr(49), // Clear
 				BottomHousingColorID:  ptr(46), // Black
 				PinConfigurationID:    ptr(75), // 5-pin
-				FactoryLubed:          true,
+				FactoryLubed:          ptr(true),
 				PreTravel:             ptr(float32(2.0)),
 				TotalTravel:           ptr(float32(3.8)), // Slightly shorter due to dampeners
 				ActuationForce:        ptr(float32(45.0)),
@@ -1863,7 +1863,7 @@ func seedGateron(tx *gorm.DB, admin models.User) error {
 				TopHousingColorID:     ptr(49), // Clear
 				BottomHousingColorID:  ptr(46), // Black
 				PinConfigurationID:    ptr(75), // 5-pin
-				FactoryLubed:          true,
+				FactoryLubed:          ptr(true),
 				PreTravel:             ptr(float32(2.0)),
 				TotalTravel:           ptr(float32(3.5)),
 				ActuationForce:        ptr(float32(55.0)),
@@ -1894,7 +1894,7 @@ func seedGateron(tx *gorm.DB, admin models.User) error {
 				TopHousingColorID:     ptr(49), // Clear
 				BottomHousingColorID:  ptr(46), // Black
 				PinConfigurationID:    ptr(75), // 5-pin
-				FactoryLubed:          true,
+				FactoryLubed:          ptr(true),
 				PreTravel:             ptr(float32(2.0)),
 				TotalTravel:           ptr(float32(4.0)),
 				ActuationForce:        ptr(float32(45.0)),
@@ -1925,7 +1925,7 @@ func seedGateron(tx *gorm.DB, admin models.User) error {
 				TopHousingColorID:     ptr(46), // Black (Ink housing)
 				BottomHousingColorID:  ptr(46), // Black (Ink housing)
 				PinConfigurationID:    ptr(75), // 5-pin
-				FactoryLubed:          true,
+				FactoryLubed:          ptr(true),
 				PreTravel:             ptr(float32(2.0)),
 				TotalTravel:           ptr(float32(4.0)),
 				ActuationForce:        ptr(float32(45.0)),
@@ -1956,7 +1956,7 @@ func seedGateron(tx *gorm.DB, admin models.User) error {
 				TopHousingColorID:     ptr(46), // Black (Ink housing)
 				BottomHousingColorID:  ptr(46), // Black (Ink housing)
 				PinConfigurationID:    ptr(75), // 5-pin
-				FactoryLubed:          true,
+				FactoryLubed:          ptr(true),
 				PreTravel:             ptr(float32(2.0)),
 				TotalTravel:           ptr(float32(4.0)),
 				ActuationForce:        ptr(float32(60.0)),
@@ -1987,7 +1987,7 @@ func seedGateron(tx *gorm.DB, admin models.User) error {
 				TopHousingColorID:     ptr(46), // Black (Ink housing)
 				BottomHousingColorID:  ptr(46), // Black (Ink housing)
 				PinConfigurationID:    ptr(75), // 5-pin
-				FactoryLubed:          false,
+				FactoryLubed:          ptr(false),
 				PreTravel:             ptr(float32(2.0)),
 				TotalTravel:           ptr(float32(4.0)),
 				ActuationForce:        ptr(float32(60.0)),
@@ -2018,7 +2018,7 @@ func seedGateron(tx *gorm.DB, admin models.User) error {
 				TopHousingColorID:     ptr(46), // Black (Ink housing)
 				BottomHousingColorID:  ptr(46), // Black (Ink housing)
 				PinConfigurationID:    ptr(75), // 5-pin
-				FactoryLubed:          true,
+				FactoryLubed:          ptr(true),
 				PreTravel:             ptr(float32(2.0)),
 				TotalTravel:           ptr(float32(3.8)), // Slightly shorter due to box design
 				ActuationForce:        ptr(float32(45.0)),
@@ -2049,7 +2049,7 @@ func seedGateron(tx *gorm.DB, admin models.User) error {
 				TopHousingColorID:     ptr(46), // Black (Ink housing)
 				BottomHousingColorID:  ptr(46), // Black (Ink housing)
 				PinConfigurationID:    ptr(75), // 5-pin
-				FactoryLubed:          true,
+				FactoryLubed:          ptr(true),
 				PreTravel:             ptr(float32(2.0)),
 				TotalTravel:           ptr(float32(3.8)), // Slightly shorter due to box design
 				ActuationForce:        ptr(float32(60.0)),
@@ -2080,7 +2080,7 @@ func seedGateron(tx *gorm.DB, admin models.User) error {
 				TopHousingColorID:     ptr(46), // Black (Ink housing)
 				BottomHousingColorID:  ptr(46), // Black (Ink housing)
 				PinConfigurationID:    ptr(75), // 5-pin
-				FactoryLubed:          true,
+				FactoryLubed:          ptr(true),
 				PreTravel:             ptr(float32(2.0)),
 				TotalTravel:           ptr(float32(3.8)), // Slightly shorter due to box design
 				ActuationForce:        ptr(float32(50.0)),
@@ -2111,7 +2111,7 @@ func seedGateron(tx *gorm.DB, admin models.User) error {
 				TopHousingColorID:     ptr(49), // Clear
 				BottomHousingColorID:  ptr(46), // Black
 				PinConfigurationID:    ptr(74), // 3-pin
-				FactoryLubed:          false,
+				FactoryLubed:          ptr(false),
 				PreTravel:             ptr(float32(2.0)),
 				TotalTravel:           ptr(float32(4.0)),
 				ActuationForce:        ptr(float32(45.0)),
@@ -2143,7 +2143,7 @@ func seedGateron(tx *gorm.DB, admin models.User) error {
 				TopHousingColorID:     ptr(49), // Clear
 				BottomHousingColorID:  ptr(46), // Black
 				PinConfigurationID:    ptr(74), // 3-pin
-				FactoryLubed:          false,
+				FactoryLubed:          ptr(false),
 				PreTravel:             ptr(float32(2.0)),
 				TotalTravel:           ptr(float32(4.0)),
 				ActuationForce:        ptr(float32(55.0)),
@@ -2174,7 +2174,7 @@ func seedGateron(tx *gorm.DB, admin models.User) error {
 				TopHousingColorID:     ptr(49), // Clear
 				BottomHousingColorID:  ptr(46), // Black
 				PinConfigurationID:    ptr(74), // 3-pin
-				FactoryLubed:          false,
+				FactoryLubed:          ptr(false),
 				PreTravel:             ptr(float32(2.2)),
 				TotalTravel:           ptr(float32(4.0)),
 				ActuationForce:        ptr(float32(60.0)),
@@ -2205,7 +2205,7 @@ func seedGateron(tx *gorm.DB, admin models.User) error {
 				TopHousingColorID:     ptr(49), // Clear
 				BottomHousingColorID:  ptr(46), // Black
 				PinConfigurationID:    ptr(74), // 3-pin
-				FactoryLubed:          false,
+				FactoryLubed:          ptr(false),
 				PreTravel:             ptr(float32(2.0)),
 				TotalTravel:           ptr(float32(4.0)),
 				ActuationForce:        ptr(float32(50.0)),
@@ -2236,7 +2236,7 @@ func seedGateron(tx *gorm.DB, admin models.User) error {
 				TopHousingColorID:     ptr(49), // Clear
 				BottomHousingColorID:  ptr(46), // Black
 				PinConfigurationID:    ptr(74), // 3-pin
-				FactoryLubed:          false,
+				FactoryLubed:          ptr(false),
 				PreTravel:             ptr(float32(2.0)),
 				TotalTravel:           ptr(float32(4.0)),
 				ActuationForce:        ptr(float32(60.0)),
@@ -2267,7 +2267,7 @@ func seedGateron(tx *gorm.DB, admin models.User) error {
 				TopHousingColorID:     ptr(49), // Clear
 				BottomHousingColorID:  ptr(46), // Black
 				PinConfigurationID:    ptr(75), // 5-pin
-				FactoryLubed:          true,
+				FactoryLubed:          ptr(true),
 				PreTravel:             ptr(float32(2.0)),
 				TotalTravel:           ptr(float32(4.0)),
 				ActuationForce:        ptr(float32(45.0)),
@@ -2298,7 +2298,7 @@ func seedGateron(tx *gorm.DB, admin models.User) error {
 				TopHousingColorID:     ptr(49), // Clear
 				BottomHousingColorID:  ptr(46), // Black
 				PinConfigurationID:    ptr(75), // 5-pin
-				FactoryLubed:          true,
+				FactoryLubed:          ptr(true),
 				PreTravel:             ptr(float32(2.0)),
 				TotalTravel:           ptr(float32(4.0)),
 				ActuationForce:        ptr(float32(55.0)),
@@ -2329,7 +2329,7 @@ func seedGateron(tx *gorm.DB, admin models.User) error {
 				TopHousingColorID:     ptr(49), // Clear
 				BottomHousingColorID:  ptr(46), // Black
 				PinConfigurationID:    ptr(75), // 5-pin
-				FactoryLubed:          false,
+				FactoryLubed:          ptr(false),
 				PreTravel:             ptr(float32(2.2)),
 				TotalTravel:           ptr(float32(4.0)),
 				ActuationForce:        ptr(float32(60.0)),
@@ -2360,7 +2360,7 @@ func seedGateron(tx *gorm.DB, admin models.User) error {
 				TopHousingColorID:     ptr(49), // Clear
 				BottomHousingColorID:  ptr(46), // Black
 				PinConfigurationID:    ptr(75), // 5-pin
-				FactoryLubed:          true,
+				FactoryLubed:          ptr(true),
 				PreTravel:             ptr(float32(2.0)),
 				TotalTravel:           ptr(float32(4.0)),
 				ActuationForce:        ptr(float32(50.0)),
@@ -2391,7 +2391,7 @@ func seedGateron(tx *gorm.DB, admin models.User) error {
 				TopHousingColorID:     ptr(49), // Clear
 				BottomHousingColorID:  ptr(46), // Black
 				PinConfigurationID:    ptr(75), // 5-pin
-				FactoryLubed:          true,
+				FactoryLubed:          ptr(true),
 				PreTravel:             ptr(float32(2.0)),
 				TotalTravel:           ptr(float32(4.0)),
 				ActuationForce:        ptr(float32(60.0)),
@@ -2422,7 +2422,7 @@ func seedGateron(tx *gorm.DB, admin models.User) error {
 				TopHousingColorID:     ptr(52), // Transparent (glow-in-the-dark)
 				BottomHousingColorID:  ptr(52), // Transparent (glow-in-the-dark)
 				PinConfigurationID:    ptr(75), // 5-pin
-				FactoryLubed:          true,
+				FactoryLubed:          ptr(true),
 				PreTravel:             ptr(float32(2.0)),
 				TotalTravel:           ptr(float32(4.0)),
 				ActuationForce:        ptr(float32(45.0)),
@@ -2454,7 +2454,7 @@ func seedGateron(tx *gorm.DB, admin models.User) error {
 				TopHousingColorID:     ptr(52), // Transparent
 				BottomHousingColorID:  ptr(52), // Transparent
 				PinConfigurationID:    ptr(75), // 5-pin
-				FactoryLubed:          true,
+				FactoryLubed:          ptr(true),
 				PreTravel:             ptr(float32(2.0)),
 				TotalTravel:           ptr(float32(4.0)),
 				ActuationForce:        ptr(float32(43.0)),
@@ -2486,7 +2486,7 @@ func seedGateron(tx *gorm.DB, admin models.User) error {
 				TopHousingColorID:     ptr(52), // Transparent
 				BottomHousingColorID:  ptr(52), // Transparent
 				PinConfigurationID:    ptr(75), // 5-pin
-				FactoryLubed:          true,
+				FactoryLubed:          ptr(true),
 				PreTravel:             ptr(float32(2.0)),
 				TotalTravel:           ptr(float32(4.0)),
 				ActuationForce:        ptr(float32(55.0)),
@@ -2518,7 +2518,7 @@ func seedGateron(tx *gorm.DB, admin models.User) error {
 				TopHousingColorID:     ptr(52), // Transparent
 				BottomHousingColorID:  ptr(52), // Transparent
 				PinConfigurationID:    ptr(75), // 5-pin
-				FactoryLubed:          true,
+				FactoryLubed:          ptr(true),
 				PreTravel:             ptr(float32(2.0)),
 				TotalTravel:           ptr(float32(4.0)),
 				ActuationForce:        ptr(float32(62.0)),
@@ -2549,7 +2549,7 @@ func seedGateron(tx *gorm.DB, admin models.User) error {
 				TopHousingColorID:     ptr(53), // Smokey
 				BottomHousingColorID:  ptr(53), // Smokey
 				PinConfigurationID:    ptr(75), // 5-pin
-				FactoryLubed:          true,
+				FactoryLubed:          ptr(true),
 				PreTravel:             ptr(float32(2.0)),
 				TotalTravel:           ptr(float32(4.0)),
 				ActuationForce:        ptr(float32(45.0)),
@@ -2580,7 +2580,7 @@ func seedGateron(tx *gorm.DB, admin models.User) error {
 				TopHousingColorID:     ptr(53), // Smokey
 				BottomHousingColorID:  ptr(53), // Smokey
 				PinConfigurationID:    ptr(75), // 5-pin
-				FactoryLubed:          true,
+				FactoryLubed:          ptr(true),
 				PreTravel:             ptr(float32(2.0)),
 				TotalTravel:           ptr(float32(4.0)),
 				ActuationForce:        ptr(float32(55.0)),
@@ -2611,7 +2611,7 @@ func seedGateron(tx *gorm.DB, admin models.User) error {
 				TopHousingColorID:     ptr(53), // Smokey
 				BottomHousingColorID:  ptr(53), // Smokey
 				PinConfigurationID:    ptr(75), // 5-pin
-				FactoryLubed:          false,
+				FactoryLubed:          ptr(false),
 				PreTravel:             ptr(float32(2.2)),
 				TotalTravel:           ptr(float32(4.0)),
 				ActuationForce:        ptr(float32(60.0)),
@@ -2642,7 +2642,7 @@ func seedGateron(tx *gorm.DB, admin models.User) error {
 				TopHousingColorID:     ptr(49), // Clear
 				BottomHousingColorID:  ptr(46), // Black
 				PinConfigurationID:    ptr(75), // 5-pin
-				FactoryLubed:          true,
+				FactoryLubed:          ptr(true),
 				PreTravel:             ptr(float32(2.0)),
 				TotalTravel:           ptr(float32(4.0)),
 				ActuationForce:        ptr(float32(55.0)),
@@ -2673,7 +2673,7 @@ func seedGateron(tx *gorm.DB, admin models.User) error {
 				TopHousingColorID:     ptr(49), // Clear
 				BottomHousingColorID:  ptr(46), // Black
 				PinConfigurationID:    ptr(75), // 5-pin
-				FactoryLubed:          true,
+				FactoryLubed:          ptr(true),
 				PreTravel:             ptr(float32(2.0)),
 				TotalTravel:           ptr(float32(4.0)),
 				ActuationForce:        ptr(float32(45.0)),
@@ -2704,7 +2704,7 @@ func seedGateron(tx *gorm.DB, admin models.User) error {
 				TopHousingColorID:     ptr(49), // Clear
 				BottomHousingColorID:  ptr(46), // Black
 				PinConfigurationID:    ptr(75), // 5-pin
-				FactoryLubed:          true,
+				FactoryLubed:          ptr(true),
 				PreTravel:             ptr(float32(2.0)),
 				TotalTravel:           ptr(float32(4.0)),
 				ActuationForce:        ptr(float32(55.0)),
@@ -2735,7 +2735,7 @@ func seedGateron(tx *gorm.DB, admin models.User) error {
 				TopHousingColorID:     ptr(49), // Clear
 				BottomHousingColorID:  ptr(46), // Black
 				PinConfigurationID:    ptr(75), // 5-pin
-				FactoryLubed:          false,
+				FactoryLubed:          ptr(false),
 				PreTravel:             ptr(float32(2.2)),
 				TotalTravel:           ptr(float32(4.0)),
 				ActuationForce:        ptr(float32(60.0)),
@@ -2766,7 +2766,7 @@ func seedGateron(tx *gorm.DB, admin models.User) error {
 				TopHousingColorID:     ptr(49), // Clear
 				BottomHousingColorID:  ptr(46), // Black
 				PinConfigurationID:    ptr(75), // 5-pin
-				FactoryLubed:          true,
+				FactoryLubed:          ptr(true),
 				PreTravel:             ptr(float32(2.0)),
 				TotalTravel:           ptr(float32(4.0)),
 				ActuationForce:        ptr(float32(50.0)),
@@ -2797,7 +2797,7 @@ func seedGateron(tx *gorm.DB, admin models.User) error {
 				TopHousingColorID:     ptr(49), // Clear
 				BottomHousingColorID:  ptr(46), // Black
 				PinConfigurationID:    ptr(75), // 5-pin
-				FactoryLubed:          true,
+				FactoryLubed:          ptr(true),
 				PreTravel:             ptr(float32(2.0)),
 				TotalTravel:           ptr(float32(4.0)),
 				ActuationForce:        ptr(float32(60.0)),
@@ -2828,7 +2828,7 @@ func seedGateron(tx *gorm.DB, admin models.User) error {
 				TopHousingColorID:     ptr(49), // Clear
 				BottomHousingColorID:  ptr(46), // Black
 				PinConfigurationID:    ptr(75), // 5-pin
-				FactoryLubed:          false,
+				FactoryLubed:          ptr(false),
 				PreTravel:             ptr(float32(2.2)),
 				TotalTravel:           ptr(float32(4.0)),
 				ActuationForce:        ptr(float32(65.0)),
@@ -2859,7 +2859,7 @@ func seedGateron(tx *gorm.DB, admin models.User) error {
 				TopHousingColorID:     ptr(49), // Clear
 				BottomHousingColorID:  ptr(49), // Clear
 				PinConfigurationID:    ptr(75), // 5-pin
-				FactoryLubed:          true,
+				FactoryLubed:          ptr(true),
 				PreTravel:             ptr(float32(2.0)),
 				TotalTravel:           ptr(float32(4.0)),
 				ActuationForce:        ptr(float32(35.0)),
@@ -2890,7 +2890,7 @@ func seedGateron(tx *gorm.DB, admin models.User) error {
 				TopHousingColorID:     ptr(51), // White (milky)
 				BottomHousingColorID:  ptr(51), // White (milky)
 				PinConfigurationID:    ptr(74), // 3-pin
-				FactoryLubed:          false,
+				FactoryLubed:          ptr(false),
 				PreTravel:             ptr(float32(2.0)),
 				TotalTravel:           ptr(float32(4.0)),
 				ActuationForce:        ptr(float32(45.0)),
@@ -2921,7 +2921,7 @@ func seedGateron(tx *gorm.DB, admin models.User) error {
 				TopHousingColorID:     ptr(51), // White (milky)
 				BottomHousingColorID:  ptr(51), // White (milky)
 				PinConfigurationID:    ptr(74), // 3-pin
-				FactoryLubed:          false,
+				FactoryLubed:          ptr(false),
 				PreTravel:             ptr(float32(2.0)),
 				TotalTravel:           ptr(float32(4.0)),
 				ActuationForce:        ptr(float32(55.0)),
@@ -2952,7 +2952,7 @@ func seedGateron(tx *gorm.DB, admin models.User) error {
 				TopHousingColorID:     ptr(51), // White (milky)
 				BottomHousingColorID:  ptr(51), // White (milky)
 				PinConfigurationID:    ptr(74), // 3-pin
-				FactoryLubed:          false,
+				FactoryLubed:          ptr(false),
 				PreTravel:             ptr(float32(2.2)),
 				TotalTravel:           ptr(float32(4.0)),
 				ActuationForce:        ptr(float32(60.0)),
@@ -2983,7 +2983,7 @@ func seedGateron(tx *gorm.DB, admin models.User) error {
 				TopHousingColorID:     ptr(51), // White (milky)
 				BottomHousingColorID:  ptr(51), // White (milky)
 				PinConfigurationID:    ptr(74), // 3-pin
-				FactoryLubed:          false,
+				FactoryLubed:          ptr(false),
 				PreTravel:             ptr(float32(2.0)),
 				TotalTravel:           ptr(float32(4.0)),
 				ActuationForce:        ptr(float32(60.0)),
@@ -3014,7 +3014,7 @@ func seedGateron(tx *gorm.DB, admin models.User) error {
 				TopHousingColorID:     ptr(51), // White (milky)
 				BottomHousingColorID:  ptr(51), // White (milky)
 				PinConfigurationID:    ptr(74), // 3-pin
-				FactoryLubed:          false,
+				FactoryLubed:          ptr(false),
 				PreTravel:             ptr(float32(2.2)),
 				TotalTravel:           ptr(float32(4.0)),
 				ActuationForce:        ptr(float32(80.0)),
@@ -3045,7 +3045,7 @@ func seedGateron(tx *gorm.DB, admin models.User) error {
 				TopHousingColorID:     ptr(51), // White (milky)
 				BottomHousingColorID:  ptr(51), // White (milky)
 				PinConfigurationID:    ptr(74), // 3-pin
-				FactoryLubed:          false,
+				FactoryLubed:          ptr(false),
 				PreTravel:             ptr(float32(2.0)),
 				TotalTravel:           ptr(float32(4.0)),
 				ActuationForce:        ptr(float32(35.0)),
@@ -3076,7 +3076,7 @@ func seedGateron(tx *gorm.DB, admin models.User) error {
 				TopHousingColorID:     ptr(49), // Clear
 				BottomHousingColorID:  ptr(46), // Black
 				PinConfigurationID:    ptr(75), // 5-pin
-				FactoryLubed:          true,
+				FactoryLubed:          ptr(true),
 				PreTravel:             ptr(float32(1.8)),
 				TotalTravel:           ptr(float32(3.6)),
 				ActuationForce:        ptr(float32(45.0)),
@@ -3107,7 +3107,7 @@ func seedGateron(tx *gorm.DB, admin models.User) error {
 				TopHousingColorID:     ptr(49), // Clear
 				BottomHousingColorID:  ptr(46), // Black
 				PinConfigurationID:    ptr(75), // 5-pin
-				FactoryLubed:          true,
+				FactoryLubed:          ptr(true),
 				PreTravel:             ptr(float32(1.8)),
 				TotalTravel:           ptr(float32(3.6)),
 				ActuationForce:        ptr(float32(55.0)),
@@ -3138,7 +3138,7 @@ func seedGateron(tx *gorm.DB, admin models.User) error {
 				TopHousingColorID:     ptr(49), // Clear
 				BottomHousingColorID:  ptr(46), // Black
 				PinConfigurationID:    ptr(75), // 5-pin
-				FactoryLubed:          false,
+				FactoryLubed:          ptr(false),
 				PreTravel:             ptr(float32(2.0)),
 				TotalTravel:           ptr(float32(3.8)),
 				ActuationForce:        ptr(float32(60.0)),
@@ -3169,7 +3169,7 @@ func seedGateron(tx *gorm.DB, admin models.User) error {
 				TopHousingColorID:     ptr(49), // Clear
 				BottomHousingColorID:  ptr(46), // Black
 				PinConfigurationID:    ptr(75), // 5-pin
-				FactoryLubed:          true,
+				FactoryLubed:          ptr(true),
 				PreTravel:             ptr(float32(1.8)),
 				TotalTravel:           ptr(float32(3.6)),
 				ActuationForce:        ptr(float32(60.0)),
@@ -3200,7 +3200,7 @@ func seedGateron(tx *gorm.DB, admin models.User) error {
 				TopHousingColorID:     ptr(49), // Clear
 				BottomHousingColorID:  ptr(46), // Black
 				PinConfigurationID:    ptr(75), // 5-pin
-				FactoryLubed:          true,
+				FactoryLubed:          ptr(true),
 				PreTravel:             ptr(float32(2.0)),
 				TotalTravel:           ptr(float32(3.8)), // Slightly shorter due to dampeners
 				ActuationForce:        ptr(float32(35.0)),
@@ -3231,7 +3231,7 @@ func seedGateron(tx *gorm.DB, admin models.User) error {
 				TopHousingColorID:     ptr(49), // Clear
 				BottomHousingColorID:  ptr(46), // Black
 				PinConfigurationID:    ptr(75), // 5-pin
-				FactoryLubed:          true,
+				FactoryLubed:          ptr(true),
 				PreTravel:             ptr(float32(2.0)),
 				TotalTravel:           ptr(float32(4.0)),
 				ActuationForce:        ptr(float32(55.0)),
@@ -3262,7 +3262,7 @@ func seedGateron(tx *gorm.DB, admin models.User) error {
 				TopHousingColorID:     ptr(49), // Clear
 				BottomHousingColorID:  ptr(46), // Black
 				PinConfigurationID:    ptr(75), // 5-pin
-				FactoryLubed:          true,
+				FactoryLubed:          ptr(true),
 				PreTravel:             ptr(float32(2.0)),
 				TotalTravel:           ptr(float32(4.0)),
 				ActuationForce:        ptr(float32(50.0)),

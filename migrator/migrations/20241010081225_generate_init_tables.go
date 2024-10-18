@@ -125,7 +125,7 @@ func init() {
 					BumpForce             *float32  `gorm:"type:real"                                       json:"bumpForce,omitempty"`
 					TactilityFeedbackID   *int      `gorm:"type:int"                                        json:"tactilityFeedbackId,omitempty"`
 					TactilityFeedback     *Type     `gorm:"foreignKey:TactilityFeedbackID"                  json:"tactilityFeedback,omitempty"`
-					FactoryLubed          bool      `gorm:"type:boolean;default:false"                      json:"factoryLubed"`
+					FactoryLubed          bool      `gorm:"type:boolean"                                    json:"factoryLubed"`
 					StemColorID           *int      `gorm:"type:int"                                        json:"stemColorId,omitempty"`
 					StemColor             *Type     `gorm:"foreignKey:StemColorID"                          json:"stemColor,omitempty"`
 					TopHousingColorID     *int      `gorm:"type:int"                                        json:"topHousingColorId,omitempty"`
@@ -341,7 +341,7 @@ func finalizeSwitch(tx *gorm.DB) error {
 		BumpForce             *float32  `gorm:"type:real"                                       json:"bumpForce,omitempty"`
 		TactilityFeedbackID   *int      `gorm:"type:int"                                        json:"tactilityFeedbackId,omitempty"`
 		TactilityFeedback     *Type     `gorm:"foreignKey:TactilityFeedbackID"                  json:"tactilityFeedback,omitempty"`
-		FactoryLubed          bool      `gorm:"type:boolean;default:false"                      json:"factoryLubed"`
+		FactoryLubed          bool      `gorm:"type:boolean"                                    json:"factoryLubed"`
 		StemColorID           *int      `gorm:"type:int"                                        json:"stemColorId,omitempty"`
 		StemColor             *Type     `gorm:"foreignKey:StemColorID"                          json:"stemColor,omitempty"`
 		TopHousingColorID     *int      `gorm:"type:int"                                        json:"topHousingColorId,omitempty"`

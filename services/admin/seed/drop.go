@@ -25,7 +25,7 @@ func seedDrop(tx *gorm.DB, admin models.User) error {
 				BottomOutForce:        ptr(float32(65)),
 				TotalTravel:           ptr(float32(4.0)),
 				PreTravel:             ptr(float32(2.0)),
-				FactoryLubed:          false,
+				FactoryLubed:          ptr(false),
 				StemMaterialID:        ptr(23), // POM
 				TopHousingMaterialID:  ptr(26), // Polycarbonate
 				BaseHousingMaterialID: ptr(24), // Nylon
@@ -58,7 +58,7 @@ func seedDrop(tx *gorm.DB, admin models.User) error {
 				BottomOutForce:        ptr(float32(67)),
 				TotalTravel:           ptr(float32(3.8)),
 				PreTravel:             ptr(float32(2.0)),
-				FactoryLubed:          false,
+				FactoryLubed:          ptr(false),
 				StemMaterialID:        ptr(23), // POM
 				TopHousingMaterialID:  ptr(26), // Polycarbonate
 				BaseHousingMaterialID: ptr(24), // Nylon
@@ -92,7 +92,7 @@ func seedDrop(tx *gorm.DB, admin models.User) error {
 				BottomOutForce:        ptr(float32(67)),
 				TotalTravel:           ptr(float32(3.8)),
 				PreTravel:             ptr(float32(2.0)),
-				FactoryLubed:          false,
+				FactoryLubed:          ptr(false),
 				StemMaterialID:        ptr(23), // POM
 				TopHousingMaterialID:  ptr(26), // Polycarbonate
 				BaseHousingMaterialID: ptr(24), // Nylon
@@ -125,7 +125,7 @@ func seedDrop(tx *gorm.DB, admin models.User) error {
 				BottomOutForce:        ptr(float32(70)),
 				TotalTravel:           ptr(float32(4.0)),
 				PreTravel:             ptr(float32(2.0)),
-				FactoryLubed:          true,
+				FactoryLubed:          ptr(true),
 				StemMaterialID:        ptr(23), // POM
 				TopHousingMaterialID:  ptr(26), // Polycarbonate
 				BaseHousingMaterialID: ptr(24), // Nylon
@@ -157,7 +157,7 @@ func seedDrop(tx *gorm.DB, admin models.User) error {
 				BottomOutForce:        ptr(float32(45)),
 				TotalTravel:           ptr(float32(3.5)),
 				PreTravel:             ptr(float32(1.1)),
-				FactoryLubed:          false,
+				FactoryLubed:          ptr(false),
 				StemMaterialID:        ptr(23), // POM
 				TopHousingMaterialID:  ptr(26), // Polycarbonate
 				BaseHousingMaterialID: ptr(24), // Nylon
@@ -188,7 +188,7 @@ func seedDrop(tx *gorm.DB, admin models.User) error {
 				BottomOutForce:        ptr(float32(50)),
 				TotalTravel:           ptr(float32(3.6)),
 				PreTravel:             ptr(float32(1.8)),
-				FactoryLubed:          false,
+				FactoryLubed:          ptr(false),
 				StemMaterialID:        ptr(23), // POM
 				TopHousingMaterialID:  ptr(22), // ABS
 				BaseHousingMaterialID: ptr(22), // ABS
@@ -221,7 +221,7 @@ func seedDrop(tx *gorm.DB, admin models.User) error {
 				BottomOutForce:        ptr(float32(45)),
 				TotalTravel:           ptr(float32(3.5)),
 				PreTravel:             ptr(float32(1.1)),
-				FactoryLubed:          false,
+				FactoryLubed:          ptr(false),
 				StemMaterialID:        ptr(23), // POM
 				TopHousingMaterialID:  ptr(26), // Polycarbonate
 				BaseHousingMaterialID: ptr(24), // Nylon
@@ -252,7 +252,7 @@ func seedDrop(tx *gorm.DB, admin models.User) error {
 				BottomOutForce:        ptr(float32(50)),
 				TotalTravel:           ptr(float32(3.6)),
 				PreTravel:             ptr(float32(1.8)),
-				FactoryLubed:          false,
+				FactoryLubed:          ptr(false),
 				StemMaterialID:        ptr(23), // POM
 				TopHousingMaterialID:  ptr(22), // ABS
 				BaseHousingMaterialID: ptr(22), // ABS
@@ -285,7 +285,7 @@ func seedDrop(tx *gorm.DB, admin models.User) error {
 				BottomOutForce:        ptr(float32(60)),
 				TotalTravel:           ptr(float32(4.0)),
 				PreTravel:             ptr(float32(2.0)),
-				FactoryLubed:          false,
+				FactoryLubed:          ptr(false),
 				StemMaterialID:        ptr(23), // POM
 				TopHousingMaterialID:  ptr(26), // Polycarbonate
 				BaseHousingMaterialID: ptr(24), // Nylon
@@ -316,7 +316,7 @@ func seedDrop(tx *gorm.DB, admin models.User) error {
 				BottomOutForce:        ptr(float32(60)),
 				TotalTravel:           ptr(float32(3.8)),
 				PreTravel:             ptr(float32(2.0)),
-				FactoryLubed:          true,
+				FactoryLubed:          ptr(true),
 				StemMaterialID:        ptr(23), // POM
 				TopHousingMaterialID:  ptr(26), // Polycarbonate
 				BaseHousingMaterialID: ptr(24), // Nylon
@@ -349,7 +349,7 @@ func seedDrop(tx *gorm.DB, admin models.User) error {
 				BottomOutForce:        ptr(float32(45)),
 				TotalTravel:           ptr(float32(3.6)),
 				PreTravel:             ptr(float32(1.8)),
-				FactoryLubed:          true,
+				FactoryLubed:          ptr(true),
 				StemMaterialID:        ptr(23), // POM
 				TopHousingMaterialID:  ptr(26), // Polycarbonate
 				BaseHousingMaterialID: ptr(24), // Nylon
@@ -380,7 +380,7 @@ func seedDrop(tx *gorm.DB, admin models.User) error {
 				BottomOutForce:        ptr(float32(65)),
 				TotalTravel:           ptr(float32(3.8)),
 				PreTravel:             ptr(float32(2.0)),
-				FactoryLubed:          true,
+				FactoryLubed:          ptr(true),
 				StemMaterialID:        ptr(23), // POM
 				TopHousingMaterialID:  ptr(26), // Polycarbonate
 				BaseHousingMaterialID: ptr(24), // Nylon
@@ -413,7 +413,7 @@ func seedDrop(tx *gorm.DB, admin models.User) error {
 				BottomOutForce:        ptr(float32(68)),
 				TotalTravel:           ptr(float32(4.0)),
 				PreTravel:             ptr(float32(2.0)),
-				FactoryLubed:          false,
+				FactoryLubed:          ptr(false),
 				StemMaterialID:        ptr(23), // POM
 				TopHousingMaterialID:  ptr(26), // Polycarbonate
 				BaseHousingMaterialID: ptr(24), // Nylon
