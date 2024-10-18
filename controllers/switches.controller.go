@@ -2,7 +2,6 @@ package controllers
 
 import (
 	"fmt"
-	"log/slog"
 	"regexp"
 	"switches/database"
 	"switches/models"
@@ -36,7 +35,7 @@ func getDetailPageData(c *fiber.Ctx) (models.User, models.Switch, error) { // {{
 
 	timer := utils.StartTimer("Get Switch Details")
 	var clickyClack models.Switch
-	if err := database.DB.Debug().
+	if err := database.DB.
 		Preload("ImageLinks").
 		Preload("Brand").
 		Preload("SwitchType").
@@ -62,7 +61,6 @@ func getDetailPageData(c *fiber.Ctx) (models.User, models.Switch, error) { // {{
 	clickyClack.GetUserRating(user.ID)
 	timer.LogTotalTime()
 
-	slog.Info("clickyClack", "Spring Material Type", clickyClack.Details.SpringMaterialType)
 	return user, clickyClack, nil
 } // }}}
 

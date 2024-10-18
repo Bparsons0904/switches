@@ -3,7 +3,6 @@ package pages
 
 import (
 	"fmt"
-	"log/slog"
 	"reflect"
 	"switches/models"
 	"switches/templates/components"
@@ -213,7 +212,6 @@ templ empty() {
 
 func details(details Details) templ.Component {
 	if details.Type != nil {
-		slog.Info("made it to type", "details", details)
 		return detailsSpan(DetailSpan{
 			Name:   details.Name,
 			Value:  details.Type.Name,
@@ -225,10 +223,8 @@ func details(details Details) templ.Component {
 		return empty()
 	}
 
-	v := reflect.ValueOf(details.Value)
-	slog.Info("after details", "name", details.Name)
-	if v.Kind() != reflect.Ptr {
-		slog.Info("Made it to not ptr", "details", details)
+	value := reflect.ValueOf(details.Value)
+	if value.Kind() != reflect.Ptr {
 		return detailsSpan(DetailSpan{
 			Name:   details.Name,
 			Value:  details.Value,
@@ -236,42 +232,36 @@ func details(details Details) templ.Component {
 		})
 	}
 
-	if v.IsNil() {
-		slog.Info("Made it to is Nil", "value", v)
+	if value.IsNil() {
 		return empty()
 	}
 
-	switch valueType := v.Elem().Kind(); valueType {
+	switch valueType := value.Elem().Kind(); valueType {
 	case reflect.Int:
-		slog.Info("Made it to Int")
 		return detailsSpan(DetailSpan{
 			Name:   details.Name,
-			Value:  v.Elem().Int(),
+			Value:  value.Elem().Int(),
 			Suffix: details.Suffix,
 		})
 	case reflect.Float32, reflect.Float64:
-		slog.Info("Made it to Float32")
 		return detailsSpan(DetailSpan{
 			Name:   details.Name,
-			Value:  fmt.Sprintf("%.1f", v.Elem().Float()),
+			Value:  fmt.Sprintf("%.1f", value.Elem().Float()),
 			Suffix: details.Suffix,
 		})
 	case reflect.String:
-		slog.Info("Made it to Float64")
 		return detailsSpan(DetailSpan{
 			Name:   details.Name,
-			Value:  v.Elem().String(),
+			Value:  value.Elem().String(),
 			Suffix: details.Suffix,
 		})
 	case reflect.Bool:
-		slog.Info("Made it to Bool")
 		return detailsSpan(DetailSpan{
 			Name:   details.Name,
-			Value:  getBooleanString(v.Elem().Bool()),
+			Value:  getBooleanString(value.Elem().Bool()),
 			Suffix: details.Suffix,
 		})
 	default:
-		slog.Info("Made it to default")
 		return empty()
 	}
 }
