@@ -44,6 +44,10 @@ templ ImageNew(imageLink *models.ImageLink, isSquare bool) {
 			alt={ imageLink.AltText }
 			onerror="this.onerror=null; this.src='/images/switch_placeholder.jpg'; this.alt='Generic Switch Image'"
 			class="img-square"
+			hx-post="/api/logs/errors/images"
+			hx-trigger="error"
+			hx-swap="none"
+			hx-vals={ fmt.Sprintf("js:{src: '%s'}", imageLink.LinkAddress) }
 		/>
 	} else {
 		<img
@@ -57,6 +61,10 @@ templ ImageNew(imageLink *models.ImageLink, isSquare bool) {
 			alt={ imageLink.AltText }
 			onerror="this.onerror=null; this.src='/images/switch_placeholder.jpg'; this.alt='Generic Switch Image'"
 			class="img-rounded"
+			hx-post="/api/logs/errors/images"
+			hx-trigger="error"
+			hx-swap="none"
+			hx-vals={ fmt.Sprintf("js:{src: '%s'}", imageLink.LinkAddress) }
 		/>
 	}
 }
@@ -70,6 +78,10 @@ templ Image(props ImageProps) {
 			alt={ props.Alt }
 			onerror="this.onerror=null; this.src='/images/switch_placeholder.jpg'; this.alt='Generic Switch Image'"
 			class="img-square"
+			hx-post="/api/logs/errors/images"
+			hx-trigger="error"
+			hx-swap="none"
+			hx-vals={ fmt.Sprintf("js:{src: '%s'}", props.Src) }
 		/>
 	} else {
 		<img
@@ -79,6 +91,10 @@ templ Image(props ImageProps) {
 			alt={ props.Alt }
 			onerror="this.onerror=null; this.src='/images/switch_placeholder.jpg'; this.alt='Generic Switch Image'"
 			class="img-rounded"
+			hx-post="/api/logs/errors/images"
+			hx-trigger="error"
+			hx-swap="none"
+			hx-vals={ fmt.Sprintf("js:{src: '%s'}", props.Src) }
 		/>
 	}
 }
@@ -92,6 +108,10 @@ templ ImageLink(props ImageProps) {
 			alt={ props.Alt }
 			onerror="this.onerror=null; this.src='/images/switch_placeholder.jpg'; this.alt='Generic Switch Image'"
 			class="img-square"
+			hx-post="/api/logs/errors/images"
+			hx-trigger="error"
+			hx-swap="none"
+			hx-vals={ fmt.Sprintf("js:{src: '%s'}", props.Src) }
 		/>
 	} else {
 		<img
@@ -101,8 +121,10 @@ templ ImageLink(props ImageProps) {
 			alt={ props.Alt }
 			onerror="this.onerror=null; this.src='/images/switch_placeholder.jpg'; this.alt='Generic Switch Image'"
 			class="img-rounded"
-			hx-post="log"
+			hx-post="/api/logs/errors/images"
 			hx-trigger="error"
+			hx-swap="none"
+			hx-vals={ fmt.Sprintf("js:{src: '%s'}", props.Src) }
 		/>
 	}
 }
