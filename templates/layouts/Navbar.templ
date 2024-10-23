@@ -21,7 +21,7 @@ templ Navbar(user models.User) {
 			<h1 class="text-light">Waugze</h1>
 		</a>
 		<div id="menu-desktop">
-			if user.ID != uuid.Nil && !user.IsAdmin {
+			if user.ID != uuid.Nil {
 				<div class="logged-in">
 					Hello, { user.Name }
 					@LogoutButton()
@@ -73,10 +73,12 @@ templ MobileItem(title string, path string) {
 }
 
 templ LoginButton() {
-	<a href="/auth/login"><button type="button" class="menu-button">Login</button></a>
+	<a href="/auth/login">
+		<button type="button" class="button">Login</button>
+	</a>
 }
 
 templ LogoutButton() {
 	<!-- <a href={ templ.SafeURL(getLogoutLink()) }><button class="btn-inverted" type="button">Logout</button></a> -->
-	<a href="/auth/logout"><button class="btn-inverted" type="button">Logout</button></a>
+	<a href="/auth/logout"><button class="button btn-inverted" type="button">Logout</button></a>
 }

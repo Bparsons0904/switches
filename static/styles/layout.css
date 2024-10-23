@@ -28,6 +28,7 @@
 #menu-desktop {
   display: none;
   place-items: center;
+  gap: 1rem;
   .logged-in {
     display: flex;
     place-items: center;
