@@ -65,6 +65,7 @@ type Select struct {
 	Selected    string
 	Placeholder string
 	Required    bool
+	Default     string
 }
 
 templ SelectInput(input Select) {
@@ -85,7 +86,7 @@ templ SelectInput(input Select) {
 			for _, option := range input.Options {
 				<option
 					value={ option.Value }
-					if option.Value == input.Selected {
+					if getSelected(input, option) {
 						selected
 					}
 				>{ option.Label }</option>
@@ -94,6 +95,15 @@ templ SelectInput(input Select) {
 	</div>
 }
 
+func getSelected(input Select, option Option) bool {
+	if input.Selected != "" {
+		return input.Selected == option.Value
+	}
+
+	return input.Default == option.Value
+}
+
+// if option.Value == input.Selected {
 templ DateInput(input Input) {
 	<div class="form-group">
 		<label for={ input.Name }>{ input.Label }</label>
@@ -116,6 +126,8 @@ type Number struct {
 	Step        string
 	Placeholder string
 	Value       int
+	Value32     float32
+	Value32Ptr  *float32
 	Required    bool
 }
 
@@ -138,7 +150,15 @@ templ NumberInput(input Number) {
 			if input.Required {
 				required
 			}
-			value={ strconv.Itoa(input.Value) }
+			if input.Value != 0 {
+				value={ strconv.Itoa(input.Value) }
+			}
+			if input.Value32 != 0.0 {
+				value={ fmt.Sprintf("%.2f", input.Value32) }
+			}
+			if input.Value32Ptr != nil {
+				value={ fmt.Sprintf("%.2f", *input.Value32Ptr) }
+			}
 		/>
 	</div>
 }

@@ -96,15 +96,15 @@ templ SwitchDetail(user models.User, clickyClack models.Switch) {
 							Name: "Tactility Type",
 							Type: clickyClack.Details.TactilityType,
 						})
-						@details(Details{
-							Name:  "Bump Position",
-							Value: clickyClack.Details.BumpPosition,
-						})
-						@details(Details{
-							Name:   "Bump Force",
-							Value:  clickyClack.Details.BumpForce,
-							Suffix: "g",
-						})
+						<!-- @details(Details{ -->
+						<!-- 	Name:  "Bump Position", -->
+						<!-- 	Value: clickyClack.Details.BumpPosition, -->
+						<!-- }) -->
+						<!-- @details(Details{ -->
+						<!-- 	Name:   "Bump Force", -->
+						<!-- 	Value:  clickyClack.Details.BumpForce, -->
+						<!-- 	Suffix: "g", -->
+						<!-- }) -->
 						@details(Details{
 							Name: "Tactility Feedback",
 							Type: clickyClack.Details.TactilityFeedback,
@@ -182,7 +182,7 @@ templ SwitchDetail(user models.User, clickyClack models.Switch) {
 							Type: clickyClack.Details.TopHousingMaterial,
 						})
 						@details(Details{
-							Name: "Base Material Housing",
+							Name: "Bottom Material Housing",
 							Type: clickyClack.Details.BaseHousingMaterial,
 						})
 						@details(Details{

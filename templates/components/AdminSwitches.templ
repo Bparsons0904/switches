@@ -1,8 +1,10 @@
 package components
 
 import (
+	"fmt"
 	"switches/models"
 	"switches/templates/layouts"
+	"switches/templates/ui"
 )
 
 templ AdminSwitches(clickyClacks []models.Switch, search string) {
@@ -72,7 +74,11 @@ templ AdminSwitches(clickyClacks []models.Switch, search string) {
 								{ clickyClack.Name }
 							</h3>
 							<div class="options">
-								<button class="button">Edit</button>
+								@ui.Button(ui.ButtonProp{
+									ButtonText: "Edit",
+									Get:        fmt.Sprintf("/admin/switches/%s/edit", clickyClack.ID),
+									Target:     "#main",
+									PushUrl:    fmt.Sprintf("/admin/switches/%s/edit", clickyClack.ID)})
 								<button class="button">Delete</button>
 							</div>
 						</div>

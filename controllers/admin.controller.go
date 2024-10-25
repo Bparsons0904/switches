@@ -58,6 +58,7 @@ func GetAdminSwitchEdit(c *fiber.Ctx) error { // {{{
 		Preload("ImageLinks").
 		Preload("Brand").
 		Preload("SwitchType").
+		Preload("Details").
 		First(&clickyClack, switchID).Error
 	if err != nil {
 		log.Error().Err(err).Msg("Error getting the switche")
@@ -435,8 +436,15 @@ func getSwitchInputData() (components.SwitchData, error) {
 	}
 	timer.LogTime("Get Manufacturers")
 
-	var switchTypes []models.Type
-	if err := database.DB.Where("category = 'switch_type'").Find(&switchTypes).Error; err != nil {
+	// var switchTypes []models.Type
+	// if err := database.DB.Where("category = 'switch_type'").Find(&switchTypes).Error; err != nil {
+	// 	log.Error().Err(err).Msg("Error getting the switch types")
+	// 	return switchInput, err
+	// }
+	// timer.LogTime("Get Switch Types")
+
+	var availableTypes []models.Type
+	if err := database.DB.Find(&availableTypes).Error; err != nil {
 		log.Error().Err(err).Msg("Error getting the switch types")
 		return switchInput, err
 	}
@@ -458,18 +466,70 @@ func getSwitchInputData() (components.SwitchData, error) {
 		})
 	}
 
-	var switchOptions []components.Option
-	for _, switchType := range switchTypes {
-		switchOptions = append(switchOptions, components.Option{
-			Value: strconv.Itoa(switchType.ID),
-			Label: switchType.Name,
-		})
+	var switchOptions,
+		tactilityTypes,
+		tactilityFeedbacks,
+		pinConfigurations,
+		springMaterials,
+		soundLevels,
+		soundTypes,
+		materials []components.Option
+	for _, switchType := range availableTypes {
+		switch switchType.Category {
+		case "switch_type":
+			switchOptions = append(switchOptions, components.Option{
+				Value: strconv.Itoa(switchType.ID),
+				Label: switchType.Name,
+			})
+		case "tactility_type":
+			tactilityTypes = append(tactilityTypes, components.Option{
+				Value: strconv.Itoa(switchType.ID),
+				Label: switchType.Name,
+			})
+		case "tactility_feedback":
+			tactilityFeedbacks = append(tactilityFeedbacks, components.Option{
+				Value: strconv.Itoa(switchType.ID),
+				Label: switchType.Name,
+			})
+		case "pin_configuration":
+			pinConfigurations = append(pinConfigurations, components.Option{
+				Value: strconv.Itoa(switchType.ID),
+				Label: switchType.Name,
+			})
+		case "spring_material":
+			springMaterials = append(springMaterials, components.Option{
+				Value: strconv.Itoa(switchType.ID),
+				Label: switchType.Name,
+			})
+		case "sound_level":
+			soundLevels = append(soundLevels, components.Option{
+				Value: strconv.Itoa(switchType.ID),
+				Label: switchType.Name,
+			})
+		case "sound_type":
+			soundTypes = append(soundTypes, components.Option{
+				Value: strconv.Itoa(switchType.ID),
+				Label: switchType.Name,
+			})
+		case "material":
+			materials = append(materials, components.Option{
+				Value: strconv.Itoa(switchType.ID),
+				Label: switchType.Name,
+			})
+		}
 	}
 
 	switchInput = components.SwitchData{
-		Brands:        brandOptions,
-		Manufacturers: manufacturerOptions,
-		SwitchTypes:   switchOptions,
+		Brands:             brandOptions,
+		Manufacturers:      manufacturerOptions,
+		SwitchTypes:        switchOptions,
+		TactilityTypes:     tactilityTypes,
+		TactilityFeedbacks: tactilityFeedbacks,
+		PinConfigurations:  pinConfigurations,
+		SpringMaterials:    springMaterials,
+		SoundLevels:        soundLevels,
+		SoundTypes:         soundTypes,
+		Materials:          materials,
 	}
 	timer.LogTime("Set Switch Data")
 

@@ -8,9 +8,16 @@ import (
 )
 
 type SwitchData struct {
-	SwitchTypes   []Option
-	Brands        []Option
-	Manufacturers []Option
+	SwitchTypes        []Option
+	Brands             []Option
+	Manufacturers      []Option
+	TactilityTypes     []Option
+	TactilityFeedbacks []Option
+	PinConfigurations  []Option
+	SpringMaterials    []Option
+	SoundLevels        []Option
+	SoundTypes         []Option
+	Materials          []Option
 }
 
 type SwitchInput struct {
@@ -19,88 +26,281 @@ type SwitchInput struct {
 }
 
 templ SwitchGeneralForm(input SwitchInput) {
-	<input type="hidden" name="switch-id" value={ input.Switch.ID.String() }/>
-	@TextInput(Input{
-		ID:          input.Switch.ID.String(),
-		Value:       input.Switch.Name,
-		Name:        "switch-name",
-		Label:       "Switch Name",
-		Placeholder: "Enter switch name",
-		Required:    true})
-	@TextInput(Input{
-		ID:          input.Switch.ID.String(),
-		Value:       input.Switch.ShortDescription,
-		Name:        "short-desc",
-		Label:       "Short Description",
-		Placeholder: "Enter Short Description",
-		Required:    true})
-	@AreaInput(Input{
-		ID:          input.Switch.ID.String(),
-		Value:       input.Switch.LongDescription,
-		Name:        "long-desc",
-		Label:       "Long Description",
-		Placeholder: "Enter Long Description",
-		Required:    true})
-	@SelectInput(Select{
-		ID:          input.Switch.ID.String(),
-		Name:        "switch-type-id",
-		Label:       "Switch Type",
-		Options:     input.FormData.SwitchTypes,
-		Selected:    strconv.Itoa(input.Switch.SwitchTypeID),
-		Placeholder: "Select switch type",
-		Required:    true})
-	@SelectInput(Select{
-		ID:          input.Switch.ID.String(),
-		Name:        "brand-id",
-		Label:       "Brand",
-		Options:     input.FormData.Brands,
-		Selected:    pointerIntToString(input.Switch.BrandID),
-		Placeholder: "Select switch brand"})
-	@SelectInput(Select{
-		ID:          input.Switch.ID.String(),
-		Name:        "manufacturer-id",
-		Label:       "Manufacturer",
-		Options:     input.FormData.Manufacturers,
-		Selected:    pointerIntToString(input.Switch.ManufacturerID),
-		Placeholder: "Select switch manufacturer"})
-	@DateInput(Input{
-		ID:          input.Switch.ID.String(),
-		Name:        "release-date",
-		Label:       "Release Date",
-		Value:       input.Switch.ReleaseDate.Format("2006-01-02"),
-		Placeholder: "Select release date"})
-	@CheckBox(CheckInput{
-		ID:      input.Switch.ID.String(),
-		Name:    "available",
-		Label:   "Available",
-		Checked: input.Switch.Available})
-	@NumberInput(Number{
-		ID:          input.Switch.ID.String(),
-		Name:        "price",
-		Label:       "Price ($ $$ $$$)",
-		Min:         "1",
-		Max:         "3",
-		Step:        "1",
-		Placeholder: "Enter switch price",
-		Value:       input.Switch.PricePoint,
-		Required:    true})
-	@TextInput(Input{
-		ID:          input.Switch.ID.String(),
-		Name:        "site-url",
-		Label:       "Site URL",
-		Placeholder: "Enter switch site URL",
-		Value:       input.Switch.SiteURL,
-		Required:    true})
-	<div id="image-links-container">
-		<div id="image-links-wrapper">
-			if len(input.Switch.ImageLinks) == 0 {
-				@ImageLinksForm([]models.ImageLink{{
-					LinkAddress: "",
-					AltText:     "",
-				}})
-			} else {
-				@ImageLinksForm(input.Switch.ImageLinks)
-			}
+	<style type="text/css">
+    #form-container {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 2rem;
+    }
+  </style>
+	<div id="form-container">
+		<input type="hidden" name="switch-id" value={ input.Switch.ID.String() }/>
+		<div class="side left">
+			<h1>Switch Basics</h1>
+			@TextInput(Input{
+				ID:          input.Switch.ID.String(),
+				Value:       input.Switch.Name,
+				Name:        "switch-name",
+				Label:       "Switch Name",
+				Placeholder: "Enter switch name",
+				Required:    true})
+			@TextInput(Input{
+				ID:          input.Switch.ID.String(),
+				Value:       input.Switch.ShortDescription,
+				Name:        "short-desc",
+				Label:       "Short Description",
+				Placeholder: "Enter Short Description",
+				Required:    true})
+			@AreaInput(Input{
+				ID:          input.Switch.ID.String(),
+				Value:       input.Switch.LongDescription,
+				Name:        "long-desc",
+				Label:       "Long Description",
+				Placeholder: "Enter Long Description",
+				Required:    true})
+			@SelectInput(Select{
+				ID:          input.Switch.ID.String(),
+				Name:        "switch-type-id",
+				Label:       "Switch Type",
+				Options:     input.FormData.SwitchTypes,
+				Selected:    strconv.Itoa(input.Switch.SwitchTypeID),
+				Placeholder: "Select switch type",
+				Required:    true})
+			@SelectInput(Select{
+				ID:          input.Switch.ID.String(),
+				Name:        "brand-id",
+				Label:       "Brand",
+				Options:     input.FormData.Brands,
+				Selected:    pointerIntToString(input.Switch.BrandID),
+				Placeholder: "Select switch brand"})
+			@SelectInput(Select{
+				ID:          input.Switch.ID.String(),
+				Name:        "manufacturer-id",
+				Label:       "Manufacturer",
+				Options:     input.FormData.Manufacturers,
+				Selected:    pointerIntToString(input.Switch.ManufacturerID),
+				Placeholder: "Select switch manufacturer"})
+			@DateInput(Input{
+				ID:          input.Switch.ID.String(),
+				Name:        "release-date",
+				Label:       "Release Date",
+				Value:       input.Switch.ReleaseDate.Format("2006-01-02"),
+				Placeholder: "Select release date"})
+			@CheckBox(CheckInput{
+				ID:      input.Switch.ID.String(),
+				Name:    "available",
+				Label:   "Available",
+				Checked: input.Switch.Available,
+			})
+			@NumberInput(Number{
+				ID:          input.Switch.ID.String(),
+				Name:        "price",
+				Label:       "Price ($ $$ $$$)",
+				Min:         "1",
+				Max:         "3",
+				Step:        "1",
+				Placeholder: "Enter switch price",
+				Value:       input.Switch.PricePoint,
+				Required:    true,
+			})
+			@TextInput(Input{
+				ID:          input.Switch.ID.String(),
+				Name:        "site-url",
+				Label:       "Site URL",
+				Placeholder: "Enter switch site URL",
+				Value:       input.Switch.SiteURL,
+			})
+			<div id="image-links-container">
+				<div id="image-links-wrapper">
+					if len(input.Switch.ImageLinks) == 0 {
+						@ImageLinksForm([]models.ImageLink{{
+							LinkAddress: "",
+							AltText:     "",
+						}})
+					} else {
+						@ImageLinksForm(input.Switch.ImageLinks)
+					}
+				</div>
+			</div>
+		</div>
+		<div class="side right">
+			<h1>Switch Details</h1>
+			<h4>Feel Group</h4>
+			@NumberInput(Number{
+				ID:          input.Switch.ID.String(),
+				Name:        "spring-force",
+				Label:       "Sprint Force",
+				Placeholder: "Enter Spring Force",
+				Value32Ptr:  input.Switch.Details.SpringForce,
+			})
+			@SelectInput(Select{
+				ID:          input.Switch.ID.String(),
+				Name:        "tactility-type-id",
+				Label:       "Brand",
+				Options:     input.FormData.TactilityTypes,
+				Selected:    pointerIntToString(input.Switch.Details.TactilityTypeID),
+				Placeholder: "Select tactility type",
+			})
+			@SelectInput(Select{
+				ID:          input.Switch.ID.String(),
+				Name:        "tactility-feedback-id",
+				Label:       "Brand",
+				Options:     input.FormData.TactilityFeedbacks,
+				Selected:    pointerIntToString(input.Switch.Details.TactilityFeedbackID),
+				Placeholder: "Select tactility feedback",
+			})
+			@CheckBox(CheckInput{
+				ID:      input.Switch.ID.String(),
+				Name:    "factory-lubed",
+				Label:   "Factory Lubed",
+				Checked: *input.Switch.Details.FactoryLubed,
+			})
+			@NumberInput(Number{
+				ID:          input.Switch.ID.String(),
+				Name:        "pre-travel",
+				Label:       "Pre-Travel",
+				Placeholder: "Select pre-travel length",
+				Value32Ptr:  input.Switch.Details.PreTravel,
+			})
+			@NumberInput(Number{
+				ID:          input.Switch.ID.String(),
+				Name:        "total-travel",
+				Label:       "Total Travel",
+				Placeholder: "Select total travel length",
+				Value32Ptr:  input.Switch.Details.TotalTravel,
+			})
+			@NumberInput(Number{
+				ID:          input.Switch.ID.String(),
+				Name:        "initial-force",
+				Label:       "Initial Force",
+				Placeholder: "Select Initial Force",
+				Value32Ptr:  input.Switch.Details.InitialForce,
+			})
+			@NumberInput(Number{
+				ID:          input.Switch.ID.String(),
+				Name:        "actuation-point",
+				Label:       "Actuation Point",
+				Placeholder: "Select Actuation Point",
+				Value32Ptr:  input.Switch.Details.ActuationForce,
+			})
+			@NumberInput(Number{
+				ID:          input.Switch.ID.String(),
+				Name:        "actuation-force",
+				Label:       "Actuation Force",
+				Placeholder: "Select Actuation Force",
+				Value32Ptr:  input.Switch.Details.ActuationForce,
+			})
+			@NumberInput(Number{
+				ID:          input.Switch.ID.String(),
+				Name:        "reset-point",
+				Label:       "Reset Point",
+				Placeholder: "Select Reset Point",
+				Value32Ptr:  input.Switch.Details.ResetPoint,
+			})
+			@NumberInput(Number{
+				ID:          input.Switch.ID.String(),
+				Name:        "bottom-out-point",
+				Label:       "Bottom Out Point",
+				Placeholder: "Select Bottom Out Point",
+				Value32Ptr:  input.Switch.Details.BottomOutForcePoint,
+			})
+			@NumberInput(Number{
+				ID:          input.Switch.ID.String(),
+				Name:        "bottom-out-force",
+				Label:       "Bottom Out Force",
+				Placeholder: "Select Bottom Force",
+				Value32Ptr:  input.Switch.Details.BottomOutForce,
+			})
+			<h4>General Group</h4>
+			@SelectInput(Select{
+				ID:          input.Switch.ID.String(),
+				Name:        "pin-configuration",
+				Label:       "Pin Configuration",
+				Options:     input.FormData.PinConfigurations,
+				Selected:    pointerIntToString(input.Switch.Details.PinConfigurationID),
+				Default:     "5-pin",
+				Placeholder: "Select tactility feedback",
+			})
+			@SelectInput(Select{
+				ID:          input.Switch.ID.String(),
+				Name:        "spring-material-type",
+				Label:       "Spring Material Type",
+				Options:     input.FormData.SpringMaterials,
+				Selected:    pointerIntToString(input.Switch.Details.SpringMaterialTypeID),
+				Placeholder: "Select Spring Material",
+			})
+			<h4>Sound Group</h4>
+			@SelectInput(Select{
+				ID:          input.Switch.ID.String(),
+				Name:        "sound-level",
+				Label:       "Sound Level",
+				Options:     input.FormData.SoundLevels,
+				Selected:    pointerIntToString(input.Switch.Details.SoundLevelID),
+				Placeholder: "Select Sound Level",
+			})
+			@SelectInput(Select{
+				ID:          input.Switch.ID.String(),
+				Name:        "sound-type",
+				Label:       "Sound Type",
+				Options:     input.FormData.SoundTypes,
+				Selected:    pointerIntToString(input.Switch.Details.SoundTypeID),
+				Placeholder: "Select Sound Type",
+			})
+			@SelectInput(Select{
+				ID:          input.Switch.ID.String(),
+				Name:        "top-material-housing",
+				Label:       "Top Material Housing",
+				Options:     input.FormData.Materials,
+				Selected:    pointerIntToString(input.Switch.Details.TopHousingMaterialID),
+				Placeholder: "Select Top Material Housing",
+			})
+			@SelectInput(Select{
+				ID:          input.Switch.ID.String(),
+				Name:        "base-material-housing",
+				Label:       "Bottom Material Housing",
+				Options:     input.FormData.Materials,
+				Selected:    pointerIntToString(input.Switch.Details.BaseHousingMaterialID),
+				Placeholder: "Select Bottom Material Housing",
+			})
+			@SelectInput(Select{
+				ID:          input.Switch.ID.String(),
+				Name:        "stem-material",
+				Label:       "Stem Material",
+				Options:     input.FormData.Materials,
+				Selected:    pointerIntToString(input.Switch.Details.StemMaterialID),
+				Placeholder: "Select Stem Material",
+			})
+			<h4>Appearance Group</h4>
+			@SelectInput(Select{
+				ID:          input.Switch.ID.String(),
+				Name:        "top-housing-color",
+				Label:       "Top Housing Color",
+				Options:     input.FormData.Materials,
+				Selected:    pointerIntToString(input.Switch.Details.TopHousingMaterialID),
+				Placeholder: "Select Top Material",
+			})
+			@SelectInput(Select{
+				ID:          input.Switch.ID.String(),
+				Name:        "bottome-housing-color",
+				Label:       "Bottom Housing Color",
+				Options:     input.FormData.Materials,
+				Selected:    pointerIntToString(input.Switch.Details.BottomHousingColorID),
+				Placeholder: "Select Bottom Material",
+			})
+			@SelectInput(Select{
+				ID:          input.Switch.ID.String(),
+				Name:        "stem-color",
+				Label:       "Stem Color",
+				Options:     input.FormData.Materials,
+				Selected:    pointerIntToString(input.Switch.Details.StemColorID),
+				Placeholder: "Select Stem Material",
+			})
+			@CheckBox(CheckInput{
+				ID:      input.Switch.ID.String(),
+				Name:    "shine-through",
+				Label:   "Has Shine Through",
+				Checked: *input.Switch.Details.HasShineThrough,
+			})
 		</div>
 	</div>
 }
