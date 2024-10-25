@@ -2,6 +2,7 @@ package controllers
 
 import (
 	"fmt"
+	"log/slog"
 	"strconv"
 	"switches/database"
 	"switches/models"
@@ -86,6 +87,30 @@ type SwitchQueryParams struct {
 	PricePoint       int       `form:"pricePoint"`
 	SiteURL          string    `form:"site-url"`
 	LinkCount        int       `form:"link-count"`
+	// Details
+	SpringForce         float32 `form:"spring-force"`
+	TactilityType       int     `form:"tactility-type"`
+	TactilityFeedback   int     `form:"tactility-feedback"`
+	FactoryLubed        string  `form:"factory-lubed"`
+	PreTravel           float32 `form:"pre-travel"`
+	TotalTravel         float32 `form:"total-travel"`
+	InitialForce        float32 `form:"initial-force"`
+	ActuationForce      float32 `form:"actuation-force"`
+	ActuationPoint      float32 `form:"actuation-point"`
+	ResetPoint          float32 `form:"reset-point"`
+	BottomOutPoint      float32 `form:"bottom-out-point"`
+	BottomOutForce      float32 `form:"bottom-out-force"`
+	PinConfiguration    int     `form:"pin-configuration"`
+	SpringMaterialType  int     `form:"spring-material-type"`
+	SoundLevel          int     `form:"sound-level"`
+	SoundType           int     `form:"sound-type"`
+	TopMaterialHousing  int     `form:"top-material-housing"`
+	BaseMaterialHousing int     `form:"base-material-housing"`
+	StemMaterial        int     `form:"stem-material"`
+	TopHousingColor     int     `form:"top-housing-color"`
+	BottomHousingColor  int     `form:"bottom-housing-color"`
+	StemColor           int     `form:"stem-color"`
+	ShineThrough        string  `form:"shine-through"`
 }
 
 func PutSwitch(c *fiber.Ctx) error { // {{{
@@ -108,6 +133,76 @@ func PutSwitch(c *fiber.Ctx) error { // {{{
 		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
 			"message": "Error parsing release date", "error": err,
 		})
+	}
+
+	isFactoryLubed := request.FactoryLubed == "true"
+	hasShineThrough := request.ShineThrough == "true"
+	details := models.Details{
+		FactoryLubed:    &isFactoryLubed,
+		HasShineThrough: &hasShineThrough,
+		SwitchID:        request.ID,
+	}
+
+	if request.SpringMaterialType != 0 {
+		details.SpringMaterialTypeID = &request.SpringMaterialType
+	}
+	if request.TopMaterialHousing != 0 {
+		details.TopHousingMaterialID = &request.TopMaterialHousing
+	}
+	if request.BaseMaterialHousing != 0 {
+		details.BaseHousingMaterialID = &request.BaseMaterialHousing
+	}
+	if request.StemMaterial != 0 {
+		details.StemMaterialID = &request.StemMaterial
+	}
+	if request.TopHousingColor != 0 {
+		details.TopHousingColorID = &request.TopHousingColor
+	}
+	if request.BottomHousingColor != 0 {
+		details.BottomHousingColorID = &request.BottomHousingColor
+	}
+	if request.StemColor != 0 {
+		slog.Info("Stem color", "value", request.StemColor)
+		details.StemColorID = &request.StemColor
+	}
+	if request.SpringForce != 0 {
+		details.SpringForce = &request.SpringForce
+	}
+	if request.PreTravel != 0 {
+		details.PreTravel = &request.PreTravel
+	}
+	if request.TotalTravel != 0 {
+		details.TotalTravel = &request.TotalTravel
+	}
+	if request.InitialForce != 0 {
+		details.InitialForce = &request.InitialForce
+	}
+	if request.ActuationForce != 0 {
+		details.ActuationForce = &request.ActuationForce
+	}
+	if request.ActuationPoint != 0 {
+		details.ActuationPoint = &request.ActuationPoint
+	}
+	if request.ResetPoint != 0 {
+		details.ResetPoint = &request.ResetPoint
+	}
+	if request.BottomOutPoint != 0 {
+		details.BottomOutForcePoint = &request.BottomOutPoint
+	}
+	if request.BottomOutForce != 0 {
+		details.BottomOutForce = &request.BottomOutForce
+	}
+	if request.PinConfiguration != 0 {
+		details.PinConfigurationID = &request.PinConfiguration
+	}
+	if request.SoundLevel != 0 {
+		details.SoundLevelID = &request.SoundLevel
+	}
+	if request.TactilityType != 0 {
+		details.TactilityTypeID = &request.TactilityType
+	}
+	if request.TactilityFeedback != 0 {
+		details.TactilityFeedbackID = &request.TactilityFeedback
 	}
 
 	clickyClack := models.Switch{
@@ -136,6 +231,13 @@ func PutSwitch(c *fiber.Ctx) error { // {{{
 		})
 	}
 	timer.LogTime("Update Switch")
+
+	if err := tx.Debug().Model(&details).Updates(details).Error; err != nil {
+		log.Error().Err(err).Msg("Error updating the switch details")
+		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
+			"message": "Error updating the switch details", "error": err,
+		})
+	}
 
 	var currentImageLinkIDs []uuid.UUID
 	if err := tx.Model(&models.ImageLink{}).

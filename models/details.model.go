@@ -8,7 +8,7 @@ import (
 
 type Details struct {
 	ID                    uuid.UUID `gorm:"type:uuid;default:uuid_generate_v7();primaryKey" json:"id"`
-	SwitchID              uuid.UUID `gorm:"type:uuid;not null;index"                        json:"switchId"`
+	SwitchID              uuid.UUID `gorm:"type:uuid;not null;uniqueIndex"                  json:"switchId"`
 	Version               *int      `gorm:"type:int"                                        json:"version,omitempty"`
 	SpringTypeID          *int      `gorm:"type:int"                                        json:"springTypeId,omitempty"`
 	SpringForce           *float32  `gorm:"type:real"                                       json:"springForce,omitempty"`

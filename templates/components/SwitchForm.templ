@@ -135,7 +135,7 @@ templ SwitchGeneralForm(input SwitchInput) {
 			})
 			@SelectInput(Select{
 				ID:          input.Switch.ID.String(),
-				Name:        "tactility-type-id",
+				Name:        "tactility-type",
 				Label:       "Brand",
 				Options:     input.FormData.TactilityTypes,
 				Selected:    pointerIntToString(input.Switch.Details.TactilityTypeID),
@@ -143,7 +143,7 @@ templ SwitchGeneralForm(input SwitchInput) {
 			})
 			@SelectInput(Select{
 				ID:          input.Switch.ID.String(),
-				Name:        "tactility-feedback-id",
+				Name:        "tactility-feedback",
 				Label:       "Brand",
 				Options:     input.FormData.TactilityFeedbacks,
 				Selected:    pointerIntToString(input.Switch.Details.TactilityFeedbackID),
@@ -281,7 +281,7 @@ templ SwitchGeneralForm(input SwitchInput) {
 			})
 			@SelectInput(Select{
 				ID:          input.Switch.ID.String(),
-				Name:        "bottome-housing-color",
+				Name:        "bottom-housing-color",
 				Label:       "Bottom Housing Color",
 				Options:     input.FormData.Materials,
 				Selected:    pointerIntToString(input.Switch.Details.BottomHousingColorID),
