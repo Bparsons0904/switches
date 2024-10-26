@@ -173,7 +173,14 @@ type CheckInput struct {
 
 templ CheckBox(input CheckInput) {
 	<div class="form-group">
-		<label class="checkbox-label" for={ input.Name }>
+		<label
+			class="checkbox-label"
+			if input.ID != "" {
+				for={ fmt.Sprintf("%s-%s", input.ID, input.Name) }
+			} else {
+				for={ input.Name }
+			}
+		>
 			{ input.Label }
 			<input
 				if input.ID != "" {

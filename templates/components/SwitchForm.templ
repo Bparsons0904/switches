@@ -18,6 +18,7 @@ type SwitchData struct {
 	SoundLevels        []Option
 	SoundTypes         []Option
 	Materials          []Option
+	Colors             []Option
 }
 
 type SwitchInput struct {
@@ -35,6 +36,7 @@ templ SwitchGeneralForm(input SwitchInput) {
   </style>
 	<div id="form-container">
 		<input type="hidden" name="switch-id" value={ input.Switch.ID.String() }/>
+		<input type="hidden" name="details-id" value={ input.Switch.Details.ID.String() }/>
 		<div class="side left">
 			<h1>Switch Basics</h1>
 			@TextInput(Input{
@@ -275,25 +277,25 @@ templ SwitchGeneralForm(input SwitchInput) {
 				ID:          input.Switch.ID.String(),
 				Name:        "top-housing-color",
 				Label:       "Top Housing Color",
-				Options:     input.FormData.Materials,
+				Options:     input.FormData.Colors,
 				Selected:    pointerIntToString(input.Switch.Details.TopHousingMaterialID),
-				Placeholder: "Select Top Material",
+				Placeholder: "Select Top Housing Color",
 			})
 			@SelectInput(Select{
 				ID:          input.Switch.ID.String(),
 				Name:        "bottom-housing-color",
 				Label:       "Bottom Housing Color",
-				Options:     input.FormData.Materials,
+				Options:     input.FormData.Colors,
 				Selected:    pointerIntToString(input.Switch.Details.BottomHousingColorID),
-				Placeholder: "Select Bottom Material",
+				Placeholder: "Select Bottom Housing Color",
 			})
 			@SelectInput(Select{
 				ID:          input.Switch.ID.String(),
 				Name:        "stem-color",
 				Label:       "Stem Color",
-				Options:     input.FormData.Materials,
+				Options:     input.FormData.Colors,
 				Selected:    pointerIntToString(input.Switch.Details.StemColorID),
-				Placeholder: "Select Stem Material",
+				Placeholder: "Select Stem Colors",
 			})
 			@CheckBox(CheckInput{
 				ID:      input.Switch.ID.String(),

@@ -19,8 +19,10 @@ templ SwitchEdit(input components.SwitchInput) {
 	<section id="switch-edit-form">
 		@components.FormContainer(
 			components.Form{
-				ID:  "switch-edit-form",
-				Put: fmt.Sprintf("/admin/switches/%s/edit", input.Switch.ID)}) {
+				ID:     "switch-edit-form",
+				Put:    fmt.Sprintf("/admin/switches/%s/edit", input.Switch.ID),
+				Target: "#switch-edit-form",
+			}) {
 			@components.SwitchGeneralForm(input)
 		}
 	</section>
