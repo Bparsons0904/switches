@@ -49,6 +49,7 @@ func GetAdminSwitchEdit(c *fiber.Ctx) error { // {{{
 	}
 
 	switchInput, err := getSwitchInputData()
+	slog.Info("Input", "input", switchInput)
 	if err != nil {
 		log.Error().Err(err).Msg("Error getting the switch input data for edit")
 		return c.Status(fiber.StatusBadRequest).Next()
@@ -613,7 +614,7 @@ func getSwitchInputData() (components.SwitchData, error) {
 				Value: strconv.Itoa(switchType.ID),
 				Label: switchType.Name,
 			})
-		case "colors":
+		case "color":
 			colors = append(colors, components.Option{
 				Value: strconv.Itoa(switchType.ID),
 				Label: switchType.Name,

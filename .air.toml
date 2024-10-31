@@ -21,7 +21,7 @@ stop_on_error = true
 [proxy]
 enabled = true
 proxy_port = 8008
-app_port = 3030
+app_port = 3031
 
 [color]
 app = ""

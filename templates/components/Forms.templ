@@ -164,11 +164,12 @@ templ NumberInput(input Number) {
 }
 
 type CheckInput struct {
-	ID          string
-	Name        string
-	Label       string
-	Checked     bool
-	Placeholder string
+	ID             string
+	Name           string
+	Label          string
+	Checked        bool
+	CheckedPointer *bool
+	Placeholder    string
 }
 
 templ CheckBox(input CheckInput) {
@@ -190,7 +191,7 @@ templ CheckBox(input CheckInput) {
 				}
 				type="checkbox"
 				name={ input.Name }
-				if input.Checked {
+				if input.Checked ||pointerBoolToBool(input.CheckedPointer) {
 					checked
 				}
 			/>
@@ -250,4 +251,18 @@ templ FormContainer(input Form) {
 			}
 		</form>
 	</div>
+}
+
+func pointerIntToString(p *int) string {
+	if p == nil {
+		return ""
+	}
+	return strconv.Itoa(*p)
+}
+
+func pointerBoolToBool(p *bool) bool {
+	if p == nil {
+		return false
+	}
+	return *p
 }

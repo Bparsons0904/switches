@@ -152,10 +152,10 @@ templ SwitchGeneralForm(input SwitchInput) {
 				Placeholder: "Select tactility feedback",
 			})
 			@CheckBox(CheckInput{
-				ID:      input.Switch.ID.String(),
-				Name:    "factory-lubed",
-				Label:   "Factory Lubed",
-				Checked: *input.Switch.Details.FactoryLubed,
+				ID:             input.Switch.ID.String(),
+				Name:           "factory-lubed",
+				Label:          "Factory Lubed",
+				CheckedPointer: input.Switch.Details.FactoryLubed,
 			})
 			@NumberInput(Number{
 				ID:          input.Switch.ID.String(),
@@ -298,10 +298,10 @@ templ SwitchGeneralForm(input SwitchInput) {
 				Placeholder: "Select Stem Colors",
 			})
 			@CheckBox(CheckInput{
-				ID:      input.Switch.ID.String(),
-				Name:    "shine-through",
-				Label:   "Has Shine Through",
-				Checked: *input.Switch.Details.HasShineThrough,
+				ID:             input.Switch.ID.String(),
+				Name:           "shine-through",
+				Label:          "Has Shine Through",
+				CheckedPointer: input.Switch.Details.HasShineThrough,
 			})
 		</div>
 	</div>
@@ -383,11 +383,4 @@ templ ImageLinkForm(index int, imageLink models.ImageLink) {
 			Placeholder: "Enter switch image alt text",
 			Required:    true})
 	</div>
-}
-
-func pointerIntToString(p *int) string {
-	if p == nil {
-		return ""
-	}
-	return strconv.Itoa(*p)
 }
