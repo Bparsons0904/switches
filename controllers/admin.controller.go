@@ -2,7 +2,6 @@ package controllers
 
 import (
 	"fmt"
-	"log/slog"
 	"strconv"
 	"switches/database"
 	"switches/models"
@@ -49,7 +48,6 @@ func GetAdminSwitchEdit(c *fiber.Ctx) error { // {{{
 	}
 
 	switchInput, err := getSwitchInputData()
-	slog.Info("Input", "input", switchInput)
 	if err != nil {
 		log.Error().Err(err).Msg("Error getting the switch input data for edit")
 		return c.Status(fiber.StatusBadRequest).Next()
@@ -206,7 +204,6 @@ func PutSwitch(c *fiber.Ctx) error { // {{{
 		details.TactilityFeedbackID = &request.TactilityFeedback
 	}
 
-	slog.Info("available", "avaliable", request.Avaliable)
 	clickyClack := models.Switch{
 		ID:               request.ID,
 		Name:             request.Name,

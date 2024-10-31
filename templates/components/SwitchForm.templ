@@ -278,7 +278,7 @@ templ SwitchGeneralForm(input SwitchInput) {
 				Name:        "top-housing-color",
 				Label:       "Top Housing Color",
 				Options:     input.FormData.Colors,
-				Selected:    pointerIntToString(input.Switch.Details.TopHousingMaterialID),
+				Selected:    pointerIntToString(input.Switch.Details.TopHousingColorID),
 				Placeholder: "Select Top Housing Color",
 			})
 			@SelectInput(Select{
@@ -344,7 +344,16 @@ templ ImageLinksForm(imageLinks []models.ImageLink) {
             const addButton = document.querySelector(`#add-button-${index}`);
             
             if (urlInput && altTextInput && addButton) {
-                const isValid = urlInput.value.trim() !== "" && altTextInput.value.trim() !== "";
+                let valid = true; 
+                if (urlInput.value.trim() !== "" || altTextInput.value.trim() !== "") {
+                  urlInput.required = true;
+                  altTextInput.required = true;
+                  isValid = urlInput.value.trim() !== "" && altTextInput.value.trim() !== "";
+                } else {
+                  urlInput.required = false;
+                  altTextInput.required = false;
+                } 
+
                 addButton.disabled = !isValid;
                 addButton.classList.toggle('disabled', !isValid);
             }
@@ -375,12 +384,12 @@ templ ImageLinkForm(index int, imageLink models.ImageLink) {
 			Label:       "Image URL",
 			Placeholder: "Enter switch image link",
 			Value:       imageLink.LinkAddress,
-			Required:    true})
+		})
 		@TextInput(Input{
 			Name:        "link-alt-text-" + strconv.Itoa(index),
 			Label:       "Image Alt Text",
 			Value:       imageLink.AltText,
 			Placeholder: "Enter switch image alt text",
-			Required:    true})
+		})
 	</div>
 }
