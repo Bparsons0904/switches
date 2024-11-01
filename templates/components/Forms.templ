@@ -65,6 +65,7 @@ type Select struct {
 	Selected    string
 	Placeholder string
 	Required    bool
+	Default     string
 }
 
 templ SelectInput(input Select) {
@@ -85,7 +86,7 @@ templ SelectInput(input Select) {
 			for _, option := range input.Options {
 				<option
 					value={ option.Value }
-					if option.Value == input.Selected {
+					if getSelected(input, option) {
 						selected
 					}
 				>{ option.Label }</option>
@@ -94,6 +95,15 @@ templ SelectInput(input Select) {
 	</div>
 }
 
+func getSelected(input Select, option Option) bool {
+	if input.Selected != "" {
+		return input.Selected == option.Value
+	}
+
+	return input.Default == option.Value
+}
+
+// if option.Value == input.Selected {
 templ DateInput(input Input) {
 	<div class="form-group">
 		<label for={ input.Name }>{ input.Label }</label>
@@ -116,6 +126,8 @@ type Number struct {
 	Step        string
 	Placeholder string
 	Value       int
+	Value32     float32
+	Value32Ptr  *float32
 	Required    bool
 }
 
@@ -138,22 +150,38 @@ templ NumberInput(input Number) {
 			if input.Required {
 				required
 			}
-			value={ strconv.Itoa(input.Value) }
+			if input.Value != 0 {
+				value={ strconv.Itoa(input.Value) }
+			}
+			if input.Value32 != 0.0 {
+				value={ fmt.Sprintf("%.2f", input.Value32) }
+			}
+			if input.Value32Ptr != nil {
+				value={ fmt.Sprintf("%.2f", *input.Value32Ptr) }
+			}
 		/>
 	</div>
 }
 
 type CheckInput struct {
-	ID          string
-	Name        string
-	Label       string
-	Checked     bool
-	Placeholder string
+	ID             string
+	Name           string
+	Label          string
+	Checked        bool
+	CheckedPointer *bool
+	Placeholder    string
 }
 
 templ CheckBox(input CheckInput) {
 	<div class="form-group">
-		<label class="checkbox-label" for={ input.Name }>
+		<label
+			class="checkbox-label"
+			if input.ID != "" {
+				for={ fmt.Sprintf("%s-%s", input.ID, input.Name) }
+			} else {
+				for={ input.Name }
+			}
+		>
 			{ input.Label }
 			<input
 				if input.ID != "" {
@@ -163,7 +191,7 @@ templ CheckBox(input CheckInput) {
 				}
 				type="checkbox"
 				name={ input.Name }
-				if input.Checked {
+				if input.Checked ||pointerBoolToBool(input.CheckedPointer) {
 					checked
 				}
 			/>
@@ -223,4 +251,18 @@ templ FormContainer(input Form) {
 			}
 		</form>
 	</div>
+}
+
+func pointerIntToString(p *int) string {
+	if p == nil {
+		return ""
+	}
+	return strconv.Itoa(*p)
+}
+
+func pointerBoolToBool(p *bool) bool {
+	if p == nil {
+		return false
+	}
+	return *p
 }

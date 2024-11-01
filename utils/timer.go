@@ -13,7 +13,7 @@ type Timer struct {
 }
 
 func StartTimer(name string) Timer {
-	log.Debug().Str("name", name).Msg("Starting Timer")
+	log.Info().Str("name", name).Msg("Starting Timer")
 	return Timer{
 		name:        name,
 		totalTimer:  time.Now(),
@@ -23,7 +23,7 @@ func StartTimer(name string) Timer {
 
 func (t *Timer) LogTime(segment string) {
 	duration := time.Since(t.sectionTime)
-	log.Debug().
+	log.Info().
 		Str("name", t.name).
 		Str("segment", segment).
 		Str("duration", duration.String()).
@@ -33,7 +33,7 @@ func (t *Timer) LogTime(segment string) {
 
 func (t *Timer) LogTotalTime() {
 	duration := time.Since(t.totalTimer)
-	log.Debug().
+	log.Info().
 		Str("name", t.name).
 		Str("segement", "Total Elapsed Time").
 		Str("duration", duration.String()).

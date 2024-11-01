@@ -28,6 +28,7 @@
 #menu-desktop {
   display: none;
   place-items: center;
+  gap: 1rem;
   .logged-in {
     display: flex;
     place-items: center;
@@ -186,5 +187,95 @@
   place-items: center;
 }
 
-.pagination {
+@keyframes slide-in-out {
+  0% {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+  5%,
+  95% {
+    transform: translateX(0);
+    opacity: 1;
+  }
+  100% {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+}
+
+@keyframes timer-bar {
+  0% {
+    width: 100%;
+  }
+  100% {
+    width: 0%;
+  }
+}
+
+.toast-notification {
+  position: fixed;
+  display: flex;
+  flex-direction: column;
+  top: 25px;
+  right: 25px;
+  z-index: 1000;
+  background-color: var(--background-light);
+  width: 300px;
+  min-height: 75px;
+  padding: 15px;
+  box-shadow: var(--box-shadow);
+  border-radius: 8px;
+  animation: slide-in-out 5.6s ease-in-out forwards;
+
+  &.closing {
+    animation: slide-in-out 300ms ease-in-out forwards reverse;
+  }
+
+  .content {
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+  }
+
+  .title {
+    font-size: 18px;
+    font-weight: 700;
+    margin: 0 0 5px 0;
+  }
+
+  .sub-title {
+    font-size: 14px;
+    font-weight: 400;
+    margin: 0;
+  }
+
+  .close-btn {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+    color: var(--text-color);
+  }
+
+  .timer-bar {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    height: 4px;
+    background-color: currentColor;
+    animation: timer-bar 5s linear forwards;
+  }
+
+  &.success {
+    border-left: 4px solid #4caf50;
+    color: #4caf50;
+  }
+
+  &.error {
+    border-left: 4px solid #f44336;
+    color: #f44336;
+  }
 }

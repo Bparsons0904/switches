@@ -3,7 +3,8 @@ package layouts
 import (
 	"github.com/google/uuid"
 	"switches/models"
-	"switches/templates/components/icons"
+	"switches/templates/icons"
+	"switches/templates/ui"
 )
 
 templ Navbar(user models.User) {
@@ -27,6 +28,9 @@ templ Navbar(user models.User) {
 				</div>
 			} else {
 				@LoginButton()
+			}
+			if user.IsAdmin {
+				@ui.Button(ui.ButtonProp{ButtonText: "Console", Get: "/admin", Target: "#main", PushUrl: "/admin"})
 			}
 		</div>
 		<div id="menu-mobile">
@@ -69,10 +73,12 @@ templ MobileItem(title string, path string) {
 }
 
 templ LoginButton() {
-	<a href="/auth/login"><button type="button" class="menu-button">Login</button></a>
+	<a href="/auth/login">
+		<button type="button" class="button">Login</button>
+	</a>
 }
 
 templ LogoutButton() {
 	<!-- <a href={ templ.SafeURL(getLogoutLink()) }><button class="btn-inverted" type="button">Logout</button></a> -->
-	<a href="/auth/logout"><button class="btn-inverted" type="button">Logout</button></a>
+	<a href="/auth/logout"><button class="button btn-inverted" type="button">Logout</button></a>
 }

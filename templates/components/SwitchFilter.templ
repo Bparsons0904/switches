@@ -8,7 +8,7 @@ import (
 	"strconv"
 	"strings"
 	"switches/models"
-	"switches/templates/components/icons"
+	"switches/templates/icons"
 	"switches/templates/layouts"
 )
 
@@ -38,6 +38,7 @@ templ SwitchFilter(props SwitchesFilterProps) {
 					<div class="search">
 						<label>
 							<input
+								id="switch-search-input"
 								type="search"
 								name="search"
 								placeholder="Search switches..."
@@ -178,6 +179,11 @@ templ SwitchFilter(props SwitchesFilterProps) {
 			</div>
 		}
 	</section>
+	<script>
+    document.addEventListener('htmx:afterRequest', function(evt) {
+      document.getElementById('switch-search-input').focus();
+    });
+  </script>
 }
 
 func getFavoritesLabel(props SwitchesFilterProps) string {

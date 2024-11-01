@@ -5,6 +5,7 @@ import (
 	"strconv"
 	"switches/database"
 	"switches/models"
+	"switches/services/admin/seed"
 	"switches/templates/components"
 	"switches/templates/pages"
 	"switches/utils"
@@ -14,6 +15,23 @@ import (
 	"github.com/google/uuid"
 	"github.com/rs/zerolog/log"
 )
+
+func PostSeedSwitches(c *fiber.Ctx) error {
+	err := seed.SeedDatabase(database.DB)
+	component := components.ToastNotification(components.ToastNotificationProps{
+		Title: "Seeded Switches",
+		Type:  "success",
+	})
+	if err != nil {
+		log.Error().Err(err).Msg("Error seeing the database")
+		component = components.ToastNotification(components.ToastNotificationProps{
+			Title: "Failed to Seed Database",
+			Type:  "error",
+		})
+	}
+
+	return Render(component)(c)
+}
 
 func GetAdminHome(c *fiber.Ctx) error {
 	user := c.Locals("User").(models.User)
@@ -40,6 +58,7 @@ func GetAdminSwitchEdit(c *fiber.Ctx) error { // {{{
 		Preload("ImageLinks").
 		Preload("Brand").
 		Preload("SwitchType").
+		Preload("Details").
 		First(&clickyClack, switchID).Error
 	if err != nil {
 		log.Error().Err(err).Msg("Error getting the switche")
@@ -63,10 +82,35 @@ type SwitchQueryParams struct {
 	BrandID          *int      `form:"brand-id"`
 	ManufacturerID   *int      `form:"manufacturer-id"`
 	ReleaseDate      *string   `form:"release-date"`
-	Avaliable        string    `form:"avaliable"`
+	Avaliable        string    `form:"available"`
 	PricePoint       int       `form:"pricePoint"`
 	SiteURL          string    `form:"site-url"`
 	LinkCount        int       `form:"link-count"`
+	// Details
+	DetailsID           uuid.UUID `form:"details-id"`
+	SpringForce         float32   `form:"spring-force"`
+	TactilityType       int       `form:"tactility-type"`
+	TactilityFeedback   int       `form:"tactility-feedback"`
+	FactoryLubed        string    `form:"factory-lubed"`
+	PreTravel           float32   `form:"pre-travel"`
+	TotalTravel         float32   `form:"total-travel"`
+	InitialForce        float32   `form:"initial-force"`
+	ActuationForce      float32   `form:"actuation-force"`
+	ActuationPoint      float32   `form:"actuation-point"`
+	ResetPoint          float32   `form:"reset-point"`
+	BottomOutPoint      float32   `form:"bottom-out-point"`
+	BottomOutForce      float32   `form:"bottom-out-force"`
+	PinConfiguration    int       `form:"pin-configuration"`
+	SpringMaterialType  int       `form:"spring-material-type"`
+	SoundLevel          int       `form:"sound-level"`
+	SoundType           int       `form:"sound-type"`
+	TopMaterialHousing  int       `form:"top-material-housing"`
+	BaseMaterialHousing int       `form:"base-material-housing"`
+	StemMaterial        int       `form:"stem-material"`
+	TopHousingColor     int       `form:"top-housing-color"`
+	BottomHousingColor  int       `form:"bottom-housing-color"`
+	StemColor           int       `form:"stem-color"`
+	ShineThrough        string    `form:"shine-through"`
 }
 
 func PutSwitch(c *fiber.Ctx) error { // {{{
@@ -91,6 +135,75 @@ func PutSwitch(c *fiber.Ctx) error { // {{{
 		})
 	}
 
+	isFactoryLubed := request.FactoryLubed == "on"
+	hasShineThrough := request.ShineThrough == "on"
+	details := models.Details{
+		ID:              request.DetailsID,
+		FactoryLubed:    &isFactoryLubed,
+		HasShineThrough: &hasShineThrough,
+	}
+
+	if request.SpringMaterialType != 0 {
+		details.SpringMaterialTypeID = &request.SpringMaterialType
+	}
+	if request.TopMaterialHousing != 0 {
+		details.TopHousingMaterialID = &request.TopMaterialHousing
+	}
+	if request.BaseMaterialHousing != 0 {
+		details.BaseHousingMaterialID = &request.BaseMaterialHousing
+	}
+	if request.StemMaterial != 0 {
+		details.StemMaterialID = &request.StemMaterial
+	}
+	if request.TopHousingColor != 0 {
+		details.TopHousingColorID = &request.TopHousingColor
+	}
+	if request.BottomHousingColor != 0 {
+		details.BottomHousingColorID = &request.BottomHousingColor
+	}
+	if request.StemColor != 0 {
+		details.StemColorID = &request.StemColor
+	}
+	if request.SpringForce != 0 {
+		details.SpringForce = &request.SpringForce
+	}
+	if request.PreTravel != 0 {
+		details.PreTravel = &request.PreTravel
+	}
+	if request.TotalTravel != 0 {
+		details.TotalTravel = &request.TotalTravel
+	}
+	if request.InitialForce != 0 {
+		details.InitialForce = &request.InitialForce
+	}
+	if request.ActuationForce != 0 {
+		details.ActuationForce = &request.ActuationForce
+	}
+	if request.ActuationPoint != 0 {
+		details.ActuationPoint = &request.ActuationPoint
+	}
+	if request.ResetPoint != 0 {
+		details.ResetPoint = &request.ResetPoint
+	}
+	if request.BottomOutPoint != 0 {
+		details.BottomOutForcePoint = &request.BottomOutPoint
+	}
+	if request.BottomOutForce != 0 {
+		details.BottomOutForce = &request.BottomOutForce
+	}
+	if request.PinConfiguration != 0 {
+		details.PinConfigurationID = &request.PinConfiguration
+	}
+	if request.SoundLevel != 0 {
+		details.SoundLevelID = &request.SoundLevel
+	}
+	if request.TactilityType != 0 {
+		details.TactilityTypeID = &request.TactilityType
+	}
+	if request.TactilityFeedback != 0 {
+		details.TactilityFeedbackID = &request.TactilityFeedback
+	}
+
 	clickyClack := models.Switch{
 		ID:               request.ID,
 		Name:             request.Name,
@@ -100,7 +213,7 @@ func PutSwitch(c *fiber.Ctx) error { // {{{
 		BrandID:          request.BrandID,
 		ManufacturerID:   request.ManufacturerID,
 		ReleaseDate:      &releaseDate,
-		Available:        request.Avaliable == "true",
+		Available:        request.Avaliable == "on",
 		PricePoint:       request.PricePoint,
 		SiteURL:          request.SiteURL,
 		CreatedByID:      user.ID,
@@ -109,7 +222,7 @@ func PutSwitch(c *fiber.Ctx) error { // {{{
 
 	tx := database.DB.Begin()
 
-	if err := tx.Model(&clickyClack).Updates(clickyClack).Error; err != nil {
+	if err := tx.Debug().Model(&clickyClack).Updates(clickyClack).Update("available", request.Avaliable == "on").Error; err != nil {
 		tx.Rollback()
 		log.Error().Err(err).Msg("Error updating the switch")
 		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
@@ -118,8 +231,15 @@ func PutSwitch(c *fiber.Ctx) error { // {{{
 	}
 	timer.LogTime("Update Switch")
 
+	if err := tx.Debug().Model(&details).Updates(details).Error; err != nil {
+		log.Error().Err(err).Msg("Error updating the switch details")
+		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
+			"message": "Error updating the switch details", "error": err,
+		})
+	}
+
 	var currentImageLinkIDs []uuid.UUID
-	if err := tx.Model(&models.ImageLink{}).
+	if err := tx.Debug().Model(&models.ImageLink{}).
 		Where("owner_id = ? AND owner_type = 'switches'", clickyClack.ID).
 		Pluck("id", &currentImageLinkIDs).Error; err != nil {
 		tx.Rollback()
@@ -417,8 +537,8 @@ func getSwitchInputData() (components.SwitchData, error) {
 	}
 	timer.LogTime("Get Manufacturers")
 
-	var switchTypes []models.Type
-	if err := database.DB.Where("category = 'switch_type'").Find(&switchTypes).Error; err != nil {
+	var availableTypes []models.Type
+	if err := database.DB.Find(&availableTypes).Error; err != nil {
 		log.Error().Err(err).Msg("Error getting the switch types")
 		return switchInput, err
 	}
@@ -440,18 +560,78 @@ func getSwitchInputData() (components.SwitchData, error) {
 		})
 	}
 
-	var switchOptions []components.Option
-	for _, switchType := range switchTypes {
-		switchOptions = append(switchOptions, components.Option{
-			Value: strconv.Itoa(switchType.ID),
-			Label: switchType.Name,
-		})
+	var switchOptions,
+		tactilityTypes,
+		tactilityFeedbacks,
+		pinConfigurations,
+		springMaterials,
+		soundLevels,
+		soundTypes,
+		materials,
+		colors []components.Option
+	for _, switchType := range availableTypes {
+		switch switchType.Category {
+		case "switch_type":
+			switchOptions = append(switchOptions, components.Option{
+				Value: strconv.Itoa(switchType.ID),
+				Label: switchType.Name,
+			})
+		case "tactility_type":
+			tactilityTypes = append(tactilityTypes, components.Option{
+				Value: strconv.Itoa(switchType.ID),
+				Label: switchType.Name,
+			})
+		case "tactility_feedback":
+			tactilityFeedbacks = append(tactilityFeedbacks, components.Option{
+				Value: strconv.Itoa(switchType.ID),
+				Label: switchType.Name,
+			})
+		case "pin_configuration":
+			pinConfigurations = append(pinConfigurations, components.Option{
+				Value: strconv.Itoa(switchType.ID),
+				Label: switchType.Name,
+			})
+		case "spring_material":
+			springMaterials = append(springMaterials, components.Option{
+				Value: strconv.Itoa(switchType.ID),
+				Label: switchType.Name,
+			})
+		case "sound_level":
+			soundLevels = append(soundLevels, components.Option{
+				Value: strconv.Itoa(switchType.ID),
+				Label: switchType.Name,
+			})
+		case "sound_type":
+			soundTypes = append(soundTypes, components.Option{
+				Value: strconv.Itoa(switchType.ID),
+				Label: switchType.Name,
+			})
+		case "material":
+			materials = append(materials, components.Option{
+				Value: strconv.Itoa(switchType.ID),
+				Label: switchType.Name,
+			})
+		case "color":
+			colors = append(colors, components.Option{
+				Value: strconv.Itoa(switchType.ID),
+				Label: switchType.Name,
+			})
+		}
 	}
+	timer.LogTime("Types Generation")
 
 	switchInput = components.SwitchData{
-		Brands:        brandOptions,
-		Manufacturers: manufacturerOptions,
-		SwitchTypes:   switchOptions,
+		Brands:             brandOptions,
+		Manufacturers:      manufacturerOptions,
+		SwitchTypes:        switchOptions,
+		TactilityTypes:     tactilityTypes,
+		TactilityFeedbacks: tactilityFeedbacks,
+		PinConfigurations:  pinConfigurations,
+		SpringMaterials:    springMaterials,
+		SoundLevels:        soundLevels,
+		SoundTypes:         soundTypes,
+		Materials:          materials,
+		Colors:             colors,
 	}
 	timer.LogTime("Set Switch Data")
 

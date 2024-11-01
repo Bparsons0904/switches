@@ -8,7 +8,7 @@ import (
 
 type Details struct {
 	ID                    uuid.UUID `gorm:"type:uuid;default:uuid_generate_v7();primaryKey" json:"id"`
-	SwitchID              uuid.UUID `gorm:"type:uuid;not null;index"                        json:"switchId"`
+	SwitchID              uuid.UUID `gorm:"type:uuid;not null;uniqueIndex"                  json:"switchId"`
 	Version               *int      `gorm:"type:int"                                        json:"version,omitempty"`
 	SpringTypeID          *int      `gorm:"type:int"                                        json:"springTypeId,omitempty"`
 	SpringForce           *float32  `gorm:"type:real"                                       json:"springForce,omitempty"`
@@ -25,6 +25,7 @@ type Details struct {
 	TotalTravel           *float32  `gorm:"type:real"                                       json:"totalTravel,omitempty"`
 	InitialForce          *float32  `gorm:"type:real"                                       json:"initialForce,omitempty"`
 	ActuationPoint        *float32  `gorm:"type:real"                                       json:"actuationPoint,omitempty"`
+	ActuationForce        *float32  `gorm:"type:real"                                       json:"actuationForce,omitempty"`
 	ResetPoint            *float32  `gorm:"type:real"                                       json:"resetPoint,omitempty"`
 	BottomOutForcePoint   *float32  `gorm:"type:real"                                       json:"bottomOutForcePoint,omitempty"`
 	BottomOutForce        *float32  `gorm:"type:real"                                       json:"bottomOutForce,omitempty"`
@@ -38,7 +39,7 @@ type Details struct {
 	BumpForce             *float32  `gorm:"type:real"                                       json:"bumpForce,omitempty"`
 	TactilityFeedbackID   *int      `gorm:"type:int"                                        json:"tactilityFeedbackId,omitempty"`
 	TactilityFeedback     *Type     `gorm:"foreignKey:TactilityFeedbackID"                  json:"tactilityFeedback,omitempty"`
-	FactoryLubed          bool      `gorm:"type:boolean;default:false"                      json:"factoryLubed"`
+	FactoryLubed          *bool     `gorm:"type:boolean"                                    json:"factoryLubed"`
 	StemColorID           *int      `gorm:"type:int"                                        json:"stemColorId,omitempty"`
 	StemColor             *Type     `gorm:"foreignKey:StemColorID"                          json:"stemColor,omitempty"`
 	TopHousingColorID     *int      `gorm:"type:int"                                        json:"topHousingColorId,omitempty"`

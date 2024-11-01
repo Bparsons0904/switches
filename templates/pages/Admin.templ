@@ -1,16 +1,25 @@
 package pages
 
-import "switches/models"
+import (
+	"switches/models"
+	"switches/templates/ui"
+)
 
 templ Admin(user models.User) {
-	<section>
+	<section id="admin">
 		<h1>Admin</h1>
-		<button
-			hx-trigger="click"
-			hx-get="/admin/switches"
-			hx-target="#main"
-			hx-swap="innerHTML"
-			hx-push-url="/admin/switches"
-		>Switch Admin</button>
+		@ui.Button(ui.ButtonProp{
+			ButtonText: "Switch Admin",
+			Get:        "/admin/switches",
+			Target:     "#main",
+			Swap:       "innerHTML",
+			PushUrl:    "/admin/switches",
+		})
+		@ui.Button(ui.ButtonProp{
+			ButtonText: "Seed Switches",
+			Post:       "/admin/switches/seed",
+			Target:     "#notifications",
+			Swap:       "innerHTML",
+		})
 	</section>
 }

@@ -4,8 +4,8 @@ import (
 	"fmt"
 	"log"
 	"os"
-
 	"switches/config"
+
 	_ "switches/migrator/migrations"
 
 	"github.com/Bparsons0904/deadigations"

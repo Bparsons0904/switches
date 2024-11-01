@@ -23,6 +23,7 @@ templ Root(user models.User) {
 		<link rel="stylesheet" href={ fmt.Sprintf("/assets/pages_%d.min.css", viper.GetInt64("appendNumber")) }/>
 		<link rel="stylesheet" href={ fmt.Sprintf("/assets/switches_%d.min.css", viper.GetInt64("appendNumber")) }/>
 		<link rel="stylesheet" href={ fmt.Sprintf("/assets/forms_%d.min.css", viper.GetInt64("appendNumber")) }/>
+		<link rel="stylesheet" href={ fmt.Sprintf("/assets/admin_%d.min.css", viper.GetInt64("appendNumber")) }/>
 		<head>
 			<title>Waugze</title>
 		</head>
@@ -33,9 +34,10 @@ templ Root(user models.User) {
 			</div>
 			<div id="modal-loader"></div>
 			<div id="portal"></div>
+			<div id="notifications"></div>
+			<script src={ fmt.Sprintf("/assets/htmx_%d.min.js", viper.GetInt64("appendNumber")) }></script>
+			<script src={ fmt.Sprintf("/assets/scripts_%d.min.js", viper.GetInt64("appendNumber")) }></script>
 		</body>
-		<script src={ fmt.Sprintf("/assets/htmx_%d.min.js", viper.GetInt64("appendNumber")) }></script>
-		<script src={ fmt.Sprintf("/assets/scripts_%d.min.js", viper.GetInt64("appendNumber")) }></script>
 	</html>
 }
 

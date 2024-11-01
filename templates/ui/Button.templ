@@ -1,0 +1,41 @@
+package ui
+
+type ButtonProp struct {
+	ButtonText string
+	Get        string
+	Post       string
+	Put        string
+	Swap       string
+	Target     string
+	Trigger    string
+	PushUrl    string
+}
+
+templ Button(props ButtonProp) {
+	<button
+		class="button"
+		hx-boost="true"
+		hx-preserve="true"
+		if props.Get != "" {
+			hx-get={ props.Get }
+		}
+		if props.Post != "" {
+			hx-post={ props.Post }
+		}
+		if props.Put != "" {
+			hx-put={ props.Put }
+		}
+		if props.Target != "" {
+			hx-target={ props.Target }
+		}
+		if props.Swap != "" {
+			hx-swap={ props.Swap }
+		}
+		hx-trigger="click"
+		if props.PushUrl != "" {
+			hx-push-url={ props.PushUrl }
+		}
+	>
+		{ props.ButtonText }
+	</button>
+}

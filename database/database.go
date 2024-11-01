@@ -48,7 +48,7 @@ func StartPostgresDB(config config.Config) (*gorm.DB, error) {
 	db, err := gorm.Open(
 		postgres.Open(dsn),
 		// &gorm.Config{Logger: utils.NewGormLogger(zlog), PrepareStmt: true},
-		&gorm.Config{Logger: logger.Default.LogMode(logger.Warn), PrepareStmt: true},
+		&gorm.Config{Logger: logger.Default.LogMode(logger.Error), PrepareStmt: true},
 	)
 	if err != nil {
 		return nil, err

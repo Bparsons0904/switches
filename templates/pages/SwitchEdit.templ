@@ -13,13 +13,16 @@ templ SwitchEdit(input components.SwitchInput) {
     }
     .form-container {
       margin: 0 auto;
+      max-width: 1000px;
     }
   </style>
 	<section id="switch-edit-form">
 		@components.FormContainer(
 			components.Form{
-				ID:  "switch-edit-form",
-				Put: fmt.Sprintf("/admin/switches/%s/edit", input.Switch.ID)}) {
+				ID:     "switch-edit-form",
+				Put:    fmt.Sprintf("/admin/switches/%s/edit", input.Switch.ID),
+				Target: "#switch-edit-form",
+			}) {
 			@components.SwitchGeneralForm(input)
 		}
 	</section>

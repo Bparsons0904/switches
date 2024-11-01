@@ -33,6 +33,7 @@ func SetupRoutes(app *fiber.App, config config.Config) {
 
 	api := app.Group("/api")
 	HealthRoutes(api)
+	LogRoutes(api)
 
 	app.Get("*", controllers.NotFound)
 }
