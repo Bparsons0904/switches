@@ -129,7 +129,10 @@ func AuthCallback(c *fiber.Ctx) error {
 		IsLoggedIn:   true,
 	}
 
-	_ = database.SetJSONKeyDB("session", session.AccessToken, session, 30*24*time.Hour)
+	err = database.SetJSONKeyDB("session", session.AccessToken, session, 30*24*time.Hour)
+	if err != nil {
+		log.Error().Err(err).Msg("Error setting session in keydb")
+	}
 
 	expiredIn := time.Now().Add(time.Duration(tokenResponse.ExpiresIn) * time.Second)
 	cookie := &fiber.Cookie{
