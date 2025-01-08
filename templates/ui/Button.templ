@@ -35,7 +35,8 @@ templ Button(props ButtonProp) {
 		}
 		hx-trigger="click"
 		if props.PushUrl != "" {
-			hx-push-url={ props.PushUrl }
+			hx-get={ props.PushUrl }
+			hx-push-url="true"
 		}
 	>
 		{ props.ButtonText }

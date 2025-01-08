@@ -22,4 +22,10 @@ func SwitchRoutes(app *fiber.App) {
 	switches.Delete("/:switchID/liked", controllers.DeleteUserLikedSwitch)
 	switches.Put("/:switchID/ratings/:rating", controllers.PutUserSwitch)
 	switches.Post("/:switchID/ratings/:ratingID/review", controllers.PostUserSwitchReview)
+
+	recommendations := app.Group("/switches/recommendations")
+	recommendations.Get("/guided", controllers.GetGuidedRecommendations)
+	recommendations.Get("/user-based", controllers.GetUserBasedRecommendations)
+	recommendations.Get("/ai", controllers.GetAiRecommendations)
+	recommendations.Get("/lucky", controllers.GetFeelingLuckyRecommendations)
 }
