@@ -1,19 +1,21 @@
 package ui
 
 type ButtonProp struct {
-	ButtonText string
-	Get        string
-	Post       string
-	Put        string
-	Swap       string
-	Target     string
-	Trigger    string
-	PushUrl    string
+	ButtonText       string
+	Get              string
+	Post             string
+	Put              string
+	Swap             string
+	Target           string
+	Trigger          string
+	PushUrl          string
+	AddtionalClasses []string
+	PostFixIcon      templ.Component
 }
 
 templ Button(props ButtonProp) {
 	<button
-		class="button"
+		class={ "button", props.AddtionalClasses }
 		hx-boost="true"
 		hx-preserve="true"
 		if props.Get != "" {
@@ -37,5 +39,37 @@ templ Button(props ButtonProp) {
 		}
 	>
 		{ props.ButtonText }
+		if props.PostFixIcon != nil {
+			@props.PostFixIcon
+		}
 	</button>
+}
+
+templ CTAButton(props ButtonProp) {
+	<style type="text/css">
+    .cta-button {
+      background-color: var(--background-dark);
+      color: white;
+      width: 100%;
+      max-width: unset;
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+      padding: 8px;
+    }
+  </style>
+	@Button(ButtonProp{
+		ButtonText:       props.ButtonText,
+		AddtionalClasses: []string{"cta-button"},
+		Get:              props.Get,
+		Post:             props.Post,
+		Put:              props.Put,
+		Swap:             props.Swap,
+		Target:           props.Target,
+		Trigger:          props.Trigger,
+		PushUrl:          props.PushUrl,
+		PostFixIcon:      props.PostFixIcon,
+	})
 }

@@ -1,0 +1,162 @@
+package components
+
+import (
+	"switches/templates/icons"
+	"switches/templates/layouts"
+	"switches/templates/ui"
+)
+
+templ Recommendations() {
+	<style type="text/css">
+    #recommendations {
+      display: grid;
+      .recommendations-container {
+        display: grid;
+        gap: 2rem;
+        justify-content: space-between;
+        .recommendation-container {
+          display: flex;
+          flex-direction: column;
+          justify-content: space-between;
+          height: 100%;
+          .recommendation-header {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            gap: 8px;
+          }
+          .recommendation-description {
+            display: flex;
+            flex-direction: column;
+            margin-top: 8px;
+            gap: 12px;
+          }
+          .recommendation-button-container {
+            display: flex;
+            flex-direction: row;
+            align-items: flex-end;
+            justify-content: center;
+            margin-top: 1rem;
+
+          }
+        }
+      }
+    }
+
+  @media screen and (min-width: 768px) {
+    #recommendations {
+      .recommendations-container {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+  }
+
+  @media screen and (min-width: 1280px) {
+    #recommendations {
+      .recommendations-container {
+        grid-template-columns: repeat(4, 1fr);
+      }
+    }
+  }
+  </style>
+	<div id="recommendations">
+		<div class="recommendations-container">
+			@GuidedRecommendation()
+			@UserRecommendation()
+			@AIRecommendation()
+			@FeelLucky()
+		</div>
+	</div>
+}
+
+templ GuidedRecommendation() {
+	@layouts.Card() {
+		<div class="recommendation-container">
+			<div class="recommendation-wrapper">
+				<div class="recommendation-header">
+					@icons.Compass()
+					<h2>Guided Recommendation</h2>
+				</div>
+				<div class="recommendation-description">
+					<p>Answer a few questions to get personalized switch suggestions.</p>
+					<p>Our guided process helps you find the perfect switch based on your preferences and typing style.</p>
+				</div>
+			</div>
+			<div class="recommendation-button-container">
+				@ui.CTAButton(ui.ButtonProp{
+					ButtonText:  "Start Guide",
+					PostFixIcon: icons.RightArrow(),
+				})
+			</div>
+		</div>
+	}
+}
+
+templ UserRecommendation() {
+	@layouts.Card() {
+		<div class="recommendation-container">
+			<div class="recommendation-wrapper">
+				<div class="recommendation-header">
+					@icons.People()
+					<h2>User-Based Recommendation</h2>
+				</div>
+				<div class="recommendation-description">
+					<p>Find switches loved by users with similar preferences.</p>
+					<p>Discover switches based on the preferences of users who have similar tastes to yours.</p>
+				</div>
+			</div>
+			<div class="recommendation-button-container">
+				@ui.CTAButton(ui.ButtonProp{
+					ButtonText:  "Find Similar Users",
+					PostFixIcon: icons.RightArrow(),
+				})
+			</div>
+		</div>
+	}
+}
+
+templ AIRecommendation() {
+	@layouts.Card() {
+		<div class="recommendation-container">
+			<div class="recommendation-wrapper">
+				<div class="recommendation-header">
+					@icons.Robot()
+					<h2>AI Recommendation</h2>
+				</div>
+				<div class="recommendation-description">
+					<p>Get intelligent switch suggestions powered by AI.</p>
+					<p>Our AI analyzes your preferences and usage patterns to recommend the best switches for you.</p>
+				</div>
+			</div>
+			<div class="recommendation-button-container">
+				@ui.CTAButton(ui.ButtonProp{
+					ButtonText:  "Get AI Switches",
+					PostFixIcon: icons.RightArrow(),
+				})
+			</div>
+		</div>
+	}
+}
+
+templ FeelLucky() {
+	@layouts.Card() {
+		<div class="recommendation-container">
+			<div class="recommendation-wrapper">
+				<div class="recommendation-header">
+					@icons.Dice()
+					<h2>Feeling Lucky</h2>
+				</div>
+				<div class="recommendation-description">
+					<p>Get a recommendation based on the user favorites and ratings.</p>
+					<p>Discover switches that have received the highest ratings or most loved from our community.</p>
+				</div>
+			</div>
+			<div class="recommendation-button-container">
+				@ui.CTAButton(ui.ButtonProp{
+					ButtonText:  "Feeling Lucky",
+					PostFixIcon: icons.RightArrow(),
+				})
+			</div>
+		</div>
+	}
+}
