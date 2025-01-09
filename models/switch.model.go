@@ -101,6 +101,31 @@ func UpdateSwitchRating(switchID uuid.UUID, tx *gorm.DB) error {
 // 	return nil
 // }
 
+// In your models/switch.go or similar file
+func WithPreloads(adminReviewRequired bool) func(*gorm.DB) *gorm.DB {
+	return func(db *gorm.DB) *gorm.DB {
+		return db.
+			Preload("ImageLinks").
+			Preload("Brand").
+			Preload("SwitchType").
+			Preload("Details.SpringMaterialType").
+			Preload("Details.TopHousingMaterial").
+			Preload("Details.BaseHousingMaterial").
+			Preload("Details.StemMaterial").
+			Preload("Details.SoundLevel").
+			Preload("Details.SoundType").
+			Preload("Details.TactilityType").
+			Preload("Details.TactilityFeedback").
+			Preload("Details.StemColor").
+			Preload("Details.TopHousingColor").
+			Preload("Details.BottomHousingColor").
+			Preload("Details.PinConfiguration").
+			Preload("Ratings", func(db *gorm.DB) *gorm.DB {
+				return db.Where("admin_review_required = ?", adminReviewRequired).Preload("User")
+			})
+	}
+}
+
 func (s *Switch) GetUserRating(userID uuid.UUID) {
 	for _, rating := range s.Ratings {
 		if userID == uuid.Nil {
