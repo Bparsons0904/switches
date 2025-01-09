@@ -27,15 +27,21 @@ func GetUserBasedRecommendations(c *fiber.Ctx) error {
 func GetFeelingLuckyRecommendations(c *fiber.Ctx) error {
 	user := c.Locals("User").(models.User)
 
-	// existingSwitches := []uuid.UUID{}
+	existingSwitches := []uuid.UUID{}
 	if user.ID != uuid.Nil {
-		// Get user switches
+		for _, favoriteSwitch := range user.LikedSwitches {
+			existingSwitches = append(existingSwitches, favoriteSwitch.ID)
+		}
+		for _, ownedSwitch := range user.OwnedSwitches {
+			existingSwitches = append(existingSwitches, ownedSwitch.ID)
+		}
 	}
 
 	var selectedSwitch models.Switch
-	if err := database.DB.
+	if err := database.DB.Debug().
 		Order("RANDOM()").
 		Limit(1).
+		Where("id NOT IN (?)", existingSwitches).
 		Pluck("id", &selectedSwitch).Error; err != nil {
 		log.Error().Err(err).Msg("Error finding a switch")
 		return c.Status(fiber.StatusInternalServerError).Next()
