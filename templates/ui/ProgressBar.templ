@@ -1,0 +1,27 @@
+package ui
+
+import "fmt"
+
+css progress(step, total int) {
+	width: { fmt.Sprintf("%d%%", 100*step/total) };
+}
+
+templ ProgressBar(step, total int) {
+	<style type="text/css">
+    .progress-bar-container {
+      width: 100%;
+      height: 10px;
+      border-radius: 5px;
+      background-color: var(--background-dark-muted);
+    }
+    .progress-bar {
+      display: block;
+      height: 100%;
+      border-radius: 5px;
+      background-color: var(--success-color);
+    }
+  </style>
+	<div class="progress-bar-container">
+		<span class={ "progress-bar", progress(step, total) }></span>
+	</div>
+}

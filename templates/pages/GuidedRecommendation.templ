@@ -1,9 +1,19 @@
 package pages
 
-import "switches/models"
+import (
+	"switches/models"
+	"switches/templates/ui"
+)
 
 templ GuidedRecommendation(user models.User) {
+	<style type="text/css">
+    #guidedRecommendation {
+      padding: 1rem;
+    }
+  </style>
 	<main id="guidedRecommendation">
-		<div>yo</div>
+		<div style="width: 200px">
+			@ui.ProgressBar(2, 4)
+		</div>
 	</main>
 }
