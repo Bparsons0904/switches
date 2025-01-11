@@ -1,0 +1,33 @@
+package layouts
+
+import (
+	"fmt"
+	"switches/templates/ui"
+)
+
+type QuestionData struct {
+	Title string
+	Value int
+}
+
+type QuestionnaireCardProp struct {
+	Question QuestionData
+	Options  []QuestionData
+}
+
+templ QuestionnaireCard(props QuestionnaireCardProp) {
+	<style type="text/css">
+    
+  </style>
+	<div class="questionaire-card">
+		@Card() {
+			<h3>{ props.Question.Title }</h3>
+			for _, question := range props.Options {
+				@ui.Button(ui.ButtonProp{
+					ButtonText: question.Title,
+					Post:       fmt.Sprintf("/switches/recommendation/guided/%d/%d", props.Question.Value, question.Value),
+				})
+			}
+		}
+	</div>
+}

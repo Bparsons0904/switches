@@ -2,6 +2,7 @@ package pages
 
 import (
 	"switches/models"
+	"switches/templates/layouts"
 	"switches/templates/ui"
 )
 
@@ -9,11 +10,28 @@ templ GuidedRecommendation(user models.User) {
 	<style type="text/css">
     #guidedRecommendation {
       padding: 1rem;
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
     }
   </style>
 	<main id="guidedRecommendation">
-		<div style="width: 200px">
+		<div style="max-width: 400px">
 			@ui.ProgressBar(2, 4)
+		</div>
+		<div>
+			@layouts.QuestionnaireCard(
+				layouts.QuestionnaireCardProp{
+					Question: layouts.QuestionData{
+						Title: "First Question",
+						Value: 1,
+					},
+					Options: []layouts.QuestionData{
+						layouts.QuestionData{Title: "Answer 1", Value: 1},
+						layouts.QuestionData{Title: "Answer 2", Value: 2},
+						layouts.QuestionData{Title: "Answer 3", Value: 3},
+					},
+				})
 		</div>
 	</main>
 }
