@@ -25,6 +25,7 @@ func SwitchRoutes(app *fiber.App) {
 
 	recommendations := app.Group("/switches/recommendations")
 	recommendations.Get("/guided", controllers.GetGuidedRecommendations)
+	recommendations.Post("/guided", controllers.PostGuidedRecommendation)
 	recommendations.Get("/user-based", controllers.GetUserBasedRecommendations)
 	recommendations.Get("/ai", controllers.GetAiRecommendations)
 	recommendations.Get("/lucky", controllers.GetFeelingLuckyRecommendations)

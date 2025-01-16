@@ -11,6 +11,7 @@ type ButtonProp struct {
 	PushUrl          string
 	AddtionalClasses []string
 	PostFixIcon      templ.Component
+	Vals             string
 }
 
 templ Button(props ButtonProp) {
@@ -23,6 +24,7 @@ templ Button(props ButtonProp) {
 		}
 		if props.Post != "" {
 			hx-post={ props.Post }
+			hx-vals={ props.Vals }
 		}
 		if props.Put != "" {
 			hx-put={ props.Put }

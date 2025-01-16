@@ -142,6 +142,9 @@ func GetJSONKeyDB[T any](hash, key string) (T, error) {
 	query := fmt.Sprintf("%s:%s", hash, key)
 	jsonValue, err := KeyDB.Get(KeyDB.Context(), query).Result()
 	if err != nil {
+		if err == redis.Nil {
+			return value, nil
+		}
 		log.Error().Err(err).Msg("Error getting key/value store for JSON value")
 		return value, err
 	}

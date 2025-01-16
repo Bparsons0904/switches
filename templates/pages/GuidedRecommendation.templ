@@ -6,7 +6,13 @@ import (
 	"switches/templates/ui"
 )
 
-templ GuidedRecommendation(user models.User) {
+type Questions map[int]int
+type Progress struct {
+	Step      int
+	Questions Questions
+}
+
+templ GuidedRecommendation(user models.User, progress Progress) {
 	<style type="text/css">
     #guidedRecommendation {
       padding: 1rem;
@@ -31,6 +37,20 @@ templ GuidedRecommendation(user models.User) {
 						layouts.QuestionData{Title: "Answer 2", Value: 2},
 						layouts.QuestionData{Title: "Answer 3", Value: 3},
 					},
+					Active: progress.Step == 1,
+				})
+			@layouts.QuestionnaireCard(
+				layouts.QuestionnaireCardProp{
+					Question: layouts.QuestionData{
+						Title: "Second Question",
+						Value: 2,
+					},
+					Options: []layouts.QuestionData{
+						layouts.QuestionData{Title: "Answer 1", Value: 1},
+						layouts.QuestionData{Title: "Answer 2", Value: 2},
+						layouts.QuestionData{Title: "Answer 3", Value: 3},
+					},
+					Active: progress.Step == 2,
 				})
 		</div>
 	</main>

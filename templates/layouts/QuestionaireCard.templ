@@ -13,20 +13,29 @@ type QuestionData struct {
 type QuestionnaireCardProp struct {
 	Question QuestionData
 	Options  []QuestionData
+	Active   bool
+}
+
+css inactive() {
+	opacity: .5;
 }
 
 templ QuestionnaireCard(props QuestionnaireCardProp) {
 	<style type="text/css">
     
   </style>
-	<div class="questionaire-card">
+	<div class={ "questionaire-card", templ.KV(inactive(), !props.Active) }>
 		@Card() {
 			<h3>{ props.Question.Title }</h3>
 			for _, question := range props.Options {
 				@ui.Button(ui.ButtonProp{
 					ButtonText: question.Title,
-					Post:       fmt.Sprintf("/switches/recommendation/guided/%d/%d", props.Question.Value, question.Value),
-				})
+					Target:     "#main",
+					Post:       "/switches/recommendations/guided",
+					Vals: fmt.Sprintf(`{"step":%d,"question":%d,"option":%d}`,
+						1,
+						props.Question.Value,
+						question.Value)})
 			}
 		}
 	</div>
