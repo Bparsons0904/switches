@@ -5,6 +5,7 @@ import (
 	"runtime"
 	"switches/config"
 	"switches/controllers"
+	"switches/middleware"
 	"time"
 
 	"github.com/gofiber/fiber/v2"
@@ -23,6 +24,7 @@ type Health struct {
 var startTime = time.Now().UTC()
 
 func SetupRoutes(app *fiber.App, config config.Config) {
+	app.Use(middleware.UID())
 	app.Get("/", controllers.GetHomePage)
 
 	AdminRoutes(app)

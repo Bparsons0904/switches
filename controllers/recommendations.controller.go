@@ -2,7 +2,6 @@ package controllers
 
 import (
 	"fmt"
-	"log/slog"
 	"switches/database"
 	"switches/models"
 	"switches/templates/pages"
@@ -24,9 +23,10 @@ func GetAiRecommendations(c *fiber.Ctx) error {
 }
 
 func GetGuidedRecommendations(c *fiber.Ctx) error {
+	UID := c.Locals("UID").(string)
 	User := c.Locals("User").(models.User)
 
-	currentProgress, err := database.GetUUIDJSONKeyDB[pages.Progress](guided, User.ID)
+	currentProgress, err := database.GetJSONKeyDB[pages.Progress](guided, UID)
 	if err != nil {
 		log.Err(err).Msg("Error getting progress")
 	}
@@ -36,7 +36,7 @@ func GetGuidedRecommendations(c *fiber.Ctx) error {
 			Step:      1,
 			Questions: make(map[int]int),
 		}
-		err := database.SetUUIDJSONKeyDB(guided, User.ID, currentProgress, week)
+		err := database.SetJSONKeyDB(guided, UID, currentProgress, week)
 		if err != nil {
 			log.Error().Err(err).Msg("Error setting initial progress")
 		}
@@ -53,24 +53,22 @@ type ProgressBody struct {
 
 func PostGuidedRecommendation(c *fiber.Ctx) error {
 	User := c.Locals("User").(models.User)
+	UID := c.Locals("UID").(string)
+
 	var request ProgressBody
 	err := c.BodyParser(&request)
 	if err != nil {
 		log.Err(err).Msg("Error parsing request")
 	}
 
-	slog.Info("reqest", "body", request)
-
-	currentProgress, err := database.GetUUIDJSONKeyDB[pages.Progress](guided, User.ID)
+	currentProgress, err := database.GetJSONKeyDB[pages.Progress](guided, UID)
 	if err != nil {
 		log.Err(err).Msg("Error getting progress")
 	}
 
-	slog.Info("progress", "progress", currentProgress)
-
 	currentProgress.Step = request.Question + 1
 	currentProgress.Questions[request.Question] = request.Option
-	if err := database.SetUUIDJSONKeyDB(guided, User.ID, currentProgress, week); err != nil {
+	if err := database.SetJSONKeyDB(guided, UID, currentProgress, week); err != nil {
 		log.Err(err).Msg("Error setting progress")
 		return c.Status(fiber.StatusInternalServerError).Next()
 	}
