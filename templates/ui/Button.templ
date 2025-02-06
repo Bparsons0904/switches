@@ -4,6 +4,7 @@ type ButtonProp struct {
 	ButtonText       string
 	Get              string
 	Post             string
+	Patch            string
 	Put              string
 	Swap             string
 	Target           string
@@ -19,6 +20,7 @@ templ Button(props ButtonProp) {
 		class={ "button", props.AddtionalClasses }
 		hx-boost="true"
 		hx-preserve="true"
+		hx-on:click="event.stopPropagation()"
 		if props.Get != "" {
 			hx-get={ props.Get }
 		}
@@ -27,6 +29,9 @@ templ Button(props ButtonProp) {
 			hx-vals={ props.Vals }
 		}
 		if props.Put != "" {
+			hx-put={ props.Put }
+		}
+		if props.Patch != "" {
 			hx-put={ props.Put }
 		}
 		if props.Target != "" {

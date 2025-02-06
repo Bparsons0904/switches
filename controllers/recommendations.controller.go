@@ -2,6 +2,7 @@ package controllers
 
 import (
 	"fmt"
+	"log/slog"
 	"switches/database"
 	"switches/models"
 	"switches/templates/pages"
@@ -51,6 +52,32 @@ type ProgressBody struct {
 	Option   int `json:"value"`
 }
 
+func PatchGuidedRecommendation(c *fiber.Ctx) error {
+	User := c.Locals("User").(models.User)
+	UID := c.Locals("UID").(string)
+
+	var request ProgressBody
+	err := c.BodyParser(&request)
+	if err != nil {
+		log.Err(err).Msg("Error parsing request")
+		return c.Status(fiber.StatusBadRequest).Next()
+	}
+
+	currentProgress, err := database.GetJSONKeyDB[pages.Progress](guided, UID)
+	if err != nil {
+		log.Err(err).Msg("Error getting progress")
+	}
+
+	currentProgress.Step = request.GotoStep
+	slog.Info("reqest", "request", request, "currentProgress", currentProgress)
+	if err := database.SetJSONKeyDB(guided, UID, currentProgress, week); err != nil {
+		log.Err(err).Msg("Error setting progress")
+		return c.Status(fiber.StatusInternalServerError).Next()
+	}
+
+	return Render(pages.GuidedRecommendation(User, currentProgress))(c)
+}
+
 func PostGuidedRecommendation(c *fiber.Ctx) error {
 	User := c.Locals("User").(models.User)
 	UID := c.Locals("UID").(string)
@@ -59,6 +86,7 @@ func PostGuidedRecommendation(c *fiber.Ctx) error {
 	err := c.BodyParser(&request)
 	if err != nil {
 		log.Err(err).Msg("Error parsing request")
+		return c.Status(fiber.StatusBadRequest).Next()
 	}
 
 	currentProgress, err := database.GetJSONKeyDB[pages.Progress](guided, UID)

@@ -13,30 +13,41 @@ type QuestionData struct {
 type QuestionnaireCardProp struct {
 	Question QuestionData
 	Options  []QuestionData
-	Active   bool
 }
 
 css inactive() {
 	opacity: .5;
+	scale: .95;
 }
 
-templ QuestionnaireCard(props QuestionnaireCardProp) {
-	<style type="text/css">
+css active() {
+	opacity: 1;
+}
+
+templ QuestionnaireCard(props QuestionnaireCardProp, step int) {
+	if props.Question.Value <= step {
+		<style type="text/css">
     
   </style>
-	<div class={ "questionaire-card", templ.KV(inactive(), !props.Active) }>
-		@Card() {
-			<h3>{ props.Question.Title }</h3>
-			for _, question := range props.Options {
-				@ui.Button(ui.ButtonProp{
-					ButtonText: question.Title,
-					Target:     "#main",
-					Post:       "/switches/recommendations/guided",
-					Vals: fmt.Sprintf(`{"step":%d,"question":%d,"option":%d}`,
-						1,
-						props.Question.Value,
-						question.Value)})
+		<div
+			class={ "questionaire-card", templ.KV(inactive(), props.Question.Value != step) }
+			hx-target="#main"
+			hx-post="/switches/recommendations/guided/step"
+			hx-vals={ fmt.Sprintf(`{"step":%d,"question":%d,"option":%d}`, props.Question.Value, 0, 0) }
+		>
+			@Card() {
+				<h3>{ props.Question.Title }</h3>
+				for _, question := range props.Options {
+					@ui.Button(ui.ButtonProp{
+						ButtonText: question.Title,
+						Target:     "#main",
+						Post:       "/switches/recommendations/guided",
+						Vals: fmt.Sprintf(`{"step":%d,"question":%d,"option":%d}`,
+							1,
+							props.Question.Value,
+							question.Value)})
+				}
 			}
-		}
-	</div>
+		</div>
+	}
 }

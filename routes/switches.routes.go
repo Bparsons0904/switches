@@ -23,9 +23,14 @@ func SwitchRoutes(app *fiber.App) {
 	switches.Put("/:switchID/ratings/:rating", controllers.PutUserSwitch)
 	switches.Post("/:switchID/ratings/:ratingID/review", controllers.PostUserSwitchReview)
 
+	RecommendationRoutes(app)
+}
+
+func RecommendationRoutes(app *fiber.App) {
 	recommendations := app.Group("/switches/recommendations")
 	recommendations.Get("/guided", controllers.GetGuidedRecommendations)
 	recommendations.Post("/guided", controllers.PostGuidedRecommendation)
+	recommendations.Post("/guided/step", controllers.PatchGuidedRecommendation)
 	recommendations.Get("/user-based", controllers.GetUserBasedRecommendations)
 	recommendations.Get("/ai", controllers.GetAiRecommendations)
 	recommendations.Get("/lucky", controllers.GetFeelingLuckyRecommendations)
